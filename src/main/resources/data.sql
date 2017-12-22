@@ -1,4 +1,4 @@
 INSERT INTO user (id, username,first_name, last_name) VALUES
-  (1, 'user1','lala', 'lala'),
-  (2, 'user2','lele', 'lele'),
-  (3, 'user3','lili', 'lili');
+  (1, 'unizar_admin','unizar', 'unizar'),
+  (2, 'usu_2','Nom 2', 'Cognom 2'),
+  (3, 'usu_3','Nom 3', 'Cognom 3');
