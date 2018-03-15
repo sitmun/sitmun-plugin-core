@@ -1,0 +1,305 @@
+@startuml
+title Modelo conceptual SITMUN
+skinparam style strictuml
+hide methods
+hide members
+
+class  Usuario {
+  codigo: String
+  usuario: String
+  password: String  
+  apellido: String
+  adm: String 
+  bloq: String
+}
+
+/'
+ class Bookmark {
+   codigo : String
+   nombre : String
+   descripcion : String
+   extX0: double
+   extY0: double
+   extX1: double
+  extY1: double
+}
+'/
+/'
+class Cargo {
+  cargo : String
+  org : String
+  correo : String
+  fechaAlta: Date
+  fechaCaducidad: Date
+}
+'/
+
+class Aplicación  {
+  codigo : String
+  nombre : String
+  tipo: String
+  visor: String
+  titulo: String
+  tema: String
+  escalas: String
+  project: String
+  autorefr: String
+  fechaAlta: Date
+}
+
+class Rol {
+  codigo String
+  nombre: String
+  observaciones: String
+}
+/'
+class ParamAplicación {
+   codigo : String
+   nombre: String
+   valor: String
+   tipo: String
+ }
+'/
+class Fondo {
+  codigo : String
+  nombre: String
+  descripcion : String
+  fechaAlta: Date
+}
+
+class GrupoCartografía {
+  codigo : String
+  nombre: String
+  tipo: String
+}
+
+class Árbol {
+  codigo : String
+  codigoPadre : String
+  nombre: String
+  tooltip: String
+  activo: Boolean
+  orden : int
+}
+/'
+class TipoGrupo {
+   codigo : String
+   nombre: String
+ }
+'/
+
+class Territorio  {
+  codigo : String
+  codMunicipio : String
+  tipo: String
+  nombre: String
+  nadmin: String
+  direccion: String
+  ambito: String
+  logo: String
+  ext: String
+  observaciones: String
+  fechaAlta: Date
+}
+/'
+class DisponibilidadCartografía  {
+  fechaAlta: Date
+}
+'/
+/'
+class DisponibilidadTarea  {
+  fechaAlta: Date
+}
+'/
+
+
+class Cartografía  {
+  codigo : String
+  nombre : String
+  tipo: String
+  capas: String
+  activo: Boolean
+  orden : int
+  transp: Boolean
+  queryable: Boolean
+  queryAct: Boolean
+  queryLay: Boolean
+  fechaAlta: Date
+}
+
+
+
+class Tarea  {
+  codigo : String
+  nombre : String
+  orden : int
+  fechaAlta: Date
+}
+
+class Servicio  {
+  codigo : String
+  nombre : String
+  url: String
+  project: String
+  leyenda: String
+  infoUrl: String
+  fechaAlta: Date
+}
+/'
+class ParamServicio {
+   nombre: String
+   valor: String
+   tipo: String
+ }
+ '/
+
+
+
+class ConfiguraciónUsuario
+
+/'
+ class Conexion {
+   codigo: String
+   nombre: String
+   usuario: String
+   password: String  
+   constring: String
+}
+
+class GrupoTarea {
+   codigo: String
+   nombre: String
+ }
+
+class TipoTarea {
+   codigo: String
+   nombre: String
+ }
+
+class ParamTipoTarea {
+   codigo: String
+   nombre: String
+   valor: String
+   tipo: String
+}
+
+class TareaUI  {
+   codigo : String
+   nombre : String
+   tipo : String
+   tooltip : String
+   orden : int  
+}
+
+
+class Descarga  {
+   codigo : String
+   grupo : String
+   ext : String
+   tipo : String
+   path : String
+   parent : String
+   tabla : String
+   campo : String
+   join : String  
+}
+
+class Localiza  {
+   codigo : String
+   descripcion : String
+   tipo : String
+   origen : String
+   params : String
+   etiq : String
+   tipos : String
+   formato : String
+   sld : String
+   urlTransf : String
+   fechaAlta: Date  
+}
+
+class Consulta  {
+   codigo : String
+   tipo : String
+   consulta : String
+   label : String
+   filParam: String
+   tipos : String
+   urlTransf : String
+   url : String
+   paramtetro : String
+   transf : String  
+}
+
+class Informe  {
+   codigo : String
+   tipo : String
+   plantilla : String
+   urlTransf : String
+}
+'/
+
+
+' Bookmark "0..1" -- "*" Usuario : pertenece >
+' Bookmark "1" -- "*" Aplicación : pertenece >
+
+
+Aplicación "*" --> "1" Árbol : árbol 
+Aplicación "1" --> "*" Fondo : fondos base 
+Aplicación "*" --> "1" GrupoCartografía : mapa de situación
+' Aplicación "1" -- "*" ParamAplicación : usa <
+
+
+Fondo "*" --> "0..1" GrupoCartografía : utiliza 
+
+
+Rol "*" <-- "*" GrupoCartografía : roles disponibles
+Rol "*" <-- "*" Tarea : roles disponibles
+
+Territorio  "*" <-- "*" Tarea : territorios disponibles
+
+Territorio  "*" <-- "*" Cartografía : territorios disponibles
+
+GrupoCartografía "*" --> "*" Cartografía : capas 
+
+
+'DisponibilidadCartografía "*" -- "1" Cartografía
+'DisponibilidadCartografía "*" -- "1" Territorio
+
+ConfiguraciónUsuario "*" --> "1" Usuario: aplica a 
+ConfiguraciónUsuario "*" --> "1" Territorio : aplica a 
+ConfiguraciónUsuario "*" --> "1" Rol : aplica a
+
+
+' Cargo "*" --> "1" Usuario : pertenece a 
+' Cargo "*" --> "1" Territorio : para un
+
+' Territorio "*" -- "0..1" TipoGrupo : esDeTipo
+Territorio "*" --> "*" Territorio : formado por
+
+'DisponibilidadTarea "*" -- "1" Territorio
+'DisponibilidadTarea "*" -- "1" Tarea
+
+Cartografía "*" <-- "1" Servicio : capas
+Cartografía "0..1" <-- "*" Tarea : utiliza
+Cartografía "*" <-- "*" Árbol : utiliza
+
+Servicio "0..1" <-right- "*" Tarea : utiliza
+' Servicio "*" -- "0..1" Conexion
+' Servicio "1" -- "*" ParamServicio : usa
+
+' Tarea "*" -- "1" Conexion
+' Tarea "*" -- "1" GrupoTarea
+' Tarea "*" -- "1" TipoTarea
+' TipoTarea "1" -- "*" ParamTipoTarea
+' Tarea "*" -- "1" TareaUI
+
+' Tarea <|-down- Descarga 
+' Tarea <|-down- Consulta
+' Tarea <|-left- Localiza
+' Tarea <|-down- Informe
+
+  
+
+
+@enduml
