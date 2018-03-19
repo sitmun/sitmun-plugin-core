@@ -260,7 +260,7 @@ Territorio  "*" <-- "*" Tarea : territorios disponibles
 
 Territorio  "*" <-- "*" Cartografía : territorios disponibles
 
-GrupoCartografía "*" --> "*" Cartografía : capas 
+GrupoCartografía "*" --> "*" Cartografía : elementos
 
 
 'DisponibilidadCartografía "*" -- "1" Cartografía
@@ -285,10 +285,10 @@ Cartografía "0..1" <-- "*" Tarea : utiliza
 Cartografía "*" <-- "*" Árbol : utiliza
 
 Servicio "0..1" <-right- "*" Tarea : utiliza
-' Servicio "*" -- "0..1" Conexion
+ Servicio "*" --> "0..1" Conexion : utiliza?
 ' Servicio "1" -- "*" ParamServicio : usa
 
-' Tarea "*" -- "1" Conexion
+ Tarea "*" --> "0..1" Conexion : utiliza
 ' Tarea "*" -- "1" GrupoTarea
 ' Tarea "*" -- "1" TipoTarea
 ' TipoTarea "1" -- "*" ParamTipoTarea
