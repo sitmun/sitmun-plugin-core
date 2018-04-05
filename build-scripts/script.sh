@@ -3,6 +3,10 @@ echo
 echo "Building script ... "
 echo
 
+if [ -z $PLUGIN_DIR ]; then
+    PLUGIN_DIR=$(mktemp -d)
+fi
+
 cd $TRAVIS_BUILD_DIR
 if ./gradlew assemble; then
     if ./gradlew check; then
