@@ -1,5 +1,13 @@
 language: java
 
+addons:
+  sonarcloud:
+    organization: sitmun
+
+script: ./build-scripts/script.sh
+
+after_success: ./build-scripts/after_success.sh
+
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
