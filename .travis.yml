@@ -2,8 +2,6 @@ addons:
   sonarcloud:
     organization: sitmun
 
-before_install:
- - chmod +x gradlew
 
 script: ./build-scripts/script.sh
 
