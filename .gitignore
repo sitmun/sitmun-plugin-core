@@ -1,0 +1,19 @@
+# Ignore Gradle files
+.gradle/
+build/
+
+# Ignore IntelliJ files
+.idea/
+out/
+*.iml
+*.iws
+*.ipr
+
+# Ignore Eclipse files
+.classpath
+.project
+.settings/
+bin/
+
+# Other dirs
+database/
