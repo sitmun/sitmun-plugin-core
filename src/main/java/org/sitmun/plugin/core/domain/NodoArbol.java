@@ -10,6 +10,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="stm_arbolnod")
 public class NodoArbol {
@@ -38,6 +40,7 @@ public class NodoArbol {
     @JoinColumn(name="arn_codpadre")
     @ManyToOne
     @NotNull
+    @JsonIgnore
     private NodoArbol padre;    
     
     @JoinColumn(name="arn_codarb")
