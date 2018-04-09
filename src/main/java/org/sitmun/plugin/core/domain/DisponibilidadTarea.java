@@ -13,6 +13,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name="stm_disptarea", uniqueConstraints={
         @UniqueConstraint(columnNames={"dta_codter", "dta_codtar"})
@@ -30,11 +33,13 @@ public class DisponibilidadTarea {
     
     @ManyToOne
     @JoinColumn(name="dta_codter")
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Territorio territorio;    
     
     @ManyToOne
     @JoinColumn(name="dta_codtar")
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Tarea tarea;
 

@@ -1,6 +1,7 @@
 package org.sitmun.plugin.core.domain;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="stm_apps")
@@ -42,8 +45,12 @@ public class Aplicacion {
     private Date fechaAlta;
     
     //la relación entre Aplicacion y Rol es de momento 1-N 
-    @OneToMany(mappedBy="aplicacion",cascade = CascadeType.ALL)
-    private Set<Rol> rolesDisponibles;
+    @OneToMany(mappedBy = "aplicacion",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Rol> rolesDisponibles = new HashSet<>();
+    
+    @OneToMany(mappedBy="aplicacion",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<ParametroAplicacion> parametros = new HashSet<>();
+
     
     @ManyToOne
     @JoinColumn(name="cod_arb")
@@ -63,8 +70,8 @@ public class Aplicacion {
     
     
     //fondos base de mapea con la entidad FondoAplicacion
-    @OneToMany(mappedBy="aplicacion",cascade = CascadeType.ALL)
-    private Set<FondoAplicacion> fondos;
+    @OneToMany(mappedBy="aplicacion",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<FondoAplicacion> fondos = new HashSet<>();
     
     /**
      * @return the id
@@ -269,8 +276,6 @@ public class Aplicacion {
     @JoinColumn(name="cod_gca")
     private GrupoCartografia mapaSituacion;
     
-    @OneToMany(mappedBy="aplicacion",cascade = CascadeType.ALL)
-    private Set<ParametroAplicacion> parametros;
     
 
 }

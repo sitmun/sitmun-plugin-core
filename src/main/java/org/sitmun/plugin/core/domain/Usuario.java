@@ -1,6 +1,7 @@
 
 package org.sitmun.plugin.core.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -39,16 +40,16 @@ public class Usuario {
     @Column(name = "usu_bloq")
     private Boolean bloqueado;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private Set<Cargo> cargos;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Cargo> cargos = new HashSet<>();
 
     // permisos
     //En la pestaña Permisos se definen los roles del usuario para un
     // territorio particular. Esta acción se realiza en dos pasos. El primero
     // paso es escoger un territorio y el segundo asignar los roles para este
     // usuario y territorio.
-    @OneToMany(mappedBy="usuario", cascade = CascadeType.ALL)
-    private Set<ConfiguracionUsuario> permisos;
+    @OneToMany(mappedBy="usuario", cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<ConfiguracionUsuario> permisos = new HashSet<>();
 
     /**
      * @return the id

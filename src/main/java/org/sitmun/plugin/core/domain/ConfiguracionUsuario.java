@@ -26,18 +26,18 @@ public class ConfiguracionUsuario {
 
     @JoinColumn(name="ucf_codusu")
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
     
     @ManyToOne
     //@MapsId("territorioId")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name="ucf_codter")
     private Territorio territorio;
     
     //De momento un usuario puede tener sólo un rol en un territorio (N-1)?
     @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     //@MapsId("rolId")
     @JoinColumn(name="ucf_codrol")
     private Rol rol;

@@ -11,6 +11,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="stm_paramapp")
 public class ParametroAplicacion {
@@ -32,7 +37,9 @@ public class ParametroAplicacion {
     
     @ManyToOne
     @NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name="pap_codapp")
+    @JsonIgnore
     private Aplicacion aplicacion;
 
 

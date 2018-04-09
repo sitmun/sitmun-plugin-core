@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_fondo")
@@ -35,6 +36,7 @@ public class Fondo {
     
     @ManyToOne
     @JoinColumn(name="fon_codcga")
+    @NotNull
     private GrupoCartografia grupoCartografia;
 
     /**

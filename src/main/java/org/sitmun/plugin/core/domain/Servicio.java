@@ -1,6 +1,7 @@
 package org.sitmun.plugin.core.domain;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -42,8 +43,8 @@ public class Servicio {
     @Column(name="ser_f_alta")
     private Date fechaAlta;
     
-    @OneToMany(mappedBy="servicio",cascade = CascadeType.ALL)
-    private Set<Cartografia> capas;
+    @OneToMany(mappedBy="servicio",cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<Cartografia> capas = new HashSet<>();
     
     @ManyToOne
     @JoinColumn(name="ser_codcon")

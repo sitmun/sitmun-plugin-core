@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -69,7 +70,7 @@ public class Cartografia {
     private  Conexion conexion;
     
     //territorios dónde estará disponible esta cartografía se gestiona desde aquí
-    @OneToMany(mappedBy="cartografia")
+    @OneToMany(mappedBy="cartografia", cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<DisponibilidadCartografia> disponibilidades = new HashSet<>();
     
         

@@ -13,6 +13,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name="stm_dispcarto",uniqueConstraints={
         @UniqueConstraint(columnNames={"dca_codter", "dca_codcar"})
@@ -32,12 +35,14 @@ public class DisponibilidadCartografia {
     @ManyToOne
     //@MapsId("territorioId")
     @JoinColumn(name="dca_codter")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Territorio territorio;
     
     @ManyToOne
     //@MapsId("cartografiaId")    
     @JoinColumn(name="dca_codcar")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Cartografia cartografia;
     

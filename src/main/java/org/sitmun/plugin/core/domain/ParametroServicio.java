@@ -11,6 +11,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name="stm_paramser")
 public class ParametroServicio {
@@ -31,6 +34,7 @@ public class ParametroServicio {
     
     @ManyToOne
     @NotNull
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name="pse_codser")
     private Servicio servicio;
 

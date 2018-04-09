@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name="stm_paramtta")
 public class ParametroTarea {
@@ -32,6 +35,7 @@ public class ParametroTarea {
     //En los datos exportados la relación es con Tarea y hay más campos ptt_codtar
     @ManyToOne
     @NotNull
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name="ptt_codtar")
     private Tarea tarea;
     

@@ -60,7 +60,6 @@ public class CargoRepositoryTest {
         territorio.setEmail("email@email.org");
         territorio.setExt(null);
         territorio.setFechaAlta(new Date());
-        territorio.setId(1);
         territorio.setLogo(null);
         territorio.setMiembros(null);
         territorio.setNombreAdministracion("Test");

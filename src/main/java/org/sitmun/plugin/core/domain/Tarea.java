@@ -1,6 +1,7 @@
 package org.sitmun.plugin.core.domain;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -39,9 +41,28 @@ public class Tarea {
     private Conexion conexion;
     
     
+    /**
+     * @return the disponibilidades
+     */
+    public Set<DisponibilidadTarea> getDisponibilidades() {
+        return disponibilidades;
+    }
+
+
+    /**
+     * @param disponibilidades the disponibilidades to set
+     */
+    public void setDisponibilidades(Set<DisponibilidadTarea> disponibilidades) {
+        this.disponibilidades = disponibilidades;
+    }
+
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "stm_roltar", joinColumns = @JoinColumn(name = "rta_codrol"), inverseJoinColumns = @JoinColumn(name = "rta_codtar"))            
     private Set<Rol> roles;
+    
+    @OneToMany(mappedBy="tarea", cascade = CascadeType.ALL,orphanRemoval = true)
+    private Set<DisponibilidadTarea> disponibilidades = new HashSet<>();
 
 
     /**

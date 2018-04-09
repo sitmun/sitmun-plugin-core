@@ -11,6 +11,11 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="stm_appfon",uniqueConstraints={
         @UniqueConstraint(columnNames={"apf_codapp", "apf_codfon"})
@@ -27,11 +32,14 @@ public class FondoAplicacion {
     
     @ManyToOne
     @JoinColumn(name="apf_codapp")
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
+    @JsonIgnore
     private Aplicacion aplicacion;
     
     @ManyToOne
     @JoinColumn(name="apf_codfon")
+    //@OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private Fondo fondo;
     
