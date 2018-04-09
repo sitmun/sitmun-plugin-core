@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_roles")
@@ -29,6 +30,7 @@ public class Rol {
     //relación Rol-Aplicación N-1 de momento
     @ManyToOne
     @JoinColumn(name="rol_codapp")
+    @NotNull
     private Aplicacion aplicacion;
 
 

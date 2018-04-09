@@ -29,7 +29,7 @@ public class ParametroTarea {
     private String tipo;
     
     
-    //TODO en los datos exportados la relación es con Tarea y hay más campos ptt_codtar
+    //En los datos exportados la relación es con Tarea y hay más campos ptt_codtar
     @ManyToOne
     @NotNull
     @JoinColumn(name="ptt_codtar")
@@ -38,8 +38,7 @@ public class ParametroTarea {
     //orden
     @Column(name="ptt_orden")
     private Integer orden;
-    
-    //private TipoTarea tipoTarea;
+        
 
 
     /**

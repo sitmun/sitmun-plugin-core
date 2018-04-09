@@ -70,7 +70,7 @@ public class Cartografia {
     
     //territorios dónde estará disponible esta cartografía se gestiona desde aquí
     @OneToMany(mappedBy="cartografia")
-    private Set<DisponibilidadCartografia> disponibilidades = new HashSet<DisponibilidadCartografia>();
+    private Set<DisponibilidadCartografia> disponibilidades = new HashSet<>();
     
         
 

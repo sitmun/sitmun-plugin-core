@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_dispcarto",uniqueConstraints={
@@ -24,12 +25,6 @@ public class DisponibilidadCartografia {
     private long id;
     
     
-    /*
-    @EmbeddedId
-    @JsonIgnore
-    private DisponibilidadCartografiaId id = new DisponibilidadCartografiaId();
-    */ 
-    
     @Column(name="dca_f_alta")
     private Date fechaAlta;
     
@@ -37,11 +32,13 @@ public class DisponibilidadCartografia {
     @ManyToOne
     //@MapsId("territorioId")
     @JoinColumn(name="dca_codter")
+    @NotNull
     private Territorio territorio;
     
     @ManyToOne
     //@MapsId("cartografiaId")    
     @JoinColumn(name="dca_codcar")
+    @NotNull
     private Cartografia cartografia;
     
     

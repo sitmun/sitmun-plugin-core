@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_disptarea", uniqueConstraints={
@@ -23,21 +24,18 @@ public class DisponibilidadTarea {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="dta_codigo")
     private long id;
-/*
-    @EmbeddedId
-    private DisponibilidadTareaId id; 
-  */  
+
     @Column(name="dta_f_alta")
     private Date fechaAlta;    
     
     @ManyToOne
-    //@MapsId("territorioId")    
-    @JoinColumn(name="dta_codter")    
+    @JoinColumn(name="dta_codter")
+    @NotNull
     private Territorio territorio;    
     
     @ManyToOne
-    //@MapsId("tareaId")    
     @JoinColumn(name="dta_codtar")
+    @NotNull
     private Tarea tarea;
 
     

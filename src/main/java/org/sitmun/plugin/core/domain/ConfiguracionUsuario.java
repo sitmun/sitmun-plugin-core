@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(name="stm_usuconf",uniqueConstraints={
         @UniqueConstraint(columnNames={"ucf_codusu", "ucf_codter","ucf_codrol"})
@@ -20,22 +23,21 @@ public class ConfiguracionUsuario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ucf_codigo")
     private long id;
-/*
-    @EmbeddedId
-    private ConfiguracionUsuarioId id; 
-  */  
-    //@MapsId("usuarioId")    
+
     @JoinColumn(name="ucf_codusu")
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Usuario usuario;
     
     @ManyToOne
     //@MapsId("territorioId")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name="ucf_codter")
     private Territorio territorio;
     
     //De momento un usuario puede tener sólo un rol en un territorio (N-1)?
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     //@MapsId("rolId")
     @JoinColumn(name="ucf_codrol")
     private Rol rol;

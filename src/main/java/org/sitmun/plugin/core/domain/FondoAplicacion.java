@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_appfon",uniqueConstraints={
@@ -19,23 +20,19 @@ public class FondoAplicacion {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    /*
-    @EmbeddedId
-    private FondoAplicacionId id;
-    */ 
-    
+
     @Column(name="apf_orden")
     private Integer orden;
     
     
     @ManyToOne
-    //@MapsId("aplicacionId")    
     @JoinColumn(name="apf_codapp")
+    @NotNull
     private Aplicacion aplicacion;
     
     @ManyToOne
-    //@MapsId("fondoId")    
     @JoinColumn(name="apf_codfon")
+    @NotNull
     private Fondo fondo;
     
    

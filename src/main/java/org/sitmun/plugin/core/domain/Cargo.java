@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_cargo")
@@ -21,7 +22,7 @@ public class Cargo {
     private long id;
     
     @Column(name="cgo_cargo")
-    private String cargo;
+    private String nombre;
     
     @Column(name="cgo_org")
     private String organizacion;
@@ -37,10 +38,12 @@ public class Cargo {
     
     @ManyToOne
     @JoinColumn(name="cgo_codusu")
+    @NotNull
     private Usuario usuario;
     
     @ManyToOne
     @JoinColumn(name="cgo_codter")
+    @NotNull
     private Territorio territorio;
 
     /**
@@ -57,18 +60,20 @@ public class Cargo {
         this.id = id;
     }
 
+   
+
     /**
-     * @return the cargo
+     * @return the nombre
      */
-    public String getCargo() {
-        return cargo;
+    public String getNombre() {
+        return nombre;
     }
 
     /**
-     * @param cargo the cargo to set
+     * @param nombre the nombre to set
      */
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     /**

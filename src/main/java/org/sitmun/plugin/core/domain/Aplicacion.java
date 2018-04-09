@@ -33,7 +33,7 @@ public class Aplicacion {
     
     
     @Column(name="app_titulo")
-    private String título;
+    private String titulo;
     
     @Column(name="app_tema")
     private String tema;
@@ -108,18 +108,20 @@ public class Aplicacion {
         this.tipo = tipo;
     }
 
+   
+
     /**
-     * @return the título
+     * @return the titulo
      */
-    public String getTítulo() {
-        return título;
+    public String getTitulo() {
+        return titulo;
     }
 
     /**
-     * @param título the título to set
+     * @param titulo the titulo to set
      */
-    public void setTítulo(String título) {
-        this.título = título;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     /**

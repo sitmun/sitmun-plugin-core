@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_arbolnod")
@@ -36,6 +37,7 @@ public class NodoArbol {
     
     @JoinColumn(name="arn_codpadre")
     @ManyToOne
+    @NotNull
     private NodoArbol padre;    
     
     @JoinColumn(name="arn_codarb")

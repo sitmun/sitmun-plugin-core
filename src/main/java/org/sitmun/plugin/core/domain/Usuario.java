@@ -42,14 +42,12 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private Set<Cargo> cargos;
 
-    // @ManyToMany(cascade = CascadeType.ALL)
-    // private Set<Rol> roles;
     // permisos
     //En la pestaña Permisos se definen los roles del usuario para un
     // territorio particular. Esta acción se realiza en dos pasos. El primero
     // paso es escoger un territorio y el segundo asignar los roles para este
     // usuario y territorio.
-    @OneToMany(mappedBy="usuario")
+    @OneToMany(mappedBy="usuario", cascade = CascadeType.ALL)
     private Set<ConfiguracionUsuario> permisos;
 
     /**
