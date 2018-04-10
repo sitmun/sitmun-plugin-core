@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sitmun.plugin.core.domain.ConfiguracionUsuario;
 import org.sitmun.plugin.core.domain.Rol;
+import org.sitmun.plugin.core.domain.Territorio;
 import org.sitmun.plugin.core.domain.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -80,6 +81,10 @@ public class UsuarioRepositoryTest {
     private byte[] serialize(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsBytes(object);
+    }
+    
+    public Usuario getUsuario() {
+    	return this.usuario;
     }
 
 }

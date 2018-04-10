@@ -47,12 +47,14 @@ public class CargoRepositoryTest {
         usuario.setPassword("prCTmrOYKHQ=");
         usuario.setUsername("admin");
         usuario.setCargos(null);
-        usuario.setId(1);
+        //usuario.setId(1);
         usuario.setPermisos(null);
         usuarioRepository.save(usuario);
+        
+        //UsuarioRepositoryTest userTest = new UsuarioRepositoryTest();
 
         territorio = new Territorio();
-        territorio.setId(1);
+        //territorio.setId(1);
         territorio.setNombre("Admin");
         territorio.setAmbito(null);
         territorio.setBloqueado(false);
@@ -65,10 +67,12 @@ public class CargoRepositoryTest {
         territorio.setNombreAdministracion("Test");
         territorio.setObservaciones(null);
         territorioRepository.save(territorio);
+        
+        //TerritorioRepositoryTest terrTest = new TerritorioRepositoryTest();
 
         
         cargo = new Cargo();
-        cargo.setId(1);
+        //cargo.setId(1);
         cargo.setNombre("Test");
         cargo.setCorreo(null);
         cargo.setFechaAlta(new Date());
@@ -76,6 +80,8 @@ public class CargoRepositoryTest {
         cargo.setOrganizacion("Test");
         cargo.setTerritorio(territorio);
         cargo.setUsuario(usuario);
+        /*cargo.setTerritorio(terrTest.getTerritorio());
+        cargo.setUsuario(userTest.getUsuario());*/
         
     }
 
