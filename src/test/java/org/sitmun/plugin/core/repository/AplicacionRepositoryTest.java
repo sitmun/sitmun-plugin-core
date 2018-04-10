@@ -119,5 +119,9 @@ public class AplicacionRepositoryTest {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsBytes(object);
     }
+    
+    public Aplicacion getAplication () {
+    	return this.item;
+    }
 
 }

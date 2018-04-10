@@ -239,6 +239,15 @@ class Informe  {
 }
 '/
 
+class Log{
+    codigo: String
+    tipo: String
+    codusu: String
+    codapp: String
+    codter: String
+    codtar: String
+}
+
 
 ' Bookmark "0..1" -- "*" Usuario : pertenece >
 ' Bookmark "1" -- "*" Aplicación : pertenece >
@@ -247,6 +256,7 @@ class Informe  {
 Aplicación "*" --> "1" Árbol : árbol 
 Aplicación "1" --> "*" Fondo : fondos base 
 Aplicación "*" --> "1" GrupoCartografía : mapa de situación
+Aplicación "1" -left-> "*" Rol: define
 ' Aplicación "1" -- "*" ParamAplicación : usa <
 
 
@@ -268,7 +278,7 @@ GrupoCartografía "*" --> "*" Cartografía : elementos
 
 ConfiguraciónUsuario "*" --> "1" Usuario: aplica a 
 ConfiguraciónUsuario "*" --> "1" Territorio : aplica a 
-ConfiguraciónUsuario "*" --> "1" Rol : aplica a
+ConfiguraciónUsuario "*" -right-> "1" Rol : aplica a
 
 
 ' Cargo "*" --> "1" Usuario : pertenece a 
@@ -298,6 +308,7 @@ Servicio "0..1" <-right- "*" Tarea : utiliza
 ' Tarea <|-down- Consulta
 ' Tarea <|-left- Localiza
 ' Tarea <|-down- Informe
+
 
   
 

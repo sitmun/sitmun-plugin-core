@@ -72,5 +72,9 @@ public class TerritorioRepositoryTest {
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsBytes(object);
     }
+    
+    public Territorio getTerritorio() {
+    	return this.territorio;
+    }
 
 }

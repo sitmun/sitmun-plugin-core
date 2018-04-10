@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.sitmun.plugin.core.domain.ConfiguracionUsuario;
+import org.sitmun.plugin.core.domain.Rol;
 import org.sitmun.plugin.core.domain.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,6 +22,16 @@ public class UsuarioRepositoryTest {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+      
+    @Autowired
+    private RolRepository rolRepository;
+    
+    @Autowired
+    private ConfiguracionUsuarioRepository configuracionUsuarioRepository;
+    
+    @Autowired
+    private CargoRepository cargoRepository;
+    
 
     private Usuario usuario;
 
@@ -27,7 +39,7 @@ public class UsuarioRepositoryTest {
     public void init() {
         usuario = new Usuario();
         usuario.setNombre("Admin");
-        usuario.setApellido("Admin");
+        usuario.setApellido("AdminLastName");
         usuario.setAdministrador(true);
         usuario.setBloqueado(false);
         usuario.setPassword("prCTmrOYKHQ=");
@@ -35,6 +47,22 @@ public class UsuarioRepositoryTest {
         usuario.setCargos(null);
         usuario.setId(1);
         usuario.setPermisos(null);
+        
+        AplicacionRepositoryTest repoTest = new AplicacionRepositoryTest();
+        
+        Rol rol = new Rol();
+        rol.setId(0);
+        rol.setNombre("rol-admin");
+        rol.setObservaciones("rol de administrador");
+        rol.setAplicacion(repoTest.getAplication());
+        
+        TerritorioRepositoryTest terrTest = new TerritorioRepositoryTest();
+                
+        ConfiguracionUsuario confUsuario = new ConfiguracionUsuario();
+        confUsuario.setId(1);
+        confUsuario.setUsuario(usuario);
+        confUsuario.setRol(rol);
+        confUsuario.setTerritorio(terrTest.getTerritorio());
 
     }
 
