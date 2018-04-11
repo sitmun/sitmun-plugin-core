@@ -3,7 +3,9 @@ addons:
     organization: sitmun
 
 
-script: ./build-scripts/script.sh
+script:
+  - ./build-scripts/script.sh
+  - sonar-scanner
 
 after_success: ./build-scripts/after_success.sh
 
@@ -15,3 +17,6 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/.sonar/cache
+    - $HOME/.m2/repository
+    - .gradle

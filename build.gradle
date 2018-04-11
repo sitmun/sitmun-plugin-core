@@ -6,6 +6,7 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
+apply plugin: 'jacoco'
 
 group = 'org.sitmun'
 version = '0.1.0-SNAPSHOT'
@@ -51,8 +52,7 @@ sonarqube {
     properties {
         property 'sonar.host.url', 'https://sonarcloud.io'
         property 'sonar.organization', 'sitmun'     
-        property 'sonar.sources', 'src/main'
-    }    
+    }
 }
 
 task install(dependsOn: 'publishToMavenLocal')
