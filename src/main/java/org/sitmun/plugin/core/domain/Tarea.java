@@ -50,6 +50,38 @@ public class Tarea {
 
 
     /**
+     * @return the grupo
+     */
+    public GrupoTarea getGrupo() {
+        return grupo;
+    }
+
+
+    /**
+     * @param grupo the grupo to set
+     */
+    public void setGrupo(GrupoTarea grupo) {
+        this.grupo = grupo;
+    }
+
+
+    /**
+     * @return the tipo
+     */
+    public GrupoTarea getTipo() {
+        return tipo;
+    }
+
+
+    /**
+     * @param tipo the tipo to set
+     */
+    public void setTipo(GrupoTarea tipo) {
+        this.tipo = tipo;
+    }
+
+
+    /**
      * @param disponibilidades the disponibilidades to set
      */
     public void setDisponibilidades(Set<DisponibilidadTarea> disponibilidades) {
