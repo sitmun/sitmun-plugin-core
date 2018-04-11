@@ -65,10 +65,13 @@ public class Tarea {
     }
 
 
+    
+
+
     /**
      * @return the tipo
      */
-    public GrupoTarea getTipo() {
+    public TipoTarea getTipo() {
         return tipo;
     }
 
@@ -76,7 +79,7 @@ public class Tarea {
     /**
      * @param tipo the tipo to set
      */
-    public void setTipo(GrupoTarea tipo) {
+    public void setTipo(TipoTarea tipo) {
         this.tipo = tipo;
     }
 
@@ -103,7 +106,7 @@ public class Tarea {
     
     @ManyToOne
     @JoinColumn(name="tar_codtta")
-    private GrupoTarea tipo;
+    private TipoTarea tipo;
 
 
     /**
