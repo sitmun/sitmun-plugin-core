@@ -1,316 +1,630 @@
 @startuml
-title Modelo conceptual SITMUN
 skinparam style strictuml
 hide methods
 hide members
 
-class  Usuario {
-  codigo: String
-  usuario: String
-  password: String  
-  apellido: String
-  adm: String 
-  bloq: String
+class Usuario [[java:org.sitmun.plugin.core.domain.Usuario]] {
+	-long id
+	-String username
+	-String password
+	-String nombre
+	-String apellido
+	-Boolean administrador
+	-Boolean bloqueado
+	+long getId()
+	+void setId(long id)
+	+String getUsername()
+	+void setUsername(String username)
+	+String getPassword()
+	+void setPassword(String password)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getApellido()
+	+void setApellido(String apellido)
+	+Boolean getAdministrador()
+	+void setAdministrador(Boolean administrador)
+	+Boolean getBloqueado()
+	+void setBloqueado(Boolean bloqueado)
+	+Set<Cargo> getCargos()
+	+void setCargos(Set<Cargo> cargos)
+	+Set<ConfiguracionUsuario> getPermisos()
+	+void setPermisos(Set<ConfiguracionUsuario> permisos)
+}
+class Cargo [[java:org.sitmun.plugin.core.domain.Cargo]] {
+}
+Usuario --> "*" Cargo : cargos
+class ConfiguracionUsuario [[java:org.sitmun.plugin.core.domain.ConfiguracionUsuario]] {
+}
+Usuario --> "*" ConfiguracionUsuario : permisos
+class GrupoTarea [[java:org.sitmun.plugin.core.domain.GrupoTarea]] {
+	-long id
+	-String nombre
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
 }
 
-/'
- class Bookmark {
-   codigo : String
-   nombre : String
-   descripcion : String
-   extX0: double
-   extY0: double
-   extX1: double
-  extY1: double
+class NodoArbol [[java:org.sitmun.plugin.core.domain.NodoArbol]] {
+	-long id
+	-String nombre
+	-String tooltip
+	-Integer orden
+	-Boolean activo
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getTooltip()
+	+void setTooltip(String tooltip)
+	+Integer getOrden()
+	+void setOrden(Integer orden)
+	+Boolean getActivo()
+	+void setActivo(Boolean activo)
+	+NodoArbol getPadre()
+	+void setPadre(NodoArbol padre)
+	+Arbol getArbol()
+	+void setArbol(Arbol arbol)
+	+Cartografia getCartografia()
+	+void setCartografia(Cartografia cartografia)
 }
-'/
-/'
-class Cargo {
-  cargo : String
-  org : String
-  correo : String
-  fechaAlta: Date
-  fechaCaducidad: Date
+class NodoArbol [[java:org.sitmun.plugin.core.domain.NodoArbol]] {
 }
-'/
-
-class Aplicación  {
-  codigo : String
-  nombre : String
-  tipo: String
-  visor: String
-  titulo: String
-  tema: String
-  escalas: String
-  project: String
-  autorefr: String
-  fechaAlta: Date
+NodoArbol --> "1" NodoArbol : padre
+class Arbol [[java:org.sitmun.plugin.core.domain.Arbol]] {
 }
-
-class Rol {
-  codigo String
-  nombre: String
-  observaciones: String
+NodoArbol --> "1" Arbol : arbol
+class Cartografia [[java:org.sitmun.plugin.core.domain.Cartografia]] {
 }
-/'
-class ParamAplicación {
-   codigo : String
-   nombre: String
-   valor: String
-   tipo: String
- }
-'/
-class Fondo {
-  codigo : String
-  nombre: String
-  descripcion : String
-  fechaAlta: Date
+NodoArbol --> "1" Cartografia : cartografia
+class Conexion [[java:org.sitmun.plugin.core.domain.Conexion]] {
+	-long id
+	-String nombre
+	-String type
+	-String usuario
+	-String password
+	-String cadenaConexion
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getType()
+	+void setType(String type)
+	+String getUsuario()
+	+void setUsuario(String usuario)
+	+String getPassword()
+	+void setPassword(String password)
+	+String getCadenaConexion()
+	+void setCadenaConexion(String cadenaConexion)
 }
-
-class GrupoCartografía {
-  codigo : String
-  nombre: String
-  tipo: String
+class FondoAplicacion [[java:org.sitmun.plugin.core.domain.FondoAplicacion]] {
+	-long id
+	-Integer orden
+	+Integer getOrden()
+	+long getId()
+	+void setId(long id)
+	+void setOrden(Integer orden)
+	+Aplicacion getAplicacion()
+	+void setAplicacion(Aplicacion aplicacion)
+	+Fondo getFondo()
+	+void setFondo(Fondo fondo)
 }
-
-class Árbol {
-  codigo : String
-  codigoPadre : String
-  nombre: String
-  tooltip: String
-  activo: Boolean
-  orden : int
+class Aplicacion [[java:org.sitmun.plugin.core.domain.Aplicacion]] {
 }
-/'
-class TipoGrupo {
-   codigo : String
-   nombre: String
- }
-'/
-
-class Territorio  {
-  codigo : String
-  codMunicipio : String
-  tipo: String
-  nombre: String
-  nadmin: String
-  direccion: String
-  ambito: String
-  logo: String
-  ext: String
-  observaciones: String
-  fechaAlta: Date
+FondoAplicacion --> "1" Aplicacion : aplicacion
+class Fondo [[java:org.sitmun.plugin.core.domain.Fondo]] {
 }
-/'
-class DisponibilidadCartografía  {
-  fechaAlta: Date
+FondoAplicacion --> "1" Fondo : fondo
+class Servicio [[java:org.sitmun.plugin.core.domain.Servicio]] {
+	-long id
+	-String nombre
+	-String url
+	-String proyecciones
+	-String leyenda
+	-String infoUrl
+	-Date fechaAlta
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getUrl()
+	+void setUrl(String url)
+	+String getProyecciones()
+	+void setProyecciones(String proyecciones)
+	+String getLeyenda()
+	+void setLeyenda(String leyenda)
+	+String getInfoUrl()
+	+void setInfoUrl(String infoUrl)
+	+Date getFechaAlta()
+	+void setFechaAlta(Date fechaAlta)
+	+Set<Cartografia> getCapas()
+	+void setCapas(Set<Cartografia> capas)
+	+Conexion getConexion()
+	+void setConexion(Conexion conexion)
 }
-'/
-/'
-class DisponibilidadTarea  {
-  fechaAlta: Date
+class Cartografia [[java:org.sitmun.plugin.core.domain.Cartografia]] {
 }
-'/
-
-
-class Cartografía  {
-  codigo : String
-  nombre : String
-  tipo: String
-  capas: String
-  activo: Boolean
-  orden : int
-  transp: Boolean
-  queryable: Boolean
-  queryAct: Boolean
-  queryLay: Boolean
-  fechaAlta: Date
+Servicio --> "*" Cartografia : capas
+class Conexion [[java:org.sitmun.plugin.core.domain.Conexion]] {
 }
-
-
-
-class Tarea  {
-  codigo : String
-  nombre : String
-  orden : int
-  fechaAlta: Date
+Servicio --> "1" Conexion : conexion
+class Territorio [[java:org.sitmun.plugin.core.domain.Territorio]] {
+	-long id
+	-String nombre
+	-String email
+	-String direccion
+	-String nombreAdministracion
+	-String ambito
+	-String logo
+	-String ext
+	-Boolean bloqueado
+	-String observaciones
+	-Date fechaAlta
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getEmail()
+	+void setEmail(String email)
+	+String getDireccion()
+	+void setDireccion(String direccion)
+	+String getNombreAdministracion()
+	+void setNombreAdministracion(String nombreAdministracion)
+	+String getAmbito()
+	+void setAmbito(String ambito)
+	+String getLogo()
+	+void setLogo(String logo)
+	+String getExt()
+	+void setExt(String ext)
+	+Boolean getBloqueado()
+	+void setBloqueado(Boolean bloqueado)
+	+String getObservaciones()
+	+void setObservaciones(String observaciones)
+	+Date getFechaAlta()
+	+void setFechaAlta(Date fechaAlta)
+	+Set<Territorio> getMiembros()
+	+void setMiembros(Set<Territorio> miembros)
+	+TipoTerritorio getTipo()
+	+void setTipo(TipoTerritorio tipo)
 }
-
-class Servicio  {
-  codigo : String
-  nombre : String
-  url: String
-  project: String
-  leyenda: String
-  infoUrl: String
-  fechaAlta: Date
+class Territorio [[java:org.sitmun.plugin.core.domain.Territorio]] {
 }
-/'
-class ParamServicio {
-   nombre: String
-   valor: String
-   tipo: String
- }
- '/
-
-
-
-class ConfiguraciónUsuario
-
-/'
- class Conexion {
-   codigo: String
-   nombre: String
-   usuario: String
-   password: String  
-   constring: String
+Territorio --> "*" Territorio : miembros
+class TipoTerritorio [[java:org.sitmun.plugin.core.domain.TipoTerritorio]] {
 }
-
-class GrupoTarea {
-   codigo: String
-   nombre: String
- }
-
-class TipoTarea {
-   codigo: String
-   nombre: String
- }
-
-class ParamTipoTarea {
-   codigo: String
-   nombre: String
-   valor: String
-   tipo: String
+Territorio --> "1" TipoTerritorio : tipo
+class Cargo [[java:org.sitmun.plugin.core.domain.Cargo]] {
+	-long id
+	-String nombre
+	-String organizacion
+	-String correo
+	-Date fechaAlta
+	-Date fechaCaducidad
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getOrganizacion()
+	+void setOrganizacion(String organizacion)
+	+String getCorreo()
+	+void setCorreo(String correo)
+	+Date getFechaAlta()
+	+void setFechaAlta(Date fechaAlta)
+	+Date getFechaCaducidad()
+	+void setFechaCaducidad(Date fechaCaducidad)
+	+Usuario getUsuario()
+	+void setUsuario(Usuario usuario)
+	+Territorio getTerritorio()
+	+void setTerritorio(Territorio territorio)
 }
-
-class TareaUI  {
-   codigo : String
-   nombre : String
-   tipo : String
-   tooltip : String
-   orden : int  
+class Usuario [[java:org.sitmun.plugin.core.domain.Usuario]] {
 }
-
-
-class Descarga  {
-   codigo : String
-   grupo : String
-   ext : String
-   tipo : String
-   path : String
-   parent : String
-   tabla : String
-   campo : String
-   join : String  
+Cargo --> "1" Usuario : usuario
+class Territorio [[java:org.sitmun.plugin.core.domain.Territorio]] {
 }
-
-class Localiza  {
-   codigo : String
-   descripcion : String
-   tipo : String
-   origen : String
-   params : String
-   etiq : String
-   tipos : String
-   formato : String
-   sld : String
-   urlTransf : String
-   fechaAlta: Date  
+Cargo --> "1" Territorio : territorio
+class Log [[java:org.sitmun.plugin.core.domain.Log]] {
+	-long id
+	-String nombre
+	-String codigoUsuario
+	-String codigoAplicacion
+	-String codigoTerritorio
+	-String codigoTarea
+	-String contenido
+	-Date fecha
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getCodigoUsuario()
+	+void setCodigoUsuario(String codigoUsuario)
+	+String getCodigoAplicacion()
+	+void setCodigoAplicacion(String codigoAplicacion)
+	+String getCodigoTerritorio()
+	+void setCodigoTerritorio(String codigoTerritorio)
+	+String getCodigoTarea()
+	+void setCodigoTarea(String codigoTarea)
+	+String getContenido()
+	+void setContenido(String contenido)
+	+Date getFecha()
+	+void setFecha(Date fecha)
 }
-
-class Consulta  {
-   codigo : String
-   tipo : String
-   consulta : String
-   label : String
-   filParam: String
-   tipos : String
-   urlTransf : String
-   url : String
-   paramtetro : String
-   transf : String  
+class Aplicacion [[java:org.sitmun.plugin.core.domain.Aplicacion]] {
+	-long id
+	-String nombre
+	-String tipo
+	-String titulo
+	-String tema
+	-Date fechaAlta
+	-String escalas
+	-String proyecciones
+	-Boolean autoRefrescoArbol
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getTipo()
+	+void setTipo(String tipo)
+	+String getTitulo()
+	+void setTitulo(String titulo)
+	+String getTema()
+	+void setTema(String tema)
+	+Date getFechaAlta()
+	+void setFechaAlta(Date fechaAlta)
+	+Set<Rol> getRolesDisponibles()
+	+void setRolesDisponibles(Set<Rol> rolesDisponibles)
+	+Arbol getArbol()
+	+void setArbol(Arbol arbol)
+	+String getEscalas()
+	+void setEscalas(String escalas)
+	+String getProyecciones()
+	+void setProyecciones(String proyecciones)
+	+Boolean getAutoRefrescoArbol()
+	+void setAutoRefrescoArbol(Boolean autoRefrescoArbol)
+	+Set<FondoAplicacion> getFondos()
+	+void setFondos(Set<FondoAplicacion> fondos)
+	+GrupoCartografia getMapaSituacion()
+	+void setMapaSituacion(GrupoCartografia mapaSituacion)
+	+Set<ParametroAplicacion> getParametros()
+	+void setParametros(Set<ParametroAplicacion> parametros)
 }
-
-class Informe  {
-   codigo : String
-   tipo : String
-   plantilla : String
-   urlTransf : String
+class Rol [[java:org.sitmun.plugin.core.domain.Rol]] {
 }
-'/
-
-class Log{
-    codigo: String
-    tipo: String
-    codusu: String
-    codapp: String
-    codter: String
-    codtar: String
+Aplicacion --> "*" Rol : rolesDisponibles
+class ParametroAplicacion [[java:org.sitmun.plugin.core.domain.ParametroAplicacion]] {
 }
-
-
-' Bookmark "0..1" -- "*" Usuario : pertenece >
-' Bookmark "1" -- "*" Aplicación : pertenece >
-
-
-Aplicación "*" --> "1" Árbol : árbol 
-Aplicación "1" --> "*" Fondo : fondos base 
-Aplicación "*" --> "1" GrupoCartografía : mapa de situación
-Aplicación "1" -left-> "*" Rol: define
-' Aplicación "1" -- "*" ParamAplicación : usa <
-
-
-Fondo "*" --> "0..1" GrupoCartografía : utiliza 
-
-
-Rol "*" <-- "*" GrupoCartografía : roles disponibles
-Rol "*" <-- "*" Tarea : roles disponibles
-
-Territorio  "*" <-- "*" Tarea : territorios disponibles
-
-Territorio  "*" <-- "*" Cartografía : territorios disponibles
-
-GrupoCartografía "*" --> "*" Cartografía : elementos
-
-
-'DisponibilidadCartografía "*" -- "1" Cartografía
-'DisponibilidadCartografía "*" -- "1" Territorio
-
-ConfiguraciónUsuario "*" --> "1" Usuario: aplica a 
-ConfiguraciónUsuario "*" --> "1" Territorio : aplica a 
-ConfiguraciónUsuario "*" -right-> "1" Rol : aplica a
-
-
-' Cargo "*" --> "1" Usuario : pertenece a 
-' Cargo "*" --> "1" Territorio : para un
-
-' Territorio "*" -- "0..1" TipoGrupo : esDeTipo
-Territorio "*" --> "*" Territorio : formado por
-
-'DisponibilidadTarea "*" -- "1" Territorio
-'DisponibilidadTarea "*" -- "1" Tarea
-
-Cartografía "*" <-- "1" Servicio : capas
-Cartografía "0..1" <-- "*" Tarea : utiliza
-Cartografía "*" <-- "*" Árbol : utiliza
-
-Servicio "0..1" <-right- "*" Tarea : utiliza
- Servicio "*" --> "0..1" Conexion : utiliza?
-' Servicio "1" -- "*" ParamServicio : usa
-
- Tarea "*" --> "0..1" Conexion : utiliza
-' Tarea "*" -- "1" GrupoTarea
-' Tarea "*" -- "1" TipoTarea
-' TipoTarea "1" -- "*" ParamTipoTarea
-' Tarea "*" -- "1" TareaUI
-
-' Tarea <|-down- Descarga 
-' Tarea <|-down- Consulta
-' Tarea <|-left- Localiza
-' Tarea <|-down- Informe
-
-
-  
-
+Aplicacion --> "*" ParametroAplicacion : parametros
+class Arbol [[java:org.sitmun.plugin.core.domain.Arbol]] {
+}
+Aplicacion --> "1" Arbol : arbol
+class FondoAplicacion [[java:org.sitmun.plugin.core.domain.FondoAplicacion]] {
+}
+Aplicacion --> "*" FondoAplicacion : fondos
+class GrupoCartografia [[java:org.sitmun.plugin.core.domain.GrupoCartografia]] {
+}
+Aplicacion --> "1" GrupoCartografia : mapaSituacion
+class TipoTerritorio [[java:org.sitmun.plugin.core.domain.TipoTerritorio]] {
+	-long id
+	-String nombre
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+}
+class DisponibilidadTarea [[java:org.sitmun.plugin.core.domain.DisponibilidadTarea]] {
+	-long id
+	-Date fechaAlta
+	+long getId()
+	+void setId(long id)
+	+Date getFechaAlta()
+	+void setFechaAlta(Date fechaAlta)
+	+Territorio getTerritorio()
+	+void setTerritorio(Territorio territorio)
+	+Tarea getTarea()
+	+void setTarea(Tarea tarea)
+}
+class Territorio [[java:org.sitmun.plugin.core.domain.Territorio]] {
+}
+DisponibilidadTarea --> "1" Territorio : territorio
+class Tarea [[java:org.sitmun.plugin.core.domain.Tarea]] {
+}
+DisponibilidadTarea --> "1" Tarea : tarea
+class Fondo [[java:org.sitmun.plugin.core.domain.Fondo]] {
+	-long id
+	-String nombre
+	-String descripcion
+	-Boolean activo
+	-Date fechaAlta
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getDescripcion()
+	+void setDescripcion(String descripcion)
+	+Boolean getActivo()
+	+void setActivo(Boolean activo)
+	+Date getFechaAlta()
+	+void setFechaAlta(Date fechaAlta)
+	+GrupoCartografia getGrupoCartografia()
+	+void setGrupoCartografia(GrupoCartografia grupoCartografia)
+}
+class GrupoCartografia [[java:org.sitmun.plugin.core.domain.GrupoCartografia]] {
+}
+Fondo --> "1" GrupoCartografia : grupoCartografia
+class ConfiguracionUsuario [[java:org.sitmun.plugin.core.domain.ConfiguracionUsuario]] {
+	-long id
+	+long getId()
+	+void setId(long id)
+	+Usuario getUsuario()
+	+void setUsuario(Usuario usuario)
+	+Territorio getTerritorio()
+	+void setTerritorio(Territorio territorio)
+	+Rol getRol()
+	+void setRol(Rol rol)
+}
+class Usuario [[java:org.sitmun.plugin.core.domain.Usuario]] {
+}
+ConfiguracionUsuario --> "1" Usuario : usuario
+class Territorio [[java:org.sitmun.plugin.core.domain.Territorio]] {
+}
+ConfiguracionUsuario --> "1" Territorio : territorio
+class Rol [[java:org.sitmun.plugin.core.domain.Rol]] {
+}
+ConfiguracionUsuario --> "1" Rol : rol
+class DisponibilidadCartografia [[java:org.sitmun.plugin.core.domain.DisponibilidadCartografia]] {
+	-long id
+	-Date fechaAlta
+	+Date getFechaAlta()
+	+void setFechaAlta(Date fechaAlta)
+	+Territorio getTerritorio()
+	+void setTerritorio(Territorio territorio)
+	+Cartografia getCartografia()
+	+void setCartografia(Cartografia cartografia)
+	+String toString()
+}
+class Territorio [[java:org.sitmun.plugin.core.domain.Territorio]] {
+}
+DisponibilidadCartografia --> "1" Territorio : territorio
+class Cartografia [[java:org.sitmun.plugin.core.domain.Cartografia]] {
+}
+DisponibilidadCartografia --> "1" Cartografia : cartografia
+class Rol [[java:org.sitmun.plugin.core.domain.Rol]] {
+	-long id
+	-String nombre
+	-String observaciones
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getObservaciones()
+	+void setObservaciones(String observaciones)
+	+Aplicacion getAplicacion()
+	+void setAplicacion(Aplicacion aplicacion)
+}
+class Aplicacion [[java:org.sitmun.plugin.core.domain.Aplicacion]] {
+}
+Rol --> "1" Aplicacion : aplicacion
+class ParametroServicio [[java:org.sitmun.plugin.core.domain.ParametroServicio]] {
+	-long id
+	-String nombre
+	-String valor
+	-String tipo
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getValor()
+	+void setValor(String valor)
+	+String getTipo()
+	+void setTipo(String tipo)
+	+Servicio getServicio()
+	+void setServicio(Servicio servicio)
+}
+class Servicio [[java:org.sitmun.plugin.core.domain.Servicio]] {
+}
+ParametroServicio --> "1" Servicio : servicio
+class Tarea [[java:org.sitmun.plugin.core.domain.Tarea]] {
+	-long id
+	-String nombre
+	-Integer order
+	-Date fechaAlta
+	+Set<DisponibilidadTarea> getDisponibilidades()
+	+GrupoTarea getGrupo()
+	+void setGrupo(GrupoTarea grupo)
+	+TipoTarea getTipo()
+	+void setTipo(TipoTarea tipo)
+	+void setDisponibilidades(Set<DisponibilidadTarea> disponibilidades)
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+Integer getOrder()
+	+void setOrder(Integer order)
+	+Date getFechaAlta()
+	+void setFechaAlta(Date fechaAlta)
+	+Conexion getConexion()
+	+void setConexion(Conexion conexion)
+	+Set<Rol> getRoles()
+	+void setRoles(Set<Rol> roles)
+}
+class Conexion [[java:org.sitmun.plugin.core.domain.Conexion]] {
+}
+Tarea --> "1" Conexion : conexion
+class Rol [[java:org.sitmun.plugin.core.domain.Rol]] {
+}
+Tarea --> "*" Rol : roles
+class DisponibilidadTarea [[java:org.sitmun.plugin.core.domain.DisponibilidadTarea]] {
+}
+Tarea --> "*" DisponibilidadTarea : disponibilidades
+class GrupoTarea [[java:org.sitmun.plugin.core.domain.GrupoTarea]] {
+}
+Tarea --> "1" GrupoTarea : grupo
+class TipoTarea [[java:org.sitmun.plugin.core.domain.TipoTarea]] {
+}
+Tarea --> "1" TipoTarea : tipo
+class Cartografia [[java:org.sitmun.plugin.core.domain.Cartografia]] {
+	-long id
+	-String nombre
+	-String tipo
+	-Boolean visible
+	-Integer transparencia
+	-Boolean queryable
+	-Boolean queryAct
+	-Boolean queryLay
+	-Date fechaAlta
+	-Integer orden
+	-Integer escalaMinima
+	-Integer escalaMaxima
+	-String capas
+	-Boolean seleccionable
+	-String capaSeleccion
+	-String tipLeyenda
+	-String urlLeyenda
+	-Boolean editable
+	-String urlMetadato
+	-Boolean tematizable
+	-String tipoGeometria
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getTipo()
+	+void setTipo(String tipo)
+	+Boolean getVisible()
+	+void setVisible(Boolean visible)
+	+Integer getTransparencia()
+	+void setTransparencia(Integer transparencia)
+	+Boolean getQueryable()
+	+void setQueryable(Boolean queryable)
+	+Boolean getQueryAct()
+	+void setQueryAct(Boolean queryAct)
+	+Boolean getQueryLay()
+	+void setQueryLay(Boolean queryLay)
+	+Date getFechaAlta()
+	+void setFechaAlta(Date fechaAlta)
+	+Integer getOrden()
+	+void setOrden(Integer orden)
+	+Integer getEscalaMinima()
+	+void setEscalaMinima(Integer escalaMinima)
+	+Integer getEscalaMaxima()
+	+void setEscalaMaxima(Integer escalaMaxima)
+	+String getCapas()
+	+void setCapas(String capas)
+	+Servicio getServicio()
+	+void setServicio(Servicio servicio)
+	+Conexion getConexion()
+	+void setConexion(Conexion conexion)
+	+Set<DisponibilidadCartografia> getDisponibilidades()
+	+void setDisponibilidades(Set<DisponibilidadCartografia> disponibilidades)
+	+Boolean getSeleccionable()
+	+void setSeleccionable(Boolean seleccionable)
+	+String getCapaSeleccion()
+	+void setCapaSeleccion(String capaSeleccion)
+	+Servicio getServicioSeleccion()
+	+void setServicioSeleccion(Servicio servicioSeleccion)
+	+String getTipLeyenda()
+	+void setTipLeyenda(String tipLeyenda)
+	+String getUrlLeyenda()
+	+void setUrlLeyenda(String urlLeyenda)
+	+Boolean getEditable()
+	+void setEditable(Boolean editable)
+	+String getUrlMetadato()
+	+void setUrlMetadato(String urlMetadato)
+	+Boolean getTematizable()
+	+void setTematizable(Boolean tematizable)
+	+String getTipoGeometria()
+	+void setTipoGeometria(String tipoGeometria)
+}
+class Servicio [[java:org.sitmun.plugin.core.domain.Servicio]] {
+}
+Cartografia --> "1" Servicio : servicio
+class Conexion [[java:org.sitmun.plugin.core.domain.Conexion]] {
+}
+Cartografia --> "1" Conexion : conexion
+class DisponibilidadCartografia [[java:org.sitmun.plugin.core.domain.DisponibilidadCartografia]] {
+}
+Cartografia --> "*" DisponibilidadCartografia : disponibilidades
+class Servicio [[java:org.sitmun.plugin.core.domain.Servicio]] {
+}
+Cartografia --> "1" Servicio : servicioSeleccion
+class ParametroAplicacion [[java:org.sitmun.plugin.core.domain.ParametroAplicacion]] {
+	-long id
+	-String nombre
+	-String valor
+	-String tipo
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getValor()
+	+void setValor(String valor)
+	+String getTipo()
+	+void setTipo(String tipo)
+	+Aplicacion getAplicacion()
+	+void setAplicacion(Aplicacion aplicacion)
+}
+class Aplicacion [[java:org.sitmun.plugin.core.domain.Aplicacion]] {
+}
+ParametroAplicacion --> "1" Aplicacion : aplicacion
+class TipoTarea [[java:org.sitmun.plugin.core.domain.TipoTarea]] {
+	-long id
+	-String nombre
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+}
+class ParametroTarea [[java:org.sitmun.plugin.core.domain.ParametroTarea]] {
+	-long id
+	-String nombre
+	-String valor
+	-String tipo
+	-Integer orden
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getValor()
+	+void setValor(String valor)
+	+String getTipo()
+	+void setTipo(String tipo)
+}
+class Tarea [[java:org.sitmun.plugin.core.domain.Tarea]] {
+}
+ParametroTarea --> "1" Tarea : tarea
+class Arbol [[java:org.sitmun.plugin.core.domain.Arbol]] {
+	-long id
+	-String nombre
+	+Set<NodoArbol> getNodos()
+	+void setNodos(Set<NodoArbol> nodos)
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+}
+class NodoArbol [[java:org.sitmun.plugin.core.domain.NodoArbol]] {
+}
+Arbol --> "*" NodoArbol : nodos
+class GrupoCartografia [[java:org.sitmun.plugin.core.domain.GrupoCartografia]] {
+	-long id
+	-String nombre
+	-String tipo
+	+long getId()
+	+void setId(long id)
+	+String getNombre()
+	+void setNombre(String nombre)
+	+String getTipo()
+	+void setTipo(String tipo)
+	+Set<Cartografia> getElementos()
+	+void setElementos(Set<Cartografia> elementos)
+	+Set<Rol> getRoles()
+	+void setRoles(Set<Rol> roles)
+}
+class Cartografia [[java:org.sitmun.plugin.core.domain.Cartografia]] {
+}
+GrupoCartografia --> "*" Cartografia : elementos
+class Rol [[java:org.sitmun.plugin.core.domain.Rol]] {
+}
+GrupoCartografia --> "*" Rol : roles
 
 @enduml
