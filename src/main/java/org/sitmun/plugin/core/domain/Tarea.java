@@ -63,6 +63,15 @@ public class Tarea {
     
     @OneToMany(mappedBy="tarea", cascade = CascadeType.ALL,orphanRemoval = true)
     private Set<DisponibilidadTarea> disponibilidades = new HashSet<>();
+    
+    
+    @ManyToOne
+    @JoinColumn(name="tar_codgta")
+    private GrupoTarea grupo;
+    
+    @ManyToOne
+    @JoinColumn(name="tar_codtta")
+    private GrupoTarea tipo;
 
 
     /**
