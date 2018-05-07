@@ -39,9 +39,9 @@ dependencies {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId 'org.sitmun'
+            groupId group
             artifactId 'sitmun-plugin-core'
-            version '0.1.0-SNAPSHOT'
+            version version
 
             from components.java
         }
