@@ -21,19 +21,19 @@ bootRepackage {
 }
 
 dependencies {
-    compile 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    compile 'org.webjars:webjars-locator'
+    implementation 'org.webjars:webjars-locator'
 
-    compile 'org.webjars:bootstrap:3.3.7'
-    compile 'org.webjars:requirejs:2.3.3'
-    compile 'org.springframework.boot:spring-boot-starter-data-rest'
-    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-  	compile 'io.springfox:springfox-swagger2:2.8.0'    
-    compile 'com.h2database:h2'
-    //compile 'com.oracle:ojdbc7:12.1.0.2'
+    implementation 'org.webjars:bootstrap:3.3.7'
+    implementation 'org.webjars:requirejs:2.3.3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  	implementation 'io.springfox:springfox-swagger2:2.8.0'    
+    implementation 'com.h2database:h2'
+    //implementation 'com.oracle:ojdbc7:12.1.0.2'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 publishing {
