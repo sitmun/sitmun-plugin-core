@@ -20,3 +20,8 @@ cache:
     - $HOME/.sonar/cache
     - $HOME/.m2/repository
     - .gradle
+
+# Safelist
+branches:
+  only:
+  - master
