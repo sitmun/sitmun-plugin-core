@@ -1,0 +1,130 @@
+<mat-card>
+  <form #territoryForm="ngForm" (ngSubmit)="save()">
+    <mat-card-header>
+      <mat-card-title><h2>{{territory.name ? 'Edit' : 'Add'}} territory</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    <mat-tab-group dynamicHeight="true">
+    <mat-tab label="Territory Data">
+     <div class="container">
+      <mat-form-field>
+        <input matInput placeholder="Name" [(ngModel)]="territory.name"
+               name="name" #name required>
+      </mat-form-field>
+      <mat-form-field>
+  			<mat-select [compareWith]="compareResource" name="type" placeholder="Type" [(ngModel)]="territory.type" required>
+    			<mat-option *ngFor="let territoryType of territoryTypes" [value]="territoryType">
+      			{{territoryType.name}}
+    			</mat-option>
+  			</mat-select>
+	  </mat-form-field>
+	  
+        <mat-form-field *ngIf="false">
+  			<mat-select name="members" [compareWith]="compareResource" multiple placeholder="Members" [(ngModel)]="territory.members">
+    			<mat-option *ngFor="let territory of territories" [value]="territory">
+      			{{territory.name}}
+    			</mat-option>
+  			</mat-select>
+	  </mat-form-field>
+	   <mat-form-field>
+        <input matInput placeholder="Scope" [(ngModel)]="territory.scope"
+               name="scope" #scope>
+      </mat-form-field>
+	        <mat-form-field>
+        <input matInput placeholder="Extent" [(ngModel)]="territory.ext"
+               name="ext" #ext>
+      </mat-form-field>
+      <mat-checkbox [(ngModel)]="territory.blocked"
+               name="blocked" #blocked>Territory blocked
+      </mat-checkbox>
+      <mat-form-field *ngIf="false">
+       <input name="createdDate" matInput [matDatepicker]="picker2" placeholder="Created Date"
+         [(ngModel)]="territory.createdDate" #createdDate>
+  			<mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+  			<mat-datepicker #picker2 ></mat-datepicker>
+      </mat-form-field>
+            <mat-form-field>
+        <input matInput placeholder="Organization Name" [(ngModel)]="territory.organizationName"
+               name="organizationName" #organizationName>
+      </mat-form-field>
+      
+      <mat-form-field>
+        <input matInput placeholder="Address" [(ngModel)]="territory.address"
+               name="address" #address>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Email" [(ngModel)]="territory.email"
+               name="email" #email>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Logo" [(ngModel)]="territory.logo"
+               name="logo" #logo>
+      </mat-form-field>
+     
+       <mat-form-field>
+        <textarea matInput placeholder="Comments" [(ngModel)]="territory.comments"
+               name="comments" #comments></textarea>
+      </mat-form-field>
+      </div>
+      </mat-tab>
+  <mat-tab label="Child Territories">
+    <table mat-table [dataSource]="territories" class="mat-elevation-z8">
+
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggle() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+  <ng-container matColumnDef="scope">
+    <th mat-header-cell *matHeaderCellDef> Scope</th>
+    <td mat-cell *matCellDef="let element"> {{element.scope}} </td>
+  </ng-container>
+  
+    <ng-container matColumnDef="blocked">
+    <th mat-header-cell *matHeaderCellDef> blocked</th>
+    <td mat-cell *matCellDef="let element"> {{element.blocked}} </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+      (click)="selection.toggle(row)">
+  </tr>
+</table>
+<mat-list *ngIf="false">
+      <mat-list-item *ngFor="let territory of territory.members">
+        
+        <h3 mat-line>
+         <a mat-button [routerLink]="['/territory-edit', territory._links.self.href.split('/')[5]]">{{territory.name}}</a>         
+         </h3>
+         
+      </mat-list-item>
+    </mat-list>
+  </mat-tab>
+</mat-tab-group>
+    
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!territoryForm.form.valid">Save</button>
+      <button mat-raised-button color="secondary" (click)="remove(territory)"
+              *ngIf="territory._links?.self.href" type="button">Delete</button>
+      <a mat-button routerLink="/territory-list">Cancel</a>
+    </mat-card-actions>
+    
+  </form>
+</mat-card>
+  

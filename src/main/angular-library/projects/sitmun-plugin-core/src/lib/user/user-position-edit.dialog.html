@@ -1,0 +1,37 @@
+
+  <form #userPositionForm="ngForm" (ngSubmit)="save()">
+  <h2 mat-dialog-title>{{userPosition.name ? 'Edit' : 'Add'}} User position</h2>
+   <mat-dialog-content>
+    
+     <div class="container">
+      <mat-form-field>
+        <input matInput placeholder="Name" [(ngModel)]="userPosition.name"
+               name="name" #name required>
+      </mat-form-field>
+      <mat-form-field>
+  			<mat-select [compareWith]="compareResource" name="territory" placeholder="Territory" [(ngModel)]="userPosition.territory" required>
+    			<mat-option *ngFor="let territory of territories" [value]="territory">
+      			{{territory.name}}
+    			</mat-option>
+  			</mat-select>
+	  </mat-form-field>
+	  <mat-form-field>
+        <input matInput placeholder="Email" [(ngModel)]="userPosition.email"
+               name="email" #scope>
+      </mat-form-field>
+	  <mat-form-field>
+        <input matInput placeholder="Organization" [(ngModel)]="userPosition.organization"
+               name="organization" #organization>
+      </mat-form-field>
+      </div>      
+    
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!userPositionForm.form.valid">Save</button>
+      <button mat-dialog-close mat-button>Cancel</button>
+
+                    
+    </mat-dialog-actions>
+    
+  </form>

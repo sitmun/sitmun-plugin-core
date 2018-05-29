@@ -1,0 +1,42 @@
+<mat-card>
+  <form #userPositionForm="ngForm" (ngSubmit)="save()">
+    <mat-card-header>
+      <mat-card-title><h2>{{userPosition.name ? 'Edit' : 'Add'}} User position</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    
+     <div class="container">
+      <mat-form-field>
+        <input matInput placeholder="Name" [(ngModel)]="userPosition.name"
+               name="name" #name required>
+      </mat-form-field>
+      <mat-form-field>
+  			<mat-select [compareWith]="compareResource" name="territory" placeholder="Territory" [(ngModel)]="userPosition.territory" required>
+    			<mat-option *ngFor="let territory of territories" [value]="territory">
+      			{{territory.name}}
+    			</mat-option>
+  			</mat-select>
+	  </mat-form-field>
+	  <mat-form-field>
+        <input matInput placeholder="Email" [(ngModel)]="userPosition.email"
+               name="email" #scope>
+      </mat-form-field>
+	  <mat-form-field>
+        <input matInput placeholder="Organization" [(ngModel)]="userPosition.organization"
+               name="organization" #organization>
+      </mat-form-field>
+      </div>      
+    
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!userPositionForm.form.valid">Save</button>
+      <button mat-raised-button color="secondary" (click)="remove(userPosition)"
+              *ngIf="userPosition._links?.self.href" type="button">Delete</button>
+      <a (click)="goBack()" mat-button>Cancel</a>
+
+                    
+    </mat-card-actions>
+    
+  </form>
+</mat-card>

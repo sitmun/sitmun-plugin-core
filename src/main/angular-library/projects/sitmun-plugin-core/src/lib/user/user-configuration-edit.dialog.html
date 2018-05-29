@@ -1,0 +1,32 @@
+
+  <form #userConfigurationForm="ngForm" (ngSubmit)="save()">
+  <h2 mat-dialog-title>{{userConfiguration.role ? 'Edit' : 'Add'}} permission</h2>
+   <mat-dialog-content>
+    
+     <div class="container">
+      <mat-form-field>
+  			<mat-select [compareWith]="compareResource" name="territory" placeholder="Territory" [(ngModel)]="userConfiguration.territory" required>
+    			<mat-option *ngFor="let territory of territories" [value]="territory">
+      			{{territory.name}}
+    			</mat-option>
+  			</mat-select>
+	  </mat-form-field>
+	  <mat-form-field>
+  			<mat-select [compareWith]="compareResource" name="role" placeholder="Role" [(ngModel)]="userConfiguration.role" required>
+    			<mat-option *ngFor="let role of roles" [value]="role">
+      			{{role.name}}
+    			</mat-option>
+  			</mat-select>
+	  </mat-form-field>
+      </div>      
+        
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!userConfigurationForm.form.valid">Save</button>
+      <button mat-dialog-close mat-button>Cancel</button>
+
+                    
+    </mat-dialog-actions>
+    
+  </form>

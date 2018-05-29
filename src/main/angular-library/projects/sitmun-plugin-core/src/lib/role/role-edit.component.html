@@ -1,0 +1,31 @@
+<mat-card>
+  <form #roleForm="ngForm" (ngSubmit)="save()">
+    <mat-card-header>
+      <mat-card-title><h2>{{item.name ? 'Edit' : 'Add'}} Role</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+     <div class="container">
+      <mat-form-field>
+        <input matInput placeholder="Name" [(ngModel)]="item.name"
+               name="name" #name required>
+      </mat-form-field>
+             <mat-form-field>
+        <textarea matInput placeholder="Comments" [(ngModel)]="item.comments"
+               name="comments" #comments></textarea>
+      </mat-form-field>
+     
+      </div>
+      
+    
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!roleForm.form.valid">Save</button>
+      <button mat-raised-button color="secondary" (click)="remove(item)"
+              *ngIf="item._links?.self.href" type="button">Delete</button>
+      <a mat-button routerLink="/role-list">Cancel</a>
+    </mat-card-actions>
+    
+  </form>
+</mat-card>
+  

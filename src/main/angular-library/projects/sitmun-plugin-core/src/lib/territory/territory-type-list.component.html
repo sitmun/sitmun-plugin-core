@@ -1,0 +1,50 @@
+<mat-card>
+  <mat-card-header><h2>Territory types</h2></mat-card-header>
+  
+  <mat-card-content>
+  
+    <mat-list *ngIf="false">
+      <mat-list-item *ngFor="let item of items">
+        
+        <h3 mat-line>
+         <a mat-button [routerLink]="['/item-type-edit', item._links.self.href.split('/')[5]]">{{item.name}}</a>         
+         </h3>
+         <button mat-raised-button color="secondary" (click)="remove(item)"
+              *ngIf="item._links.self.href" type="button">Delete</button>
+      </mat-list-item>
+    </mat-list>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+  
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  
+
+  
+  <ng-container matColumnDef="actions" >
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+          <a mat-icon-button [routerLink]="['/territory-type-edit', element._links.self.href.split('/')[5]]"><mat-icon>edit</mat-icon></a> 
+          <button mat-icon-button (click)="remove(element)"><mat-icon>delete</mat-icon></button>           
+        </td>
+      </ng-container>
+
+ 
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+  </tr>
+</table>
+<mat-paginator #paginator [length]="100"
+              [pageSize]="10"
+              [pageSizeOptions]="[5, 10, 25, 100]">
+</mat-paginator>
+    
+  </mat-card-content>
+  <button mat-fab color="primary" [routerLink]="['/territory-type-add']">Add</button>
+
+</mat-card>

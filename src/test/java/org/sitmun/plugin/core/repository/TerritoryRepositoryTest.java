@@ -66,6 +66,31 @@ public class TerritoryRepositoryTest {
         assertThat(persistentItems).hasSize(1);
 
     }
+    
+    @Test
+    public void removeTerritoryMember() throws JsonProcessingException {
+        TerritoryType type = new TerritoryType();
+        type.setId(1);
+        type.setName("tipo Territorio 1");
+
+        territoryTypeRepository.save(type);
+
+        
+        Territory child = new Territory();
+        child.setName("Child");
+        child.setType(type);
+        territoryRepository.save(child);
+        
+        Territory parent = new Territory();
+        parent.setName("Parent");
+        parent.setType(type);
+        parent.getMembers().add(child);
+        territoryRepository.save(parent);
+        
+        territoryRepository.delete(child);
+        
+        
+    }
 
     private byte[] serialize(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();

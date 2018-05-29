@@ -2,6 +2,7 @@ package org.sitmun.plugin.core.domain;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -46,7 +47,7 @@ public class Territory {
     
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "stm_grpter", joinColumns = @JoinColumn(name = "grt_codter"), inverseJoinColumns = @JoinColumn(name = "grt_codterm"))            
-    private Set<Territory> members;    
+    private Set<Territory> members = new HashSet<>();    
     
     @ManyToOne
     @JoinColumn(name="ter_codtgr")

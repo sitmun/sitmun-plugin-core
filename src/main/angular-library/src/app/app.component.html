@@ -1,0 +1,23 @@
+<mat-toolbar color="primary">
+  <button mat-button [routerLink]="['']">
+    <img height="50px;" src="https://avatars0.githubusercontent.com/u/24718368?s=200&v=4">
+    <span>  Sitmun Admin App</span>
+  </button>
+  
+   <span class="toolbar-spacer"></span>
+   
+   <button mat-button 
+            [routerLink]="['/territory-list']">Territories
+    </button>
+     <button mat-button 
+            [routerLink]="['/territory-type-list']">Territory types
+    </button>
+    <button mat-button 
+            [routerLink]="['/user-list']">Users
+    </button>
+    <button mat-button 
+            [routerLink]="['/role-list']">Roles
+    </button>
+</mat-toolbar>
+<router-outlet></router-outlet>
+
