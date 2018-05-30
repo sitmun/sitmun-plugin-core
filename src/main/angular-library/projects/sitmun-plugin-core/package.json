@@ -14,7 +14,13 @@
     "@angular/router": "^6.0.2",
     "core-js": "^2.5.4",
     "rxjs": "^6.1.0",
-    "rxjs-compat": "^6.1.0",
-    "zone.js": "^0.8.26"    
+    "rxjs-compat": "^6.1.0",    
+    "zone.js": "^0.8.26"
+  },
+  "dependencies": {
+    "@types/openlayers": "^4.6.9",
+    "ol": "^4.6.5",
+    "openlayers": "^4.6.5",
+    "proj4": "^2.4.4"   
   }
 }

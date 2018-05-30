@@ -3,5 +3,6 @@
   "dest": "../../dist/sitmun-plugin-core",
   "lib": {
     "entryFile": "src/public_api.ts"
-  }
+  },
+  "private": false
 }

@@ -21,4 +21,5 @@ export * from './lib/role/role.model';
 export * from './lib/role/role.service';
 export * from './lib/role/role-list.component';
 export * from './lib/role/role-edit.component';
+export * from './lib/map/map.component';
 export * from './lib/sitmun-plugin-core.module';

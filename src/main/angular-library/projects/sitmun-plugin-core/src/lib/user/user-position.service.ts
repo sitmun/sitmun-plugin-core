@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class UserPositionService  extends RestService<UserPosition> {
   
-  public API = '//localhost:8080/api';
+  public API = '/api';
   public USER_POSITION_API = this.API + '/user-positions';
 
 

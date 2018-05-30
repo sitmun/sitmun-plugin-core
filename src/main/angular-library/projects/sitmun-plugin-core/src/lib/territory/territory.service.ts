@@ -7,7 +7,7 @@ import {RestService} from 'angular-hal';
 @Injectable()
 export class TerritoryService extends RestService<Territory> {
   
-  public API = '//localhost:8080/api';
+  public API = '/api';
   public TERRITORY_API = this.API + '/territories';
 
 

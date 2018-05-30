@@ -8,7 +8,7 @@ import { TerritoryType } from './territory-type.model';
 @Injectable()
 export class TerritoryTypeService extends RestService<TerritoryType> {
   
-  public API = '//localhost:8080/api';
+  public API = '/api';
   public TERRITORYTYPE_API = this.API + '/territory-types';
 
 

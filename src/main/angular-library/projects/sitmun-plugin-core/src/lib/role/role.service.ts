@@ -7,7 +7,7 @@ import {RestService} from 'angular-hal';
 @Injectable()
 export class RoleService extends RestService<Role> {
   
-  public API = '//localhost:8080/api';
+  public API = '/api';
   public ROLE_API = this.API + '/roles';
 
 

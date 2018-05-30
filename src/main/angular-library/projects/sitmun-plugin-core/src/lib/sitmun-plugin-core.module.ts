@@ -24,7 +24,8 @@ import {UserListComponent} from './user/user-list.component';
 import {UserEditComponent} from './user/user-edit.component';
 import {UserPositionListComponent,UserPositionEditDialog} from './user/user-position-list.component';
 import {UserConfigurationListComponent,UserConfigurationEditDialog} from './user/user-configuration-list.component';
-
+import * as ol from 'openlayers';
+import { MapComponent } from './map/map.component';
 
 
 @NgModule({
@@ -63,7 +64,8 @@ import {UserConfigurationListComponent,UserConfigurationEditDialog} from './user
         UserPositionListComponent,
         UserConfigurationListComponent,
         UserPositionEditDialog,
-        UserConfigurationEditDialog],
+        UserConfigurationEditDialog,
+        MapComponent],
   providers:[
         TerritoryService,
         TerritoryTypeService,
@@ -106,6 +108,7 @@ import {UserConfigurationListComponent,UserConfigurationEditDialog} from './user
         UserListComponent,
         UserEditComponent,        
         UserPositionListComponent,
-        UserConfigurationListComponent]
+        UserConfigurationListComponent,
+        MapComponent]
 })
 export class SitmunPluginCoreModule { }
