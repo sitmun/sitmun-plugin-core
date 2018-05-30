@@ -27,8 +27,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if source $DIR/script.sh; then
     source $DIR/after_success.sh                
-else
-    source $DIR/after_script-local.sh
-    exit 1
 fi
-source $DIR/after_script-local.sh
