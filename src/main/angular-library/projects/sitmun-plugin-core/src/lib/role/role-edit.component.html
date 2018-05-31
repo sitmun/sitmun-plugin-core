@@ -1,16 +1,16 @@
 <mat-card>
   <form #roleForm="ngForm" (ngSubmit)="save()">
     <mat-card-header>
-      <mat-card-title><h2>{{item.name ? 'Edit' : 'Add'}} Role</h2></mat-card-title>
+      <mat-card-title><h2>{{item.name ? ('global.edit'|translate) : ('global.add'|translate)}} {{'role.item' | translate}}</h2></mat-card-title>
     </mat-card-header>
     <mat-card-content>
      <div class="container">
       <mat-form-field>
-        <input matInput placeholder="Name" [(ngModel)]="item.name"
+        <input matInput placeholder="{{'role.name' | translate}}" [(ngModel)]="item.name"
                name="name" #name required>
       </mat-form-field>
              <mat-form-field>
-        <textarea matInput placeholder="Comments" [(ngModel)]="item.comments"
+        <textarea matInput placeholder="{{'role.comments' | translate}}" [(ngModel)]="item.comments"
                name="comments" #comments></textarea>
       </mat-form-field>
      
@@ -20,10 +20,10 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" type="submit"
-              [disabled]="!roleForm.form.valid">Save</button>
+              [disabled]="!roleForm.form.valid">{{'global.save' | translate}}</button>
       <button mat-raised-button color="secondary" (click)="remove(item)"
-              *ngIf="item._links?.self.href" type="button">Delete</button>
-      <a mat-button routerLink="/role-list">Cancel</a>
+              *ngIf="item._links?.self.href" type="button">{{'global.delete' | translate}}</button>
+      <a mat-button routerLink="/role-list">{{'global.cancel' | translate}}</a>
     </mat-card-actions>
     
   </form>

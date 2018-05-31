@@ -1,0 +1,63 @@
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+
+$diba-color: (50 : #f3e2e7,
+    100 : #e2b8c4,
+    200 : #cf889c,
+    300 : #bb5874,
+    400 : #ad3557,
+    500 : #9e1139,
+    600 : #960f33,
+    700 : #8c0c2c,
+    800 : #820a24,
+    900 : #700517,
+    A100 : #ffa0ab,
+    A200 : #ff6d7d,
+    A400 : #ff3a50,
+    A700 : #ff203a,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #ffffff,
+        400 : #ffffff,
+        500 : #ffffff,
+        600 : #ffffff,
+        700 : #ffffff,
+        800 : #ffffff,
+        900 : #ffffff,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #ffffff,
+        A700 : #ffffff,
+    )
+ );
+
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$diba-primary: mat-palette($diba-color);
+$diba-accent:  mat-palette($diba-color, A200, A100, A400);
+
+  //<color name="primaryColor">#9e1139</color>
+  //<color name="primaryLightColor">#d44c63</color>
+  //<color name="primaryDarkColor">#690014</color>
+  //<color name="primaryTextColor">#ffffff</color>
+
+// The warn palette is optional (defaults to red).
+$diba-warn:    mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$diba-theme: mat-light-theme($diba-primary, $diba-accent, $diba-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($diba-theme);

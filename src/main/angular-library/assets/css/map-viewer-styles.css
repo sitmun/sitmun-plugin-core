@@ -1,0 +1,796 @@
+/* Root styles */
+app-root, app-home, html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+app-root {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  position:absolute;
+  flex-direction: column;
+}
+
+app-home {
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Home Component Styles */
+sitmun-map-viewer-map {
+    height: 100%;
+    width: 100%;
+}
+
+/* Layer selection dialog styles */
+.mat-dialog-content {
+    overflow-y: hidden !important;
+}
+
+.mat-dialog-content, .mat-dialog-content table {
+    height: 100%;
+}
+
+/* Map component styles */
+
+#map {
+    height:100%;
+    width: 100%;
+}
+
+.geolocation-btn {
+    background: unset !important;
+}
+
+.geolocation-btn button {
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+    background-color: rgba(158,17,57,1) !important;
+}
+
+.geolocation-btn button:hover {
+    background: rgba(158,17,57,1) !important;
+}
+
+button.geolocation-active {
+    background: rgba(158,17,57,1) !important;
+}
+
+.ol-zoom {
+    background: unset !important;
+}
+
+.ol-zoom-in, .ol-zoom-out {
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+    background-color: rgba(158,17,57,1) !important;
+}
+
+.ol-zoom-in:hover, .ol-zoom-out:hover {
+    background: rgba(158,17,57,1) !important;
+}
+
+/* Hide attribution OL link*/
+.ol-attribution ul li a {
+    display: none !important;
+}
+
+.ol-attribution ul {
+    vertical-align: super;
+}
+
+.ol-scale-line {/*9e1239*/
+    background: rgba(158,17,57,1) !important;
+}
+
+.ol-change-baselayer {
+    background-color: transparent !important;
+}
+
+.ol-change-baselayer span, .ol-change-baselayer button {
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+    background-color: rgba(158,17,57,1) !important;
+}
+
+.ol-change-baselayer span {
+    border-radius: 0 0 2px 2px;
+}
+
+.ol-change-baselayer span:hover {
+    background-color: rgba(158,17,57,1);
+}
+
+.ol-change-baselayer span.ol-baselayer-active, .ol-change-baselayer button.ol-baselayer-active {
+    background-color: rgba(158,17,57,1) !important;
+}
+
+.ol-attribution {
+    background-color: unset !important;
+}
+
+.ol-attribution button {
+    background-color: rgba(158,17,57,1) !important;
+}
+
+/* Rules for material design */
+
+/* Rules for sizing the icon. */
+.material-icons.md-18 { font-size: 18px; }
+.material-icons.md-24 { font-size: 24px; }
+.material-icons.md-36 { font-size: 36px; }
+.material-icons.md-48 { font-size: 48px; }
+
+/* Rules for using icons as black on a light background. */
+.material-icons.md-dark { color: rgba(0, 0, 0, 0.54); }
+.material-icons.md-dark.md-inactive { color: rgba(0, 0, 0, 0.26); }
+
+/* Rules for using icons as white on a dark background. */
+.material-icons.md-light { color: rgba(255, 255, 255, 1); }
+.material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+/* Responsive behaviour */
+.ol-zoom {
+    top: 0px !important;
+    left: 0px !important;
+}
+
+.ol-zoom {
+    margin-left: 16px !important;
+    margin-top: 16px !important;
+}
+
+.geolocation-btn {
+    top: 118px;
+    left: 16px;
+}
+
+.ol-change-baselayer {
+    top: 160px;
+    left: 16px;
+}
+
+.ol-scale-line {
+    bottom: 16px !important;
+    left: 16px !important;
+}
+
+.ol-attribution {
+    bottom: 16px !important;
+    right: 16px !important;
+}
+
+
+.ol-control button {
+    min-width: 24px !important;
+    min-height: 24px !important;
+}
+
+.geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+.ol-change-baselayer button, .ol-attribution button {
+    height: 24px;
+    width: 24px;
+}
+
+.geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+.ol-change-baselayer button i, .ol-attribution buttion i {
+    font-size: 18px !important;
+}
+
+.ol-attribution ul {
+    font-size: 12px !important;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    background-color:#fff8;
+}
+
+.ol-scale-line-inner {
+    font-size: 12px !important;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+}
+
+@media all and (min-width: 0px) and (max-width: 359pxpx) { 
+    .ol-zoom {
+        margin-left: 16px !important;
+        margin-top: 16px !important;
+    }
+
+    .geolocation-btn {
+        top: 118px;
+        left: 16px;
+    }
+    
+    .ol-change-baselayer {
+        top: 160px;
+        left: 16px;
+    }
+
+    .ol-scale-line {
+        bottom: 16px !important;
+        left: 16px !important;
+    }
+
+    .ol-attribution {
+        bottom: 16px !important;
+        right: 16px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: unset;
+        width: 80%;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 36px !important;
+        width: 36px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 24px !important;
+    }
+}
+@media all and (min-width: 360px) and (max-width: 399px) {
+    .ol-zoom {
+        margin-left: 16px !important;
+        margin-top: 16px !important;
+    }
+
+    .geolocation-btn {
+        top: 118px;
+        left: 16px;
+    }
+    
+    .ol-change-baselayer {
+        top: 160px;
+        left: 16px;
+    }
+
+    .ol-scale-line {
+        bottom: 16px !important;
+        left: 16px !important;
+    }
+
+    .ol-attribution {
+        bottom: 16px !important;
+        right: 16px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: unset;
+        width: 80%;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 36px !important;
+        width: 36px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 24px !important;
+    }
+}
+@media all and (min-width: 400px) and (max-width: 479px) { 
+    .ol-zoom {
+        margin-left: 16px !important;
+        margin-top: 16px !important;
+    }
+
+    .geolocation-btn {
+        top: 118px;
+        left: 16px;
+    }
+    
+    .ol-change-baselayer {
+        top: 160px;
+        left: 16px;
+    }
+
+    .ol-scale-line {
+        bottom: 16px !important;
+        left: 16px !important;
+    }
+
+    .ol-attribution {
+        bottom: 16px !important;
+        right: 16px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: unset;
+        width: 80%;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 36px !important;
+        width: 36px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 24px !important;
+    }
+}
+@media all and (min-width: 480px) and (max-width: 599px) { 
+    .ol-zoom {
+        margin-left: 16px !important;
+        margin-top: 16px !important;
+    }
+
+    .geolocation-btn {
+        top: 118px;
+        left: 16px;
+    }
+    
+    .ol-change-baselayer {
+        top: 160px;
+        left: 16px;
+    }
+
+    .ol-scale-line {
+        bottom: 16px !important;
+        left: 16px !important;
+    }
+
+    .ol-attribution {
+        bottom: 16px !important;
+        right: 16px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: unset;
+        width: 80%;
+        font-size: 16px !important;
+    }
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 36px !important;
+        width: 36px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 24px !important;
+    }
+}
+@media all and (min-width: 600px) and (max-width: 719px) { 
+    .ol-zoom {
+        margin-left: 16px !important;
+        margin-top: 16px !important;
+    }
+
+    .geolocation-btn {
+        top: 118px;
+        left: 16px;
+    }
+    
+    .ol-change-baselayer {
+        top: 160px;
+        left: 16px;
+    }
+
+    .ol-scale-line {
+        bottom: 16px !important;
+        left: 16px !important;
+    }
+
+    .ol-attribution {
+        bottom: 16px !important;
+        right: 16px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: super;
+        font-size: 16px !important;
+    }
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 18px !important;
+    }
+}
+@media all and (min-width: 720px) and (max-width: 839px) { 
+    .ol-zoom {
+        margin-left: 24px !important;
+        margin-top: 24px !important;
+    }
+
+    .geolocation-btn {
+        top: 100px;
+        left: 24px;
+    }
+    
+    .ol-change-baselayer {
+        top: 150px;
+        left: 24px;
+    }
+
+    .ol-scale-line {
+        bottom: 24px !important;
+        left: 24px !important;
+    }
+
+    .ol-attribution {
+        bottom: 24px !important;
+        right: 24px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: super;
+        font-size: 16px !important;
+    }
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 18px !important;
+    }
+}
+@media all and (min-width: 840px) and (max-width: 959px) { 
+    .ol-zoom {
+        margin-left: 24px !important;
+        margin-top: 24px !important;
+    }
+
+    .geolocation-btn {
+        top: 100px;
+        left: 24px;
+    }
+    
+    .ol-change-baselayer {
+        top: 150px;
+        left: 24px;
+    }
+
+    .ol-scale-line {
+        bottom: 24px !important;
+        left: 24px !important;
+    }
+
+    .ol-attribution {
+        bottom: 24px !important;
+        right: 24px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: super;
+        font-size: 16px !important;
+    }
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 18px !important;
+    }
+}
+@media all and (min-width: 960px) and (max-width: 1023px) { 
+    .ol-zoom {
+        margin-left: 24px !important;
+        margin-top: 24px !important;
+    }
+
+    .geolocation-btn {
+        top: 100px;
+        left: 24px;
+    }
+    
+    .ol-change-baselayer {
+        top: 150px;
+        left: 24px;
+    }
+
+    .ol-scale-line {
+        bottom: 24px !important;
+        left: 24px !important;
+    }
+
+    .ol-attribution {
+        bottom: 24px !important;
+        right: 24px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: super;
+        font-size: 16px !important;
+    }
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 18px !important;
+    }
+}
+
+@media all and (min-width: 1024px) and (max-width: 1279px) { 
+    .ol-zoom {
+        margin-left: 24px !important;
+        margin-top: 24px !important;
+    }
+
+    .geolocation-btn {
+        top: 100px;
+        left: 24px;
+    }
+    
+    .ol-change-baselayer {
+        top: 150px;
+        left: 24px;
+    }
+
+    .ol-scale-line {
+        bottom: 24px !important;
+        left: 24px !important;
+    }
+
+    .ol-attribution {
+        bottom: 24px !important;
+        right: 24px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: super;
+        font-size: 16px !important;
+    }
+
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 18px !important;
+    }
+}
+@media all and (min-width: 1280px) and (max-width: 1439px) { 
+    .ol-zoom {
+        margin-left: 24px !important;
+        margin-top: 24px !important;
+    }
+
+    .geolocation-btn {
+        top: 100px;
+        left: 24px;
+    }
+    
+    .ol-change-baselayer {
+        top: 150px;
+        left: 24px;
+    }
+
+    .ol-scale-line {
+        bottom: 24px !important;
+        left: 24px !important;
+    }
+
+    .ol-attribution {
+        bottom: 24px !important;
+        right: 24px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: super;
+        font-size: 16px !important;
+    }
+
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 18px !important;
+    }
+}
+@media all and (min-width: 1440px) and (max-width: 1599px) { 
+    .ol-zoom {
+        margin-left: 24px !important;
+        margin-top: 24px !important;
+    }
+
+    .geolocation-btn {
+        top: 100px;
+        left: 24px;
+    }
+    
+    .ol-change-baselayer {
+        top: 150px;
+        left: 24px;
+    }
+
+    .ol-scale-line {
+        bottom: 24px !important;
+        left: 24px !important;
+    }
+
+    .ol-attribution {
+        bottom: 24px !important;
+        right: 24px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: super;
+        font-size: 16px !important;
+    }
+
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 18px !important;
+    }
+}
+@media all and (min-width: 1600px) and (max-width: 1919px) { 
+    .ol-zoom {
+        margin-left: 24px !important;
+        margin-top: 24px !important;
+    }
+
+    .geolocation-btn {
+        top: 100px;
+        left: 24px;
+    }
+    
+    .ol-change-baselayer {
+        top: 150px;
+        left: 24px;
+    }
+
+    .ol-scale-line {
+        bottom: 24px !important;
+        left: 24px !important;
+    }
+
+    .ol-attribution {
+        bottom: 24px !important;
+        right: 24px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: super;
+        font-size: 16px !important;
+    }
+
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 24px !important;
+        width: 24px !important;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 18px !important;
+    }
+}
+@media all and (min-width: 1920px) {
+    .ol-zoom {
+        margin-left: 24px !important;
+        margin-top: 24px !important;
+    }
+
+    .geolocation-btn {
+        top: 100px;
+        left: 24px;
+    }
+    
+    .ol-change-baselayer {
+        top: 150px;
+        left: 24px;
+    }
+
+    .ol-scale-line {
+        bottom: 24px !important;
+        left: 24px !important;
+    }
+
+    .ol-attribution {
+        bottom: 24px !important;
+        right: 24px !important;
+    }
+
+    .ol-attribution ul {
+        vertical-align: super;
+        font-size: 16px !important;
+    }
+
+
+    .ol-control button {
+        min-width: 24px !important;
+        min-height: 24px !important;
+    }
+    
+    .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
+    .ol-change-baselayer button, .ol-attribution button {
+        height: 24px;
+        width: 24px;
+    }
+    
+    .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
+    .ol-change-baselayer button i, .ol-attribution buttion i {
+        font-size: 18px !important;
+    }
+
+}

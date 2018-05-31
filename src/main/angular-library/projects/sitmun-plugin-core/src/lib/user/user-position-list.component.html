@@ -3,19 +3,19 @@
 
 
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <th mat-header-cell *matHeaderCellDef [translate]="'userPosition.name'"> Name </th>
     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
   </ng-container>
   <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef> Email </th>
+    <th mat-header-cell *matHeaderCellDef [translate]="'userPosition.email'"> Email </th>
     <td mat-cell *matCellDef="let element"> {{element.email}} </td>
   </ng-container>
-  <ng-container matColumnDef="organization">
+  <ng-container matColumnDef="organization" [translate]="'userPosition.organziation'">
     <th mat-header-cell *matHeaderCellDef> Organization </th>
     <td mat-cell *matCellDef="let element"> {{element.organization}} </td>
   </ng-container>
    <ng-container matColumnDef="territory">
-    <th mat-header-cell *matHeaderCellDef> Territory</th>
+    <th mat-header-cell *matHeaderCellDef [translate]="'userPosition.territory'"> Territory</th>
     <td mat-cell *matCellDef="let element"> {{element.territory?.name}} </td>
   </ng-container>
   <ng-container matColumnDef="actions" >
@@ -35,6 +35,6 @@
 </mat-paginator>
     <!--[routerLink]="['/user/',_user._links.self.href.split('/')[5],'position-add']"-->
   
-<a mat-button *ngIf="_user._links" (click)="add()" mat-fab color="primary" >Add</a>
+<a mat-button *ngIf="_user._links" (click)="add()" mat-fab color="primary" ><mat-icon>add</mat-icon></a>
 
 

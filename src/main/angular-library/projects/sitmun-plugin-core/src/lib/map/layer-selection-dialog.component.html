@@ -1,0 +1,54 @@
+<!--
+<h2 mat-dialog-title>{{'SELECT_BASE_LAYER_DIALOG_TITLE' | translate}}</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <table>
+      <tr>
+          <td>
+                <mat-checkbox id="mapOption" formControlName="mapOption" [checked]="selected === 0" (change)="change(0)"><span id="mapOptionLabel">{{'MAP_BASE_LAYER_OPTION' | translate}}</span></mat-checkbox>
+          </td>
+      </tr>
+      <tr>
+          <td>
+                <mat-checkbox id="aerialOption"  formControlName="aerialOption" [checked]="selected === 1" (change)="change(1)"><span id="aerialOptionLabel">{{'AERIAL_BASE_LAYER_OPTION' | translate}}</span></mat-checkbox>
+          </td>
+      </tr>
+      <tr>
+        <td>
+                <mat-checkbox id="hybridOption" formControlName="hybridOption" [checked]="selected === 2" (change)="change(2)"><span id="hybridOptionLabel">{{'HYBRID_BASE_LAYER_OPTION' | translate}}</span></mat-checkbox>
+        </td>
+    </tr>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">{{'CANCEL_BUTTON' | translate}}</button>
+    <button class="mat-raised-button mat-primary"(click)="save()">{{'OK_BUTTON' | translate}}</button>
+</mat-dialog-actions>
+-->
+<h2 mat-dialog-title>{{'SELECT_BASE_LAYER_DIALOG_TITLE'| translate}}</h2>
+
+<mat-dialog-content [formGroup]="form">
+  <table>
+      <tr>
+          <td>
+                <mat-checkbox id="mapOption" formControlName="mapOption" [checked]="selected === 0" (change)="change(0)"><span id="mapOptionLabel">{{'MAP_BASE_LAYER_OPTION' | translate}}</span></mat-checkbox>
+          </td>
+      </tr>
+      <tr>
+          <td>
+                <mat-checkbox id="aerialOption"  formControlName="aerialOption" [checked]="selected === 1" (change)="change(1)"><span id="aerialOptionLabel">{{'AERIAL_BASE_LAYER_OPTION' | translate}}</span></mat-checkbox>
+          </td>
+      </tr>
+      <tr>
+        <td>
+                <mat-checkbox id="hybridOption" formControlName="hybridOption" [checked]="selected === 2" (change)="change(2)"><span id="hybridOptionLabel">{{'HYBRID_BASE_LAYER_OPTION' | translate}}</span></mat-checkbox>
+        </td>
+    </tr>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">{{'CANCEL_BUTTON' | translate}}</button>
+    <button class="mat-raised-button mat-primary"(click)="save()">{{'OK_BUTTON' | translate}}</button>
+</mat-dialog-actions>

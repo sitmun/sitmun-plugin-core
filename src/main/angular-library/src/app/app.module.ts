@@ -8,6 +8,21 @@ import { ExternalConfigurationService } from './ExternalConfigurationService';
 import { AngularHalModule } from 'angular-hal';
 import { HomeComponent } from './home/home.component';
 import { SitmunPluginCoreModule,TerritoryListComponent, TerritoryEditComponent, TerritoryTypeListComponent, TerritoryTypeEditComponent, RoleListComponent, RoleEditComponent, UserListComponent, UserEditComponent} from 'sitmun-plugin-core';
+import { registerLocaleData } from '@angular/common';
+import localeCa from '@angular/common/locales/ca';
+import localeEs from '@angular/common/locales/es';
+import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+registerLocaleData(localeCa, 'ca');
+registerLocaleData(localeEs, 'es');
+
+
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
+
     
 const appRoutes: Routes = [
   {
@@ -93,8 +108,13 @@ const appRoutes: Routes = [
   imports: [
     BrowserModule, 
     SitmunPluginCoreModule,  
-    
-    
+    TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [HttpClient]
+            }
+        }),
     
     /*,
 
@@ -130,14 +150,9 @@ const appRoutes: Routes = [
     */
   ],
  providers: [
-    {provide: 'ExternalConfigurationService', useClass: ExternalConfigurationService}
-    /*,
-   TerritoryService,
-   TerritoryTypeService,
-   UserService
-   */
-   //ResourceService,
-   //ExternalService
+    {provide: 'ExternalConfigurationService', useClass: ExternalConfigurationService},
+
+    
   ],
   bootstrap: [AppComponent]
 })

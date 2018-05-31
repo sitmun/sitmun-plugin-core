@@ -7,17 +7,18 @@
    <span class="toolbar-spacer"></span>
    
    <button mat-button 
-            [routerLink]="['/territory-list']">Territories
+            [routerLink]="['/territory-list']"><span [translate]="'menu.territories'">Territories</span>
     </button>
      <button mat-button 
-            [routerLink]="['/territory-type-list']">Territory types
+            [routerLink]="['/territory-type-list']"><span [translate]="'menu.territoriesTypes'">Territory types</span>
     </button>
     <button mat-button 
-            [routerLink]="['/user-list']">Users
+            [routerLink]="['/user-list']"><span [translate]="'menu.users'">Users</span>
     </button>
     <button mat-button 
-            [routerLink]="['/role-list']">Roles
+            [routerLink]="['/role-list']"><span [translate]="'menu.roles'">Roles</span>
     </button>
+    <span (click)="changeLanguage('ca')"> CA </span> | <span  (click)="changeLanguage('es')"> ES </span>| <span  (click)="changeLanguage('en')"> EN </span>
 </mat-toolbar>
 <router-outlet></router-outlet>
 

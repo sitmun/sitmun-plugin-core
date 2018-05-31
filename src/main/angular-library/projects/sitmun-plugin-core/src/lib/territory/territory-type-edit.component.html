@@ -1,12 +1,12 @@
 <mat-card>
   <form #territoryTypeForm="ngForm" (ngSubmit)="save()">
     <mat-card-header>
-      <mat-card-title><h2>{{item.name ? 'Edit' : 'Add'}} territory type</h2></mat-card-title>
+      <mat-card-title><h2>{{item.name ? ('global.edit'|translate) : ('global.add'|translate)}} {{'territoryType.item' | translate}}</h2></mat-card-title>
     </mat-card-header>
     <mat-card-content>
      <div class="container">
       <mat-form-field>
-        <input matInput placeholder="Name" [(ngModel)]="item.name"
+        <input matInput placeholder="{{ 'territoryType.name'| translate}}" [(ngModel)]="item.name"
                name="name" #name required>
       </mat-form-field>
      
@@ -16,10 +16,10 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" type="submit"
-              [disabled]="!territoryTypeForm.form.valid">Save</button>
+              [disabled]="!territoryTypeForm.form.valid">{{'global.save' | translate}}</button>
       <button mat-raised-button color="secondary" (click)="remove(item)"
-              *ngIf="item._links?.self.href" type="button">Delete</button>
-      <a mat-button routerLink="/territory-type-list">Cancel</a>
+              *ngIf="item._links?.self.href" type="button">{{'global.delete' | translate}}</button>
+      <a mat-button routerLink="/territory-type-list">{{'global.cancel' | translate}}</a>
     </mat-card-actions>
     
   </form>

@@ -1,0 +1,8 @@
+{
+    "SELECT_BASE_LAYER_DIALOG_TITLE": "Select the base layer",
+    "MAP_BASE_LAYER_OPTION": "Map",
+    "AERIAL_BASE_LAYER_OPTION": "Aerial",
+    "HYBRID_BASE_LAYER_OPTION": "Hybrid",
+    "OK_BUTTON": "OK",
+    "CANCEL_BUTTON": "CANCEL"
+}

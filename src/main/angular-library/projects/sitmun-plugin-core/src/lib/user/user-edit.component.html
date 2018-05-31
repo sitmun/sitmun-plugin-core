@@ -1,41 +1,41 @@
 <mat-card>
   <form #userForm="ngForm" (ngSubmit)="save()">
     <mat-card-header>
-      <mat-card-title><h2>{{user.username ? 'Edit' : 'Add'}} User</h2></mat-card-title>
+      <mat-card-title><h2>{{user.username ? ('global.edit'|translate) : ('global.add'|translate)}} {{'user.item' | translate}}</h2></mat-card-title>
     </mat-card-header>
     <mat-card-content>
     <mat-tab-group dynamicHeight="true">
-    <mat-tab label="User Data">
+    <mat-tab label="{{ 'user.data'| translate}}">
      <div class="container">
       <mat-form-field>
-        <input matInput placeholder="Username" [(ngModel)]="user.username"
+        <input matInput placeholder="{{ 'user.username'| translate}}" [(ngModel)]="user.username"
                name="username" #username required>
       </mat-form-field>
 	  
-	 <mat-form-field>
-        <input matInput type="password" placeholder="Password" [(ngModel)]="user.password"
-               name="password" #scope>
+	   <mat-form-field>
+        <input matInput type="password" placeholder="{{ 'user.password'| translate}}" [(ngModel)]="user.password"
+               name="password" #password>
       </mat-form-field>
-	  <mat-form-field>	  
-        <input matInput placeholder="First name" [(ngModel)]="user.firstName"
+	   <mat-form-field>	  
+        <input matInput placeholder="{{ 'user.firstName'| translate}}" [(ngModel)]="user.firstName"
                name="firstName" #firstName>
       </mat-form-field>
-	  <mat-form-field>	  
-        <input matInput placeholder="Last name" [(ngModel)]="user.lastName"
+	    <mat-form-field>	  
+        <input matInput placeholder="{{ 'user.lastName'| translate}}" [(ngModel)]="user.lastName"
                name="lastName" #lastName>
       </mat-form-field>
       <mat-checkbox [(ngModel)]="user.blocked"
-               name="blocked" #blocked>User blocked
+               name="blocked" #blocked>{{ 'user.blocked'| translate}}
       </mat-checkbox>
       <mat-checkbox [(ngModel)]="user.administrator"
-               name="administrator" #blocked>Administrator
+               name="administrator" #administrator>{{ 'user.administrator'| translate}}
       </mat-checkbox>
       </div>
       </mat-tab>
-  <mat-tab label="Positions">
+  <mat-tab label="{{ 'user.positions'| translate}}">
     <sitmun-user-position-list [user]="user"></sitmun-user-position-list>
   </mat-tab>
-  <mat-tab label="Permissions">
+  <mat-tab label="{{ 'user.permissions'| translate}}">
   	<sitmun-user-configuration-list [user]="user"></sitmun-user-configuration-list>
     
   </mat-tab>
@@ -44,10 +44,10 @@
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="primary" type="submit"
-              [disabled]="!userForm.form.valid">Save</button>
+              [disabled]="!userForm.form.valid">{{'global.save' | translate}}</button>
       <button mat-raised-button color="secondary" (click)="remove(user)"
-              *ngIf="user._links?.self.href" type="button">Delete</button>
-      <a mat-button routerLink="/user-list">Cancel</a>
+              *ngIf="user._links?.self.href" type="button">{{'global.delete' | translate}}</button>
+      <a mat-button routerLink="/user-list">{{'global.cancel' | translate}}</a>
     </mat-card-actions>
     
   </form>

@@ -6,6 +6,10 @@
     "entryFile": "src/public_api.ts"
   },
   "whitelistedNonPeerDependencies": [
-    "@types/openlayers"
+    "@types/openlayers",
+    "openlayers",
+    "ol",
+    "proj4"
+  
   ]
 }

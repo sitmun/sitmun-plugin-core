@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-header><h2>Roles</h2></mat-card-header>
+  <mat-card-header><h2 [translate]="'role.list'">Roles</h2></mat-card-header>
   
   <mat-card-content>
   
@@ -8,7 +8,7 @@
   
 
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <th mat-header-cell *matHeaderCellDef [translate]="'role.name'"> Name </th>
     <td mat-cell *matCellDef="let element"> {{element.name}} </td>
   </ng-container>
 
@@ -16,7 +16,7 @@
 
   
   <ng-container matColumnDef="actions" >
-        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <th mat-header-cell *matHeaderCellDef [translate]="'global.actions'"> Actions </th>
         <td mat-cell *matCellDef="let element">
           <a mat-icon-button [routerLink]="['/role-edit', element._links.self.href.split('/')[5]]"><mat-icon>edit</mat-icon></a> 
           <button mat-icon-button (click)="remove(element)"><mat-icon>delete</mat-icon></button>           
@@ -35,6 +35,6 @@
 </mat-paginator>
     
   </mat-card-content>
-  <button mat-fab color="primary" [routerLink]="['/role-add']">Add</button>
+  <button mat-fab color="primary" [routerLink]="['/role-add']"><mat-icon>add</mat-icon></button>
 
 </mat-card>

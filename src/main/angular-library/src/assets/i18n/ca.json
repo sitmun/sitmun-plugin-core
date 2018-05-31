@@ -1,0 +1,20 @@
+{
+    "mat-paginator-intl":{
+        "first_page":"Primera página",
+        "items_per_page":"items por página",
+        "last_page":"Última página",
+        "next_page":"Próxima página",
+        "of":"de",
+        "previous_page":"Página previa"},
+    "menu":{
+    	"territories":"Territoris",
+    	"territoriesTypes":"Tipus",
+    	"users":"Usuaris",
+    	"roles":"Rols"
+    },
+    "territory":{
+		"list":"Territoris",
+		"name":"Nom"
+	}
+
+}

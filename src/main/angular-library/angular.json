@@ -23,7 +23,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/theme.scss"
             ],
             "scripts": []
           },
@@ -45,6 +46,16 @@
               "vendorChunk": false,
               "buildOptimizer": true
             }
+            /*
+            ,"ca": {
+              "aot": true,
+              "outputPath": "dist/angular-library-ca/",
+              "i18nFile": "src/locale/messages.ca.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "ca",
+              "i18nMissingTranslation": "error"
+            }
+            */
           }
         },
         "serve": {
@@ -56,6 +67,13 @@
             "production": {
               "browserTarget": "angular-library:build:production"
             }
+            /*
+            ,
+            "ca": {
+              "browserTarget": "angular-library:build:ca"
+            }
+            */
+            
           }
         },
         "extract-i18n": {
@@ -72,7 +90,8 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/theme.scss"
             ],
             "scripts": [],
             "assets": [
