@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="stm_tipogrp")
-@SuppressWarnings("common-java:DuplicatedBlocks")
+@SuppressWarnings("all")
 public class TerritoryType {
 
     @Id
@@ -28,7 +28,7 @@ public class TerritoryType {
 	}
 
 	public void setName(String name) {
-        this.name = name; //NOSONAR
+        this.name = name;
     }
 
 
