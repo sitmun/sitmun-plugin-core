@@ -8,7 +8,6 @@ import java.util.Date;
 @Table(name="stm_disptarea", uniqueConstraints={
         @UniqueConstraint(columnNames={"dta_codter", "dta_codtar"})
      })
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class TaskAvailability {
 
     public long getId() {

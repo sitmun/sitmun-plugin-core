@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="stm_grptar")
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class TaskGroup {
 
     @Id

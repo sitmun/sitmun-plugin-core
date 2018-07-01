@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="stm_conexion")
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Connection {
 
     @Id

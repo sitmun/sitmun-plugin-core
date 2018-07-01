@@ -25,7 +25,6 @@ public class UserRepositoryTest {
     @Before
     public void init() {
         TerritoryType type = new TerritoryType();
-        type.setId(1);
         type.setName("tipo Territorio 1");
 
         Territory territory = new Territory();
@@ -53,11 +52,9 @@ public class UserRepositoryTest {
         user.setPermissions(null);
         
         Role role = new Role();
-        role.setId(0);
         role.setName("rol-admin");
         role.setComments("rol de administrador");
         UserConfiguration conf = new UserConfiguration();
-        conf.setId(1);
         conf.setUser(user);
         conf.setRole(role);
         conf.setTerritory(territory);
@@ -72,7 +69,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void findOneuserById() {
+    public void findOneUserById() {
         assumeThat(userRepository.findOne(user.getId())).isNull();
         userRepository.save(user);
         assumeThat(user.getId()).isNotZero();

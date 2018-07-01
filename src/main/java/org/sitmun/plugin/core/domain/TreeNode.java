@@ -3,7 +3,6 @@ package org.sitmun.plugin.core.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_arbolnod")
@@ -29,7 +28,6 @@ public class TreeNode {
     
     @JoinColumn(name="arn_codpadre")
     @ManyToOne
-    @NotNull
     @JsonIgnore
     private TreeNode parent;    
     

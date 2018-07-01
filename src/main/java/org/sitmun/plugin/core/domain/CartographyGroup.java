@@ -5,7 +5,6 @@ import java.util.Set;
 
 @Entity
 @Table(name="stm_grpcarto")
-@SuppressWarnings("common-java:DuplicatedBlocks")
 public class CartographyGroup {
 
     @Id

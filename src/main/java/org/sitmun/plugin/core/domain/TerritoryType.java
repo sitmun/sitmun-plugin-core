@@ -4,7 +4,6 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="stm_tipogrp")
-@SuppressWarnings("all")
 public class TerritoryType {
 
     @Id
