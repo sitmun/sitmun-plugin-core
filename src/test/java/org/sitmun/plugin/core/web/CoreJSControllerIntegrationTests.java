@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.hateoas.UriTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,6 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CoreJSControllerIntegrationTests {
 
+    private static final String REQUIREJS_CONFIG_KEY = "requirejs.config";
+    private static final String CONFIG_ENDPOINT = "http://localhost:{port}/app/config";
+
     @LocalServerPort
     private int port;
 
@@ -21,8 +25,9 @@ public class CoreJSControllerIntegrationTests {
     private TestRestTemplate restTemplate;
 
     @Test
-    public void requirejsIsPresent() throws Exception {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/app/config", String.class))
-                .contains("requirejs.config");
+    public void requirejsIsPresentInConfig() {
+        UriTemplate uri = new UriTemplate(CONFIG_ENDPOINT);
+        String configRepresentation = restTemplate.getForObject(uri.expand(port), String.class);
+        assertThat(configRepresentation).contains(REQUIREJS_CONFIG_KEY);
     }
 }

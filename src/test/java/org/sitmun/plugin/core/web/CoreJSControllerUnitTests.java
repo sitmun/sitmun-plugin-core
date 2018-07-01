@@ -12,16 +12,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class CoreJSControllerUnitTests {
 
+    private static final String REQUIREJS_CONFIG_KEY = "requirejs.config";
+
     @Autowired
     private CoreJSController controller;
 
     @Test
-    public void contextLoads() throws Exception {
+    public void contextLoads() {
         assertThat(controller).isNotNull();
     }
 
     @Test
-    public void requirejsIsPresent() throws Exception {
-        assertThat(controller.webjarjs()).contains("requirejs.config");
+    public void requirejsIsPresentInWebJars() {
+        assertThat(controller.webjarjs()).contains(REQUIREJS_CONFIG_KEY);
     }
 }

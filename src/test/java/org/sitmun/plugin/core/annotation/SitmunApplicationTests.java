@@ -6,7 +6,7 @@ import org.springframework.boot.SpringApplication;
 public class SitmunApplicationTests {
 
     @Test
-    public void createsSpringApplication() throws Exception {
+    public void runStimunApplication() {
         SpringApplication.run(Application.class);
     }
 

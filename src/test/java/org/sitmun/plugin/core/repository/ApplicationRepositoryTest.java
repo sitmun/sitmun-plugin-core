@@ -1,7 +1,6 @@
 package org.sitmun.plugin.core.repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,7 +13,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 
 @RunWith(SpringRunner.class)
@@ -22,101 +21,94 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ApplicationRepositoryTest {
     
     @Autowired
-    private AplicacionRepository repository;
+    private AplicacionRepository applicationRepository;
     
     @Autowired
-    private CartographyGroupRepository grupoCartografiaRepository;
+    private CartographyGroupRepository cartographyGroupRepository;
     
     @Autowired
-    private BackgroundRepository fondoRepository;
-    
-    private Application item;
+    private BackgroundRepository backgroundRepository;
+
+    private Application application;
 
    
     @Before
     public void init() {
-        item = new Application();
-        item.setId(1);
-        item.setName("Test");
-        item.setCreatedDate(new Date());
-        item.setTrees(null);
-        item.setTreeAutoRefresh(true);
-        item.setScales(null);
-        item.setSituationMap(null);
-        item.setParameters(null);
-        item.setProjections(null);        
+
+        application = new Application();
+        application.setName("Test");
+        application.setCreatedDate(new Date());
+        application.setTrees(null);
+        application.setTreeAutoRefresh(true);
+        application.setScales(null);
+        application.setSituationMap(null);
+        application.setParameters(null);
+        application.setProjections(null);
+        application.setParameters(new HashSet<>());
+        application.setTheme(null);
+        application.setType(null);
+        application.setTitle("Test");
+
         Role rol = new Role();
         rol.setName("Rol 1");
-        item.getAvailableRoles().add(rol);
-        //rol.setAplicacion(item);
-        
-        
-        ApplicationBackground applicationBackground = new ApplicationBackground();
-        applicationBackground.setApplication(item);
+        application.getAvailableRoles().add(rol);
+
+        CartographyGroup cartographyGroup;
+        cartographyGroup = new CartographyGroup();
+        cartographyGroup.setName("Grupo cartografía");
+        cartographyGroupRepository.save(cartographyGroup);
+
         Background background = new Background();
         background.setActive(true);
         background.setDescription(null);
         background.setName("fondo");
-        
-        CartographyGroup cartographyGroup;
-        cartographyGroup = new CartographyGroup();
-        cartographyGroup.setName("Grupo cartografía");
-        grupoCartografiaRepository.save(cartographyGroup);
-        
-        
         background.setCartographyGroup(cartographyGroup);
         background.setCreatedDate(new Date());
-        applicationBackground.setBackground(background );
+        backgroundRepository.save(background);
+
+        ApplicationBackground applicationBackground = new ApplicationBackground();
+        applicationBackground.setApplication(application);
+        applicationBackground.setBackground(background);
         applicationBackground.setOrder(1);
-        fondoRepository.save(background);
-        
-        
-        item.getBackgrounds().add(applicationBackground );
+        application.getBackgrounds().add(applicationBackground);
         
         ApplicationParameter parameter = new ApplicationParameter();
-        parameter.setApplication(item);
+        parameter.setApplication(application);
         parameter.setName("param1");
         parameter.setType("tipo1");
         parameter.setValue("valor1");
-        
-        item.setParameters(new HashSet<>());
-        
-        item.getParameters().add(parameter);
-        
-        item.setTheme(null);
-        item.setType(null);
-        item.setTitle("Test");
-        
+        application.getParameters().add(parameter);
     }
 
     @Test
-    public void addAndRemoveItem() throws JsonProcessingException {
-        Iterable<Application> persistentItems = repository.findAll();
-        assertThat(persistentItems).hasSize(0);
-        repository.save(item);
-        System.out.println(this.serialize(item));
-
-        persistentItems = repository.findAll();
-        assertThat(persistentItems).hasSize(1);
-        item = persistentItems.iterator().next();
-        assertThat(item.getAvailableRoles().size()).isGreaterThan(0);
-        assertThat(item.getBackgrounds().size()).isGreaterThan(0);
-        assertThat(item.getParameters().size()).isGreaterThan(0);
-        repository.delete(item);
-        persistentItems = repository.findAll();
-        assertThat(persistentItems).hasSize(0);
-        
-    }
-    
-    
-    
-    private byte[] serialize(Object object) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsBytes(object);
-    }
-    
-    public Application getAplication () {
-    	return this.item;
+    public void saveApplication() {
+        assumeThat(applicationRepository.findOne(application.getId())).isNull();
+        applicationRepository.save(application);
+        assertThat(application.getId()).isNotZero();
     }
 
+    @Test
+    public void findOneApplicationById() {
+        assumeThat(applicationRepository.findOne(application.getId())).isNull();
+        applicationRepository.save(application);
+        assumeThat(application.getId()).isNotZero();
+
+        application = applicationRepository.findOne(application.getId());
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(application.getAvailableRoles()).isNotEmpty();
+        softly.assertThat(application.getBackgrounds()).isNotEmpty();
+        softly.assertThat(application.getParameters()).isNotEmpty();
+        softly.assertAll();
+    }
+
+    @Test
+    public void deleteApplicationById() {
+        assumeThat(applicationRepository.findOne(application.getId())).isNull();
+        applicationRepository.save(application);
+        assumeThat(application.getId()).isNotZero();
+
+        Long id = application.getId();
+        applicationRepository.delete(application);
+        assertThat(applicationRepository.findOne(id)).isNull();
+    }
 }

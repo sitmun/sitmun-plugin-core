@@ -1,7 +1,5 @@
 package org.sitmun.plugin.core.repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,66 +11,64 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class CartographyRepositoryTest {
 
     @Autowired
-    private CartographyRepository repository;
+    private CartographyRepository cartographyRepository;
 
-    private Cartography item;
+    private Cartography cartography;
 
     /**
      * 
      */
     @Before
     public void init() {
-        item = new Cartography();
-        item.setName("Test");
-        item.setLayers(null);
-        item.setSelectionLayer(null);
-        item.setConnection(null);
-        item.setAvailabilities(null);
-        item.setEditable(true);
-        item.setMaximumScale(null);
-        item.setMinimumScale(null);
-        item.setCreatedDate(new Date());
-        item.setId(1);
-        item.setOrder(0);
-        item.setQueryable(true);
-        item.setQueryAct(true);
-        item.setQueryLay(true);
-        item.setSelectable(true);
-        item.setService(null);
-        item.setSelectionService(null);
-        item.setThemeable(true);
-        item.setLegendTip(null);
-        item.setType(null);
-        item.setGeometryType(null);
-        item.setTransparency(0);
-        item.setLegendUrl(null);
-        item.setMetadataUrl(null);
-        item.setVisible(true);
+        cartography = new Cartography();
+        cartography.setName("Test");
+        cartography.setLayers(null);
+        cartography.setSelectionLayer(null);
+        cartography.setConnection(null);
+        cartography.setAvailabilities(null);
+        cartography.setEditable(true);
+        cartography.setMaximumScale(null);
+        cartography.setMinimumScale(null);
+        cartography.setCreatedDate(new Date());
+        cartography.setOrder(0);
+        cartography.setQueryable(true);
+        cartography.setQueryAct(true);
+        cartography.setQueryLay(true);
+        cartography.setSelectable(true);
+        cartography.setService(null);
+        cartography.setSelectionService(null);
+        cartography.setThemeable(true);
+        cartography.setLegendTip(null);
+        cartography.setType(null);
+        cartography.setGeometryType(null);
+        cartography.setTransparency(0);
+        cartography.setLegendUrl(null);
+        cartography.setMetadataUrl(null);
+        cartography.setVisible(true);
 
     }
 
     @Test
-    public void addItem() throws JsonProcessingException {
-        Iterable<Cartography> persistentItems = repository.findAll();
-        assertThat(persistentItems).hasSize(0);
-
-        repository.save(item);
-        System.out.println(this.serialize(item));
-
-        persistentItems = repository.findAll();
-        assertThat(persistentItems).hasSize(1);
-
+    public void saveCartography() {
+        assumeThat(cartographyRepository.findOne(cartography.getId())).isNull();
+        cartographyRepository.save(cartography);
+        assertThat(cartography.getId()).isNotZero();
     }
 
-    private byte[] serialize(Object object) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsBytes(object);
+    @Test
+    public void findOneCartographyById() {
+        assumeThat(cartographyRepository.findOne(cartography.getId())).isNull();
+        cartographyRepository.save(cartography);
+        assumeThat(cartography.getId()).isNotZero();
+
+        assertThat(cartographyRepository.findOne(cartography.getId())).isNotNull();
     }
 }
 

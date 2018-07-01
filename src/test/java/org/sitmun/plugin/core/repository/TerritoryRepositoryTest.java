@@ -1,8 +1,6 @@
 
 package org.sitmun.plugin.core.repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -28,17 +27,11 @@ public class TerritoryRepositoryTest {
 
     private Territory territory;
 
-    /**
-     * @throws JsonProcessingException
-     */
     @Before
-    public void init() throws JsonProcessingException {
+    public void init() {
         TerritoryType type = new TerritoryType();
-        type.setId(1);
         type.setName("tipo Territorio 1");
-
         territoryTypeRepository.save(type);
-        System.out.println(this.serialize(type));
 
         territory = new Territory();
         territory.setName("Admin");
@@ -48,52 +41,26 @@ public class TerritoryRepositoryTest {
         territory.setEmail("email@email.org");
         territory.setExt(null);
         territory.setCreatedDate(new Date());
-        territory.setId(1);
         territory.setLogo(null);
         territory.setMembers(null);
         territory.setOrganizationName("Test");
         territory.setComments(null);
         territory.setType(type);
-
     }
 
     @Test
-    public void addItem() throws JsonProcessingException {
-        Iterable<Territory> persistentItems = territoryRepository.findAll();
-        assertThat(persistentItems).hasSize(0);
+    public void saveTerritory() {
+        assumeThat(territoryRepository.findOne(territory.getId())).isNull();
         territoryRepository.save(territory);
-        persistentItems = territoryRepository.findAll();
-        assertThat(persistentItems).hasSize(1);
-
+        assertThat(territory.getId()).isNotZero();
     }
-    
-    /*
+
     @Test
-    public void removeTerritoryMember() throws JsonProcessingException {
-        TerritoryType type = new TerritoryType();
-        type.setId(1);
-        type.setName("tipo Territorio 1");
-        territoryTypeRepository.save(type);
-        Territory child = new Territory();
-        child.setName("Child");
-        child.setType(type);
-        territoryRepository.save(child);
-        Territory parent = new Territory();
-        parent.setName("Parent");
-        parent.setType(type);
-        parent.getMembers().add(child);
-        territoryRepository.save(parent);
-        territoryRepository.delete(child);
-    }
-    */
+    public void findOneTerritoryById() {
+        assumeThat(territoryRepository.findOne(territory.getId())).isNull();
+        territoryRepository.save(territory);
+        assumeThat(territory.getId()).isNotZero();
 
-    private byte[] serialize(Object object) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsBytes(object);
+        assertThat(territoryRepository.findOne(territory.getId())).isNotNull();
     }
-    
-    public Territory getTerritory() {
-    	return this.territory;
-    }
-
 }

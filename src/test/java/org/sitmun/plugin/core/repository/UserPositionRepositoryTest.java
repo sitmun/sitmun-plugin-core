@@ -1,13 +1,11 @@
 package org.sitmun.plugin.core.repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.sitmun.plugin.core.domain.UserPosition;
 import org.sitmun.plugin.core.domain.Territory;
 import org.sitmun.plugin.core.domain.User;
+import org.sitmun.plugin.core.domain.UserPosition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -15,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.assertj.core.api.Assumptions.assumeThat;
 
 
 @RunWith(SpringRunner.class)
@@ -32,13 +30,11 @@ public class UserPositionRepositoryTest {
  
     private UserPosition userPosition;
 
-    private Territory territory;
 
-    private User user;
-    
     @Before
     public void init() {
-        user = new User();
+
+        User user = new User();
         user.setFirstName("Admin");
         user.setLastName("Admin");
         user.setAdministrator(true);
@@ -46,14 +42,10 @@ public class UserPositionRepositoryTest {
         user.setPassword("prCTmrOYKHQ=");
         user.setUsername("admin");
         user.setPositions(null);
-        //usuario.setId(1);
         user.setPermissions(null);
         userRepository.save(user);
-        
-        //UsuarioRepositoryTest userTest = new UsuarioRepositoryTest();
 
-        territory = new Territory();
-        //territorio.setId(1);
+        Territory territory = new Territory();
         territory.setName("Admin");
         territory.setScope(null);
         territory.setBlocked(false);
@@ -67,11 +59,7 @@ public class UserPositionRepositoryTest {
         territory.setComments(null);
         territorioRepository.save(territory);
         
-        //TerritorioRepositoryTest terrTest = new TerritorioRepositoryTest();
-
-        
         userPosition = new UserPosition();
-        //cargo.setId(1);
         userPosition.setName("Test");
         userPosition.setEmail(null);
         userPosition.setCreatedDate(new Date());
@@ -79,25 +67,22 @@ public class UserPositionRepositoryTest {
         userPosition.setOrganization("Test");
         userPosition.setTerritory(territory);
         userPosition.setUser(user);
-        /*cargo.setTerritorio(terrTest.getTerritorio());
-        cargo.setUsuario(userTest.getUsuario());*/
-        
+
     }
 
     @Test
-    public void addItem() throws JsonProcessingException {
-        Iterable<UserPosition> persistentItems = userPositionRepository.findAll();
-        assertThat(persistentItems).hasSize(0);
+    public void saveUserPosition() {
+        assumeThat(userPositionRepository.findOne(userPosition.getId())).isNull();
         userPositionRepository.save(userPosition);
-        System.out.println(this.serialize(userPosition));
-        persistentItems = userPositionRepository.findAll();
-        assertThat(persistentItems).hasSize(1);                
-        
-    }
-    
-    private byte[] serialize(Object object) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsBytes(object);
+        assertThat(userPosition.getId()).isNotZero();
     }
 
+    @Test
+    public void findOneUserPositionById() {
+        assumeThat(userPositionRepository.findOne(userPosition.getId())).isNull();
+        userPositionRepository.save(userPosition);
+        assumeThat(userPosition.getId()).isNotZero();
+
+        assertThat(userPositionRepository.findOne(userPosition.getId())).isNotNull();
+    }
 }
