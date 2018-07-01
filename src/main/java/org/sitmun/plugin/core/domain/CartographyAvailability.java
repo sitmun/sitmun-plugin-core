@@ -11,6 +11,7 @@ import java.util.Date;
 @Table(name="stm_dispcarto",uniqueConstraints={
         @UniqueConstraint(columnNames={"dca_codter", "dca_codcar"})
      })
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class CartographyAvailability {
 
     

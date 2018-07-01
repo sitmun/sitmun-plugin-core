@@ -5,6 +5,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_paramtta")
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class TaskParameter {
 
     @Id

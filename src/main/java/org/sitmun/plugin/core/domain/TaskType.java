@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="stm_tipotarea")
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class TaskType {
 
     @Id

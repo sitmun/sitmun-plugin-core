@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_paramapp")
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class ApplicationParameter {
 
     @Id

@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name="stm_paramser")
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class ServiceParameter {
 
     @Id

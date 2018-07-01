@@ -7,6 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name="stm_apps")
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class Application {
 
     @Id
