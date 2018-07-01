@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name="stm_tipogrp")
+@SuppressWarnings("common-java:DuplicatedBlocks")
 public class TerritoryType {
 
     @Id
