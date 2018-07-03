@@ -3,9 +3,7 @@ addons:
     organization: sitmun
 
 
-script:
-  - ./build-scripts/script.sh
-  - sonar-scanner
+script: ./build-scripts/script.sh
 
 after_success: ./build-scripts/after_success.sh
 
