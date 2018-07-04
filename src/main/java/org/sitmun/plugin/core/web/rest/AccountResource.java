@@ -1,7 +1,5 @@
 package org.sitmun.plugin.core.web.rest;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -11,29 +9,31 @@ import org.sitmun.plugin.core.repository.UserRepository;
 import org.sitmun.plugin.core.security.SecurityUtils;
 import org.sitmun.plugin.core.service.UserService;
 import org.sitmun.plugin.core.service.dto.UserDTO;
+import org.sitmun.plugin.core.web.rest.dto.PasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.PersistentEntityResource;
 import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
-import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceAssembler;
+import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @RepositoryRestController
+@RequestMapping("/api/account")
 public class AccountResource {
 
 	private UserService userService;
 
 	private UserRepository userRepository;
+	
+	@Autowired private RepositoryEntityLinks links;
 
 	public AccountResource(UserService userService, UserRepository userRepository) {
 		super();
@@ -41,8 +41,9 @@ public class AccountResource {
 		this.userRepository = userRepository;
 	}
 
-	@PostMapping("/account")
-	public ResponseEntity<?> saveAccount(@Valid @RequestBody UserDTO userDTO) throws URISyntaxException {
+	@PostMapping("")
+	@ResponseBody
+	public ResponseEntity<?> saveAccount(@Valid @RequestBody UserDTO userDTO) {
         Optional<String> optLogin = SecurityUtils.getCurrentUserLogin();
         if (optLogin.isPresent()) {                
 			Optional<User> user = userRepository.findOneByUsername(optLogin.get());
@@ -58,14 +59,15 @@ public class AccountResource {
 
 	}
 
-	@GetMapping("/account")
-	public ResponseEntity<PersistentEntityResource> getAccount(PersistentEntityResourceAssembler assembler) {
+	@GetMapping("")
+	@ResponseBody
+	public ResponseEntity<?> getAccount(PersistentEntityResourceAssembler assembler) {
 		Optional<String> optLogin = SecurityUtils.getCurrentUserLogin();
         if (optLogin.isPresent()) {
         	Optional<User> user = userRepository.findOneByUsername(optLogin.get());
 			if (user.isPresent()) {
 				return ResponseEntity.ok(
-						assembler.toResource(new UserDTO(user.get())));
+						toResource(user.get()));
 			} else {
 				return ResponseEntity.notFound().build();
 			}
@@ -75,13 +77,14 @@ public class AccountResource {
 		}
 	}
 
-	@PostMapping(path = "/account/change-password")
-	public ResponseEntity<?> changePassword(@RequestBody String password, PersistentEntityResourceAssembler assembler) {
+	@PostMapping(path = "/change-password")
+	@ResponseBody
+	public ResponseEntity<?> changePassword(@RequestBody PasswordDTO password) {
 		Optional<String> optLogin = SecurityUtils.getCurrentUserLogin();
         if (optLogin.isPresent()) {
         	Optional<User> user = userRepository.findOneByUsername(optLogin.get());
 			if (user.isPresent()) {
-				userService.changeUserPassword(user.get().getId(), password);
+				userService.changeUserPassword(user.get().getId(), password.getPassword());
 				return ResponseEntity.ok().build();
 			} else {
 				return ResponseEntity.notFound().build();
@@ -94,5 +97,12 @@ public class AccountResource {
 		
 
 	}
+	
+	private ResourceSupport toResource(User user) {        
+        UserDTO dto = new UserDTO(user);
+        //Link selfLink = links.linkForSingleResource(user).withSelfRel();
+        
+        return new Resource<>(dto);
+    }
 
 }

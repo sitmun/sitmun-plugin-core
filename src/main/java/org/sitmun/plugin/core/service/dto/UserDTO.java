@@ -1,22 +1,18 @@
 package org.sitmun.plugin.core.service.dto;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
 import org.sitmun.plugin.core.domain.User;
-import org.sitmun.plugin.core.domain.UserConfiguration;
-import org.sitmun.plugin.core.domain.UserPosition;
+import org.springframework.hateoas.Identifiable;
+import org.springframework.hateoas.core.Relation;
 
-public class UserDTO {
+@Relation(value = "user", collectionRelation = "users")
+public class UserDTO implements Identifiable<Long>{
 
-	public long getId() {
+	public UserDTO() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Long getId() {
 		return id;
 	}
 
@@ -64,21 +60,7 @@ public class UserDTO {
 		this.blocked = blocked;
 	}
 
-	public Set<UserPosition> getPositions() {
-		return positions;
-	}
-
-	public void setPositions(Set<UserPosition> positions) {
-		this.positions = positions;
-	}
-
-	public Set<UserConfiguration> getPermissions() {
-		return permissions;
-	}
-
-	public void setPermissions(Set<UserConfiguration> permissions) {
-		this.permissions = permissions;
-	}
+	
 
 	public UserDTO(User user) {
 		this.id = user.getId();
@@ -92,10 +74,11 @@ public class UserDTO {
 		this.administrator = user.getAdministrator();
 
 		this.blocked = user.getBlocked();
-
+/*
 		this.positions = user.getPositions();
 
 		this.permissions = user.getPermissions();
+		*/
 	}
 
 	private long id;
@@ -109,9 +92,11 @@ public class UserDTO {
 	private Boolean administrator;
 
 	private Boolean blocked;
+	/*
 
 	private Set<UserPosition> positions = new HashSet<>();
 
 	private Set<UserConfiguration> permissions = new HashSet<>();
+	*/
 
 }

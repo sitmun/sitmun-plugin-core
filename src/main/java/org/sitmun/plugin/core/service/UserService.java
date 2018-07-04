@@ -2,12 +2,16 @@ package org.sitmun.plugin.core.service;
 
 import static java.util.Collections.emptyList;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.sitmun.plugin.core.domain.User;
 import org.sitmun.plugin.core.repository.UserRepository;
 import org.sitmun.plugin.core.security.SecurityUtils;
 import org.sitmun.plugin.core.service.dto.UserDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -60,8 +64,9 @@ public class UserService implements UserDetailsService {
 			user.setLastName(userDTO.getLastName());
 			user.setAdministrator(userDTO.getAdministrator());
 			user.setBlocked(userDTO.getBlocked());
-			user.setPositions(userDTO.getPositions());
-			user.setPermissions(userDTO.getPermissions());
+			//user.setPositions(userDTO.getPositions());
+			//user.setPermissions(userDTO.getPermissions());
+			applicationUserRepository.save(user);
 			return user;
 		}).map(UserDTO::new);
 
@@ -83,7 +88,18 @@ public class UserService implements UserDetailsService {
         .ifPresent(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
+            applicationUserRepository.save(user);
         });
+	}
+
+	public List<User> findAllUsers() {
+		ArrayList<User> res = new ArrayList<User>();
+		applicationUserRepository.findAll().forEach(res::add);
+		return res;
+	}
+
+	public Page<User> findAllUsers(Pageable pageable) {
+		return applicationUserRepository.findAll( pageable);
 	}
 
 }

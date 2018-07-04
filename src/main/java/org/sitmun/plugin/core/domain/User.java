@@ -2,19 +2,27 @@
 package org.sitmun.plugin.core.domain;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.springframework.hateoas.Identifiable;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "stm_usuario")
-public class User {
+public class User implements Identifiable<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "usu_codigo")
     private long id;
 
-    @Column(name = "usu_usuario")
+    @NotNull
+    @Column(name = "usu_usuario", unique = true, nullable = false)
+   
     private String username;
 
     @Column(name = "usu_pass")
@@ -41,7 +49,7 @@ public class User {
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

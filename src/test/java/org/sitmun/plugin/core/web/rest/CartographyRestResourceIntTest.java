@@ -26,70 +26,64 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class CartographyRestResourceIntTest {
 
-    @Autowired
-    private MockMvc mvc;
-    
-    @Autowired
+	@Autowired
+	private MockMvc mvc;
+
+	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	TokenProvider tokenProvider;
-	
+
 	private String token;
 
-    private Cartography cartography;
-    
-    private Territory territory;
-    private static final String USERNAME = "admin";
-    private static final String TERRITORY_NAME = "Territory Name";
-    private static final String CARTOGRAPHY_NAME = "Cartographt Name";
-    private static final String NEW_TERRITORY_URI = "http://localhost/api/territories/1";
-    private static final String NEW_CARTOGRAPHY_URI = "http://localhost/api/cartographies/1";
+	private Cartography cartography;
 
-    @Before
-    public void init() {
-        territory = new Territory();
-        territory.setBlocked(false);
-        territory.setName(TERRITORY_NAME);
+	private Territory territory;
+	private static final String USERNAME = "admin";
+	private static final String TERRITORY_NAME = "Territory Name";
+	private static final String CARTOGRAPHY_NAME = "Cartographt Name";
+	private static final String NEW_TERRITORY_URI = "http://localhost/api/territories/1";
+	private static final String NEW_CARTOGRAPHY_URI = "http://localhost/api/cartographies/1";
 
-        cartography = new Cartography();
-        cartography.setName(CARTOGRAPHY_NAME);
-        
-		
+	@Before
+	public void init() {
+		territory = new Territory();
+		territory.setBlocked(false);
+		territory.setName(TERRITORY_NAME);
+
+		cartography = new Cartography();
+		cartography.setName(CARTOGRAPHY_NAME);
+
 		token = tokenProvider.createToken(USERNAME);
-    }
+	}
 
-    @Test
-    public void postTerritory() throws Exception {
+	@Test
+	public void postTerritory() throws Exception {
 
-        mvc.perform(post("/api/territories").header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(Util.convertObjectToJsonBytes(territory))
-        )
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", is(NEW_TERRITORY_URI)));
+		mvc.perform(
+				post("/api/territories").header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
+						.contentType(MediaType.APPLICATION_JSON_UTF8).content(Util.convertObjectToJsonBytes(territory)))
+				.andExpect(status().isCreated()).andExpect(header().string("Location", is(NEW_TERRITORY_URI)));
 
-        mvc.perform(get("/api/territories/1").header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
-                .andExpect(jsonPath("$.name", equalTo(TERRITORY_NAME)));
+		mvc.perform(get("/api/territories/1").header(SecurityConstants.HEADER_STRING,
+				SecurityConstants.TOKEN_PREFIX + token)).andExpect(status().isOk())
+				.andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
+				.andExpect(jsonPath("$.name", equalTo(TERRITORY_NAME)));
 
-    }
+	}
 
-    @Test
-    public void postCartograpy() throws Exception {
+	@Test
+	public void postCartograpy() throws Exception {
 
-        mvc.perform(post("/api/cartographies").header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(Util.convertObjectToJsonBytes(cartography))
-        )
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", is(NEW_CARTOGRAPHY_URI)));
+		mvc.perform(post("/api/cartographies")
+				.header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
+				.contentType(MediaType.APPLICATION_JSON_UTF8).content(Util.convertObjectToJsonBytes(cartography)))
+				.andExpect(status().isCreated()).andExpect(header().string("Location", is(NEW_CARTOGRAPHY_URI)));
 
-        mvc.perform(get("/api/cartographies/1").header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
-                .andExpect(jsonPath("$.name", equalTo(CARTOGRAPHY_NAME)));
-    }
+		mvc.perform(get("/api/cartographies/1").header(SecurityConstants.HEADER_STRING,
+				SecurityConstants.TOKEN_PREFIX + token)).andExpect(status().isOk())
+				.andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
+				.andExpect(jsonPath("$.name", equalTo(CARTOGRAPHY_NAME)));
+	}
 }
-
