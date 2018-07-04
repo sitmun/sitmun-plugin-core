@@ -5,6 +5,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sitmun.plugin.core.domain.Cartography;
 import org.sitmun.plugin.core.domain.Territory;
+import org.sitmun.plugin.core.repository.UserRepository;
+import org.sitmun.plugin.core.security.SecurityConstants;
+import org.sitmun.plugin.core.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,11 +28,19 @@ public class CartographyRestResourceIntTest {
 
     @Autowired
     private MockMvc mvc;
+    
+    @Autowired
+	UserRepository userRepository;
+	
+	@Autowired
+	TokenProvider tokenProvider;
+	
+	private String token;
 
     private Cartography cartography;
     
     private Territory territory;
-
+    private static final String USERNAME = "admin";
     private static final String TERRITORY_NAME = "Territory Name";
     private static final String CARTOGRAPHY_NAME = "Cartographt Name";
     private static final String NEW_TERRITORY_URI = "http://localhost/api/territories/1";
@@ -43,19 +54,22 @@ public class CartographyRestResourceIntTest {
 
         cartography = new Cartography();
         cartography.setName(CARTOGRAPHY_NAME);
+        
+		
+		token = tokenProvider.createToken(USERNAME);
     }
 
     @Test
     public void postTerritory() throws Exception {
 
-        mvc.perform(post("/api/territories")
+        mvc.perform(post("/api/territories").header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(Util.convertObjectToJsonBytes(territory))
         )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", is(NEW_TERRITORY_URI)));
 
-        mvc.perform(get("/api/territories/1"))
+        mvc.perform(get("/api/territories/1").header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
                 .andExpect(jsonPath("$.name", equalTo(TERRITORY_NAME)));
@@ -65,14 +79,14 @@ public class CartographyRestResourceIntTest {
     @Test
     public void postCartograpy() throws Exception {
 
-        mvc.perform(post("/api/cartographies")
+        mvc.perform(post("/api/cartographies").header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(Util.convertObjectToJsonBytes(cartography))
         )
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", is(NEW_CARTOGRAPHY_URI)));
 
-        mvc.perform(get("/api/cartographies/1"))
+        mvc.perform(get("/api/cartographies/1").header(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
                 .andExpect(jsonPath("$.name", equalTo(CARTOGRAPHY_NAME)));
