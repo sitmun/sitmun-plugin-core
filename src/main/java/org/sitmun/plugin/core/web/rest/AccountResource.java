@@ -48,7 +48,7 @@ public class AccountResource {
         if (optLogin.isPresent()) {                
 			Optional<User> user = userRepository.findOneByUsername(optLogin.get());
 			if (user.isPresent()) {
-				userService.updateUser(userDTO.getFirstName(), userDTO.getLastName());
+				userService.updateUser(user.get().getId(),userDTO.getFirstName(), userDTO.getLastName());
 				return ResponseEntity.ok().build();
 			} else {
 				return ResponseEntity.notFound().build();

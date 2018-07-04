@@ -64,7 +64,7 @@ public class UserResource {
 	
 	@PutMapping("/users/{id}")
 	public ResponseEntity<?> updateUser(@PathVariable Long id,@Valid @RequestBody UserDTO userDTO) {
-		Optional<User> optUser = userService.getUser(id);
+		Optional<User> optUser = userService.findUser(id);
 		if (optUser.isPresent()) {
 			userDTO.setId(optUser.get().getId());
 			Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
@@ -81,7 +81,7 @@ public class UserResource {
 
 	@GetMapping("/users/{id}")
 	public ResponseEntity<?> getUser(@PathVariable Long id) {
-		Optional<User> optUser = userService.getUser(id);
+		Optional<User> optUser = userService.findUser(id);
 		if (optUser.isPresent()) {
 			return ResponseEntity.ok(toResource(optUser.get()));
 		} else {
@@ -109,7 +109,7 @@ public class UserResource {
 	@PostMapping(path = "/users/{id}/change-password")
 	public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody PasswordDTO password,
 			PersistentEntityResourceAssembler assembler) {
-		Optional<User> optUser = userService.getUser(id);
+		Optional<User> optUser = userService.findUser(id);
 		if (optUser.isPresent()) {
 			userService.changeUserPassword(id, password.getPassword());
 

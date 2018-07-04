@@ -8,7 +8,6 @@ import java.util.Optional;
 
 import org.sitmun.plugin.core.domain.User;
 import org.sitmun.plugin.core.repository.UserRepository;
-import org.sitmun.plugin.core.security.SecurityUtils;
 import org.sitmun.plugin.core.service.dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -72,7 +71,7 @@ public class UserService implements UserDetailsService {
 
 	}
 
-	public Optional<User> getUser(Long id) {
+	public Optional<User> findUser(Long id) {
 		return Optional.of(applicationUserRepository.findOne(id));
 	}
 
@@ -82,14 +81,11 @@ public class UserService implements UserDetailsService {
 		applicationUserRepository.save(user);
 	}
 
-	public void updateUser(String firstName, String lastName) {
-		SecurityUtils.getCurrentUserLogin()
-        .flatMap(applicationUserRepository::findOneByUsername)
-        .ifPresent(user -> {
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            applicationUserRepository.save(user);
-        });
+	public void updateUser(Long id,String firstName, String lastName) {
+		User user = applicationUserRepository.findOne(id);		
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        applicationUserRepository.save(user);        
 	}
 
 	public List<User> findAllUsers() {
