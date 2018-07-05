@@ -41,7 +41,15 @@ public class UserResource {
     this.userService = userService;
   }
 
+  /**
+   * TODO: Replace User (persistent entity) with a simple POJO or DTO object (squid:S4684)
+   *
+   * @param user      a user
+   * @param assembler the resource assembler
+   * @return a response
+   */
   @PostMapping("/users")
+  @SuppressWarnings("squid:S4684")
   // @Secured(AuthoritiesConstants.ADMIN)
   public ResponseEntity<?> createUser(@Valid @RequestBody User user,
                                       PersistentEntityResourceAssembler assembler) {

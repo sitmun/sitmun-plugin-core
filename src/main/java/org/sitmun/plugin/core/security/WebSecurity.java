@@ -33,6 +33,10 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
     auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
   }
 
+  /**
+   * TODO: Activate Spring Security's CSRF protection
+   */
+  @SuppressWarnings("squid:S4502Spring")
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager(), tokenProvider);
