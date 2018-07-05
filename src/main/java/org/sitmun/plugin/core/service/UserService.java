@@ -21,16 +21,16 @@ import static java.util.Collections.emptyList;
 public class UserService implements UserDetailsService {
 
   private UserRepository applicationUserRepository;
-  private BCryptPasswordEncoder bCryptPasswordEncoder;
+  private BCryptPasswordEncoder bcryptPasswordEncoder;
 
-  public UserService(UserRepository applicationUserRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+  public UserService(UserRepository applicationUserRepository, BCryptPasswordEncoder bcryptPasswordEncoder) {
     super();
     this.applicationUserRepository = applicationUserRepository;
-    this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    this.bcryptPasswordEncoder = bcryptPasswordEncoder;
   }
 
   @Override
-  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+  public UserDetails loadUserByUsername(String username) {
     Optional<User> applicationUser = applicationUserRepository.findOneByUsername(username);
     if (!applicationUser.isPresent()) {
       throw new UsernameNotFoundException(username);
@@ -51,8 +51,9 @@ public class UserService implements UserDetailsService {
    */
 
   public User createUser(User user) {
-    if (user.getPassword() != null)
-      user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    if (user.getPassword() != null) {
+      user.setPassword(bcryptPasswordEncoder.encode(user.getPassword()));
+    }
     return applicationUserRepository.save(user);
   }
 
@@ -77,7 +78,7 @@ public class UserService implements UserDetailsService {
 
   public void changeUserPassword(Long id, String password) {
     User user = applicationUserRepository.findOne(id);
-    user.setPassword(bCryptPasswordEncoder.encode(password));
+    user.setPassword(bcryptPasswordEncoder.encode(password));
     applicationUserRepository.save(user);
   }
 
@@ -89,7 +90,7 @@ public class UserService implements UserDetailsService {
   }
 
   public List<User> findAllUsers() {
-    ArrayList<User> res = new ArrayList<User>();
+    ArrayList<User> res = new ArrayList<>();
     applicationUserRepository.findAll().forEach(res::add);
     return res;
   }

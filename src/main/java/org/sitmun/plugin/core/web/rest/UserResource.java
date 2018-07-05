@@ -5,7 +5,6 @@ import org.sitmun.plugin.core.service.UserService;
 import org.sitmun.plugin.core.service.dto.UserDTO;
 import org.sitmun.plugin.core.web.rest.dto.PasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -45,14 +44,12 @@ public class UserResource {
    * TODO: Replace User (persistent entity) with a simple POJO or DTO object (squid:S4684)
    *
    * @param user      a user
-   * @param assembler the resource assembler
    * @return a response
    */
   @PostMapping("/users")
   @SuppressWarnings("squid:S4684")
   // @Secured(AuthoritiesConstants.ADMIN)
-  public ResponseEntity<?> createUser(@Valid @RequestBody User user,
-                                      PersistentEntityResourceAssembler assembler) {
+  public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
     User result = userService.createUser(user);
     URI location = ServletUriComponentsBuilder
             .fromCurrentRequest().path("/{id}")
@@ -63,7 +60,7 @@ public class UserResource {
   }
 
   @PutMapping("/users/{id}")
-  public ResponseEntity<?> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+  public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
     Optional<User> optUser = userService.findUser(id);
     if (optUser.isPresent()) {
       userDTO.setId(optUser.get().getId());
@@ -80,7 +77,7 @@ public class UserResource {
   }
 
   @GetMapping("/users/{id}")
-  public ResponseEntity<?> getUser(@PathVariable Long id) {
+  public ResponseEntity<ResourceSupport> getUser(@PathVariable Long id) {
     Optional<User> optUser = userService.findUser(id);
     if (optUser.isPresent()) {
       return ResponseEntity.ok(toResource(optUser.get()));
@@ -114,8 +111,7 @@ public class UserResource {
   }
 
   @PostMapping(path = "/users/{id}/change-password")
-  public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody PasswordDTO password,
-                                          PersistentEntityResourceAssembler assembler) {
+  public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody PasswordDTO password) {
     Optional<User> optUser = userService.findUser(id);
     if (optUser.isPresent()) {
       userService.changeUserPassword(id, password.getPassword());

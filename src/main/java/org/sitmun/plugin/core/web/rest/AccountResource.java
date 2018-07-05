@@ -7,7 +7,6 @@ import org.sitmun.plugin.core.service.UserService;
 import org.sitmun.plugin.core.service.dto.UserDTO;
 import org.sitmun.plugin.core.web.rest.dto.PasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.rest.webmvc.PersistentEntityResourceAssembler;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Resource;
@@ -42,7 +41,7 @@ public class AccountResource {
 
   @PostMapping("")
   @ResponseBody
-  public ResponseEntity<?> saveAccount(@Valid @RequestBody UserDTO userDTO) {
+  public ResponseEntity<Void> saveAccount(@Valid @RequestBody UserDTO userDTO) {
     Optional<String> optLogin = SecurityUtils.getCurrentUserLogin();
     if (optLogin.isPresent()) {
       Optional<User> user = userRepository.findOneByUsername(optLogin.get());
@@ -60,7 +59,7 @@ public class AccountResource {
 
   @GetMapping("")
   @ResponseBody
-  public ResponseEntity<?> getAccount(PersistentEntityResourceAssembler assembler) {
+  public ResponseEntity<ResourceSupport> getAccount() {
     Optional<String> optLogin = SecurityUtils.getCurrentUserLogin();
     if (optLogin.isPresent()) {
       Optional<User> user = userRepository.findOneByUsername(optLogin.get());
@@ -85,7 +84,7 @@ public class AccountResource {
 
   @PostMapping(path = "/change-password")
   @ResponseBody
-  public ResponseEntity<?> changePassword(@RequestBody PasswordDTO password) {
+  public ResponseEntity<Void> changePassword(@RequestBody PasswordDTO password) {
     Optional<String> optLogin = SecurityUtils.getCurrentUserLogin();
     if (optLogin.isPresent()) {
       Optional<User> user = userRepository.findOneByUsername(optLogin.get());

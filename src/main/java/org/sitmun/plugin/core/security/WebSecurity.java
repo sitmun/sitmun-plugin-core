@@ -34,15 +34,20 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
   }
 
   /**
-   * TODO: Activate Spring Security's CSRF protection
+   * TODO: Activate Spring Security's CSRF protection if makes sense (squid:S4502)
    */
-  @SuppressWarnings("squid:S4502Spring")
+  @SuppressWarnings("squid:S4502")
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     JWTAuthenticationFilter jwtAuthenticationFilter = new JWTAuthenticationFilter(authenticationManager(), tokenProvider);
     jwtAuthenticationFilter.setFilterProcessesUrl("/api/authenticate");
-    http.cors().and().csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST, "/api/users").permitAll()
-            .antMatchers("/api/**").authenticated().and().addFilter(jwtAuthenticationFilter)
+    http.cors().and()
+            .csrf().disable()
+            .authorizeRequests()
+            .antMatchers(HttpMethod.POST, "/api/users").permitAll()
+            .antMatchers("/api/**").authenticated()
+            .and()
+            .addFilter(jwtAuthenticationFilter)
             .addFilter(new JWTAuthorizationFilter(authenticationManager(), tokenProvider))
             // this disables session creation on Spring Security
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
