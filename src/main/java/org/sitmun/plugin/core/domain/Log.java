@@ -1,148 +1,154 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.*;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 @Entity
-@Table(name="stm_log")
+@Table(name = "stm_log")
 public class Log {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="log_codigo")
-    private long id;
-    
-    @Column(name="log_tipo")
-    private String nombre;
-    
-    @Column(name="log_codusu")
-    private String codigoUsuario;
-    
-    @Column(name="log_codapp")
-    private String codigoAplicacion;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "log_codigo")
+  private long id;
 
-    @Column(name="log_codter")
-    private String codigoTerritorio;
-    
-    @Column(name="log_codtar")
-    private String codigoTarea;
+  @Column(name = "log_tipo")
+  private String nombre;
 
-    @Column(name="log_cont")
-    private String contenido;
-    
-    @Column(name="dca_f_ult")
-    private Date fecha;
+  @Column(name = "log_codusu")
+  private String codigoUsuario;
 
-    /**
-     * @return the id
-     */
-    public long getId() {
-        return id;
-    }
+  @Column(name = "log_codapp")
+  private String codigoAplicacion;
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
+  @Column(name = "log_codter")
+  private String codigoTerritorio;
 
-    /**
-     * @return the nombre
-     */
-    public String getNombre() {
-        return nombre;
-    }
+  @Column(name = "log_codtar")
+  private String codigoTarea;
 
-    /**
-     * @param nombre the nombre to set
-     */
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+  @Column(name = "log_cont")
+  private String contenido;
 
-    /**
-     * @return the codigoUsuario
-     */
-    public String getCodigoUsuario() {
-        return codigoUsuario;
-    }
+  @Column(name = "dca_f_ult")
+  private Date fecha;
 
-    /**
-     * @param codigoUsuario the codigoUsuario to set
-     */
-    public void setCodigoUsuario(String codigoUsuario) {
-        this.codigoUsuario = codigoUsuario;
-    }
+  /**
+   * @return the id
+   */
+  public long getId() {
+    return id;
+  }
 
-    /**
-     * @return the codigoAplicacion
-     */
-    public String getCodigoAplicacion() {
-        return codigoAplicacion;
-    }
+  /**
+   * @param id the id to set
+   */
+  public void setId(long id) {
+    this.id = id;
+  }
 
-    /**
-     * @param codigoAplicacion the codigoAplicacion to set
-     */
-    public void setCodigoAplicacion(String codigoAplicacion) {
-        this.codigoAplicacion = codigoAplicacion;
-    }
+  /**
+   * @return the nombre
+   */
+  public String getNombre() {
+    return nombre;
+  }
 
-    /**
-     * @return the codigoTerritorio
-     */
-    public String getCodigoTerritorio() {
-        return codigoTerritorio;
-    }
+  /**
+   * @param nombre the nombre to set
+   */
+  public void setNombre(String nombre) {
+    this.nombre = nombre;
+  }
 
-    /**
-     * @param codigoTerritorio the codigoTerritorio to set
-     */
-    public void setCodigoTerritorio(String codigoTerritorio) {
-        this.codigoTerritorio = codigoTerritorio;
-    }
+  /**
+   * @return the codigoUsuario
+   */
+  public String getCodigoUsuario() {
+    return codigoUsuario;
+  }
 
-    /**
-     * @return the codigoTarea
-     */
-    public String getCodigoTarea() {
-        return codigoTarea;
-    }
+  /**
+   * @param codigoUsuario the codigoUsuario to set
+   */
+  public void setCodigoUsuario(String codigoUsuario) {
+    this.codigoUsuario = codigoUsuario;
+  }
 
-    /**
-     * @param codigoTarea the codigoTarea to set
-     */
-    public void setCodigoTarea(String codigoTarea) {
-        this.codigoTarea = codigoTarea;
-    }
+  /**
+   * @return the codigoAplicacion
+   */
+  public String getCodigoAplicacion() {
+    return codigoAplicacion;
+  }
 
-    /**
-     * @return the contenido
-     */
-    public String getContenido() {
-        return contenido;
-    }
+  /**
+   * @param codigoAplicacion the codigoAplicacion to set
+   */
+  public void setCodigoAplicacion(String codigoAplicacion) {
+    this.codigoAplicacion = codigoAplicacion;
+  }
 
-    /**
-     * @param contenido the contenido to set
-     */
-    public void setContenido(String contenido) {
-        this.contenido = contenido;
-    }
+  /**
+   * @return the codigoTerritorio
+   */
+  public String getCodigoTerritorio() {
+    return codigoTerritorio;
+  }
 
-    /**
-     * @return the fecha
-     */
-    public Date getFecha() {
-        return fecha;
-    }
+  /**
+   * @param codigoTerritorio the codigoTerritorio to set
+   */
+  public void setCodigoTerritorio(String codigoTerritorio) {
+    this.codigoTerritorio = codigoTerritorio;
+  }
 
-    /**
-     * @param fecha the fecha to set
-     */
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
-    
+  /**
+   * @return the codigoTarea
+   */
+  public String getCodigoTarea() {
+    return codigoTarea;
+  }
+
+  /**
+   * @param codigoTarea the codigoTarea to set
+   */
+  public void setCodigoTarea(String codigoTarea) {
+    this.codigoTarea = codigoTarea;
+  }
+
+  /**
+   * @return the contenido
+   */
+  public String getContenido() {
+    return contenido;
+  }
+
+  /**
+   * @param contenido the contenido to set
+   */
+  public void setContenido(String contenido) {
+    this.contenido = contenido;
+  }
+
+  /**
+   * @return the fecha
+   */
+  public Date getFecha() {
+    return fecha;
+  }
+
+  /**
+   * @param fecha the fecha to set
+   */
+  public void setFecha(Date fecha) {
+    this.fecha = fecha;
+  }
+
 }

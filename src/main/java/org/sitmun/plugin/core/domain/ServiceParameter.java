@@ -1,72 +1,79 @@
 package org.sitmun.plugin.core.domain;
 
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="stm_paramser")
+@Table(name = "stm_paramser")
 public class ServiceParameter {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="pse_codigo")
-    private long id;
-    
-    @Column(name="pse_nombre")
-    private String name;
-    
-    @Column(name="pse_valor")
-    private String value;
-    
-    @Column(name="pse_tipo")
-    private String type;
-    
-    @ManyToOne
-    @NotNull
-    //@OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="pse_codser")
-    private Service service;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "pse_codigo")
+  private long id;
 
-	public long getId() {
-		return id;
-	}
+  @Column(name = "pse_nombre")
+  private String name;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  @Column(name = "pse_valor")
+  private String value;
 
-	public String getName() {
-		return name;
-	}
+  @Column(name = "pse_tipo")
+  private String type;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @ManyToOne
+  @NotNull
+  //@OnDelete(action = OnDeleteAction.CASCADE)
+  @JoinColumn(name = "pse_codser")
+  private Service service;
 
-	public String getValue() {
-		return value;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public String getType() {
-		return type;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public Service getService() {
-		return service;
-	}
+  public String getValue() {
+    return value;
+  }
 
-	public void setService(Service service) {
-		this.service = service;
-	}
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-      
- }
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public Service getService() {
+    return service;
+  }
+
+  public void setService(Service service) {
+    this.service = service;
+  }
+
+
+}

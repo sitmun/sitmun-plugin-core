@@ -8,5 +8,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "task-availabilities", path = "task-availabilities")
 public interface TaskAvailabilityRepository extends PagingAndSortingRepository<TaskAvailability, Long> {
 
-    
+
 }

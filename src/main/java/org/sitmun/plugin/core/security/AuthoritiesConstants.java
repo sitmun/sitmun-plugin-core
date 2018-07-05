@@ -5,8 +5,8 @@ package org.sitmun.plugin.core.security;
  */
 public final class AuthoritiesConstants {
 
-    public static final String ANONYMOUS = "ROLE_ANONYMOUS";
+  public static final String ANONYMOUS = "ROLE_ANONYMOUS";
 
-    private AuthoritiesConstants() {
-    }
+  private AuthoritiesConstants() {
+  }
 }

@@ -1,4 +1,3 @@
-
 package org.sitmun.plugin.core.repository;
 
 import org.junit.Before;
@@ -19,48 +18,48 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 @DataJpaTest
 public class TerritoryRepositoryTest {
 
-    @Autowired
-    private TerritoryRepository territoryRepository;
+  @Autowired
+  private TerritoryRepository territoryRepository;
 
-    @Autowired
-    private TerritoryTypeRepository territoryTypeRepository;
+  @Autowired
+  private TerritoryTypeRepository territoryTypeRepository;
 
-    private Territory territory;
+  private Territory territory;
 
-    @Before
-    public void init() {
-        TerritoryType type = new TerritoryType();
-        type.setName("tipo Territorio 1");
-        territoryTypeRepository.save(type);
+  @Before
+  public void init() {
+    TerritoryType type = new TerritoryType();
+    type.setName("tipo Territorio 1");
+    territoryTypeRepository.save(type);
 
-        territory = new Territory();
-        territory.setName("Admin");
-        territory.setScope(null);
-        territory.setBlocked(false);
-        territory.setAddress(null);
-        territory.setEmail("email@email.org");
-        territory.setExt(null);
-        territory.setCreatedDate(new Date());
-        territory.setLogo(null);
-        territory.setMembers(null);
-        territory.setOrganizationName("Test");
-        territory.setComments(null);
-        territory.setType(type);
-    }
+    territory = new Territory();
+    territory.setName("Admin");
+    territory.setScope(null);
+    territory.setBlocked(false);
+    territory.setAddress(null);
+    territory.setEmail("email@email.org");
+    territory.setExt(null);
+    territory.setCreatedDate(new Date());
+    territory.setLogo(null);
+    territory.setMembers(null);
+    territory.setOrganizationName("Test");
+    territory.setComments(null);
+    territory.setType(type);
+  }
 
-    @Test
-    public void saveTerritory() {
-        assumeThat(territoryRepository.findOne(territory.getId())).isNull();
-        territoryRepository.save(territory);
-        assertThat(territory.getId()).isNotZero();
-    }
+  @Test
+  public void saveTerritory() {
+    assumeThat(territoryRepository.findOne(territory.getId())).isNull();
+    territoryRepository.save(territory);
+    assertThat(territory.getId()).isNotZero();
+  }
 
-    @Test
-    public void findOneTerritoryById() {
-        assumeThat(territoryRepository.findOne(territory.getId())).isNull();
-        territoryRepository.save(territory);
-        assumeThat(territory.getId()).isNotZero();
+  @Test
+  public void findOneTerritoryById() {
+    assumeThat(territoryRepository.findOne(territory.getId())).isNull();
+    territoryRepository.save(territory);
+    assumeThat(territory.getId()).isNotZero();
 
-        assertThat(territoryRepository.findOne(territory.getId())).isNotNull();
-    }
+    assertThat(territoryRepository.findOne(territory.getId())).isNotNull();
+  }
 }

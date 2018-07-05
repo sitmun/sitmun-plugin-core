@@ -1,303 +1,313 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 @Entity
-@Table(name="stm_carto")
+@Table(name = "stm_carto")
 public class Cartography {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="car_codigo")
-    private long id;
-        
-    @Column(name="car_nombre")
-    private String name;    
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "car_codigo")
+  private long id;
 
-    @Column(name="car_tipo")
-    private String type;
-    
-    @Column(name="car_visible")
-    private Boolean visible;
-    
-    @Column(name="car_transp")
-    private Integer transparency;
-    
-    @Column(name="car_queryabl")
-    private Boolean queryable;
-    
-    @Column(name="car_queryact")
-    private Boolean queryAct;
-    
-    @Column(name="car_querylay")
-    private Boolean queryLay;
-    
-    @Column(name="car_f_alta")
-    private Date createdDate;
-    
-    @Column(name="car_orden")
-    private Integer order;
-    
-    @Column(name="car_esc_min")
-    private Integer minimumScale;
-    
-    @Column(name="car_esc_max")
-    private Integer maximumScale;
-    
-    //Nombre de las capa
-    @Column(name="car_capas")
-    private String layers;
-    
-    @ManyToOne
-    @JoinColumn(name="car_codser")
-    private  Service service;
-    
-    @ManyToOne
-    @JoinColumn(name="car_codcon")
-    private  Connection connection;
-    
-    @OneToMany(mappedBy="cartography", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<CartographyAvailability> availabilities = new HashSet<>();
+  @Column(name = "car_nombre")
+  private String name;
 
-    //CAR_SELECTABL   
-    @Column(name="car_selectable")
-    private Boolean selectable;
-    
-    //CAR_SELECTLAY
-    @Column(name="car_seleclay")
-    private String selectionLayer;  
-    
-    //CAR_CODSERSEL
-    @ManyToOne
-    @JoinColumn(name="car_codsersel")
-    private  Service selectionService;
+  @Column(name = "car_tipo")
+  private String type;
 
-    //CAR_LEYENDTIP
-    @Column(name="car_leyendtip")
-    private String legendTip;
-    
-    //CAR_LEYENDURL
-    @Column(name="car_leyendurl")
-    private String legendUrl;
-    
-    //CAR_EDITABLE 
-    @Column(name="car_editable")
-    private Boolean editable;
+  @Column(name = "car_visible")
+  private Boolean visible;
 
-    //CAR_METAURL
-    @Column(name="car_metaurl")
-    private String metadataUrl;    
+  @Column(name = "car_transp")
+  private Integer transparency;
 
-    //CAR_TEMATIZABLE
-    @Column(name="car_tematizable")
-    private Boolean themeable;
-    
-    //CAR_TIPOGEOM "POLYGON",...
-    @Column(name="car_tipogeom")
-    private String geometryType;
+  @Column(name = "car_queryabl")
+  private Boolean queryable;
 
-	public long getId() {
-		return id;
-	}
+  @Column(name = "car_queryact")
+  private Boolean queryAct;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  @Column(name = "car_querylay")
+  private Boolean queryLay;
 
-	public String getName() {
-		return name;
-	}
+  @Column(name = "car_f_alta")
+  private Date createdDate;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @Column(name = "car_orden")
+  private Integer order;
 
-	public String getType() {
-		return type;
-	}
+  @Column(name = "car_esc_min")
+  private Integer minimumScale;
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  @Column(name = "car_esc_max")
+  private Integer maximumScale;
 
-	public Boolean getVisible() {
-		return visible;
-	}
+  //Nombre de las capa
+  @Column(name = "car_capas")
+  private String layers;
 
-	public void setVisible(Boolean visible) {
-		this.visible = visible;
-	}
+  @ManyToOne
+  @JoinColumn(name = "car_codser")
+  private Service service;
 
-	public Integer getTransparency() {
-		return transparency;
-	}
+  @ManyToOne
+  @JoinColumn(name = "car_codcon")
+  private Connection connection;
 
-	public void setTransparency(Integer transparency) {
-		this.transparency = transparency;
-	}
+  @OneToMany(mappedBy = "cartography", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<CartographyAvailability> availabilities = new HashSet<>();
 
-	public Boolean getQueryable() {
-		return queryable;
-	}
+  //CAR_SELECTABL
+  @Column(name = "car_selectable")
+  private Boolean selectable;
 
-	public void setQueryable(Boolean queryable) {
-		this.queryable = queryable;
-	}
+  //CAR_SELECTLAY
+  @Column(name = "car_seleclay")
+  private String selectionLayer;
 
-	public Boolean getQueryAct() {
-		return queryAct;
-	}
+  //CAR_CODSERSEL
+  @ManyToOne
+  @JoinColumn(name = "car_codsersel")
+  private Service selectionService;
 
-	public void setQueryAct(Boolean queryAct) {
-		this.queryAct = queryAct;
-	}
+  //CAR_LEYENDTIP
+  @Column(name = "car_leyendtip")
+  private String legendTip;
 
-	public Boolean getQueryLay() {
-		return queryLay;
-	}
+  //CAR_LEYENDURL
+  @Column(name = "car_leyendurl")
+  private String legendUrl;
 
-	public void setQueryLay(Boolean queryLay) {
-		this.queryLay = queryLay;
-	}
+  //CAR_EDITABLE
+  @Column(name = "car_editable")
+  private Boolean editable;
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+  //CAR_METAURL
+  @Column(name = "car_metaurl")
+  private String metadataUrl;
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+  //CAR_TEMATIZABLE
+  @Column(name = "car_tematizable")
+  private Boolean themeable;
 
-	public Integer getOrder() {
-		return order;
-	}
+  //CAR_TIPOGEOM "POLYGON",...
+  @Column(name = "car_tipogeom")
+  private String geometryType;
 
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public Integer getMinimumScale() {
-		return minimumScale;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setMinimumScale(Integer minimumScale) {
-		this.minimumScale = minimumScale;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public Integer getMaximumScale() {
-		return maximumScale;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setMaximumScale(Integer maximumScale) {
-		this.maximumScale = maximumScale;
-	}
+  public String getType() {
+    return type;
+  }
 
-	public String getLayers() {
-		return layers;
-	}
+  public void setType(String type) {
+    this.type = type;
+  }
 
-	public void setLayers(String layers) {
-		this.layers = layers;
-	}
+  public Boolean getVisible() {
+    return visible;
+  }
 
-	public Service getService() {
-		return service;
-	}
+  public void setVisible(Boolean visible) {
+    this.visible = visible;
+  }
 
-	public void setService(Service service) {
-		this.service = service;
-	}
+  public Integer getTransparency() {
+    return transparency;
+  }
 
-	public Connection getConnection() {
-		return connection;
-	}
+  public void setTransparency(Integer transparency) {
+    this.transparency = transparency;
+  }
 
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
+  public Boolean getQueryable() {
+    return queryable;
+  }
 
-	public Set<CartographyAvailability> getAvailabilities() {
-		return availabilities;
-	}
+  public void setQueryable(Boolean queryable) {
+    this.queryable = queryable;
+  }
 
-	public void setAvailabilities(Set<CartographyAvailability> availabilities) {
-		this.availabilities = availabilities;
-	}
+  public Boolean getQueryAct() {
+    return queryAct;
+  }
 
-	public Boolean getSelectable() {
-		return selectable;
-	}
+  public void setQueryAct(Boolean queryAct) {
+    this.queryAct = queryAct;
+  }
 
-	public void setSelectable(Boolean selectable) {
-		this.selectable = selectable;
-	}
+  public Boolean getQueryLay() {
+    return queryLay;
+  }
 
-	public String getSelectionLayer() {
-		return selectionLayer;
-	}
+  public void setQueryLay(Boolean queryLay) {
+    this.queryLay = queryLay;
+  }
 
-	public void setSelectionLayer(String selectionLayer) {
-		this.selectionLayer = selectionLayer;
-	}
+  public Date getCreatedDate() {
+    return createdDate;
+  }
 
-	public Service getSelectionService() {
-		return selectionService;
-	}
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
 
-	public void setSelectionService(Service selectionService) {
-		this.selectionService = selectionService;
-	}
+  public Integer getOrder() {
+    return order;
+  }
 
-	public String getLegendTip() {
-		return legendTip;
-	}
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
 
-	public void setLegendTip(String legendTip) {
-		this.legendTip = legendTip;
-	}
+  public Integer getMinimumScale() {
+    return minimumScale;
+  }
 
-	public String getLegendUrl() {
-		return legendUrl;
-	}
+  public void setMinimumScale(Integer minimumScale) {
+    this.minimumScale = minimumScale;
+  }
 
-	public void setLegendUrl(String legendUrl) {
-		this.legendUrl = legendUrl;
-	}
+  public Integer getMaximumScale() {
+    return maximumScale;
+  }
 
-	public Boolean getEditable() {
-		return editable;
-	}
+  public void setMaximumScale(Integer maximumScale) {
+    this.maximumScale = maximumScale;
+  }
 
-	public void setEditable(Boolean editable) {
-		this.editable = editable;
-	}
+  public String getLayers() {
+    return layers;
+  }
 
-	public String getMetadataUrl() {
-		return metadataUrl;
-	}
+  public void setLayers(String layers) {
+    this.layers = layers;
+  }
 
-	public void setMetadataUrl(String metadataUrl) {
-		this.metadataUrl = metadataUrl;
-	}
+  public Service getService() {
+    return service;
+  }
 
-	public Boolean getThemeable() {
-		return themeable;
-	}
+  public void setService(Service service) {
+    this.service = service;
+  }
 
-	public void setThemeable(Boolean themeable) {
-		this.themeable = themeable;
-	}
+  public Connection getConnection() {
+    return connection;
+  }
 
-	public String getGeometryType() {
-		return geometryType;
-	}
+  public void setConnection(Connection connection) {
+    this.connection = connection;
+  }
 
-	public void setGeometryType(String geometryType) {
-		this.geometryType = geometryType;
-	}
+  public Set<CartographyAvailability> getAvailabilities() {
+    return availabilities;
+  }
 
-       
+  public void setAvailabilities(Set<CartographyAvailability> availabilities) {
+    this.availabilities = availabilities;
+  }
+
+  public Boolean getSelectable() {
+    return selectable;
+  }
+
+  public void setSelectable(Boolean selectable) {
+    this.selectable = selectable;
+  }
+
+  public String getSelectionLayer() {
+    return selectionLayer;
+  }
+
+  public void setSelectionLayer(String selectionLayer) {
+    this.selectionLayer = selectionLayer;
+  }
+
+  public Service getSelectionService() {
+    return selectionService;
+  }
+
+  public void setSelectionService(Service selectionService) {
+    this.selectionService = selectionService;
+  }
+
+  public String getLegendTip() {
+    return legendTip;
+  }
+
+  public void setLegendTip(String legendTip) {
+    this.legendTip = legendTip;
+  }
+
+  public String getLegendUrl() {
+    return legendUrl;
+  }
+
+  public void setLegendUrl(String legendUrl) {
+    this.legendUrl = legendUrl;
+  }
+
+  public Boolean getEditable() {
+    return editable;
+  }
+
+  public void setEditable(Boolean editable) {
+    this.editable = editable;
+  }
+
+  public String getMetadataUrl() {
+    return metadataUrl;
+  }
+
+  public void setMetadataUrl(String metadataUrl) {
+    this.metadataUrl = metadataUrl;
+  }
+
+  public Boolean getThemeable() {
+    return themeable;
+  }
+
+  public void setThemeable(Boolean themeable) {
+    this.themeable = themeable;
+  }
+
+  public String getGeometryType() {
+    return geometryType;
+  }
+
+  public void setGeometryType(String geometryType) {
+    this.geometryType = geometryType;
+  }
+
+
 }

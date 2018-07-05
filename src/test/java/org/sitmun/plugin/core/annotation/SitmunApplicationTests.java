@@ -5,13 +5,13 @@ import org.springframework.boot.SpringApplication;
 
 public class SitmunApplicationTests {
 
-    @Test
-    public void runStimunApplication() {
-        SpringApplication.run(Application.class);
-    }
+  @Test
+  public void runStimunApplication() {
+    SpringApplication.run(Application.class);
+  }
 
-    @SitmunApplication
-    public static class Application {
+  @SitmunApplication
+  public static class Application {
 
-    }
+  }
 }

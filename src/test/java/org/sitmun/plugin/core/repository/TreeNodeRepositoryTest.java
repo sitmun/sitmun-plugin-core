@@ -15,30 +15,30 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 @DataJpaTest
 public class TreeNodeRepositoryTest {
 
-    @Autowired
-    private TreeNodeRepository treeNodeRepository;
+  @Autowired
+  private TreeNodeRepository treeNodeRepository;
 
-    private TreeNode treeNode;
+  private TreeNode treeNode;
 
-    @Before
-    public void init() {
-        treeNode = new TreeNode();
-    }
+  @Before
+  public void init() {
+    treeNode = new TreeNode();
+  }
 
-    @Test
-    public void saveTreeNode() {
-        assumeThat(treeNodeRepository.findOne(treeNode.getId())).isNull();
-        treeNodeRepository.save(treeNode);
-        assertThat(treeNode.getId()).isNotZero();
-    }
+  @Test
+  public void saveTreeNode() {
+    assumeThat(treeNodeRepository.findOne(treeNode.getId())).isNull();
+    treeNodeRepository.save(treeNode);
+    assertThat(treeNode.getId()).isNotZero();
+  }
 
-    @Test
-    public void findOneTreeNodeById() {
-        assumeThat(treeNodeRepository.findOne(treeNode.getId())).isNull();
-        treeNodeRepository.save(treeNode);
-        assumeThat(treeNode.getId()).isNotZero();
+  @Test
+  public void findOneTreeNodeById() {
+    assumeThat(treeNodeRepository.findOne(treeNode.getId())).isNull();
+    treeNodeRepository.save(treeNode);
+    assumeThat(treeNode.getId()).isNotZero();
 
-        assertThat(treeNodeRepository.findOne(treeNode.getId())).isNotNull();
-    }
+    assertThat(treeNodeRepository.findOne(treeNode.getId())).isNotNull();
+  }
 
 }

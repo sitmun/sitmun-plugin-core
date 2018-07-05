@@ -6,6 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "service-parameters", path = "service-parameters")
 public interface ServiceParameterRepository extends PagingAndSortingRepository<ServiceParameter, Long> {
-  
+
 
 }

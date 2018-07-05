@@ -15,31 +15,31 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 @DataJpaTest
 public class ServiceRepositoryTest {
 
-    @Autowired
-    private ServiceRepository serviceRepository;
+  @Autowired
+  private ServiceRepository serviceRepository;
 
-    private Service service;
+  private Service service;
 
-    @Before
-    public void init() {
-        service = new Service();
+  @Before
+  public void init() {
+    service = new Service();
 
-    }
+  }
 
-    @Test
-    public void saveService() {
-        assumeThat(serviceRepository.findOne(service.getId())).isNull();
-        serviceRepository.save(service);
-        assertThat(service.getId()).isNotZero();
-    }
+  @Test
+  public void saveService() {
+    assumeThat(serviceRepository.findOne(service.getId())).isNull();
+    serviceRepository.save(service);
+    assertThat(service.getId()).isNotZero();
+  }
 
-    @Test
-    public void findOneServiceById() {
-        assumeThat(serviceRepository.findOne(service.getId())).isNull();
-        serviceRepository.save(service);
-        assumeThat(service.getId()).isNotZero();
+  @Test
+  public void findOneServiceById() {
+    assumeThat(serviceRepository.findOne(service.getId())).isNull();
+    serviceRepository.save(service);
+    assumeThat(service.getId()).isNotZero();
 
-        assertThat(serviceRepository.findOne(service.getId())).isNotNull();
-    }
+    assertThat(serviceRepository.findOne(service.getId())).isNotNull();
+  }
 
 }

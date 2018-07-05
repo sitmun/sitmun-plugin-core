@@ -7,6 +7,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "user-configurations", path = "user-configurations")
 public interface UserConfigurationRepository extends PagingAndSortingRepository<UserConfiguration, Long> {
 
-    
 
 }

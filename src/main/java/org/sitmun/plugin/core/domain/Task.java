@@ -1,120 +1,129 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 @Entity
-@Table(name="stm_tarea")
+@Table(name = "stm_tarea")
 public class Task {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="tar_codigo")
-    private long id;
-    
-    @Column(name="tar_nombre")
-    private String name;
-    
-    @Column(name="tar_orden")
-    private Integer order;
-    
-    
-    @Column(name="tar_f_alta")
-    private Date createdDate;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "tar_codigo")
+  private long id;
 
-    @ManyToOne
-    @JoinColumn(name="tar_codcon")
-    private Connection connection;
-    
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "stm_roltar", joinColumns = @JoinColumn(name = "rta_codrol"), inverseJoinColumns = @JoinColumn(name = "rta_codtar"))            
-    private Set<Role> roles;
-    
-    @OneToMany(mappedBy="task", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<TaskAvailability> availabilities = new HashSet<>();    
-    
-    public long getId() {
-		return id;
-	}
+  @Column(name = "tar_nombre")
+  private String name;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  @Column(name = "tar_orden")
+  private Integer order;
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @Column(name = "tar_f_alta")
+  private Date createdDate;
 
-	public Integer getOrder() {
-		return order;
-	}
+  @ManyToOne
+  @JoinColumn(name = "tar_codcon")
+  private Connection connection;
 
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
+  @ManyToMany(cascade = CascadeType.ALL)
+  @JoinTable(name = "stm_roltar", joinColumns = @JoinColumn(name = "rta_codrol"), inverseJoinColumns = @JoinColumn(name = "rta_codtar"))
+  private Set<Role> roles;
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+  @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<TaskAvailability> availabilities = new HashSet<>();
+  @ManyToOne
+  @JoinColumn(name = "tar_codgta")
+  private TaskGroup group;
+  @ManyToOne
+  @JoinColumn(name = "tar_codtta")
+  private TaskType type;
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public Connection getConnection() {
-		return connection;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
-	}
+  public Integer getOrder() {
+    return order;
+  }
 
-	public Set<TaskAvailability> getAvailabilities() {
-		return availabilities;
-	}
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
 
-	public void setAvailabilities(Set<TaskAvailability> availabilities) {
-		this.availabilities = availabilities;
-	}
+  public Date getCreatedDate() {
+    return createdDate;
+  }
 
-	public TaskGroup getGroup() {
-		return group;
-	}
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
 
-	public void setGroup(TaskGroup group) {
-		this.group = group;
-	}
+  public Connection getConnection() {
+    return connection;
+  }
 
-	public TaskType getType() {
-		return type;
-	}
+  public void setConnection(Connection connection) {
+    this.connection = connection;
+  }
 
-	public void setType(TaskType type) {
-		this.type = type;
-	}
+  public Set<Role> getRoles() {
+    return roles;
+  }
 
-	@ManyToOne
-    @JoinColumn(name="tar_codgta")
-    private TaskGroup group;
-    
-    @ManyToOne
-    @JoinColumn(name="tar_codtta")
-    private TaskType type;
+  public void setRoles(Set<Role> roles) {
+    this.roles = roles;
+  }
 
+  public Set<TaskAvailability> getAvailabilities() {
+    return availabilities;
+  }
+
+  public void setAvailabilities(Set<TaskAvailability> availabilities) {
+    this.availabilities = availabilities;
+  }
+
+  public TaskGroup getGroup() {
+    return group;
+  }
+
+  public void setGroup(TaskGroup group) {
+    this.group = group;
+  }
+
+  public TaskType getType() {
+    return type;
+  }
+
+  public void setType(TaskType type) {
+    this.type = type;
+  }
 
 
 }

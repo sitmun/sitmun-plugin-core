@@ -7,6 +7,7 @@ apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
+apply plugin: 'checkstyle'
 
 group = 'org.sitmun'
 version = '0.1.0-SNAPSHOT'
@@ -56,6 +57,17 @@ sonarqube {
         property 'sonar.host.url', 'https://sonarcloud.io'
         property 'sonar.organization', 'sitmun'     
     }
+}
+
+checkstyle {
+    toolVersion '8.11'
+    configFile file("config/checkstyle/checkstyle.xml")
+}
+checkstyleMain {
+    source ='src/main/java'
+}
+checkstyleTest {
+    source ='src/test/java'
 }
 
 task install(dependsOn: 'publishToMavenLocal')

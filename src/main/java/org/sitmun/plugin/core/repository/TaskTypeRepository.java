@@ -6,6 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "task-types", path = "task-types")
 public interface TaskTypeRepository extends PagingAndSortingRepository<TaskType, Long> {
-  
+
 
 }

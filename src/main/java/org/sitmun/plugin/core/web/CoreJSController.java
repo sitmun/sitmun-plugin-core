@@ -8,9 +8,9 @@ import org.webjars.RequireJS;
 @Controller
 @RequestMapping("app")
 public class CoreJSController {
-    @ResponseBody
-    @RequestMapping(value = "config", produces = "application/javascript")
-    public String webjarjs() {
-        return RequireJS.getSetupJavaScript("/webjars/");
-    }
+  @ResponseBody
+  @RequestMapping(value = "config", produces = "application/javascript")
+  public String webjarjs() {
+    return RequireJS.getSetupJavaScript("/webjars/");
+  }
 }

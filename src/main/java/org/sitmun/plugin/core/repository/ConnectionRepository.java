@@ -7,6 +7,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "connections", path = "connections")
 public interface ConnectionRepository extends PagingAndSortingRepository<Connection, Long> {
 
-    
 
 }

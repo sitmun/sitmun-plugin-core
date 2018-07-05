@@ -10,5 +10,4 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface AplicacionRepository extends PagingAndSortingRepository<Application, Long> {
 
 
-
 }

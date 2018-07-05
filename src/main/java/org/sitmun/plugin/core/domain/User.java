@@ -1,128 +1,132 @@
-
 package org.sitmun.plugin.core.domain;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.Identifiable;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 @Entity
 @Table(name = "stm_usuario")
-public class User implements Identifiable<Long>{
+public class User implements Identifiable<Long> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "usu_codigo")
-    private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "usu_codigo")
+  private long id;
 
-    @NotNull
-    @Column(name = "usu_usuario", unique = true, nullable = false)
-   
-    private String username;
+  @NotNull
+  @Column(name = "usu_usuario", unique = true, nullable = false)
 
-    @Column(name = "usu_pass")
-    private String password;
+  private String username;
 
-    @Column(name = "usu_nombre")
-    private String firstName;
+  @Column(name = "usu_pass")
+  private String password;
 
-    @Column(name = "usu_apellido")
-    private String lastName;
+  @Column(name = "usu_nombre")
+  private String firstName;
 
-    @Column(name = "usu_adm")
-    private Boolean administrator;
+  @Column(name = "usu_apellido")
+  private String lastName;
 
-    @Column(name = "usu_bloq")
-    private Boolean blocked;
+  @Column(name = "usu_adm")
+  private Boolean administrator;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<UserPosition> positions = new HashSet<>();
+  @Column(name = "usu_bloq")
+  private Boolean blocked;
 
-    @OneToMany(mappedBy="user", cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<UserConfiguration> permissions = new HashSet<>();
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<UserPosition> positions = new HashSet<>();
 
-    /**
-     * @return the id
-     */
-    public Long getId() {
-        return id;
-    }
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<UserConfiguration> permissions = new HashSet<>();
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
+  /**
+   * @return the id
+   */
+  public Long getId() {
+    return id;
+  }
 
-	public String getUsername() {
-		return username;
-	}
+  /**
+   * @param id the id to set
+   */
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+  public String getUsername() {
+    return username;
+  }
 
-	public String getPassword() {
-		return password;
-	}
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
+  public String getPassword() {
+    return password;
+  }
 
-	public String getFirstName() {
-		return firstName;
-	}
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  public String getFirstName() {
+    return firstName;
+  }
 
-	public String getLastName() {
-		return lastName;
-	}
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  public String getLastName() {
+    return lastName;
+  }
 
-	public Boolean getAdministrator() {
-		return administrator;
-	}
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-	public void setAdministrator(Boolean administrator) {
-		this.administrator = administrator;
-	}
+  public Boolean getAdministrator() {
+    return administrator;
+  }
 
-	public Boolean getBlocked() {
-		return blocked;
-	}
+  public void setAdministrator(Boolean administrator) {
+    this.administrator = administrator;
+  }
 
-	public void setBlocked(Boolean blocked) {
-		this.blocked = blocked;
-	}
+  public Boolean getBlocked() {
+    return blocked;
+  }
 
-	public Set<UserPosition> getPositions() {
-		return positions;
-	}
+  public void setBlocked(Boolean blocked) {
+    this.blocked = blocked;
+  }
 
-	public void setPositions(Set<UserPosition> positions) {
-		this.positions = positions;
-	}
+  public Set<UserPosition> getPositions() {
+    return positions;
+  }
 
-	public Set<UserConfiguration> getPermissions() {
-		return permissions;
-	}
+  public void setPositions(Set<UserPosition> positions) {
+    this.positions = positions;
+  }
 
-	public void setPermissions(Set<UserConfiguration> permissions) {
-		this.permissions = permissions;
-	}
+  public Set<UserConfiguration> getPermissions() {
+    return permissions;
+  }
 
-    
+  public void setPermissions(Set<UserConfiguration> permissions) {
+    this.permissions = permissions;
+  }
+
+
 }

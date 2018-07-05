@@ -5,11 +5,37 @@ import org.springframework.hateoas.Identifiable;
 import org.springframework.hateoas.core.Relation;
 
 @Relation(value = "user", collectionRelation = "users")
-public class UserDTO implements Identifiable<Long>{
+public class UserDTO implements Identifiable<Long> {
+
+	private long id;
+	private String username;
+	private String firstName;
+	private String lastName;
+	private Boolean administrator;
+	private Boolean blocked;
 
 	public UserDTO() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+
+	public UserDTO(User user) {
+		this.id = user.getId();
+
+		this.username = user.getUsername();
+
+		this.firstName = user.getFirstName();
+
+		this.lastName = user.getLastName();
+
+		this.administrator = user.getAdministrator();
+
+		this.blocked = user.getBlocked();
+/*
+		this.positions = user.getPositions();
+
+		this.permissions = user.getPermissions();
+		*/
 	}
 
 	public Long getId() {
@@ -59,39 +85,6 @@ public class UserDTO implements Identifiable<Long>{
 	public void setBlocked(Boolean blocked) {
 		this.blocked = blocked;
 	}
-
-	
-
-	public UserDTO(User user) {
-		this.id = user.getId();
-
-		this.username = user.getUsername();
-
-		this.firstName = user.getFirstName();
-
-		this.lastName = user.getLastName();
-
-		this.administrator = user.getAdministrator();
-
-		this.blocked = user.getBlocked();
-/*
-		this.positions = user.getPositions();
-
-		this.permissions = user.getPermissions();
-		*/
-	}
-
-	private long id;
-
-	private String username;
-
-	private String firstName;
-
-	private String lastName;
-
-	private Boolean administrator;
-
-	private Boolean blocked;
 	/*
 
 	private Set<UserPosition> positions = new HashSet<>();

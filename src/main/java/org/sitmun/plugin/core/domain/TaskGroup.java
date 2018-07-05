@@ -1,40 +1,45 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name="stm_grptar")
+@Table(name = "stm_grptar")
 public class TaskGroup {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="gta_codigo")
-    private long id;
-    
-    @Column(name="gta_nombre")
-    private String name;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "gta_codigo")
+  private long id;
 
-    /**
-     * @return the id
-     */
-    public long getId() {
-        return id;
-    }
+  @Column(name = "gta_nombre")
+  private String name;
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(long id) {
-        this.id = id;
-    }
+  /**
+   * @return the id
+   */
+  public long getId() {
+    return id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  /**
+   * @param id the id to set
+   */
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public String getName() {
+    return name;
+  }
 
-   
+  public void setName(String name) {
+    this.name = name;
+  }
+
+
 }

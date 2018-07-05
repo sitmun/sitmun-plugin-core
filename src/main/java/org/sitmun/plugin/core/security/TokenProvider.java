@@ -1,13 +1,11 @@
 package org.sitmun.plugin.core.security;
 
-import static org.sitmun.plugin.core.security.SecurityConstants.TOKEN_PREFIX;
-
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -15,6 +13,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
+
+import static org.sitmun.plugin.core.security.SecurityConstants.TOKEN_PREFIX;
 
 @Component
 public class TokenProvider {
@@ -79,14 +79,14 @@ public class TokenProvider {
 		validity = new Date(now + this.tokenValidityInMilliseconds);
 
 		return Jwts.builder().setSubject(username)
-				.signWith(SignatureAlgorithm.HS512, secretKey.getBytes()).setExpiration(validity).compact();
+						.signWith(SignatureAlgorithm.HS512, secretKey.getBytes()).setExpiration(validity).compact();
 	}
 
 	public String getUserFromToken(String token) {
-		 return Jwts.parser()
-         .setSigningKey(secretKey.getBytes())
-         .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-         .getBody()
-         .getSubject();
+		return Jwts.parser()
+						.setSigningKey(secretKey.getBytes())
+						.parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+						.getBody()
+						.getSubject();
 	}
 }

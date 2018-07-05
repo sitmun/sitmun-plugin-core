@@ -6,6 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 @RepositoryRestResource(collectionResourceRel = "territory-types", path = "territory-types")
 public interface TerritoryTypeRepository extends PagingAndSortingRepository<TerritoryType, Long> {
-  
+
 
 }

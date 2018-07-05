@@ -1,117 +1,126 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 @Entity
-@Table(name="stm_servicio")
+@Table(name = "stm_servicio")
 public class Service {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="ser_codigo")
-    private long id;
-    
-    
-    @Column(name="ser_nombre")
-    private String name;
-    
-    @Column(name="ser_url")
-    private String url;
-    
-    @Column(name="ser_proj")
-    private String projections;
-    
-    @Column(name="ser_leyenda")
-    private String legend;
-    
-    @Column(name="ser_infourl")
-    private String infoUrl;
-    
-    @Column(name="ser_f_alta")
-    private Date createdDate;
-    
-    @OneToMany(mappedBy="service",cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<Cartography> layers = new HashSet<>();
-    
-    @ManyToOne
-    @JoinColumn(name="ser_codcon")
-    private Connection connection;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "ser_codigo")
+  private long id;
 
-	public long getId() {
-		return id;
-	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  @Column(name = "ser_nombre")
+  private String name;
 
-	public String getName() {
-		return name;
-	}
+  @Column(name = "ser_url")
+  private String url;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @Column(name = "ser_proj")
+  private String projections;
 
-	public String getUrl() {
-		return url;
-	}
+  @Column(name = "ser_leyenda")
+  private String legend;
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+  @Column(name = "ser_infourl")
+  private String infoUrl;
 
-	public String getProjections() {
-		return projections;
-	}
+  @Column(name = "ser_f_alta")
+  private Date createdDate;
 
-	public void setProjections(String projections) {
-		this.projections = projections;
-	}
+  @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Cartography> layers = new HashSet<>();
 
-	public String getLegend() {
-		return legend;
-	}
+  @ManyToOne
+  @JoinColumn(name = "ser_codcon")
+  private Connection connection;
 
-	public void setLegend(String legend) {
-		this.legend = legend;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public String getInfoUrl() {
-		return infoUrl;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setInfoUrl(String infoUrl) {
-		this.infoUrl = infoUrl;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+  public String getUrl() {
+    return url;
+  }
 
-	public Set<Cartography> getLayers() {
-		return layers;
-	}
+  public void setUrl(String url) {
+    this.url = url;
+  }
 
-	public void setLayers(Set<Cartography> layers) {
-		this.layers = layers;
-	}
+  public String getProjections() {
+    return projections;
+  }
 
-	public Connection getConnection() {
-		return connection;
-	}
+  public void setProjections(String projections) {
+    this.projections = projections;
+  }
 
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
+  public String getLegend() {
+    return legend;
+  }
 
-      
-   
+  public void setLegend(String legend) {
+    this.legend = legend;
+  }
+
+  public String getInfoUrl() {
+    return infoUrl;
+  }
+
+  public void setInfoUrl(String infoUrl) {
+    this.infoUrl = infoUrl;
+  }
+
+  public Date getCreatedDate() {
+    return createdDate;
+  }
+
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
+
+  public Set<Cartography> getLayers() {
+    return layers;
+  }
+
+  public void setLayers(Set<Cartography> layers) {
+    this.layers = layers;
+  }
+
+  public Connection getConnection() {
+    return connection;
+  }
+
+  public void setConnection(Connection connection) {
+    this.connection = connection;
+  }
+
+
 }

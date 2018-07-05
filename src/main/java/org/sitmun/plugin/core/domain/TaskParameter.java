@@ -1,83 +1,89 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="stm_paramtta")
+@Table(name = "stm_paramtta")
 public class TaskParameter {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="ptt_codigo")
-    private long id;
-    
-    @Column(name="ptt_nombre")
-    private String name;
-    
-    @Column(name="ptt_valor")
-    private String value;
-    
-    @Column(name="ptt_tipo")
-    private String type;
-    
-    @ManyToOne
-    @NotNull
-    //@OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name="ptt_codtar")
-    private Task task;
-    
-    @Column(name="ptt_orden")
-    private Integer order;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "ptt_codigo")
+  private long id;
 
-	public long getId() {
-		return id;
-	}
+  @Column(name = "ptt_nombre")
+  private String name;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  @Column(name = "ptt_valor")
+  private String value;
 
-	public String getName() {
-		return name;
-	}
+  @Column(name = "ptt_tipo")
+  private String type;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @ManyToOne
+  @NotNull
+  //@OnDelete(action = OnDeleteAction.CASCADE)
+  @JoinColumn(name = "ptt_codtar")
+  private Task task;
 
-	public String getValue() {
-		return value;
-	}
+  @Column(name = "ptt_orden")
+  private Integer order;
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public String getType() {
-		return type;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public Task getTask() {
-		return task;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setTask(Task task) {
-		this.task = task;
-	}
+  public String getValue() {
+    return value;
+  }
 
-	public Integer getOrder() {
-		return order;
-	}
+  public void setValue(String value) {
+    this.value = value;
+  }
 
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
-        
+  public String getType() {
+    return type;
+  }
 
-    
- }
+  public void setType(String type) {
+    this.type = type;
+  }
+
+  public Task getTask() {
+    return task;
+  }
+
+  public void setTask(Task task) {
+    this.task = task;
+  }
+
+  public Integer getOrder() {
+    return order;
+  }
+
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
+
+
+}

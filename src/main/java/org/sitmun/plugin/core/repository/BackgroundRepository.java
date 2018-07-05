@@ -7,6 +7,5 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel = "backgrounds", path = "backgrounds")
 public interface BackgroundRepository extends PagingAndSortingRepository<Background, Long> {
 
-    
 
 }
