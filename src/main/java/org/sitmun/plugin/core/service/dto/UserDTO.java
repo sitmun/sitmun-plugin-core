@@ -7,7 +7,7 @@ import org.springframework.hateoas.core.Relation;
 @Relation(value = "user", collectionRelation = "users")
 public class UserDTO implements Identifiable<Long> {
 
-  private long id;
+  private Long id;
   private String username;
   private String firstName;
   private String lastName;
@@ -42,7 +42,7 @@ public class UserDTO implements Identifiable<Long> {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(Long id) {
     this.id = id;
   }
 

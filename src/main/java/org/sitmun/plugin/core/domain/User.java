@@ -26,7 +26,6 @@ public class User implements Identifiable<Long> {
 
   @NotNull
   @Column(name = "usu_usuario", unique = true, nullable = false)
-
   private String username;
 
   @Column(name = "usu_pass")

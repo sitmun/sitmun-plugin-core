@@ -5,18 +5,21 @@ import org.sitmun.plugin.core.service.UserService;
 import org.sitmun.plugin.core.service.dto.UserDTO;
 import org.sitmun.plugin.core.web.rest.dto.PasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -40,10 +43,16 @@ public class UserResource {
     this.userService = userService;
   }
 
+  @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Data integrity violation")  // 409
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public void conflict() {
+    // Nothing to do
+  }
+
   /**
    * TODO: Replace User (persistent entity) with a simple POJO or DTO object (squid:S4684)
    *
-   * @param user      a user
+   * @param user a user
    * @return a response
    */
   @PostMapping("/users")
@@ -52,11 +61,10 @@ public class UserResource {
   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
     User result = userService.createUser(user);
     URI location = ServletUriComponentsBuilder
-            .fromCurrentRequest().path("/{id}")
-            .buildAndExpand(result.getId()).toUri();
+      .fromCurrentRequest().path("/{id}")
+      .buildAndExpand(result.getId()).toUri();
 
     return ResponseEntity.created(location).build();
-
   }
 
   @PutMapping("/users/{id}")
@@ -100,7 +108,7 @@ public class UserResource {
     return new Resource<>(dto, selfLink);
   }
 
-  @PostMapping(path = "/users/{id}/change-password")
+  @PostMapping(path = "/users/{id}")
   public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody PasswordDTO password) {
     Optional<User> optUser = userService.findUser(id);
     if (optUser.isPresent()) {
