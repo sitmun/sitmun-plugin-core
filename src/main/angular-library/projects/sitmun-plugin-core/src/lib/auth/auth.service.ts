@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
-import * as moment from 'moment';
+//import * as moment from 'moment';
 
 @Injectable()
 export class AuthService {
@@ -31,8 +31,8 @@ export class AuthService {
             if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
                 const jwt = bearerToken.slice(7, bearerToken.length);
                 this.storeAuthenticationToken(jwt);
-                const expiresAt = moment().add( resp.headers.get('Token-Validity'),'milisecond');
-                sessionStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
+                //const expiresAt = moment().add( resp.headers.get('Token-Validity'),'milisecond');
+                //sessionStorage.setItem('expires_at', JSON.stringify(expiresAt.valueOf()));
                 return jwt;
             }
             
@@ -55,13 +55,13 @@ export class AuthService {
        sessionStorage.setItem('authenticationToken', jwt);
         
     }
-    
+    /*
     getExpiration() {
         const expiration = sessionStorage.getItem("expires_at");
         const expiresAt = JSON.parse(expiration);
         return expiresAt;
     } 
-    
+    */
     public isLoggedIn() {
         //return moment().isBefore(this.getExpiration());
         return this.getToken();
@@ -76,7 +76,7 @@ export class AuthService {
         return new Observable((observer) => {
             //localStorage.removeItem('authenticationToken');
             sessionStorage.removeItem('authenticationToken');
-            sessionStorage.removeItem('expires_at');
+            //sessionStorage.removeItem('expires_at');
             observer.complete();
         });
     }

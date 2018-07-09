@@ -31,7 +31,7 @@
     "proj4": "^2.4.4",
     "rxjs": "^6.1.0",
     "rxjs-compat": "^6.1.0",
-    "webapp": "file:../../../../sitmun-admin-app/src/main/webapp",
+    "webapp": "file:../sitmun-admin-app/src/main/webapp",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

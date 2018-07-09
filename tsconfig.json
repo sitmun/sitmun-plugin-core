@@ -16,12 +16,13 @@
       "es2017",
       "dom"
     ],
+
     "paths": {
       "angular-hal": [
         "dist/angular-hal"
       ],
       "sitmun-plugin-core": [
-        "dist/sitmun-plugin-core"
+        "src/main/angular-library/projects/sitmun-plugin-core/src/lib/public_api"
       ]
     }
   }
