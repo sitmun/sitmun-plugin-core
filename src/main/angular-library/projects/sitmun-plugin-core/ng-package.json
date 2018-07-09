@@ -9,7 +9,9 @@
     "@types/openlayers",
     "openlayers",
     "ol",
-    "proj4"
+    "proj4",
+    "@types/moment",
+    "moment"
   
   ]
 }

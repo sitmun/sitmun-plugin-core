@@ -1,5 +1,6 @@
 import { Component,OnInit  } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
+import {AuthService} from 'sitmun-plugin-core';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent implements OnInit {
   param = {value:'world'};  
   translate;
 
-  constructor(public trans: TranslateService ) {
+  constructor(public trans: TranslateService, public authService:AuthService ) {
   	this.translate = trans;
  	this.translate.addLangs(['es', 'ca']);
     this.translate.setDefaultLang('ca');
@@ -23,6 +24,14 @@ export class AppComponent implements OnInit {
 
   changeLanguage(locale: string ){
 	this.translate.use(locale);
+  }
+    
+  logout(){
+    this.authService.logout().subscribe();
+  }
+    
+  isLoggedIn(){
+    return this.authService.isLoggedIn();
   }
   
   ngOnInit() {

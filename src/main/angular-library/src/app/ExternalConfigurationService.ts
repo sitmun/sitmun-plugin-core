@@ -12,11 +12,11 @@ export class ExternalConfigurationService implements ExternalConfigurationHandle
   }
 
   getProxyUri(): string {
-    return "http://localhost:8080/api/";
+    return "/api/";
   }
 
   getRootUri(): string {
-    return "http://localhost:8080/api/";
+    return "/api/";
   }
 
   getHttp(): HttpClient {

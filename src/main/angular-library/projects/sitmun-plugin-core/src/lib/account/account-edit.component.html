@@ -1,0 +1,28 @@
+<mat-card>
+  <form #accountForm="ngForm" (ngSubmit)="save()">
+    <mat-card-header>
+      <mat-card-title><h2>{{'global.edit'|translate}} {{'account.item' | translate}}</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+     <div class="container">
+      <mat-form-field>
+        <input matInput placeholder="{{'account.firstName' | translate}}" [(ngModel)]="item.firstName"
+               name="firstName" #firstName>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="{{'account.lastName' | translate}}" [(ngModel)]="item.lastName"
+               name="lastName" #lastName>
+      </mat-form-field>
+     
+      </div>
+      
+    
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!accountForm.form.valid">{{'global.save' | translate}}</button>      
+    </mat-card-actions>
+    
+  </form>
+</mat-card>
+  

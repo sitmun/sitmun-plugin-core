@@ -11,7 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat';
 
 @Component({
-  selector: 'app-user-position-edit',
+  selector: 'sitmun-user-position-edit',
   templateUrl: './user-position-edit.component.html',
   styleUrls: ['./user-position-edit.component.css']
 })

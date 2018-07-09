@@ -16,11 +16,15 @@
     "rxjs": "^6.1.0",
     "rxjs-compat": "^6.1.0",    
     "zone.js": "^0.8.26"
-  },
+  }
+  ,
   "dependencies": {
     "@types/openlayers": "^4.6.9",
     "ol": "^4.6.5",
     "openlayers": "^4.6.5",
-    "proj4": "^2.4.4"   
+    "proj4": "^2.4.4",    
+    "@types/moment": "^2.13.0",
+    "moment": "^2.22.2"
+       
   }
 }

@@ -45,35 +45,19 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
-            }
-            /*
-            ,"ca": {
-              "aot": true,
-              "outputPath": "dist/angular-library-ca/",
-              "i18nFile": "src/locale/messages.ca.xlf",
-              "i18nFormat": "xlf",
-              "i18nLocale": "ca",
-              "i18nMissingTranslation": "error"
-            }
-            */
-          }
+            }   
+          }                    
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular-library:build"
+            "browserTarget": "angular-library:build",
+            "proxyConfig": "src/proxy.conf.json"
           },
           "configurations": {
             "production": {
               "browserTarget": "angular-library:build:production"
             }
-            /*
-            ,
-            "ca": {
-              "browserTarget": "angular-library:build:ca"
-            }
-            */
-            
           }
         },
         "extract-i18n": {

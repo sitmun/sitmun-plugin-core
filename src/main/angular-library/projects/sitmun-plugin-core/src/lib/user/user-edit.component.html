@@ -1,18 +1,18 @@
 <mat-card>
   <form #userForm="ngForm" (ngSubmit)="save()">
     <mat-card-header>
-      <mat-card-title><h2>{{user.username ? ('global.edit'|translate) : ('global.add'|translate)}} {{'user.item' | translate}}</h2></mat-card-title>
+      <mat-card-title><h2>{{user._links ? ('global.edit'|translate) : ('global.add'|translate)}} {{'user.item' | translate}}</h2></mat-card-title>
     </mat-card-header>
     <mat-card-content>
     <mat-tab-group dynamicHeight="true">
     <mat-tab label="{{ 'user.data'| translate}}">
      <div class="container">
       <mat-form-field>
-        <input matInput placeholder="{{ 'user.username'| translate}}" [(ngModel)]="user.username"
+        <input  matInput placeholder="{{ 'user.username'| translate}}" [(ngModel)]="user.username"
                name="username" #username required>
       </mat-form-field>
 	  
-	   <mat-form-field>
+	   <mat-form-field *ngIf="user._links == null">
         <input matInput type="password" placeholder="{{ 'user.password'| translate}}" [(ngModel)]="user.password"
                name="password" #password>
       </mat-form-field>
@@ -31,7 +31,7 @@
                name="administrator" #administrator>{{ 'user.administrator'| translate}}
       </mat-checkbox>
       </div>
-      </mat-tab>
+  </mat-tab>
   <mat-tab label="{{ 'user.positions'| translate}}">
     <sitmun-user-position-list [user]="user"></sitmun-user-position-list>
   </mat-tab>

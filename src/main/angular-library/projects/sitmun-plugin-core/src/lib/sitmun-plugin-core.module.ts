@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import {HttpClientModule, HttpClient} from '@angular/common/http';
+import {HttpClientModule, HttpClient, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -24,7 +24,7 @@ import {UserListComponent} from './user/user-list.component';
 import {UserEditComponent} from './user/user-edit.component';
 import {UserPositionListComponent,UserPositionEditDialog} from './user/user-position-list.component';
 import {UserConfigurationListComponent,UserConfigurationEditDialog} from './user/user-configuration-list.component';
-import * as ol from 'openlayers';
+//import * as ol from 'openlayers';
 import {TranslateModule, TranslateLoader,TranslateService} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
@@ -36,6 +36,15 @@ import { MatPaginationIntlService } from './mat-pagination-intl.service';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material';
+import { AuthService } from './auth/auth.service';
+import { AuthInterceptor } from './auth/auth.interceptor';
+import { AuthExpiredInterceptor } from './auth/auth-expired.interceptor';
+import { LoginComponent } from './auth/login.component';
+import { LoginService } from './auth/login.service';
+import { AccountService } from './account/account.service';
+import { AccountEditComponent } from './account/account-edit.component';
+import { AccountChangePasswordComponent } from './account/account-change-password.component';
+import { UserChangePasswordComponent } from './user/user-change-password.component';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -72,7 +81,7 @@ export function createMatPaginationService(translate: TranslateService){
         NoopAnimationsModule,
         MatDialogModule,        
         AngularHalModule,
-         ReactiveFormsModule,
+        ReactiveFormsModule,
         MatFormFieldModule,
         TranslateModule.forRoot({
             loader: {
@@ -96,19 +105,38 @@ export function createMatPaginationService(translate: TranslateService){
         UserPositionEditDialog,
         UserConfigurationEditDialog,
         LayerSelectionDialogComponent,
-        MapComponent],
+        MapComponent,
+        LoginComponent,
+        AccountEditComponent,
+        AccountChangePasswordComponent,
+        UserChangePasswordComponent],
   providers:[
         TerritoryService,
         TerritoryTypeService,
         RoleService,
-        UserService,        
+        AccountService,
+        AuthService,        
+        UserService,  
+        AuthInterceptor,      
+        AuthExpiredInterceptor,
         UserPositionService,
         UserConfigurationService,
+        LoginService,
         {
           provide: MatPaginatorIntl,
           useFactory: (createMatPaginationService),
           deps: [TranslateService]
+        }, {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
         }
+        , {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthExpiredInterceptor,
+            multi: true
+        }
+        
   ],
   entryComponents: [
         UserPositionEditDialog,
@@ -143,10 +171,14 @@ export function createMatPaginationService(translate: TranslateService){
         TerritoryTypeEditComponent,
         RoleListComponent,
         RoleEditComponent,
+        LoginComponent,
         UserListComponent,
-        UserEditComponent,        
+        UserEditComponent,
+        UserChangePasswordComponent,           
         UserPositionListComponent,
         UserConfigurationListComponent,
+        AccountEditComponent,
+        AccountChangePasswordComponent,
         MapComponent, ReactiveFormsModule,
         MatFormFieldModule]
 })

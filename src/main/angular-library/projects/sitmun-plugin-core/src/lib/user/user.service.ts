@@ -29,4 +29,10 @@ export class UserService extends RestService<User> {
     }
     return result;
   }
+    
+  changePassword(id,item: any): Observable<any> {
+    let result: Observable<Object>;
+    result = this.http.post(this.USER_API+"/"+id+"/change-password" , item);
+    return result;
+  }
 }

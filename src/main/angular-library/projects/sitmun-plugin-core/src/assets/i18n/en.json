@@ -12,7 +12,8 @@
     	"territories":"Territories",
     	"territoriesTypes":"Territory types",
     	"users":"Users",
-    	"roles":"Roles"
+    	"roles":"Roles",
+    	"account":"Account"
 	},
 	"global":{
 		"actions":"Actions",
@@ -21,7 +22,9 @@
 		"delete":"Edit",
 		"save":"Save",
 		"cancel":"Cancel",
-		"back":"Cancel"
+		"back":"Cancel",
+		"data":"Data",
+		"login":"Login"
 	},
 	"territory":{
 		"item":"Territory",
@@ -59,12 +62,24 @@
 		"list":"Users",
 		"username":"Username",
 		"password":"Password",
+		"password-change":"Password change",
+		"confirmPassword":"Confirm password",
 		"administrator":"Administrator",
 		"blocked":"Blocked",
 		"firstName":"First name",
 		"lastName":"Last name",
 		"positions":"Positions",
 		"permissions":"Permissions"
+	},
+	"account":{
+		"item":"Account",
+		"username":"Username",
+		"password":"Password",
+		"confirmPassword":"Confirm password",
+		"password-change":"Password change",
+		"firstName":"First name",
+		"lastName":"Last name",
+    	"closeSession":"Close session"
 	},
 	"userPosition":{
 		"item":"Position",

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -18,37 +18,16 @@ import java.util.Optional;
 import static java.util.Collections.emptyList;
 
 @Service
-public class UserService implements UserDetailsService {
+public class UserService{
 
   private UserRepository applicationUserRepository;
-  private BCryptPasswordEncoder bcryptPasswordEncoder;
+  private PasswordEncoder bcryptPasswordEncoder;
 
-  public UserService(UserRepository applicationUserRepository, BCryptPasswordEncoder bcryptPasswordEncoder) {
+  public UserService(UserRepository applicationUserRepository, PasswordEncoder bcryptPasswordEncoder) {
     super();
     this.applicationUserRepository = applicationUserRepository;
     this.bcryptPasswordEncoder = bcryptPasswordEncoder;
   }
-
-  @Override
-  public UserDetails loadUserByUsername(String username) {
-    Optional<User> applicationUser = applicationUserRepository.findOneByUsername(username);
-    if (!applicationUser.isPresent()) {
-      throw new UsernameNotFoundException(username);
-    }
-    return new org.springframework.security.core.userdetails.User(applicationUser.get().getUsername(),
-            applicationUser.get().getPassword(), emptyList());
-  }
-  /*
-   * private org.springframework.security.core.userdetails.User
-   * createSpringSecurityUser(String lowercaseLogin,
-   * org.sitmun.plugin.core.domain.User user) { if (user.getBlocked()) { throw new
-   * UserNotActivatedException("User " + lowercaseLogin + " was not activated"); }
-   * List<GrantedAuthority> grantedAuthorities = user.getPermissions().stream()
-   * .map(authority -> new SimpleGrantedAuthority(authority.getName()))
-   * .collect(Collectors.toList()); return new
-   * org.springframework.security.core.userdetails.User(user.getLogin(),
-   * user.getPassword(), grantedAuthorities); }
-   */
 
   public User createUser(User user) {
     if (user.getPassword() != null) {

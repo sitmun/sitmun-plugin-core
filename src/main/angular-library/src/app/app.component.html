@@ -5,7 +5,7 @@
   </button>
   
    <span class="toolbar-spacer"></span>
-   
+    <span *ngIf="isLoggedIn()" >
    <button mat-button 
             [routerLink]="['/territory-list']"><span [translate]="'menu.territories'">Territories</span>
     </button>
@@ -18,7 +18,9 @@
     <button mat-button 
             [routerLink]="['/role-list']"><span [translate]="'menu.roles'">Roles</span>
     </button>
+  </span>
     <span (click)="changeLanguage('ca')"> CA </span> | <span  (click)="changeLanguage('es')"> ES </span>| <span  (click)="changeLanguage('en')"> EN </span>
+    <span *ngIf="isLoggedIn()" ><a href="" [routerLink]="['/account']" [translate]="'menu.account'">Account</a> <a href="" [routerLink]="['/change-password']" [translate]="'account.change-password'">Change password</a><a href="" (click)="logout()" [translate]="'account.closeSession'">Close session</a> </span> 
 </mat-toolbar>
 <router-outlet></router-outlet>
 

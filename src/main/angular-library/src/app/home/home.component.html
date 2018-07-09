@@ -1,1 +1,7 @@
+<!--
 <sitmun-map-viewer-map [initialLon]="360498.62863399717" [initialLat]="4630983.631562616" [initialProjection]="'EPSG:25831'" [initialZoom]="2"></sitmun-map-viewer-map>
+-->
+
+
+ <span *ngIf="isLoggedIn()" > Youre logged in <a href="" (click)="logout()">Close Session</a> </span> 
+  <a *ngIf="!isLoggedIn()"  href="" [routerLink]="['/login']"> Login </a> 

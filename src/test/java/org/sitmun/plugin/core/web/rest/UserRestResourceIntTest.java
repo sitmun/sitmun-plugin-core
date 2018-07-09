@@ -111,7 +111,6 @@ public class UserRestResourceIntTest {
             .andExpect(jsonPath("$.firstName", equalTo(USER_CHANGEDFIRSTNAME)))
             .andExpect(jsonPath("$.lastName", equalTo(USER_CHANGEDLASTNAME)));
   }
-
   @Test
   public void updateUserPassword() throws Exception {
     userRepository.deleteAll();

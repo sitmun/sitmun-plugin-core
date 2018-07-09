@@ -3,10 +3,19 @@ package org.sitmun.plugin.core.security;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -21,7 +30,7 @@ public class TokenProvider {
 
 	private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
 
-	//private static final String AUTHORITIES_KEY = "auth";
+	private static final String AUTHORITIES_KEY = "auth";
 
 	@Value("${security.authentication.jwt.secret}")
 	private String secretKey;
@@ -36,19 +45,18 @@ public class TokenProvider {
 		return tokenValidityInMilliseconds;
 	}
 
-	
-/*
 	public Authentication getAuthentication(String token) {
 		Claims claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
-		Collection<? extends GrantedAuthority> authorities = Arrays
-				.stream(claims.get(AUTHORITIES_KEY).toString().split(",")).map(SimpleGrantedAuthority::new)
-				.collect(Collectors.toList());
-
+		Collection<? extends GrantedAuthority> authorities = new ArrayList<>();
+		/*
+		 * Collection<? extends GrantedAuthority> authorities =
+		 * Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
+		 * .map(SimpleGrantedAuthority::new) .collect(Collectors.toList());
+		 */
 		User principal = new User(claims.getSubject(), "", authorities);
 
 		return new UsernamePasswordAuthenticationToken(principal, token, authorities);
 	}
-	*/
 
 	public boolean validateToken(String authToken) {
 		try {
@@ -73,20 +81,40 @@ public class TokenProvider {
 		return false;
 	}
 
-	public String createToken(String username) {
+	public String createToken(Authentication authentication) {
+		/*
+		 * String authorities = authentication.getAuthorities().stream()
+		 * .map(GrantedAuthority::getAuthority) .collect(Collectors.joining(","));
+		 */
 		long now = (new Date()).getTime();
 		Date validity;
+
+		validity = new Date(now + this.tokenValidityInMilliseconds);
+
+		return Jwts.builder().setSubject(authentication.getName())
+				// .claim(AUTHORITIES_KEY, authorities)
+				.signWith(SignatureAlgorithm.HS512, secretKey).setExpiration(validity).compact();
+	}
+
+	public String createToken(String username) {
+
+		long now = (new Date()).getTime();
+		Date validity;
+
 		validity = new Date(now + this.tokenValidityInMilliseconds);
 
 		return Jwts.builder().setSubject(username)
-						.signWith(SignatureAlgorithm.HS512, secretKey.getBytes()).setExpiration(validity).compact();
+
+				// .claim(AUTHORITIES_KEY, "")
+				.signWith(SignatureAlgorithm.HS512, secretKey).setExpiration(validity).compact();
 	}
 
 	public String getUserFromToken(String token) {
-		return Jwts.parser()
-						.setSigningKey(secretKey.getBytes())
-						.parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-						.getBody()
-						.getSubject();
+		try {
+			return Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+					.getBody().getSubject();
+		} catch (Exception ex) {
+			return null;
+		}
 	}
 }

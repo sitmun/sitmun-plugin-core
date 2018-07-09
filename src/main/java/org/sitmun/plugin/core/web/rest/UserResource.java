@@ -75,17 +75,7 @@ public class UserResource {
     }
 
   }
-
-  @GetMapping("/users/{id}")
-  public ResponseEntity<ResourceSupport> getUser(@PathVariable Long id) {
-    Optional<User> optUser = userService.findUser(id);
-    if (optUser.isPresent()) {
-      return ResponseEntity.ok(toResource(optUser.get()));
-    } else {
-      return ResponseEntity.notFound().build();
-    }
-  }
-	/*
+/*
 	
 	@GetMapping("/users")
     public ResponseEntity<?> getPagedUsers(Pageable pageable) {

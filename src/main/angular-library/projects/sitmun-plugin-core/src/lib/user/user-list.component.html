@@ -33,6 +33,7 @@
         <th mat-header-cell *matHeaderCellDef [translate]="'global.actions'"> Actions </th>
         <td mat-cell *matCellDef="let element">
           <a mat-icon-button [routerLink]="['/user-edit', element._links.self.href.split('/')[5]]"><mat-icon>edit</mat-icon></a> 
+          <a mat-icon-button [routerLink]="['/user-change-password', element._links.self.href.split('/')[5]]"><mat-icon>vpn_key</mat-icon></a> 
           <button mat-icon-button (click)="remove(element)"><mat-icon>delete</mat-icon></button>           
         </td>
       </ng-container>
