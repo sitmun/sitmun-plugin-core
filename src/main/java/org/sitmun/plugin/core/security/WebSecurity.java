@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -26,6 +27,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 	private PasswordEncoder passwordEncoder;
 	private final TokenProvider tokenProvider;
+	
 
 	public WebSecurity(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder,
 			TokenProvider tokenProvider,AuthenticationManagerBuilder authenticationManagerBuilder) {
@@ -61,8 +63,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/**").authenticated()
 			.and()
 				.apply(securityConfigurerAdapter());
+		
 	}
-
+	
 	@Bean
 	public CorsFilter corsFilter() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -77,6 +80,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	private AuthenticationEntryPoint getRestAuthenticationEntryPoint() {
         return new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
     }
+	
+	@Bean
+	public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+		return new SecurityEvaluationContextExtension();
+	}
 
 	@PostConstruct
 	public void init() {
