@@ -1,15 +1,19 @@
 package org.sitmun.plugin.core.web.rest;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sitmun.plugin.core.domain.Cartography;
 import org.sitmun.plugin.core.domain.Territory;
+import org.sitmun.plugin.core.repository.CartographyRepository;
+import org.sitmun.plugin.core.repository.TerritoryRepository;
 import org.sitmun.plugin.core.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -32,8 +36,11 @@ public class CartographyRestResourceIntTest {
   private static final String USERNAME = "admin";
   private static final String TERRITORY_NAME = "Territory Name";
   private static final String CARTOGRAPHY_NAME = "Cartographt Name";
-  private static final String NEW_TERRITORY_URI = "http://localhost/api/territories/1";
-  private static final String NEW_CARTOGRAPHY_URI = "http://localhost/api/cartographies/1";
+  
+  
+  private static final String TERRITORY_URI = "http://localhost/api/territories";
+  private static final String CARTOGRAPHY_URI = "http://localhost/api/cartographies";
+  
   @Autowired
   TokenProvider tokenProvider;
   @Autowired
@@ -41,6 +48,14 @@ public class CartographyRestResourceIntTest {
   private String token;
   private Cartography cartography;
   private Territory territory;
+  
+  @Autowired
+  TerritoryRepository territoryRepository;
+  
+  @Autowired
+  CartographyRepository cartographyRepository;
+  
+  
 
   @Before
   public void init() {
@@ -51,21 +66,21 @@ public class CartographyRestResourceIntTest {
     cartography = new Cartography();
     cartography.setName(CARTOGRAPHY_NAME);
 
-    token = tokenProvider.createToken(USERNAME);
+    //token = tokenProvider.createToken(USERNAME);
   }
 
   @Test
+  @WithMockUser(username=USERNAME)
   public void postTerritory() throws Exception {
 
-    mvc.perform(post("/api/territories")
-      .header(HEADER_STRING, TOKEN_PREFIX + token)
+	  String uri = mvc.perform(post(TERRITORY_URI)
+      //.header(HEADER_STRING, TOKEN_PREFIX + token)
       .contentType(MediaType.APPLICATION_JSON_UTF8)
       .content(Util.convertObjectToJsonBytes(territory))
     )
-      .andExpect(status().isCreated())
-      .andExpect(header().string("Location", is(NEW_TERRITORY_URI)));
+      .andExpect(status().isCreated()).andReturn().getResponse().getHeader("Location");
 
-    mvc.perform(get("/api/territories/1")
+    mvc.perform(get( uri )
       .header(HEADER_STRING, TOKEN_PREFIX + token)
     )
       .andExpect(status().isOk())
@@ -75,21 +90,29 @@ public class CartographyRestResourceIntTest {
   }
 
   @Test
-  public void postCartograpy() throws Exception {
+  @WithMockUser(username=USERNAME)
+  public void postCartography() throws Exception {
 
-    mvc.perform(post("/api/cartographies")
-      .header(HEADER_STRING, TOKEN_PREFIX + token)
+	  String uri = mvc.perform(post(CARTOGRAPHY_URI)
+      //.header(HEADER_STRING, TOKEN_PREFIX + token)
       .contentType(MediaType.APPLICATION_JSON_UTF8)
       .content(Util.convertObjectToJsonBytes(cartography))
     )
       .andExpect(status().isCreated())
-      .andExpect(header().string("Location", is(NEW_CARTOGRAPHY_URI)));
+      .andReturn().getResponse().getHeader("Location");
 
-    mvc.perform(get("/api/cartographies/1")
+    mvc.perform(get(uri)
       .header(HEADER_STRING, TOKEN_PREFIX + token)
     )
       .andExpect(status().isOk())
       .andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
       .andExpect(jsonPath("$.name", equalTo(CARTOGRAPHY_NAME)));
+  }
+
+  @After
+  public void cleanup() {
+    territoryRepository.deleteAll();
+    cartographyRepository.deleteAll();	
+    
   }
 }

@@ -6,17 +6,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "stm_roles")
 public class Role {
-
+	
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "rol_codigo")
   private long id;
 
-  @Column(name = "rol_nombre")
+  @NotNull
+  @Column(name = "rol_nombre", unique = true, nullable = false)
   private String name;
 
   @Column(name = "rol_observ")

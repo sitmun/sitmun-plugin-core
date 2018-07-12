@@ -26,6 +26,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.webjars:webjars-locator'
+    
+    implementation 'org.springframework.security:spring-security-data'
 
     implementation 'org.webjars:bootstrap:3.3.7'
     implementation 'org.webjars:requirejs:2.3.3'
@@ -35,6 +37,7 @@ dependencies {
 
     testImplementation 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.assertj:assertj-core:3.10.0'
     
 }

@@ -1,6 +1,7 @@
 package org.sitmun.plugin.core.web.rest;
 
 import org.sitmun.plugin.core.domain.User;
+import org.sitmun.plugin.core.repository.UserRepository;
 import org.sitmun.plugin.core.service.UserService;
 import org.sitmun.plugin.core.service.dto.UserDTO;
 import org.sitmun.plugin.core.web.rest.dto.PasswordDTO;
@@ -11,10 +12,13 @@ import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.hateoas.ResourceSupport;
+import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -35,8 +40,8 @@ public class UserResource {
   @Autowired
   private RepositoryEntityLinks links;
 
-  @Autowired
-  private PagedResourcesAssembler<User> assembler;
+  //@Autowired
+  //private ResourceAssemblerSupport<User,ResourceSupport> assembler;
 
   public UserResource(UserService userService) {
     super();
@@ -57,7 +62,6 @@ public class UserResource {
    */
   @PostMapping("/users")
   @SuppressWarnings("squid:S4684")
-  // @Secured(AuthoritiesConstants.ADMIN)
   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
     User result = userService.createUser(user);
     URI location = ServletUriComponentsBuilder
@@ -83,8 +87,8 @@ public class UserResource {
     }
 
   }
-/*
-	
+
+  /*	
 	@GetMapping("/users")
     public ResponseEntity<?> getPagedUsers(Pageable pageable) {
         Page<User> users = userService.findAllUsers(pageable);
@@ -99,14 +103,14 @@ public class UserResource {
 
     }
     
-	*/
-
-  private ResourceSupport toResource(User user) {
-    UserDTO dto = new UserDTO(user);
-    Link selfLink = links.linkForSingleResource(user).withSelfRel();
-
-    return new Resource<>(dto, selfLink);
+  @GetMapping("/users")
+  public ResponseEntity<?> getUsers() {
+	  UserResourceAssembler assembler = new UserResourceAssembler(UserRepository.class, ResourceSupport.class,links);
+      List<User> users = userService.findAllUsers();
+      return ResponseEntity.ok(assembler.toResources(users ));
   }
+*/	
+
 
   @PostMapping(path = "/users/{id}")
   public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody PasswordDTO password) {
