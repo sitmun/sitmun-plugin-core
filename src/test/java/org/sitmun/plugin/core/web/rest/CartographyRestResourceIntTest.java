@@ -42,6 +42,8 @@ public class CartographyRestResourceIntTest {
   private static final String CARTOGRAPHY_URI = "http://localhost/api/cartographies";
   
   @Autowired
+  CartographyRepository cartographyRepository;
+  @Autowired
   TokenProvider tokenProvider;
   @Autowired
   private MockMvc mvc;
@@ -51,9 +53,7 @@ public class CartographyRestResourceIntTest {
   
   @Autowired
   TerritoryRepository territoryRepository;
-  
-  @Autowired
-  CartographyRepository cartographyRepository;
+
   
   
 
@@ -68,6 +68,7 @@ public class CartographyRestResourceIntTest {
 
     //token = tokenProvider.createToken(USERNAME);
   }
+  
 
   @Test
   @WithMockUser(username=USERNAME)

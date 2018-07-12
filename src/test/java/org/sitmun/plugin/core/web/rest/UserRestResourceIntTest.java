@@ -202,8 +202,21 @@ public class UserRestResourceIntTest {
   }
 
   @Test
+  public void getUsersAsPublicFails() throws Exception {
+	//TO DO
+	//fail is expected
+  }
+  
+  @Test
+  public void getUsersAsTerritoryUserFails() throws Exception {
+	//TO DO
+	//fail is expected
+  }
+    
+  
+  @Test
   @WithMockUser(username=USER_USERNAME)
-  public void createNewUser() throws Exception {
+  public void createNewUserAsSitmunAdmin() throws Exception {
     UserDTO newUser = new UserDTO(sitmunAdmin);
     newUser.setId(null);
     newUser.setUsername(NEW_USER_USERNAME);
@@ -226,7 +239,7 @@ public class UserRestResourceIntTest {
 
   @Test
   @WithMockUser(username=USER_USERNAME)
-  public void createDuplicatedUserFails() throws Exception {
+  public void createDuplicatedUserAsSitmunAdminFails() throws Exception {
     UserDTO newUser = new UserDTO(sitmunAdmin);
     newUser.setId(null);
 
@@ -257,7 +270,7 @@ public class UserRestResourceIntTest {
 
   @Test
   @WithMockUser(username=USER_USERNAME)
-  public void updateUser() throws Exception {
+  public void updateUserAsSitmunAdmin() throws Exception {
     UserDTO userDTO = new UserDTO(sitmunAdmin);
     userDTO.setFirstName(USER_CHANGEDFIRSTNAME);
     userDTO.setLastName(USER_CHANGEDLASTNAME);
@@ -300,7 +313,7 @@ public class UserRestResourceIntTest {
 
   @Test
   @WithMockUser(username=USER_USERNAME)
-  public void updateUserPassword() throws Exception {
+  public void updateUserPasswordAsSitmunAdmin() throws Exception {
     PasswordDTO passwordDTO = new PasswordDTO();
     passwordDTO.setPassword(USER_CHANGEDPASSWORD);
 
@@ -310,6 +323,65 @@ public class UserRestResourceIntTest {
       .content(Util.convertObjectToJsonBytes(passwordDTO))
     )
       .andExpect(status().isOk());
+  }
+  
+  
+  @Test
+  public void getUsersAsOrganizationAdmin() throws Exception {
+	//TO DO
+	//It returns only the users linked to my territory
+	//ok is expected
+  }
+  
+  
+  @Test
+  public void createNewUserAsOrganizationAdmin() throws Exception {
+	//TO DO
+	//Create new user by an organization admin user (ADMIN DE ORGANIZACION)
+	//ok is expected. The new user has roles linked to my organization territory
+  }
+  
+  @Test
+  public void assignRoleToUserAsOrganizationAdmin() throws Exception {
+	//TO DO
+	//ok is expected. The new user has roles linked to my organization territory
+  }
+  
+  
+  @Test
+  public void updateUserAsOrganizationAdmin() throws Exception {
+	//TO DO
+	//Update user (linked to the same organization)  by an organization admin user (ADMIN DE ORGANIZACION)
+	//ok is expected
+  }
+  
+  @Test
+  public void updateUserPasswordAsOrganizationAdmin() throws Exception {
+	//TO DO
+	//Update user password (linked to the same organization)  by an organization admin user (ADMIN DE ORGANIZACION)
+	//ok is expected
+  }
+  
+  
+  @Test
+  public void assignRoleToUserAsOtherOrganizationAdminFails() throws Exception {
+	//TO DO
+	//fail is expected. No permission to assign territory role to user if don't have territory role
+  }
+  
+
+  @Test
+  public void updateUserAsOtherOrganizationAdminFails() throws Exception {
+	//TO DO
+	//Update user (linked to another organization)  by an organization admin user (ADMIN DE ORGANIZACION)
+	//fail is expected (no permission)
+  }
+  
+  @Test
+  public void updateUserPasswordAsOtherOrganizationAdminFails() throws Exception {
+	//TO DO
+	//Update user password (linked to another organization)  by an organization admin user (ADMIN DE ORGANIZACION)
+	//fail is expected (no permission)
   }
 
 }
