@@ -7,6 +7,8 @@ import { RoleService } from '../role/role.service';
 import { UserConfigurationService } from './user-configuration.service';
 import { UserService } from './user.service';
 import { User } from './user.model';
+import {Principal} from '../auth/principal.service';
+import {LoginService} from '../auth/login.service';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -27,7 +29,7 @@ export class UserConfigurationListComponent implements OnInit {
   
   constructor(
     private userConfigurationService: UserConfigurationService,    
-
+    
     public dialog: MatDialog) { 
   
   }
@@ -115,19 +117,23 @@ export class UserConfigurationEditDialog implements OnInit {
 
   territories: Territory[] = new Array<Territory>();
   roles: Role[] = new Array<Role>();
-  
+  currentAccount: any;
   
   constructor(
     private userService: UserService,
     private userconfigurationService: UserConfigurationService,
     private territoryService: TerritoryService,
     private roleService: RoleService,
+    public principal:Principal, public loginService:LoginService,
     public dialogRef: MatDialogRef<UserConfigurationEditDialog>,
     @Inject(MAT_DIALOG_DATA) public userConfiguration: UserConfiguration ) {
   }
 
 
   ngOnInit() {
+     this.principal.identity().then((account) => {
+                 this.currentAccount = account;
+      });
     this.getAllTerritories();
     this.getAllRoles();
       if (this.userConfiguration._links) {
@@ -152,7 +158,16 @@ export class UserConfigurationEditDialog implements OnInit {
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
-        this.territories = territories;        
+      //TODO remove not admin territories
+        if (this.principal.hasAnyAuthorityDirect(['ADMIN SITMUN'])){
+            this.territories = territories;
+        } else {
+
+          this.territories = territories.filter(t => 
+             this.principal.hasAnyAuthorityDirectOnTerritory(['ADMIN ORGANIZACION'],t.name));
+        }
+   
+
     });
   }
   

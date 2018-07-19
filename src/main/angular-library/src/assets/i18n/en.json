@@ -1,6 +1,7 @@
 {
    "true":"Yes",
    "false":"No",
+   "application":{"name":"Management - Diputació Barcelona"},
    "mat-paginator-intl":{
     	"first_page":"First page",
     	"items_per_page":"items per page",
@@ -10,15 +11,18 @@
 		"previous_page":"Previous page"},
    "menu":{
     	"territories":"Territories",
-    	"territoriesTypes":"Territory types",
     	"users":"Users",
-    	"roles":"Roles"
+    	"roles":"Role management",
+    	"territoryManagement":"Territory management",
+    	"territoryTypes":"Territory type management",
+    	"userManagement":"Users management"
+    	
 	},
 	"global":{
 		"actions":"Actions",
 		"add":"Add",
 		"edit":"Edit",
-		"delete":"Edit",
+		"delete":"Delete",
 		"save":"Save",
 		"cancel":"Cancel",
 		"back":"Cancel"

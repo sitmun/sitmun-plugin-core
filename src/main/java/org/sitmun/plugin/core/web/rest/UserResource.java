@@ -17,6 +17,7 @@ import org.springframework.hateoas.ResourceSupport;
 import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,6 +63,7 @@ public class UserResource {
    */
   @PostMapping("/users")
   @SuppressWarnings("squid:S4684")
+  @PreAuthorize("hasPermission(#user, 'administration') or hasPermission(#user, 'write')")
   public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
     User result = userService.createUser(user);
     URI location = ServletUriComponentsBuilder
@@ -112,7 +114,7 @@ public class UserResource {
 */	
 
 
-  @PostMapping(path = "/users/{id}")
+  @PostMapping(path = "/users/{id}/change-password")
   public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody PasswordDTO password) {
     Optional<User> optUser = userService.findUser(id);
     if (optUser.isPresent()) {

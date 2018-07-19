@@ -24,7 +24,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	//@PreAuthorize("hasPermission(#entity, 'administration') or hasPermission(#entity, 'write')")
+	//@PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#entity, 'administration') or hasPermission(#entity, 'write')")
 	User save(@P("entity") User entity);
 	
 	@Override

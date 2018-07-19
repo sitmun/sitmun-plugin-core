@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable} from 'rxjs';
+import { Observable} from 'rxjs-compat';
 //import * as moment from 'moment';
 
 @Injectable()
@@ -80,4 +80,7 @@ export class AuthService {
             observer.complete();
         });
     }
+
+
+    
 }

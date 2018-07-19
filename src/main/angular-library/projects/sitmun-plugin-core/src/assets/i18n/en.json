@@ -79,7 +79,10 @@
 		"password-change":"Password change",
 		"firstName":"First name",
 		"lastName":"Last name",
-    	"closeSession":"Close session"
+    	"closeSession":"Close session",
+    	"password-dont-match":"The password and its confirmation do not match!",
+    	"password-change-success":"Password changed!",
+    	"update-success":"Data changed!"
 	},
 	"userPosition":{
 		"item":"Position",
@@ -94,5 +97,8 @@
 		"list":"Permissions",
 		"territory":"Territory",
 		"role":"Role"
+	},
+	"login":{
+		"bad-credentials":"Bad credentials"
 	}
 }

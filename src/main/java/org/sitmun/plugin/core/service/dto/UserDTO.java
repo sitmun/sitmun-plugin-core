@@ -1,5 +1,10 @@
 package org.sitmun.plugin.core.service.dto;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import org.sitmun.plugin.core.domain.User;
 import org.springframework.hateoas.Identifiable;
 import org.springframework.hateoas.core.Relation;
@@ -7,89 +12,115 @@ import org.springframework.hateoas.core.Relation;
 @Relation(value = "user", collectionRelation = "users")
 public class UserDTO implements Identifiable<Long> {
 
-  private Long id;
-  private String username;
-  private String firstName;
-  private String lastName;
-  private Boolean administrator;
-  private Boolean blocked;
+	private Long id;
+	private String username;
+	private String firstName;
+	private String lastName;
+	private Boolean administrator;
+	private Boolean blocked;
 
-  public UserDTO() {
-    super();
-    // TODO Auto-generated constructor stub
-  }
+	private Set<String> authorities;
+	
+	private Set<String> territories;
 
-  public UserDTO(User user) {
-    this.id = user.getId();
+	private Map<String, Set<String>> authoritiesPerTerritory;
 
-    this.username = user.getUsername();
+	public UserDTO() {
+		super();
+	}
 
-    this.firstName = user.getFirstName();
+	public UserDTO(User user) {
+		this.id = user.getId();
 
-    this.lastName = user.getLastName();
+		this.username = user.getUsername();
 
-    this.administrator = user.getAdministrator();
+		this.firstName = user.getFirstName();
 
-    this.blocked = user.getBlocked();
-/*
-		this.positions = user.getPositions();
+		this.lastName = user.getLastName();
 
-		this.permissions = user.getPermissions();
-		*/
-  }
+		this.administrator = user.getAdministrator();
 
-  public Long getId() {
-    return id;
-  }
+		this.blocked = user.getBlocked();
+		authorities = new HashSet<>();
+		territories = new HashSet<>();
+		authoritiesPerTerritory = new HashMap<>();
+		if (!user.getPermissions().isEmpty()) {
+			user.getPermissions().stream().forEach(p -> {
+				Set<String> territoryAuths = authoritiesPerTerritory.get(p.getTerritory().getName());
+				if (territoryAuths == null) {
+					authoritiesPerTerritory.put(p.getTerritory().getName(), new HashSet<>());
+				}
+				authoritiesPerTerritory.get(p.getTerritory().getName()).add( p.getRole().getName());
+				authorities.add(p.getRole().getName());
+				territories.add(p.getTerritory().getName());
+			});
+		}
+	}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public Set<String> getTerritories() {
+		return territories;
+	}
 
-  public String getUsername() {
-    return username;
-  }
+	public Set<String> getAuthorities() {
+		return authorities;
+	}
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+	public Map<String, Set<String>> getAuthoritiesPerTerritory() {
+		return authoritiesPerTerritory;
+	}
 
-  public String getFirstName() {
-    return firstName;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  public String getLastName() {
-    return lastName;
-  }
+	public String getUsername() {
+		return username;
+	}
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
-  public Boolean getAdministrator() {
-    return administrator;
-  }
+	public String getFirstName() {
+		return firstName;
+	}
 
-  public void setAdministrator(Boolean administrator) {
-    this.administrator = administrator;
-  }
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
-  public Boolean getBlocked() {
-    return blocked;
-  }
+	public String getLastName() {
+		return lastName;
+	}
 
-  public void setBlocked(Boolean blocked) {
-    this.blocked = blocked;
-  }
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public Boolean getAdministrator() {
+		return administrator;
+	}
+
+	public void setAdministrator(Boolean administrator) {
+		this.administrator = administrator;
+	}
+
+	public Boolean getBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(Boolean blocked) {
+		this.blocked = blocked;
+	}
 	/*
-
-	private Set<UserPosition> positions = new HashSet<>();
-
-	private Set<UserConfiguration> permissions = new HashSet<>();
-	*/
+	 * 
+	 * private Set<UserPosition> positions = new HashSet<>();
+	 * 
+	 * private Set<UserConfiguration> permissions = new HashSet<>();
+	 */
 
 }

@@ -1,4 +1,7 @@
 <mat-card>
+            <div class="alert alert-info" *ngIf="success">
+                {{ 'account.update-success'| translate}}
+            </div>
   <form #accountForm="ngForm" (ngSubmit)="save()">
     <mat-card-header>
       <mat-card-title><h2>{{'global.edit'|translate}} {{'account.item' | translate}}</h2></mat-card-title>

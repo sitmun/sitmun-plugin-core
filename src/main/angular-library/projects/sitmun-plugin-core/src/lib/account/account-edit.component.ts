@@ -9,7 +9,7 @@ import {User } from '../user/user.model';
 export class AccountEditComponent implements OnInit {
 
   item: User = new User();
-  
+  success: string;
   
   constructor(
   	private accountService: AccountService) {
@@ -33,6 +33,7 @@ export class AccountEditComponent implements OnInit {
   save() {
       this.accountService.save(this.item).subscribe(result => {      
         //Todo display message?
+        this.success = "OK";
       }, error => console.error(error));
   }
 

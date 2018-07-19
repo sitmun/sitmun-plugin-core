@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "stm_tipogrp")
@@ -15,8 +16,9 @@ public class TerritoryType {
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "tgr_codigo")
   private long id;
-
-  @Column(name = "tgr_nombre")
+  
+  @NotNull
+  @Column(name = "tgr_nombre", unique = true, nullable = false)
   private String name;
 
   public long getId() {

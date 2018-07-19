@@ -64,7 +64,7 @@ public class TerritoryRestResourceIntTest {
 
   @After
   public void cleanup() {
-	  territoryRepository.deleteAll();
+	  //territoryRepository.deleteAll();
   }
 
   	@Test

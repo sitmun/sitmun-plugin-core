@@ -15,6 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "stm_territorio")
@@ -25,7 +26,8 @@ public class Territory {
   @Column(name = "ter_codigo")
   private long id;
 
-  @Column(name = "ter_nombre")
+  @NotNull
+  @Column(name = "ter_nombre", unique = true, nullable = false)
   private String name;
 
   @Column(name = "ter_correo")

@@ -12,7 +12,7 @@
   			</mat-select>
 	  </mat-form-field>
 	  <mat-form-field>
-  			<mat-select [compareWith]="compareResource" name="role" placeholder="{{ 'userConfiguration.territory'| translate}}" [(ngModel)]="userConfiguration.role" required>
+  			<mat-select [compareWith]="compareResource" name="role" placeholder="{{ 'userConfiguration.role'| translate}}" [(ngModel)]="userConfiguration.role" required>
     			<mat-option *ngFor="let role of roles" [value]="role">
       			{{role.name}}
     			</mat-option>

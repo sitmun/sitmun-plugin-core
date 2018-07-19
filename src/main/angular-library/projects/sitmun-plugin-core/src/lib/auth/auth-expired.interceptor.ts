@@ -3,12 +3,16 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 import { Observable } from 'rxjs';
 //import 'rxjs/add/operator/do';
 import { AuthService } from './auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Principal } from './principal.service';
 
 @Injectable()
 export class AuthExpiredInterceptor implements HttpInterceptor {
 
     constructor(
-        private authService: AuthService
+        private router: Router,     
+        private authService: AuthService, 
+        private principal: Principal
     ) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -16,6 +20,8 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
             if (err instanceof HttpErrorResponse) {
                 if (err.status === 401) {                    
                     this.authService.logout().subscribe();
+                    this.principal.authenticate(null);
+                    this.router.navigate(['/']);
                 }
             }
         });

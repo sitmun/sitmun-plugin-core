@@ -6,8 +6,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.sitmun.plugin.core.domain.Cartography;
 import org.sitmun.plugin.core.domain.Territory;
+import org.sitmun.plugin.core.domain.User;
 import org.sitmun.plugin.core.repository.CartographyRepository;
 import org.sitmun.plugin.core.repository.TerritoryRepository;
+import org.sitmun.plugin.core.repository.UserRepository;
 import org.sitmun.plugin.core.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -33,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class CartographyRestResourceIntTest {
 
-  private static final String USERNAME = "admin";
+  private static final String ADMIN_USERNAME = "admin";
   private static final String TERRITORY_NAME = "Territory Name";
   private static final String CARTOGRAPHY_NAME = "Cartographt Name";
   
@@ -53,10 +55,7 @@ public class CartographyRestResourceIntTest {
   
   @Autowired
   TerritoryRepository territoryRepository;
-
   
-  
-
   @Before
   public void init() {
     territory = new Territory();
@@ -65,13 +64,13 @@ public class CartographyRestResourceIntTest {
 
     cartography = new Cartography();
     cartography.setName(CARTOGRAPHY_NAME);
-
-    //token = tokenProvider.createToken(USERNAME);
+    
+    token = tokenProvider.createToken(ADMIN_USERNAME);
   }
   
 
   @Test
-  @WithMockUser(username=USERNAME)
+  @WithMockUser(username=ADMIN_USERNAME)
   public void postTerritory() throws Exception {
 
 	  String uri = mvc.perform(post(TERRITORY_URI)
@@ -82,7 +81,7 @@ public class CartographyRestResourceIntTest {
       .andExpect(status().isCreated()).andReturn().getResponse().getHeader("Location");
 
     mvc.perform(get( uri )
-      .header(HEADER_STRING, TOKEN_PREFIX + token)
+      //.header(HEADER_STRING, TOKEN_PREFIX + token)
     )
       .andExpect(status().isOk())
       .andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
@@ -91,7 +90,7 @@ public class CartographyRestResourceIntTest {
   }
 
   @Test
-  @WithMockUser(username=USERNAME)
+  @WithMockUser(username=ADMIN_USERNAME)
   public void postCartography() throws Exception {
 
 	  String uri = mvc.perform(post(CARTOGRAPHY_URI)
@@ -103,17 +102,11 @@ public class CartographyRestResourceIntTest {
       .andReturn().getResponse().getHeader("Location");
 
     mvc.perform(get(uri)
-      .header(HEADER_STRING, TOKEN_PREFIX + token)
+      //.header(HEADER_STRING, TOKEN_PREFIX + token)
     )
       .andExpect(status().isOk())
       .andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
       .andExpect(jsonPath("$.name", equalTo(CARTOGRAPHY_NAME)));
   }
 
-  @After
-  public void cleanup() {
-    territoryRepository.deleteAll();
-    cartographyRepository.deleteAll();	
-    
-  }
 }

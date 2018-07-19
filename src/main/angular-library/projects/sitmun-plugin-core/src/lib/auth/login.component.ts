@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './auth.service';
+import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -15,7 +16,8 @@ export class LoginComponent{
   form:FormGroup;
 
     constructor(private fb:FormBuilder, 
-                 private authService: AuthService, 
+                 private authService: AuthService,
+                 private loginService: LoginService,  
                  private router: Router) {
 
         this.form = this.fb.group({
@@ -28,9 +30,8 @@ export class LoginComponent{
         const val = this.form.value;
 
         if (val.username && val.password) {
-            this.authService.login(val)
-                .subscribe(
-                    () => {
+            this.loginService.login(val).then(() =>
+                 {
                         console.log('User is logged in');
                         this.router.navigateByUrl('/');
                     }, (err) => {

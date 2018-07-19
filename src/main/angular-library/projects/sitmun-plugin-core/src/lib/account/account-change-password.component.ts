@@ -13,10 +13,12 @@ export class AccountChangePasswordComponent {
  
   doNotMatch: string;
 
+  success: string;
+
   form:FormGroup;
 
     constructor(private fb:FormBuilder, 
-                 private accountService:AccountService) {
+                 private accountService: AccountService) {
 
         this.form = this.fb.group({
             password: ['',Validators.required],
@@ -32,8 +34,8 @@ export class AccountChangePasswordComponent {
         if (val.confirmPassword && val.password && (val.confirmPassword === val.password)){
             this.accountService.changePassword(val)
                 .subscribe(
-                    () => {
-                        console.log('User is logged in');
+                    () => {                        
+                        this.success = "OK";
                         
                     }
                 );

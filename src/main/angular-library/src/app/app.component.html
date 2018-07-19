@@ -6,16 +6,16 @@
   
    <span class="toolbar-spacer"></span>
     <span *ngIf="isLoggedIn()" >
-   <button mat-button 
+   <button mat-button *sitmunHasAnyAuthority="['ADMIN SITMUN','ADMIN ORGANIZACION']"
             [routerLink]="['/territory-list']"><span [translate]="'menu.territories'">Territories</span>
     </button>
-     <button mat-button 
+     <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
             [routerLink]="['/territory-type-list']"><span [translate]="'menu.territoriesTypes'">Territory types</span>
     </button>
-    <button mat-button 
+    <button mat-button  *sitmunHasAnyAuthority="['ADMIN SITMUN','ADMIN ORGANIZACION']"
             [routerLink]="['/user-list']"><span [translate]="'menu.users'">Users</span>
     </button>
-    <button mat-button 
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
             [routerLink]="['/role-list']"><span [translate]="'menu.roles'">Roles</span>
     </button>
   </span>

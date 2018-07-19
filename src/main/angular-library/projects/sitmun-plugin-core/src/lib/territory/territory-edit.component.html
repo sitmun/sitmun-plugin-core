@@ -12,7 +12,7 @@
                name="name" #name required>
       </mat-form-field>
       <mat-form-field>
-  			<mat-select [compareWith]="compareResource" name="type" placeholder="{{ 'territory.type'| translate }}" [(ngModel)]="territory.type" required>
+  			<mat-select [compareWith]="compareResource" name="type" placeholder="{{ 'territory.type'| translate }}" [(ngModel)]="territory.type">
     			<mat-option *ngFor="let territoryType of territoryTypes" [value]="territoryType">
       			{{territoryType.name}}
     			</mat-option>
@@ -20,8 +20,15 @@
 	  </mat-form-field>
 	  
 	   <mat-form-field>
-        <input matInput placeholder="{{ 'territory.scope'| translate}}" [(ngModel)]="territory.scope"
+        <input *ngIf="false" matInput placeholder="{{ 'territory.scope'| translate}}" [(ngModel)]="territory.scope"
                name="scope" #scope>
+        <mat-select name="scope" placeholder="{{ 'territory.scope'| translate }}" [(ngModel)]="territory.scope">
+          <mat-option *ngFor="let territoryScope of territoryScopes" [value]="territoryScope">
+            {{territoryScope}}
+          </mat-option>
+        </mat-select>
+
+
       </mat-form-field>
 	        <mat-form-field>
         <input matInput placeholder="{{ 'territory.ext'| translate}}" [(ngModel)]="territory.ext"
@@ -56,7 +63,7 @@
       </mat-form-field>
       </div>
       </mat-tab>
-  <mat-tab label="{{ 'territory.members'| translate}}">
+  <mat-tab label="{{ 'territory.members'| translate}}" *sitmunHasAnyAuthority="'ADMIN SITMUN'">
     <table mat-table [dataSource]="territories" class="mat-elevation-z8">
 
   <!-- Checkbox Column -->

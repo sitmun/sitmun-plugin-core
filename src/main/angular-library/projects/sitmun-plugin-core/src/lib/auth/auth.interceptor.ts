@@ -9,11 +9,16 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        /*
         if (!request || !request.url || (/^http/.test(request.url) && !(this.SERVER_API_URL && request.url.startsWith(this.SERVER_API_URL))
             && !(this.TEST_SERVER_API_URL && request.url.startsWith(this.TEST_SERVER_API_URL)))) {
             return next.handle(request);
         }
-
+*/
+         
+        if (!request || !request.url || !(request.url.includes("api")) ) {
+            return next.handle(request);
+        }
         const token = sessionStorage.getItem('authenticationToken');
         if (!!token) {
             request = request.clone({

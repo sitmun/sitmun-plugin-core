@@ -54,7 +54,9 @@ export class UserEditComponent implements OnInit {
   }
 
   save() {
-      this.userService.save(this.user).subscribe(result => {      
+      if (this.user)
+        this.userService.save(this.user).subscribe(result => {      
+
         this.gotoList();
       }, error => console.error(error));
   }

@@ -13,6 +13,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 export class UserChangePasswordComponent implements OnInit {
   doNotMatch: string;
   
+  success: string;
   form:FormGroup;
     
   userId: any;
@@ -62,6 +63,7 @@ export class UserChangePasswordComponent implements OnInit {
             this.userService.changePassword(this.userId,val)
                 .subscribe(
                     () => {
+                       this.success = "OK";
                         console.log("User password changed");
                         
                     }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from 'sitmun-plugin-core';
+import {Principal,LoginService} from 'sitmun-plugin-core';
 
 @Component({
   selector: 'app-home',
@@ -8,14 +8,15 @@ import {AuthService} from 'sitmun-plugin-core';
 })
 export class HomeComponent  {
 
-  constructor(public authService:AuthService) { }
+  constructor(public loginService:LoginService,public principal:Principal) { }
 
   logout(){
-    this.authService.logout().subscribe();
+    this.loginService.logout();
   }
     
   isLoggedIn(){
-    return this.authService.isLoggedIn();
+   // return this.authService.isLoggedIn();
+   return this.principal.isAuthenticated();
   }
 
   

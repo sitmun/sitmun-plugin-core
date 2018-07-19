@@ -1,7 +1,8 @@
 <mat-card>
 <form [formGroup]="form" (ngSubmit)="login()">
 	  <div class="alert alert-danger" *ngIf="badCredentials">
-                Bad credentials
+                
+                {{'login.bad-credentials' | translate}}
             </div>
 	<mat-card-header>
       <mat-card-title><h2>{{'global.login' | translate}}</h2></mat-card-title>

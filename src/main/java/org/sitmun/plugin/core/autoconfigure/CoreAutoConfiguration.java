@@ -12,5 +12,5 @@ public class CoreAutoConfiguration {
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
-
+ 
 }

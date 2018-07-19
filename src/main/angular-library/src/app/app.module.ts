@@ -7,7 +7,7 @@ import { environment } from '../environments/environment';
 import { ExternalConfigurationService } from './ExternalConfigurationService';
 import { AngularHalModule } from 'angular-hal';
 import { HomeComponent } from './home/home.component';
-import { SitmunPluginCoreModule, AuthInterceptor,AuthExpiredInterceptor, TerritoryListComponent, TerritoryEditComponent, TerritoryTypeListComponent, TerritoryTypeEditComponent, RoleListComponent, RoleEditComponent, UserListComponent, UserEditComponent, UserChangePasswordComponent,LoginComponent,LoginService,AccountEditComponent,AccountChangePasswordComponent} from 'sitmun-plugin-core';
+import { SitmunPluginCoreModule, AuthInterceptor,AuthExpiredInterceptor, TerritoryListComponent, TerritoryEditComponent, TerritoryTypeListComponent, TerritoryTypeEditComponent, RoleListComponent, RoleEditComponent, UserListComponent, UserEditComponent, UserChangePasswordComponent,LoginComponent,LoginService,AccountEditComponent,AccountChangePasswordComponent,HasAnyAuthorityDirective,HasAnyAuthorityOnTerritoryDirective  } from 'sitmun-plugin-core';
 import { registerLocaleData } from '@angular/common';
 import localeCa from '@angular/common/locales/ca';
 import localeEs from '@angular/common/locales/es';

@@ -9,6 +9,7 @@ import org.sitmun.plugin.core.web.rest.dto.PasswordDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.http.ResponseEntity;
@@ -62,10 +63,10 @@ public class AccountResource {
   public ResponseEntity<ResourceSupport> getAccount() {
     Optional<String> optLogin = SecurityUtils.getCurrentUserLogin();
     if (optLogin.isPresent()) {
-      Optional<User> user = userRepository.findOneByUsername(optLogin.get());
+      Optional<User> user = userRepository.findOneWithPermissionsByUsername(optLogin.get());
       if (user.isPresent()) {
         return ResponseEntity.ok(
-                toResource(user.get()));
+        		toResource(user.get()));
       } else {
         return ResponseEntity.notFound().build();
       }
@@ -77,7 +78,7 @@ public class AccountResource {
 
   private ResourceSupport toResource(User user) {
     UserDTO dto = new UserDTO(user);
-    //Link selfLink = links.linkForSingleResource(user).withSelfRel();
+    Link selfLink = links.linkForSingleResource(user).withSelfRel();
 
     return new Resource<>(dto);
   }

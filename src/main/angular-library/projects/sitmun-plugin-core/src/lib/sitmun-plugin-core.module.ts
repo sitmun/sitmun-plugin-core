@@ -7,7 +7,14 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 
 import { MatButtonModule,MatCardModule,MatInputModule,MatListModule, MatToolbarModule, MatNativeDateModule,MatCheckboxModule,MatDialogModule,MatTabsModule,MatTableModule,MatDatepickerModule,MatSelectModule,MatPaginatorModule,MatSortModule,MatIconModule} from '@angular/material';
-import { AngularHalModule } from 'angular-hal'; 
+import {  MatPaginatorIntl} from '@angular/material';
+
+//import * as ol from 'openlayers';
+import {TranslateModule, TranslateLoader,TranslateService} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+import { AngularHalModule } from 'angular-hal';
+
 import {TerritoryService} from './territory/territory.service';
 import {TerritoryTypeService} from './territory/territory-type.service';
 import {UserPositionService} from './user/user-position.service';    
@@ -24,22 +31,21 @@ import {UserListComponent} from './user/user-list.component';
 import {UserEditComponent} from './user/user-edit.component';
 import {UserPositionListComponent,UserPositionEditDialog} from './user/user-position-list.component';
 import {UserConfigurationListComponent,UserConfigurationEditDialog} from './user/user-configuration-list.component';
-//import * as ol from 'openlayers';
-import {TranslateModule, TranslateLoader,TranslateService} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import { MapComponent } from './map/map.component';
 import { LayerSelectionDialogComponent } from './map/layer-selection-dialog.component';
 
-import {  MatPaginatorIntl} from '@angular/material';
 import { MatPaginationIntlService } from './mat-pagination-intl.service';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material';
 import { AuthService } from './auth/auth.service';
+import { Principal } from './auth/principal.service';
 import { AuthInterceptor } from './auth/auth.interceptor';
 import { AuthExpiredInterceptor } from './auth/auth-expired.interceptor';
 import { LoginComponent } from './auth/login.component';
+import {HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
+import {HasAnyAuthorityOnTerritoryDirective } from './auth/has-any-authority-on-territory.directive';
 import { LoginService } from './auth/login.service';
 import { AccountService } from './account/account.service';
 import { AccountEditComponent } from './account/account-edit.component';
@@ -90,6 +96,7 @@ export function createMatPaginationService(translate: TranslateService){
                 deps: [HttpClient]
             }
         }) 
+  
   ],
   declarations: [
   		TerritoryListComponent,
@@ -107,6 +114,8 @@ export function createMatPaginationService(translate: TranslateService){
         LayerSelectionDialogComponent,
         MapComponent,
         LoginComponent,
+        HasAnyAuthorityDirective,
+        HasAnyAuthorityOnTerritoryDirective,
         AccountEditComponent,
         AccountChangePasswordComponent,
         UserChangePasswordComponent],
@@ -119,6 +128,7 @@ export function createMatPaginationService(translate: TranslateService){
         UserService,  
         AuthInterceptor,      
         AuthExpiredInterceptor,
+        Principal,
         UserPositionService,
         UserConfigurationService,
         LoginService,
@@ -136,7 +146,7 @@ export function createMatPaginationService(translate: TranslateService){
             useClass: AuthExpiredInterceptor,
             multi: true
         }
-        
+  
   ],
   entryComponents: [
         UserPositionEditDialog,
@@ -144,7 +154,8 @@ export function createMatPaginationService(translate: TranslateService){
         LayerSelectionDialogComponent
     ],
   exports: [
-  HttpClientModule,
+  
+        HttpClientModule,
         CommonModule,
         FormsModule,        
         MatButtonModule,
@@ -165,6 +176,7 @@ export function createMatPaginationService(translate: TranslateService){
         MatDialogModule,        
         AngularHalModule,
         TranslateModule,
+      
   		TerritoryListComponent,
         TerritoryEditComponent,
         TerritoryTypeListComponent,
@@ -172,6 +184,8 @@ export function createMatPaginationService(translate: TranslateService){
         RoleListComponent,
         RoleEditComponent,
         LoginComponent,
+        HasAnyAuthorityDirective,
+        HasAnyAuthorityOnTerritoryDirective,
         UserListComponent,
         UserEditComponent,
         UserChangePasswordComponent,           
@@ -179,7 +193,8 @@ export function createMatPaginationService(translate: TranslateService){
         UserConfigurationListComponent,
         AccountEditComponent,
         AccountChangePasswordComponent,
-        MapComponent, ReactiveFormsModule,
+        MapComponent,        
+        ReactiveFormsModule,
         MatFormFieldModule]
 })
 export class SitmunPluginCoreModule { }

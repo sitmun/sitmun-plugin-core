@@ -1,6 +1,88 @@
 {
-    "menu":{
-    	"territories":"Territorios"
-    }
+   "true":"Si",
+   "false":"No",
+    "application":{"name":"Administración - Diputación Barcelona"},
+   "mat-paginator-intl":{
+    	"first_page":"Primera página",
+    	"items_per_page":"elementos por página",
+    	"last_page":"Última página",
+    	"next_page":"Siguiente página",
+    	"of":"de",
+		"previous_page":"Página previa"},
+   "menu":{
+    	"territories":"Territorios",
+    	"territoryTypes":"Gestión de Tipos de territorio",
+    	"users":"Usuarios",
+    	"roles":"Gestión de Roles",
+    	"territoryManagement":"Gestión de Territorios",
+    	"userManagement":"Gestión de Usuarios"
+    	
+	},
 
+	"global":{
+		"actions":"Acciones",
+		"add":"Crear",
+		"edit":"Editar",
+		"delete":"Eliminar",
+		"save":"Guardar",
+		"cancel":"Cancelar",
+		"back":"Cancelar"
+	},
+	"territory":{
+		"item":"Territorio",
+		"data":"Datos",
+		"list":"Territorios",
+		"name":"Nombre",
+		"scope":"Alcance",
+		"type":"Tipo",
+		"blocked":"Bloqueado",
+		"ext":"Extensión",
+		"createdDate":"Fecha creada",
+		"organizationName":"Nombre de organización",
+		"address":"Dirección",
+		"email":"Email",
+		"logo":"Logo",
+		"members":"Miembros",
+		"comments":"Comentarios"
+	},
+	"territoryType":{
+		"item":"Tipo de territorio",
+		"list":"Tipos de territorio",
+		"name":"Nombre",
+		"comments":"Comentarios"
+	},
+	"role":{
+		"item":"Rol",
+		"data":"Datos",
+		"list":"Roles",
+		"name":"Nombre",
+		"comments":"Comentarios"
+	},
+	"user":{
+		"item":"Usuario",
+		"data":"Datos",
+		"list":"Usuarios",
+		"username":"Username",
+		"password":"Password",
+		"administrator":"Administrador",
+		"blocked":"Bloqueado",
+		"firstName":"Nombre",
+		"lastName":"Apellido",
+		"positions":"Cargos",
+		"permissions":"Permisos"
+	},
+	"userPosition":{
+		"item":"Cargo",
+		"list":"Cargos",
+		"territory":"Territorio",
+		"name":"Nombre",
+		"email":"Email",
+		"organization":"Organización"
+	},
+	"userConfiguration":{
+		"item":"Permiso",
+		"list":"Permisos",
+		"territory":"Territorios",
+		"role":"Rol"
+	}
 }

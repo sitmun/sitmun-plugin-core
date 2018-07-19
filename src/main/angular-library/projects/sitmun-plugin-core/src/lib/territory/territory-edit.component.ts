@@ -7,7 +7,7 @@ import {TerritoryService} from './territory.service';
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Subscription} from 'rxjs-compat';
+import {Subscription} from 'rxjs';
 import {MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 
@@ -25,6 +25,7 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
   sub: Subscription;
   
   displayedColumns = ['select', 'name', 'scope','blocked'];
+  territoryScopes = ['Municipal','Supramunicipal'];
 
   selection = new SelectionModel<Territory>(true, []);
   
@@ -152,7 +153,7 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
         }, error => console.error(error));
       }
     }
-    if (this.territory.type !=null){
+    if (typeof this.territory.type._links != 'undefined'){
           this.territory.substituteRelation('type',this.territory.type).subscribe(result => {
       
       }, error => console.error(error));

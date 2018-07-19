@@ -5,7 +5,7 @@
   "projects": {
     "angular-library": {
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "src/main/angular-library/src",
       "projectType": "application",
       "prefix": "app",
       "schematics": {},

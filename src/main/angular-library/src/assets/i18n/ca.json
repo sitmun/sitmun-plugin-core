@@ -1,20 +1,92 @@
 {
-    "mat-paginator-intl":{
-        "first_page":"Primera página",
-        "items_per_page":"items por página",
-        "last_page":"Última página",
-        "next_page":"Próxima página",
-        "of":"de",
-        "previous_page":"Página previa"},
-    "menu":{
+   "true":"Si",
+   "false":"No",
+    "application":{"name":"Administració - Diputació Barcelona"},
+   "mat-paginator-intl":{
+    	"first_page":"Primera pàgina",
+    	"items_per_page":"elements per pàgina",
+    	"last_page":"Darrera pàgina",
+    	"next_page":"Pàgina següent",
+    	"of":"de",
+		"previous_page":"Pàgina prèvia"},
+   "menu":{
     	"territories":"Territoris",
-    	"territoriesTypes":"Tipus",
+    	"territoryTypes":"Tipus de territori",
     	"users":"Usuaris",
-    	"roles":"Rols"
-    },
-    "territory":{
+    	"roles":"Gestió de Rols",
+        "territoryManagement":"Gestió de Territoris",
+        "userManagement":"Gestió d'Usuaris"
+	},
+	"global":{
+		"actions":"Accions",
+		"add":"Crear",
+		"edit":"Edita",
+		"delete":"Eliminar",
+		"save":"Desa",
+		"cancel":"Cancel",
+		"back":"Cancel"
+	},
+	"territory":{
+		"item":"Territori",
+		"data":"Dades",
 		"list":"Territoris",
-		"name":"Nom"
-	}
-
+		"name":"Nom",
+		"scope":"Abast",
+		"type":"Tipus",
+		"blocked":"Bloquejat",
+		"ext":"Extensió",
+		"createdDate":"Data creada",
+		"organizationName":"Nom d'organització",
+		"address":"Direcció",
+		"email":"Email",
+		"logo":"Logo",
+		"members":"Membres",
+		"comments":"Comentaris"
+	},
+	"territoryType":{
+		"item":"Tipus de territori",
+		"list":"Tipus de territori",
+		"name":"Nom",
+		"comments":"Comentaris"
+	},
+	"role":{
+		"item":"Rol",
+		"data":"Dades",
+		"list":"Rols",
+		"name":"Nom",
+		"comments":"Comentaris"
+	},
+	"user":{
+		"item":"Usuari",
+		"data":"Dades",
+		"list":"Usuaris",
+		"username":"Username",
+		"password":"Password",
+		"administrator":"Administrador",
+		"blocked":"Bloquejat",
+		"firstName":"Nom",
+		"lastName":"Cognom",
+		"positions":"Càrrecs",
+		"permissions":"Permisos"
+	},
+	"userPosition":{
+		"item":"Càrrec",
+		"list":"Càrrecs",
+		"territory":"Territori",
+		"name":"Nom",
+		"email":"Email",
+		"organization":"Organització"
+	},
+	"userConfiguration":{
+		"item":"Permís",
+		"list":"Permisos",
+		"territory":"Territoris",
+		"role":"Rol"
+	},
+    "SELECT_BASE_LAYER_DIALOG_TITLE": "Seleccioneu la capa base",
+    "MAP_BASE_LAYER_OPTION": "Mapa",
+    "AERIAL_BASE_LAYER_OPTION": "Aèrea",
+    "HYBRID_BASE_LAYER_OPTION": "Híbrida",
+    "OK_BUTTON": "CONFIRMAR",
+    "CANCEL_BUTTON": "CANCEL·LAR"
 }

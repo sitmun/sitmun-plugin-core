@@ -13,6 +13,8 @@ public final class AuthoritiesConstants {
   
   public static final String ADMIN_SITMUN = "ADMIN SITMUN";
   
+  public static final String ROLE_ADMIN = "ROLE_ADMIN";
+  
   private AuthoritiesConstants() {
   }
 }
