@@ -5,9 +5,11 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build-angular-hal": "ng build angular-hal",
+    "build-sitmun-plugin-core": "ng build sitmun-plugin-core",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng ei2e"
   },
   "private": true,
   "dependencies": {
@@ -23,7 +25,7 @@
     "@angular/platform-browser-dynamic": "^6.0.2",
     "@angular/router": "^6.0.2",
     "@ngx-translate/core": "^10.0.2",
-    "@ngx-translate/http-loader": "^3.0.1",    
+    "@ngx-translate/http-loader": "^3.0.1",
     "@types/moment": "^2.13.0",
     "@types/openlayers": "^4.6.9",
     "core-js": "^2.5.4",
@@ -33,7 +35,6 @@
     "proj4": "^2.4.4",
     "rxjs": "^6.1.0",
     "rxjs-compat": "^6.1.0",
-    "webapp": "file:../sitmun-admin-app/src/main/webapp",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {
