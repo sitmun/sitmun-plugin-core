@@ -1,15 +1,14 @@
 package org.sitmun.plugin.core.service;
 
+import org.sitmun.plugin.core.domain.Role;
 import org.sitmun.plugin.core.domain.Territory;
 import org.sitmun.plugin.core.domain.User;
 import org.sitmun.plugin.core.domain.UserConfiguration;
-import org.sitmun.plugin.core.domain.UserPosition;
 import org.sitmun.plugin.core.repository.RoleRepository;
 import org.sitmun.plugin.core.repository.UserConfigurationRepository;
 import org.sitmun.plugin.core.repository.UserRepository;
 import org.sitmun.plugin.core.security.AuthoritiesConstants;
 import org.sitmun.plugin.core.security.PermissionResolver;
-import org.sitmun.plugin.core.security.SecurityConstants;
 import org.sitmun.plugin.core.security.SecurityUtils;
 import org.sitmun.plugin.core.service.dto.UserDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,9 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class UserService implements PermissionResolver<User> {
@@ -44,32 +41,33 @@ public class UserService implements PermissionResolver<User> {
 		if (user.getPassword() != null) {
 			user.setPassword(bcryptPasswordEncoder.encode(user.getPassword()));
 		}
-		boolean newUser = (user.getId().longValue() == 0);
+		boolean newUser = (user.getId() == 0);
 		user = applicationUserRepository.save(user);
 
 		// fix for creation with "ORGANIZATION ADMIN" role
 		if (newUser) {
-			if (SecurityUtils.getCurrentUserLogin().isPresent()) {
-				Optional<User> currentUser = this
-						.getUserWithPermissionsByUsername(SecurityUtils.getCurrentUserLogin().get());
+		  Optional<String> currentUserLogin = SecurityUtils.getCurrentUserLogin();
+			if (currentUserLogin.isPresent()) {
+				Optional<User> currentUser = getUserWithPermissionsByUsername(currentUserLogin.get());
+
 				if (currentUser.isPresent()) {
+
 					Set<UserConfiguration> permissions = currentUser.get().getPermissions();
 					boolean isAdminSitmun = permissions.stream()
 							.anyMatch(p -> p.getRole().getName().equalsIgnoreCase(AuthoritiesConstants.ADMIN_SITMUN));
-					boolean isAdminOrganization = permissions.stream().anyMatch(
-							p -> p.getRole().getName().equalsIgnoreCase(AuthoritiesConstants.ADMIN_ORGANIZACION));
-					if (!isAdminSitmun && isAdminOrganization) {
-						// get the first territory with ADMIN_ORGANIZACION role
-						Territory territory = permissions.stream()
-								.filter(p -> p.getRole().getName()
-										.equalsIgnoreCase(AuthoritiesConstants.ADMIN_ORGANIZACION))
-								.findFirst().get().getTerritory();
-						UserConfiguration userConfiguration = new UserConfiguration();
-						userConfiguration.setTerritory(territory);
-						userConfiguration.setUser(user);
-						userConfiguration.setRole(
-								this.roleRepository.findOneByName(AuthoritiesConstants.USUARIO_TERRITORIAL).get());
-						this.userConfigurationRepository.save(userConfiguration);
+          Optional <UserConfiguration> baseConfiguration = permissions.stream()
+            .filter(p -> p.getRole().getName().equalsIgnoreCase(AuthoritiesConstants.ADMIN_ORGANIZACION))
+            .findFirst();
+          Optional <Role> territorialRole = this.roleRepository.findOneByName(AuthoritiesConstants.USUARIO_TERRITORIAL);
+
+					if (!isAdminSitmun && baseConfiguration.isPresent() && territorialRole.isPresent()) {
+              // get the first territory with ADMIN_ORGANIZACION role
+              Territory territory = baseConfiguration.get().getTerritory();
+              UserConfiguration userConfiguration = new UserConfiguration();
+              userConfiguration.setTerritory(territory);
+              userConfiguration.setUser(user);
+              userConfiguration.setRole(territorialRole.get());
+              this.userConfigurationRepository.save(userConfiguration);
 					}
 				}
 			}
@@ -130,13 +128,16 @@ public class UserService implements PermissionResolver<User> {
 		// si tengo el rol de admin de territorio y el usuario tiene permisos asociados
 		// a este territorio
 		if (isAdminOrganization) {
-			if (user.getId().longValue() != 0) {
-				return this.getUserWithPermissionsByUsername(user.getUsername()).get().getPermissions().stream()
-						.anyMatch(targetDomainObjectPermissions -> permissions.stream()
-								.filter(p -> p.getRole().getName()
-										.equalsIgnoreCase(AuthoritiesConstants.ADMIN_ORGANIZACION))
-								.map(UserConfiguration::getTerritory).map(Territory::getId).collect(Collectors.toList())
-								.contains(targetDomainObjectPermissions.getTerritory().getId()));
+			if (user.getId() != 0) {
+        return this.getUserWithPermissionsByUsername(user.getUsername()).map(u ->
+            u.getPermissions().stream()
+              .anyMatch(targetDomainObjectPermissions ->
+                permissions.stream()
+                  .filter(p -> p.getRole().getName().equalsIgnoreCase(AuthoritiesConstants.ADMIN_ORGANIZACION))
+                  .map(UserConfiguration::getTerritory).map(Territory::getId).collect(Collectors.toList())
+                  .contains(targetDomainObjectPermissions.getTerritory().getId())
+              )
+        ).orElse(false);
 			} else {
 				return true;
 			}
