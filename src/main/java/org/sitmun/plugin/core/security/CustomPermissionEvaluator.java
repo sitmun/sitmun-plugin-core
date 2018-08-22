@@ -1,14 +1,9 @@
 package org.sitmun.plugin.core.security;
 
-import java.io.Serializable;
-import java.util.Map;
-import java.util.Optional;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.sitmun.plugin.core.domain.User;
 import org.sitmun.plugin.core.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -19,94 +14,96 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 @Component("permissionEvaluator")
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class CustomPermissionEvaluator implements PermissionEvaluator {
 
-	@Autowired
-	private UserService userService;
+  private static final Logger LOGGER = LoggerFactory.getLogger(CustomPermissionEvaluator.class);
 
-	@Autowired
-	private ApplicationContext сontext;
+  @Autowired
+  private UserService userService;
 
-	@PersistenceContext
-	private EntityManager em;
+  @Autowired
+  private ApplicationContext context;
 
-	@Override
-	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
+  @PersistenceContext
+  private EntityManager em;
 
-		if ((authentication == null) || (targetDomainObject == null) || !(permission instanceof String)) {
-			return false;
-		}
-		if (!(authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User))
-			return false;
+  @Override
+  public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
 
-		Optional<User> currentUser = this.userService.getUserWithPermissionsByUsername(
-				((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername());
-		if (currentUser.isPresent()) {
-			User user = currentUser.get();
-			try {
-				String[] beanNamesForType = сontext.getBeanNamesForType(
-						ResolvableType.forClassWithGenerics(PermissionResolver.class, targetDomainObject.getClass()));
-				if (beanNamesForType.length > 0) {
-					PermissionResolver rc = null;
-					rc = (PermissionResolver) сontext.getBean(beanNamesForType[0]);
-					if (rc != null) {
-						return rc.resolvePermission(user, targetDomainObject, (String) permission);
-					}
-				}
-			} catch (BeansException e) {
-				e.printStackTrace();
-			}
+    if ((authentication == null) || (targetDomainObject == null) || !(permission instanceof String)) {
+      return false;
+    }
+    if (!(authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User))
+      return false;
 
-			return true;
-		} else
+    Optional<User> currentUser = this.userService.getUserWithPermissionsByUsername(
+      ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername());
+    if (currentUser.isPresent()) {
+      User user = currentUser.get();
+      try {
+        String[] beanNamesForType = context.getBeanNamesForType(
+          ResolvableType.forClassWithGenerics(PermissionResolver.class, targetDomainObject.getClass()));
+        if (beanNamesForType.length > 0) {
+          PermissionResolver rc;
+          rc = (PermissionResolver) context.getBean(beanNamesForType[0]);
+          if (rc != null) {
+            return rc.resolvePermission(user, targetDomainObject, (String) permission);
+          }
+        }
+      } catch (BeansException e) {
+        LOGGER.error("Can't resolve bean for class " + targetDomainObject.getClass(), e);
+      }
+      return true;
+    } else {
+      return false;
+    }
 
-		{
-			return false;
-		}
+  }
 
-	}
+  @Override
+  public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType,
+                               Object permission) {
+    if ((authentication == null) || (targetType == null) || !(permission instanceof String)) {
+      return false;
+    }
 
-	@Override
-	public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType,
-			Object permission) {
-		if ((authentication == null) || (targetType == null) || !(permission instanceof String)) {
-			return false;
-		}
-		
-		Optional<User> currentUser = this.userService.getUserWithPermissionsByUsername(authentication.getName());
-		
-		System.out.println(authentication.getName());
+    Optional<User> currentUser = this.userService.getUserWithPermissionsByUsername(authentication.getName());
 
-		if (currentUser.isPresent()) {
-			User user = currentUser.get();
+    LOGGER.info("Checking permission of {}", authentication.getName());
 
-			try {
-				String[] beanNamesForType = сontext.getBeanNamesForType(
-						ResolvableType.forClassWithGenerics(PermissionResolver.class, Class.forName(targetType)));
-				if (beanNamesForType.length > 0) {
-					PermissionResolver rc = null;
-					rc = (PermissionResolver) сontext.getBean(beanNamesForType[0]);
-					if (rc != null) {
-						return rc.resolvePermission(user,em.find(Class.forName(targetType), targetId), (String) permission);
-					}
-				}
-			} catch (BeansException e) {
-				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    if (currentUser.isPresent()) {
+      User user = currentUser.get();
 
-			return true;
-		} else
+      try {
+        String[] beanNamesForType = context.getBeanNamesForType(
+          ResolvableType.forClassWithGenerics(PermissionResolver.class, Class.forName(targetType)));
+        if (beanNamesForType.length > 0) {
+          PermissionResolver rc;
+          rc = (PermissionResolver) context.getBean(beanNamesForType[0]);
+          if (rc != null) {
+            return rc.resolvePermission(user, em.find(Class.forName(targetType), targetId), (String) permission);
+          }
+        }
+      } catch (BeansException e) {
+        LOGGER.error("Can't resolve bean for class " + targetType, e);
+      } catch (ClassNotFoundException e) {
+        LOGGER.error(e.getMessage(), e);
+      }
 
-		{
-			System.out.println(authentication.getName()+" not found");
-			return false;
-		}
+      return true;
+    } else {
+      LOGGER.info("{} not found", authentication.getName());
+      return false;
+    }
 
-	}
+  }
 
 }
