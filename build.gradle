@@ -13,7 +13,6 @@ buildscript {
 
 plugins {
   id "org.sonarqube" version "2.6.2"
-//    id "io.spring.dependency-management" version "1.0.5.RELEASE"
   id "com.moowork.node" version "1.2.0"
 }
 
@@ -29,7 +28,11 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'idea'
 
 group = 'org.sitmun'
-version = '0.1.0-SNAPSHOT'
+if (project.hasProperty("customVersion")) {
+  version = project.customVersion
+} else {
+  version = "${sitmun_version}"
+}
 
 repositories {
   mavenLocal()
