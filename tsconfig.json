@@ -1,8 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
-    "outDir": "./dist/out-tsc",
+    "baseUrl": ".",
+    "outDir": "./dist",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
@@ -20,9 +20,6 @@
     "paths": {
       "angular-hal": [
         "dist/angular-hal"
-      ],
-      "sitmun-plugin-core": [
-        "src/main/angular-library/projects/sitmun-plugin-core/src/lib/public_api"
       ]
     }
   }

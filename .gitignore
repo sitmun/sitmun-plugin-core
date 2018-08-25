@@ -21,3 +21,5 @@ database/
 /update_db.sql
 /dist/
 /node_modules/
+.vscode/
+package-lock.json

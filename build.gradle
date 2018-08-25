@@ -1,91 +1,107 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    jcenter()
+    maven { url "http://repo.spring.io/plugins-release" }
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
+  }
+}
+
+
 plugins {
-    id 'org.springframework.boot' version '1.5.8.RELEASE'
-    id 'org.sonarqube' version '2.6'
-    id 'com.moowork.node' version '1.2.0'
+  id "org.sonarqube" version "2.6.2"
+//    id "io.spring.dependency-management" version "1.0.5.RELEASE"
+  id "com.moowork.node" version "1.2.0"
 }
 
 apply plugin: 'java'
-apply plugin: 'idea'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
 apply plugin: 'com.moowork.node'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'idea'
 
 group = 'org.sitmun'
 version = '0.1.0-SNAPSHOT'
 
 repositories {
-    mavenLocal()
-    mavenCentral()
+  mavenLocal()
+  mavenCentral()
 }
 
 bootRepackage {
-    enabled = false
+  enabled = false
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.webjars:webjars-locator'
-    
-    implementation 'org.springframework.security:spring-security-data'
+  implementation "org.springframework.boot:spring-boot-starter-web"
+  implementation "org.springframework.boot:spring-boot-starter-data-rest"
+  implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+  implementation "org.springframework.boot:spring-boot-starter-security"
+  implementation "org.springframework.security:spring-security-data"
 
-    implementation 'org.webjars:bootstrap:3.3.7'
-    implementation 'org.webjars:requirejs:2.3.3'
-    implementation 'io.springfox:springfox-swagger2:2.8.0'
-    
-    implementation 'io.jsonwebtoken:jjwt:0.7.0'
+  implementation "io.springfox:springfox-swagger2:${springfox_swagger_version}"
 
-    testImplementation 'com.h2database:h2'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'org.assertj:assertj-core:3.10.0'
-    
+  implementation "org.webjars:webjars-locator"
+  implementation "org.webjars:bootstrap:${bootstrap_version}"
+  implementation "org.webjars:requirejs:${requirejs_version}"
+
+  implementation "io.jsonwebtoken:jjwt:${jjwt_version}"
+
+  testImplementation "com.h2database:h2"
+  testImplementation "org.springframework.boot:spring-boot-starter-test"
+  testImplementation "org.springframework.security:spring-security-test"
+  testImplementation "org.assertj:assertj-core:${assertj_core_version}"
 }
 
-
 publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId group
-            artifactId 'sitmun-plugin-core'
-            version version
+  publications {
+    mavenJava(MavenPublication) {
+      groupId group
+      artifactId 'sitmun-plugin-core'
+      version version
 
-            from components.java
-        }
+      from components.java
     }
+  }
 }
 
 sonarqube {
-    properties {
-        property 'sonar.host.url', 'https://sonarcloud.io'
-        property 'sonar.organization', 'sitmun'     
-    }
+  properties {
+    property 'sonar.host.url', 'https://sonarcloud.io'
+    property 'sonar.organization', 'sitmun'
+  }
 }
 
 node {
-    version = "${node_version}"
-    npmVersion = "${npm_version}"
-    yarnVersion = "${yarn_version}"
-     download = true
+  version = "${node_version}"
+  npmVersion = "${npm_version}"
+  yarnVersion = "${yarn_version}"
+  download = "${node_download}"
 }
 
 
 task npmRebuild(type: NpmTask, dependsOn: npm_install) {
   args = ['rebuild', 'node-sass']
-    
+
 }
 
 task npmBuildAngularHal(type: NpmTask, dependsOn: npmRebuild) {
   args = ['run-script', 'build-angular-hal']
 }
 
-task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmRebuild) {
+task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: 'npmBuildAngularHal') {
   args = ['run-script', 'build-sitmun-plugin-core']
 }
 
-task buildJS(dependsOn: ['npmBuildAngularHal', 'npmBuildSitmunPluginCore'])
+task buildJS(dependsOn: 'npmBuildSitmunPluginCore')
 
 task install(dependsOn: 'publishToMavenLocal')
 
