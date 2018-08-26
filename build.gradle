@@ -91,21 +91,35 @@ node {
 }
 
 
-task npmRebuild(type: NpmTask, dependsOn: npm_install) {
-  args = ['rebuild', 'node-sass']
-
+task prepareNode {
+  description = 'Prepare the NPM environment.'
+  def taskDir = file("node_modules")
+  outputs.dir taskDir
+  enabled = !taskDir.exists()
+  doLast {
+    def rebuild = tasks.create(name: "npmRebuild", type: NpmTask)
+    rebuild.args = ['rebuild', 'node-sass']
+    rebuild.execute()
+    def install = tasks.create(name: "npmInstallToo", type: NpmTask)
+    install.args = ['install']
+    install.execute()
+  }
 }
 
-task npmBuildAngularHal(type: NpmTask, dependsOn: npmRebuild) {
+task npmBuildAngularHal(type: NpmTask, dependsOn: prepareNode) {
+  description = 'Build module angular-hal.'
   args = ['run-script', 'build-angular-hal']
 }
 
-task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: 'npmBuildAngularHal') {
+task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
+  description = 'Build module sitmun-plugin-core.'
   args = ['run-script', 'build-sitmun-plugin-core']
 }
 
-task buildJS(dependsOn: 'npmBuildSitmunPluginCore')
+processResources.dependsOn(npmBuildSitmunPluginCore)
 
 task install(dependsOn: 'publishToMavenLocal')
 
-assemble.dependsOn('buildJS')
+clean {
+  delete "node_modules"
+}
