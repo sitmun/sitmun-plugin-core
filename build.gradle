@@ -87,7 +87,11 @@ node {
   version = "${node_version}"
   npmVersion = "${npm_version}"
   yarnVersion = "${yarn_version}"
-  download = "${node_download}"
+  if (project.hasProperty("downloadNode")) {
+    download = project.properties.downloadNode
+  } else {
+    download = "${node_download}"
+  }
 }
 
 
@@ -97,9 +101,12 @@ task prepareNode {
   outputs.dir taskDir
   enabled = !taskDir.exists()
   doLast {
-    def rebuild = tasks.create(name: "npmRebuild", type: NpmTask)
-    rebuild.args = ['rebuild', 'node-sass']
-    rebuild.execute()
+    def nodeDownload = project.hasProperty("downloadNode") ? project.properties.downloadNode : "${node_download}"
+    if (nodeDownload) {
+      def rebuild = tasks.create(name: "npmRebuild", type: NpmTask)
+      rebuild.args = ['rebuild', 'node-sass']
+      rebuild.execute()
+    }
     def install = tasks.create(name: "npmInstallToo", type: NpmTask)
     install.args = ['install']
     install.execute()
@@ -124,4 +131,5 @@ task install(dependsOn: 'publishToMavenLocal')
 
 clean {
   delete "node_modules"
+  delete "dist"
 }
