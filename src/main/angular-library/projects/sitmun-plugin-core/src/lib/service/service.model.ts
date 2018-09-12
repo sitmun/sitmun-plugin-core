@@ -1,6 +1,6 @@
 import {Resource} from 'angular-hal';  
 import {Connection} from '../connection/connection.model';
-import {ServiceParameter} from '../service-parameter.model';
+import {ServiceParameter} from './service-parameter.model';
 export class Service extends Resource {
 
   public name: string;
@@ -13,11 +13,11 @@ export class Service extends Resource {
 
   public infoUrl: string;
 
-  public createdDate: Date;
+  public createdDate: any;
 
   //public layers: Cartography[];
 
-  public connection:Connection;
+  public connection: Connection;
     
   public parameters: ServiceParameter[];
 }

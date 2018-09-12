@@ -1,0 +1,53 @@
+<mat-card>
+<form #serviceForm="ngForm" (ngSubmit)="save()">
+	<mat-card-header> <mat-card-title>
+	<h2>{{service.name ? ('global.edit'|translate) :
+		('global.add'|translate)}} {{'service.item' | translate}}</h2>
+	</mat-card-title> </mat-card-header>
+	<mat-card-content> <mat-tab-group
+		dynamicHeight="true"> <mat-tab
+		label="{{ 'service.data'| translate}}">
+
+	<div class="container">
+		<mat-form-field> <input matInput
+			placeholder="{{'service.name' | translate}}"
+			[(ngModel)]="service.name" name="name" #name required> </mat-form-field>
+		<mat-form-field> 
+		<input matInput placeholder="{{'service.url' | translate}}"
+			[(ngModel)]="service.url" name="url" #url required>
+		</mat-form-field>
+		<mat-form-field> <input matInput
+			placeholder="{{'service.projections' | translate}}"
+			[(ngModel)]="service.projections" name="projections" #projections
+			required> </mat-form-field>
+		<mat-form-field> <input matInput
+			placeholder="{{'service.legend' | translate}}"
+			[(ngModel)]="service.legend" name="legend" #legend required>
+		</mat-form-field>
+		<mat-form-field> <input matInput
+			placeholder="{{'service.infoUrl' | translate}}"
+			[(ngModel)]="service.infoUrl" name="infoUrl" #infoUrl required>
+		</mat-form-field>
+		<mat-form-field> <mat-select
+			[compareWith]="compareResource" name="connection"
+			placeholder="{{ 'service.connection'| translate }}"
+			[(ngModel)]="service.connection"> <mat-option
+			*ngFor="let connection of connections" [value]="connection">
+		{{connection.name}} </mat-option> </mat-select> </mat-form-field>
+
+	</div>
+	</mat-tab> <mat-tab label="{{ 'service.parameters'| translate}}"> <sitmun-service-parameter-list
+		[service]="service"></sitmun-service-parameter-list> </mat-tab> </mat-tab-group> </mat-card-content>
+	<mat-card-actions>
+	<button mat-raised-button color="primary" type="submit"
+		[disabled]="!serviceForm.form.valid">{{'global.save' |
+		translate}}</button>
+	<button mat-raised-button color="secondary" (click)="remove(service)"
+		*ngIf="service._links?.self.href" type="button">{{'global.delete'
+		| translate}}</button>
+	<a mat-button routerLink="/service-list">{{'global.cancel' |
+		translate}}</a> </mat-card-actions>
+
+</form>
+</mat-card>
+
