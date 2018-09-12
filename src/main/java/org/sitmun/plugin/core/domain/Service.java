@@ -40,6 +40,7 @@ public class Service {
   @Column(name = "ser_infourl")
   private String infoUrl;
 
+
   @Column(name = "ser_f_alta")
   private Date createdDate;
 
@@ -49,6 +50,10 @@ public class Service {
   @ManyToOne
   @JoinColumn(name = "ser_codcon")
   private Connection connection;
+  
+  
+  @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<ServiceParameter> parameters = new HashSet<>();
 
   public long getId() {
     return id;
@@ -122,5 +127,12 @@ public class Service {
     this.connection = connection;
   }
 
+  public Set<ServiceParameter> getParameters() {
+	return parameters;
+  }
+
+  public void setParameters(Set<ServiceParameter> parameters) {
+	this.parameters = parameters;
+  }
 
 }

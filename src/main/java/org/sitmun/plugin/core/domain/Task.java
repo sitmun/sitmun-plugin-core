@@ -40,15 +40,28 @@ public class Task {
   @JoinColumn(name = "tar_codcon")
   private Connection connection;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  public Set<TaskParameter> getParameters() {
+	return parameters;
+}
+
+public void setParameters(Set<TaskParameter> parameters) {
+	this.parameters = parameters;
+}
+
+@ManyToMany(cascade = CascadeType.ALL)
   @JoinTable(name = "stm_roltar", joinColumns = @JoinColumn(name = "rta_codrol"), inverseJoinColumns = @JoinColumn(name = "rta_codtar"))
   private Set<Role> roles;
 
   @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<TaskAvailability> availabilities = new HashSet<>();
+  
+  @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<TaskParameter> parameters = new HashSet<>();
+  
   @ManyToOne
   @JoinColumn(name = "tar_codgta")
   private TaskGroup group;
+  
   @ManyToOne
   @JoinColumn(name = "tar_codtta")
   private TaskType type;
