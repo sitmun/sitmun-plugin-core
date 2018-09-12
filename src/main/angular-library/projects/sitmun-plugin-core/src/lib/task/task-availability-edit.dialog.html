@@ -1,0 +1,26 @@
+
+  <form #taskAvailabilityForm="ngForm" (ngSubmit)="save()">
+  <h2 mat-dialog-title>{{taskAvailability.territory ? ('global.edit'|translate) : ('global.add'|translate)}} {{'taskAvailability.item' | translate}}</h2>
+   <mat-dialog-content>
+    
+     <div class="container">
+      <mat-form-field>
+  			<mat-select [compareWith]="compareResource" name="territory" placeholder="{{ 'taskAvailability.territory'| translate}}" [(ngModel)]="taskAvailability.territory" required>
+    			<mat-option *ngFor="let territory of territories" [value]="territory">
+      			{{territory.name}}
+    			</mat-option>
+  			</mat-select>
+	  </mat-form-field>
+	  
+      </div>      
+        
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!taskAvailabilityForm.form.valid">{{'global.save' | translate}}</button>
+      <button mat-dialog-close mat-button>{{'global.cancel' | translate}}</button>
+
+                    
+    </mat-dialog-actions>
+    
+  </form>

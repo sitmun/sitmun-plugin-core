@@ -1,0 +1,27 @@
+<mat-card>
+  <form #taskTypeForm="ngForm" (ngSubmit)="save()">
+    <mat-card-header>
+      <mat-card-title><h2>{{item.name ? ('global.edit'|translate) : ('global.add'|translate)}} {{'taskType.item' | translate}}</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+     <div class="container">
+      <mat-form-field>
+        <input matInput placeholder="{{'taskType.name' | translate}}" [(ngModel)]="item.name"
+               name="name" #name required>
+      </mat-form-field>
+     
+      </div>
+      
+    
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!taskTypeForm.form.valid">{{'global.save' | translate}}</button>
+      <button mat-raised-button color="secondary" (click)="remove(item)"
+              *ngIf="item._links?.self.href" type="button">{{'global.delete' | translate}}</button>
+      <a mat-button routerLink="/task-type-list">{{'global.cancel' | translate}}</a>
+    </mat-card-actions>
+    
+  </form>
+</mat-card>
+  
