@@ -52,7 +52,7 @@ public class Service {
   private Connection connection;
   
   
-  @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<ServiceParameter> parameters = new HashSet<>();
 
   public long getId() {
