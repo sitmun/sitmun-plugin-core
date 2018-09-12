@@ -1,0 +1,43 @@
+<mat-card>
+  <form #connectionForm="ngForm" (ngSubmit)="save()">
+    <mat-card-header>
+      <mat-card-title><h2>{{item.name ? ('global.edit'|translate) : ('global.add'|translate)}} {{'connection.item' | translate}}</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+     <div class="container">
+      <mat-form-field>
+        <input matInput placeholder="{{'connection.name' | translate}}" [(ngModel)]="item.name"
+               name="name" #name required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="{{'connection.type' | translate}}" [(ngModel)]="item.type"
+               name="type" #type required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="{{'connection.user' | translate}}" [(ngModel)]="item.user"
+               name="user" #user required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="{{'connection.password' | translate}}" [(ngModel)]="item.password"
+               name="password" #password required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="{{'connection.connectionString' | translate}}" [(ngModel)]="item.connectionString"
+               name="connectionString" #connectionString required>
+      </mat-form-field>
+     
+      </div>
+      
+    
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!connectionForm.form.valid">{{'global.save' | translate}}</button>
+      <button mat-raised-button color="secondary" (click)="remove(item)"
+              *ngIf="item._links?.self.href" type="button">{{'global.delete' | translate}}</button>
+      <a mat-button routerLink="/connection-list">{{'global.cancel' | translate}}</a>
+    </mat-card-actions>
+    
+  </form>
+</mat-card>
+  
