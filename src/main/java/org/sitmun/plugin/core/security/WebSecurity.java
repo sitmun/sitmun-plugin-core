@@ -1,5 +1,7 @@
 package org.sitmun.plugin.core.security;
 
+import java.util.ArrayList;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.BeanInitializationException;
@@ -59,7 +61,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 			.and()
 				.authorizeRequests()
 				.antMatchers("/api/authenticate").permitAll()
-				.antMatchers(HttpMethod.POST, "/api/users").permitAll()
+				//.antMatchers(HttpMethod.POST, "/api/users").permitAll()
 				.antMatchers("/api/**").authenticated()
 			.and()
 				.apply(securityConfigurerAdapter());
@@ -69,7 +71,9 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	@Bean
 	public CorsFilter corsFilter() {
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
+		CorsConfiguration corsConfig = new CorsConfiguration().applyPermitDefaultValues();
+		corsConfig.addAllowedOrigin("http://localhost:4200");
+		source.registerCorsConfiguration("/**",corsConfig);
 		return new CorsFilter(source);
 	}
 
