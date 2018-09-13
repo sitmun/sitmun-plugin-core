@@ -31,7 +31,6 @@ public class ApplicationBackground {
   @JoinColumn(name = "apf_codapp")
   //@OnDelete(action = OnDeleteAction.CASCADE)
   @NotNull
-  @JsonIgnore
   private Application application;
 
   @ManyToOne

@@ -37,7 +37,6 @@ public class ApplicationParameter {
   @NotNull
   @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "pap_codapp")
-  @JsonIgnore
   private Application application;
 
   public long getId() {
