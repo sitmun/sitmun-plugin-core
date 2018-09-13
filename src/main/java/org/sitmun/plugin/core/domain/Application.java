@@ -65,10 +65,7 @@ public class Application {
   @JoinColumn(name = "cod_gca")
   private CartographyGroup situationMap;
 
-  public Set<Tree> getArboles() {
-    return trees;
-  }
-
+ 
   public long getId() {
     return id;
   }
