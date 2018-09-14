@@ -4,6 +4,8 @@ import {ServiceParameter} from './service-parameter.model';
 export class Service extends Resource {
 
   public name: string;
+    
+  public type: string;
 
   public url: string;
 

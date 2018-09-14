@@ -13,6 +13,10 @@
 			placeholder="{{'service.name' | translate}}"
 			[(ngModel)]="service.name" name="name" #name required> </mat-form-field>
 		<mat-form-field> 
+		<mat-form-field> <input matInput
+			placeholder="{{'service.type' | translate}}"
+			[(ngModel)]="service.type" name="type" #type required> </mat-form-field>
+		<mat-form-field> 
 		<input matInput placeholder="{{'service.url' | translate}}"
 			[(ngModel)]="service.url" name="url" #url required>
 		</mat-form-field>

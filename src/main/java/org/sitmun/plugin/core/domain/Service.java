@@ -34,8 +34,12 @@ public class Service {
   @Column(name = "ser_proj")
   private String projections;
 
+
   @Column(name = "ser_leyenda")
   private String legend;
+  
+  @Column(name = "ser_tipo")
+  private String type;
 
   @Column(name = "ser_infourl")
   private String infoUrl;
@@ -69,6 +73,15 @@ public class Service {
 
   public void setName(String name) {
     this.name = name;
+  }
+  
+
+  public String getType() {
+	return type;
+  }
+
+  public void setType(String type) {
+	this.type = type;
   }
 
   public String getUrl() {

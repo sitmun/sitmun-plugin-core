@@ -12,7 +12,7 @@ export class ServiceListComponent implements OnInit {
 
   items:Service[];
   
-  displayedColumns = ['name','actions'];
+  displayedColumns = ['name','type','actions'];
   dataSource = new MatTableDataSource<Service>(this.items);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
