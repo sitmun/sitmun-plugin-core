@@ -57,4 +57,10 @@
     <span *ngIf="isLoggedIn()" ><a href="" [routerLink]="['/account']" [translate]="'menu.account'">Account</a> <a href="" [routerLink]="['/change-password']" [translate]="'account.change-password'">Change password</a><a href="" (click)="logout()" [translate]="'account.closeSession'">Close session</a> </span> 
 </mat-toolbar>
 <router-outlet></router-outlet>
+<!-- test map-->
+<!--
+<sitmun-map-viewer-map [extent]="[256901.08041000657, 4544669.980255321, 554715.9195899934, 4703023.019744679]" 
+                       [initialProjection]="'EPSG:25831'" 
+                       [loaddefaults]="true"></sitmun-map-viewer-map>
+-->                       
 

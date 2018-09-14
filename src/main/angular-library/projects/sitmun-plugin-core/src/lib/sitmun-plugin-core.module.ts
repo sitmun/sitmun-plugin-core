@@ -51,6 +51,7 @@ import {UserPositionListComponent,UserPositionEditDialog} from './user/user-posi
 import {UserConfigurationListComponent,UserConfigurationEditDialog} from './user/user-configuration-list.component';
 
 import { MapComponent } from './map/map.component';
+import { MapConfigurationManagerService } from './map/map-configuration-manager.service';
 import { LayerSelectionDialogComponent } from './map/layer-selection-dialog.component';
 
 import { MatPaginationIntlService } from './mat-pagination-intl.service';
@@ -228,6 +229,7 @@ export function createMatPaginationService(translate: TranslateService){
         UserPositionService,
         UserConfigurationService,
         LoginService,
+        MapConfigurationManagerService,
         {
           provide: MatPaginatorIntl,
           useFactory: (createMatPaginationService),
