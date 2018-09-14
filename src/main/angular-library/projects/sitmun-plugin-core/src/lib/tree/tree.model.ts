@@ -1,5 +1,5 @@
 import {Resource} from 'angular-hal';
-import {Treenode} from './tree-node.mode';    
+import {TreeNode} from './tree-node.model';    
 export class Tree extends Resource {
 
   public name: string;

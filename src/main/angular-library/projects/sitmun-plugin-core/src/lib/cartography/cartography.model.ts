@@ -17,7 +17,7 @@ export class Cartography extends Resource {
 
   public queryLay: Boolean;
 
-  public createdDate: Date;
+  public createdDate: any;
 
   public order: Number; 
 
@@ -47,9 +47,9 @@ export class Cartography extends Resource {
 
   public metadataUrl: string;
 
-  public themeable : Boolean;
+  public themeable: Boolean;
 
   public geometryType: string;
-  public cartography: Cartography;
+  
 
 }

@@ -8,7 +8,7 @@ export class Background extends Resource {
   
   public active: Boolean;
 
-  public createdDate: Date;
+  public createdDate: any;
 
   public cartographyGroup: CartographyGroup;
 }

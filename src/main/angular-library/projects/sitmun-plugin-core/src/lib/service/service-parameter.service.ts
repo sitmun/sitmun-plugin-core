@@ -23,12 +23,17 @@ export class ServiceParameterService extends RestService<ServiceParameter> {
   save(item: ServiceParameter): Observable<any> {
     let result: Observable<Object>;
     if (item._links!=null) {
-      result = this.http.put(item._links.self.href, item);
-      if (item.service !=null){
-          item.substituteRelation('service',item.service).subscribe(result => {
       
+      
+      if (item.service !=null){
+          let service =  item.service;
+          delete item.service;
+          item.substituteRelation('service',service).subscribe(result => {            
+          
       }, error => console.error(error));
       }
+      result = this.http.put(item._links.self.href, item);
+      
       
     } else {
       item.service = item.service._links.self.href;

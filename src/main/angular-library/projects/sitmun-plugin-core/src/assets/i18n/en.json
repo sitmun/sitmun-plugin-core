@@ -13,8 +13,8 @@
     	"territoriesTypes":"Territory types",
     	"users":"Users",
     	"roles":"Roles",
-    	"account":"Account"
-	},
+    	"account":"Account",
+    	"connection":"Connections"},
 	"global":{
 		"actions":"Actions",
 		"add":"Add",
@@ -100,5 +100,14 @@
 	},
 	"login":{
 		"bad-credentials":"Bad credentials"
+	},"connection":{
+		"item":"Connection",
+		"data":"Data",
+		"list":"Connections",
+		"name":"Name",
+		"user":"User",
+		"password":"Password",
+		"type":"Type",
+		"connectionString":"Connection string"
 	}
 }

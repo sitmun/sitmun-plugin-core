@@ -1,0 +1,43 @@
+
+  <form #treeNodeForm="ngForm" (ngSubmit)="save()">
+  <h2 mat-dialog-title>{{treeNode.name ? ('global.edit'|translate) : ('global.add'|translate)}} {{'treeNode.item' | translate}}</h2>
+   <mat-dialog-content>
+    
+     <div class="container">
+      <mat-form-field>
+        <input matInput placeholder="{{ 'treeNode.name'| translate}}" [(ngModel)]="treeNode.name"
+               name="name" #name required>
+      </mat-form-field>
+      
+	<mat-checkbox [(ngModel)]="treeNode.active"
+               name="active" #active>{{ 'treeNode.active'| translate}}
+      </mat-checkbox>
+      
+      <mat-form-field> <mat-select
+			[compareWith]="compareResource" name="cartography"
+			placeholder="{{ 'treeNode.cartography'| translate }}"
+			[(ngModel)]="treeNode.cartography"> <mat-option
+			*ngFor="let cartography of cartographies" [value]="cartography">
+		{{cartography.name}} </mat-option> </mat-select> </mat-form-field>
+  
+      <mat-form-field>
+        <input matInput placeholder="{{ 'treeNode.tooltip'| translate}}" [(ngModel)]="treeNode.tooltip"
+               name="tooltip" #tooltip>
+      </mat-form-field>
+      <mat-form-field> <input matInput type="number"
+			placeholder="{{'treeNode.ordee' | translate}}" [(ngModel)]="treeNode.ordee"
+			name="ordee" #ordee> 
+		</mat-form-field>
+      
+      </div>      
+    
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!treeNodeForm.form.valid">{{'global.save' | translate}}</button>
+      <button mat-dialog-close mat-button>{{'global.cancel' | translate}}</button>
+
+                    
+    </mat-dialog-actions>
+    
+  </form>

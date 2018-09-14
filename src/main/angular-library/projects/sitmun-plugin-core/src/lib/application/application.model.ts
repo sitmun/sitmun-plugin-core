@@ -14,7 +14,7 @@ export class Application extends Resource {
 
   public theme: string;
 
-  public createdDate: Date;
+  public createdDate: any;
 
   public availableRoles : Role[];
 

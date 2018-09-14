@@ -1,0 +1,31 @@
+
+  <form #applicationParameterForm="ngForm" (ngSubmit)="save()">
+  <h2 mat-dialog-title>{{applicationParameter.name ? ('global.edit'|translate) : ('global.add'|translate)}} {{'applicationParameter.item' | translate}}</h2>
+   <mat-dialog-content>
+    
+     <div class="container"> 
+      <mat-form-field>
+        <input matInput placeholder="{{ 'applicationParameter.name'| translate}}" [(ngModel)]="applicationParameter.name"
+               name="name" #name required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="{{ 'applicationParameter.type'| translate}}" [(ngModel)]="applicationParameter.type"
+               name="type" #scope>
+      </mat-form-field>
+	  <mat-form-field>
+        <input matInput placeholder="{{ 'applicationParameter.value'| translate}}" [(ngModel)]="applicationParameter.value"
+               name="value" #value required>
+      </mat-form-field>
+      
+      </div>      
+    
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!applicationParameterForm.form.valid">{{'global.save' | translate}}</button>
+      <button mat-dialog-close mat-button>{{'global.cancel' | translate}}</button>
+
+                    
+    </mat-dialog-actions>
+    
+  </form>

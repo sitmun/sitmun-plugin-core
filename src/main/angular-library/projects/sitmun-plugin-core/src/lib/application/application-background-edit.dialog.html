@@ -1,0 +1,28 @@
+
+  <form #applicationBackgroundForm="ngForm" (ngSubmit)="save()">
+  <h2 mat-dialog-title>{{applicationBackground.name ? ('global.edit'|translate) : ('global.add'|translate)}} {{'applicationBackground.item' | translate}}</h2>
+   <mat-dialog-content>
+    
+     <div class="container">
+           <mat-form-field> <input matInput type="number"
+			placeholder="{{'applicationBackground.order' | translate}}"
+			[(ngModel)]="applicationBackground.order" name="order" #order> </mat-form-field>
+			
+			<mat-form-field> <mat-select
+			[compareWith]="compareResource" name="background"
+			placeholder="{{ 'applicationBackground.background'| translate }}"
+			[(ngModel)]="applicationBackground.background"> <mat-option
+			*ngFor="let background of backgrounds" [value]="background">
+		{{background.name}} </mat-option> </mat-select> </mat-form-field>
+      </div>      
+    
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!applicationBackgroundForm.form.valid">{{'global.save' | translate}}</button>
+      <button mat-dialog-close mat-button>{{'global.cancel' | translate}}</button>
+
+                    
+    </mat-dialog-actions>
+    
+  </form>

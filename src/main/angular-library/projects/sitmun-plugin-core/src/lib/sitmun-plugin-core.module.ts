@@ -21,6 +21,24 @@ import {UserPositionService} from './user/user-position.service';
 import {UserConfigurationService} from './user/user-configuration.service';
 import {RoleService} from './role/role.service';
 import {UserService} from './user/user.service';
+import {ConnectionService} from './connection/connection.service';
+import {TaskService} from './task/task.service';
+import {TaskTypeService} from './task/task-type.service';
+import {TaskGroupService} from './task/task-group.service';
+import {TaskParameterService} from './task/task-parameter.service';
+import {TaskAvailabilityService} from './task/task-availability.service';
+import {ServiceService} from './service/service.service';
+import {ServiceParameterService} from './service/service-parameter.service';
+import {CartographyService} from './cartography/cartography.service';
+import {CartographyAvailabilityService} from './cartography/cartography-availability.service';
+import {CartographyGroupService} from './cartography/cartography-group.service';
+import {BackgroundService} from './cartography/background.service';
+import {TreeService} from './tree/tree.service';
+import {TreeNodeService} from './tree/tree-node.service';
+import {ApplicationService} from './application/application.service';
+import {ApplicationParameterService} from './application/application-parameter.service';
+import {ApplicationBackgroundService} from './application/application-background.service';
+
 import {TerritoryListComponent} from './territory/territory-list.component';
 import {TerritoryEditComponent} from './territory/territory-edit.component';
 import {TerritoryTypeListComponent} from './territory/territory-type-list.component';
@@ -51,6 +69,33 @@ import { AccountService } from './account/account.service';
 import { AccountEditComponent } from './account/account-edit.component';
 import { AccountChangePasswordComponent } from './account/account-change-password.component';
 import { UserChangePasswordComponent } from './user/user-change-password.component';
+import { ConnectionListComponent } from './connection/connection-list.component';
+import { ConnectionEditComponent } from './connection/connection-edit.component';
+import { TaskTypeListComponent } from './task/task-type-list.component';
+import { TaskGroupListComponent } from './task/task-group-list.component';
+import { TaskListComponent } from './task/task-list.component';
+import { TaskTypeEditComponent } from './task/task-type-edit.component';
+import { TaskGroupEditComponent } from './task/task-group-edit.component';
+import { TaskEditComponent } from './task/task-edit.component';
+import { TaskAvailabilityListComponent,TaskAvailabilityEditDialog } from './task/task-availability-list.component';
+import { TaskParameterListComponent,TaskParameterEditDialog } from './task/task-parameter-list.component';
+import { ServiceEditComponent } from './service/service-edit.component';
+import { ServiceListComponent } from './service/service-list.component';
+import { ServiceParameterListComponent,ServiceParameterEditDialog } from './service/service-parameter-list.component';
+import { CartographyEditComponent } from './cartography/cartography-edit.component';
+import { CartographyGroupEditComponent } from './cartography/cartography-group-edit.component';
+import { CartographyGroupListComponent } from './cartography/cartography-group-list.component';
+import { CartographyListComponent } from './cartography/cartography-list.component';
+import { CartographyAvailabilityListComponent,CartographyAvailabilityEditDialog } from './cartography/cartography-availability-list.component';
+import { BackgroundEditComponent } from './cartography/background-edit.component';
+import { BackgroundListComponent } from './cartography/background-list.component';
+import { TreeListComponent } from './tree/tree-list.component';
+import { TreeEditComponent } from './tree/tree-edit.component';
+import { TreeNodeListComponent,TreeNodeEditDialog  } from './tree/tree-node-list.component';
+import { ApplicationEditComponent } from './application/application-edit.component';
+import { ApplicationListComponent } from './application/application-list.component';
+import { ApplicationParameterListComponent,ApplicationParameterEditDialog } from './application/application-parameter-list.component';
+import { ApplicationBackgroundListComponent,ApplicationBackgroundEditDialog } from './application/application-background-list.component';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -118,7 +163,41 @@ export function createMatPaginationService(translate: TranslateService){
         HasAnyAuthorityOnTerritoryDirective,
         AccountEditComponent,
         AccountChangePasswordComponent,
-        UserChangePasswordComponent],
+        UserChangePasswordComponent,
+        ConnectionListComponent,
+        ConnectionEditComponent,
+        TaskTypeListComponent,
+        TaskGroupListComponent,
+        TaskListComponent,
+        TaskTypeEditComponent,
+        TaskGroupEditComponent,
+        TaskEditComponent,
+        TaskAvailabilityListComponent,
+        TaskAvailabilityEditDialog, 
+        TaskParameterEditDialog,
+        ServiceParameterEditDialog,
+        TaskParameterListComponent,
+        ServiceEditComponent,
+        ServiceListComponent,
+        ServiceParameterListComponent,
+        CartographyEditComponent,
+        CartographyGroupEditComponent,
+        CartographyGroupListComponent,
+        CartographyListComponent,
+        CartographyAvailabilityListComponent,
+        CartographyAvailabilityEditDialog,
+        BackgroundEditComponent,
+        BackgroundListComponent,
+        TreeListComponent,
+        TreeEditComponent,
+        TreeNodeListComponent,
+        TreeNodeEditDialog,
+        ApplicationEditComponent,
+        ApplicationListComponent,
+        ApplicationParameterListComponent,
+        ApplicationParameterEditDialog,
+        ApplicationBackgroundEditDialog,
+        ApplicationBackgroundListComponent],
   providers:[
         TerritoryService,
         TerritoryTypeService,
@@ -126,6 +205,23 @@ export function createMatPaginationService(translate: TranslateService){
         AccountService,
         AuthService,        
         UserService,  
+        ConnectionService,
+        TaskService,
+        TaskTypeService,
+        TaskGroupService,
+        TaskParameterService,
+        TaskAvailabilityService,
+        ServiceService,
+        ServiceParameterService,
+        CartographyService,
+        CartographyGroupService,
+        CartographyAvailabilityService, 
+        BackgroundService,
+        TreeService,
+        TreeNodeService,
+        ApplicationService,
+        ApplicationParameterService,
+        ApplicationBackgroundService,
         AuthInterceptor,      
         AuthExpiredInterceptor,
         Principal,
@@ -151,7 +247,14 @@ export function createMatPaginationService(translate: TranslateService){
   entryComponents: [
         UserPositionEditDialog,
         UserConfigurationEditDialog,
-        LayerSelectionDialogComponent
+        LayerSelectionDialogComponent,
+        TaskAvailabilityEditDialog,
+        TaskParameterEditDialog,
+        ServiceParameterEditDialog,
+        CartographyAvailabilityEditDialog,
+        TreeNodeEditDialog,
+        ApplicationParameterEditDialog,
+        ApplicationBackgroundEditDialog
     ],
   exports: [
   

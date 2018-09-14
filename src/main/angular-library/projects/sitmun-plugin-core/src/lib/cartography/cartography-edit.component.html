@@ -1,0 +1,104 @@
+<mat-card>
+<form #cartographyForm="ngForm" (ngSubmit)="save()">
+	<mat-card-header> <mat-card-title>
+	<h2>{{cartography.name ? ('global.edit'|translate) :
+		('global.add'|translate)}} {{'cartography.item' | translate}}</h2>
+	</mat-card-title> </mat-card-header>
+	<mat-card-content> <mat-tab-group
+		dynamicHeight="true"> <mat-tab
+		label="{{ 'cartography.data'| translate}}">
+
+	<div class="container">
+		<mat-form-field> <input matInput
+			placeholder="{{'cartography.name' | translate}}"
+			[(ngModel)]="cartography.name" name="name" #name required> </mat-form-field>
+		<mat-form-field> <input matInput
+			placeholder="{{'cartography.type' | translate}}"
+			[(ngModel)]="cartography.type" name="type" #type> </mat-form-field>
+		<mat-checkbox [(ngModel)]="cartography.visible" name="visible"
+			#visible>{{ 'cartography.visible'| translate}} </mat-checkbox>
+		<mat-form-field> <input matInput type="number"
+			placeholder="{{'cartography.transparency' | translate}}"
+			[(ngModel)]="cartography.transparency" name="transparency"
+			#transparency> </mat-form-field>
+		<mat-checkbox [(ngModel)]="cartography.queryable" name="queryable"
+			#queryable>{{ 'cartography.queryable'| translate}} </mat-checkbox>
+		<mat-checkbox [(ngModel)]="cartography.queryAct" name="queryAct"
+			#queryAct>{{ 'cartography.queryAct'| translate}} </mat-checkbox>
+		<mat-checkbox [(ngModel)]="cartography.queryLay" name="queryLay"
+			#queryLay>{{ 'cartography.queryLay'| translate}} </mat-checkbox>
+		<mat-form-field> <input matInput type="number"
+			placeholder="{{'cartography.order' | translate}}"
+			[(ngModel)]="cartography.order" name="order" #order> </mat-form-field>
+		<mat-form-field> <input matInput type="number"
+			placeholder="{{'cartography.minimumScale' | translate}}"
+			[(ngModel)]="cartography.minimumScale" name="minimumScale"
+			#minimumScale> </mat-form-field>
+		<mat-form-field> <input matInput type="number"
+			placeholder="{{'cartography.maximumScale' | translate}}"
+			[(ngModel)]="cartography.maximumScale" name="maximumScale"
+			#maximumScale> </mat-form-field>
+		<mat-form-field> <input matInput
+			placeholder="{{'cartography.layers' | translate}}"
+			[(ngModel)]="cartography.layers" name="layers" #layers> </mat-form-field>
+		<mat-checkbox [(ngModel)]="cartography.selectable" name="selectable"
+			#selectable>{{ 'cartography.selectable'| translate}} </mat-checkbox>
+		<mat-form-field> <input matInput
+			placeholder="{{'cartography.selectionLayer' | translate}}"
+			[(ngModel)]="cartography.selectionLayer" name="selectionLayer"
+			#selectionLayer> </mat-form-field>
+		<mat-form-field> <input matInput
+			placeholder="{{'cartography.legendTip' | translate}}"
+			[(ngModel)]="cartography.legendTip" name="legendTip" #legendTip>
+		</mat-form-field>
+		<mat-form-field> <input matInput
+			placeholder="{{'cartography.legendUrl' | translate}}"
+			[(ngModel)]="cartography.legendUrl" name="legendUrl" #legendUrl>
+		</mat-form-field>
+		<mat-checkbox [(ngModel)]="cartography.editable" name="editable"
+			#editable>{{ 'cartography.editable'| translate}} </mat-checkbox>
+		<mat-form-field> <input matInput
+			placeholder="{{'cartography.metadataUrl' | translate}}"
+			[(ngModel)]="cartography.metadataUrl" name="metadataUrl" #metadataUrl>
+		</mat-form-field>
+		<mat-checkbox [(ngModel)]="cartography.themeable" name="themeable"
+			#themeable>{{ 'cartography.themeable'| translate}} </mat-checkbox>
+		<mat-form-field> <input matInput
+			placeholder="{{'cartography.geometryType' | translate}}"
+			[(ngModel)]="cartography.geometryType" name="geometryType"
+			#geometryType> </mat-form-field>
+		<mat-form-field> <mat-select
+			[compareWith]="compareResource" name="connection"
+			placeholder="{{ 'cartography.connection'| translate }}"
+			[(ngModel)]="cartography.connection"> <mat-option
+			*ngFor="let connection of connections" [value]="connection">
+		{{connection.name}} </mat-option> </mat-select> </mat-form-field>
+		<mat-form-field> <mat-select
+			[compareWith]="compareResource" name="service"
+			placeholder="{{ 'cartography.service'| translate }}"
+			[(ngModel)]="cartography.service"> <mat-option
+			*ngFor="let service of services" [value]="service">
+		{{service.name}} </mat-option> </mat-select> </mat-form-field>
+		<mat-form-field> <mat-select
+			[compareWith]="compareResource" name="selectionService"
+			placeholder="{{ 'cartography.selectionService'| translate }}"
+			[(ngModel)]="cartography.selectionService"> <mat-option
+			*ngFor="let service of services" [value]="service">
+		{{service.name}} </mat-option> </mat-select> </mat-form-field>
+		</div>
+	</mat-tab> <mat-tab label="{{ 'cartography.availabilities'| translate}}">
+	<sitmun-cartography-availability-list [cartography]="cartography"></sitmun-cartography-availability-list>
+	</mat-tab> </mat-tab-group> </mat-card-content>
+	<mat-card-actions>
+	<button mat-raised-button color="primary" type="submit"
+		[disabled]="!cartographyForm.form.valid">{{'global.save' |
+		translate}}</button>
+	<button mat-raised-button color="secondary"
+		(click)="remove(cartography)" *ngIf="cartography._links?.self.href"
+		type="button">{{'global.delete' | translate}}</button>
+	<a mat-button routerLink="/cartography-list">{{'global.cancel' |
+		translate}}</a> </mat-card-actions>
+
+</form>
+</mat-card>
+

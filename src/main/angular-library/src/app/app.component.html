@@ -6,6 +6,7 @@
   
    <span class="toolbar-spacer"></span>
     <span *ngIf="isLoggedIn()" >
+    <!-- 
    <button mat-button *sitmunHasAnyAuthority="['ADMIN SITMUN','ADMIN ORGANIZACION']"
             [routerLink]="['/territory-list']"><span [translate]="'menu.territories'">Territories</span>
     </button>
@@ -17,6 +18,39 @@
     </button>
     <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
             [routerLink]="['/role-list']"><span [translate]="'menu.roles'">Roles</span>
+    </button>
+    -->
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/connection-list']"><span [translate]="'menu.connection'">Connections</span>
+    </button>
+    <!-- 
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/task-type-list']"><span [translate]="'menu.taskType'">Task Types</span>
+    </button>
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/task-group-list']"><span [translate]="'menu.taskGroup'">Task Groups</span>
+    </button>
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/task-list']"><span [translate]="'menu.taskList'">Tasks</span>
+    </button>
+     -->
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/service-list']"><span [translate]="'menu.serviceList'">Services</span>
+    </button>
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/cartography-list']"><span [translate]="'menu.cartographyList'">Cartographies</span>
+    </button>
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/cartography-group-list']"><span [translate]="'menu.cartographyGroupList'">Cartography Groups</span>
+    </button>
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/background-list']"><span [translate]="'menu.backgroundList'">backgrounds</span>
+    </button>
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/tree-list']"><span [translate]="'menu.treeList'">trees</span>
+    </button>
+    <button mat-button *sitmunHasAnyAuthority="'ADMIN SITMUN'"
+            [routerLink]="['/application-list']"><span [translate]="'menu.applicationList'">applications</span>
     </button>
   </span>
     <span (click)="changeLanguage('ca')"> CA </span> | <span  (click)="changeLanguage('es')"> ES </span>| <span  (click)="changeLanguage('en')"> EN </span>

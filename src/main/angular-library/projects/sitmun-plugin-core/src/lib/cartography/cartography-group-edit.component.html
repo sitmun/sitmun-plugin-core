@@ -1,0 +1,102 @@
+<mat-card>
+  <form #cartographyGroupForm="ngForm" (ngSubmit)="save()">
+    <mat-card-header>
+      <mat-card-title><h2>{{cartographyGroup.name ? ('global.edit'|translate) : ('global.add'|translate)}} {{'cartographyGroup.item' | translate}}</h2></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+    <mat-tab-group dynamicHeight="true">
+    <mat-tab label="{{'cartographyGroup.data' | translate}}">
+     <div class="container">
+      <mat-form-field>
+        <input matInput placeholder="{{ 'cartographyGroup.name'| translate}}" [(ngModel)]="cartographyGroup.name"
+               name="name" #name required>
+      </mat-form-field>
+            <mat-form-field>
+        <input matInput placeholder="{{ 'cartographyGroup.type'| translate}}" [(ngModel)]="cartographyGroup.type"
+               name="type" #type>
+      </mat-form-field>
+      </div>
+      </mat-tab>
+  <mat-tab label="{{ 'cartographyGroup.members'| translate}}" *sitmunHasAnyAuthority="'ADMIN SITMUN'">
+    <table mat-table [dataSource]="cartographies" class="mat-elevation-z8">
+
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggleCartography() : null"
+                    [checked]="cartographySelection.hasValue() && isAllCartographySelected()"
+                    [indeterminate]="cartographySelection.hasValue() && !isAllCartographySelected()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? cartographySelection.toggle(row) : null"
+                    [checked]="cartographySelection.isSelected(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> {{'cartography.name' | translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+  <ng-container matColumnDef="service">
+    <th mat-header-cell *matHeaderCellDef> {{'cartography.service' | translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.service?.name}} </td>
+  </ng-container>
+  
+    
+  <tr mat-header-row *matHeaderRowDef="cartographyDisplayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: cartographyDisplayedColumns;"
+      (click)="cartographySelection.toggle(row)">
+  </tr>
+</table>
+  </mat-tab>
+
+ <mat-tab label="{{ 'roleGroup.roles'| translate}}" *sitmunHasAnyAuthority="'ADMIN SITMUN'">
+    <table mat-table [dataSource]="roles" class="mat-elevation-z8">
+
+  <!-- Checkbox Column -->
+  <ng-container matColumnDef="select">
+    <th mat-header-cell *matHeaderCellDef>
+      <mat-checkbox (change)="$event ? masterToggleRole() : null"
+                    [checked]="roleSelection.hasValue() && isAllRoleSelected()"
+                    [indeterminate]="roleSelection.hasValue() && !isAllRoleSelected()">
+      </mat-checkbox>
+    </th>
+    <td mat-cell *matCellDef="let row">
+      <mat-checkbox (click)="$event.stopPropagation()"
+                    (change)="$event ? roleSelection.toggle(row) : null"
+                    [checked]="roleSelection.isSelected(row)">
+      </mat-checkbox>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> {{'role.name' | translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+  <ng-container matColumnDef="service">
+    <th mat-header-cell *matHeaderCellDef> {{'role.service' | translate}} </th>
+    <td mat-cell *matCellDef="let element"> {{element.service?.name}} </td>
+  </ng-container>
+  
+    
+  <tr mat-header-row *matHeaderRowDef="roleDisplayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: roleDisplayedColumns;"
+      (click)="roleSelection.toggle(row)">
+  </tr>
+</table>
+</mat-tab>
+</mat-tab-group>  
+    
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button color="primary" type="submit"
+              [disabled]="!cartographyGroupForm.form.valid">{{'global.save' | translate}}</button>
+      <button mat-raised-button color="secondary" (click)="remove(cartographyGroup)"
+              *ngIf="cartographyGroup._links?.self.href" type="button">{{'global.delete' | translate}}</button>
+      <a mat-button routerLink="/cartography-group-list">{{'global.cancel' | translate}}</a>
+    </mat-card-actions>
+    
+  </form>
+</mat-card>
+  

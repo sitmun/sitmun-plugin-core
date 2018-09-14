@@ -1,4 +1,5 @@
 import {Resource} from 'angular-hal'; 
+import {Application} from './application.model'; 
 
 export class ApplicationParameter extends Resource {
 
@@ -7,5 +8,7 @@ export class ApplicationParameter extends Resource {
   public type: string;
     
   public value: string;
+  
+  public application: Application;
 
 }
