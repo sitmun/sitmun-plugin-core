@@ -1,10 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
-
 export class Layer {
   // Display data
   visibility: boolean = false;
@@ -39,6 +35,10 @@ export class LayerGroup {
   id: String;
   layers: Array<Layer>;
 }
+
+@Injectable({
+  providedIn: 'root'
+})
 
 export class MapConfigurationManagerService {
   private layersSubject = new BehaviorSubject([]);

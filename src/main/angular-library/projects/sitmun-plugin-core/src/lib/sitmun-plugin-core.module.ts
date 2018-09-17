@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
@@ -141,7 +141,7 @@ export function createMatPaginationService(translate: TranslateService){
                 useFactory: (createTranslateLoader),
                 deps: [HttpClient]
             }
-        }) 
+        })
   
   ],
   declarations: [
@@ -302,4 +302,56 @@ export function createMatPaginationService(translate: TranslateService){
         ReactiveFormsModule,
         MatFormFieldModule]
 })
-export class SitmunPluginCoreModule { }
+export class SitmunPluginCoreModule {
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: SitmunPluginCoreModule,
+            providers: [
+                TerritoryService,
+                TerritoryTypeService,
+                RoleService,
+                AccountService,
+                AuthService,        
+                UserService,  
+                ConnectionService,
+                TaskService,
+                TaskTypeService,
+                TaskGroupService,
+                TaskParameterService,
+                TaskAvailabilityService,
+                ServiceService,
+                ServiceParameterService,
+                CartographyService,
+                CartographyGroupService,
+                CartographyAvailabilityService, 
+                BackgroundService,
+                TreeService,
+                TreeNodeService,
+                ApplicationService,
+                ApplicationParameterService,
+                ApplicationBackgroundService,
+                AuthInterceptor,      
+                AuthExpiredInterceptor,
+                Principal,
+                UserPositionService,
+                UserConfigurationService,
+                LoginService,
+                MapConfigurationManagerService,
+                {
+                  provide: MatPaginatorIntl,
+                  useFactory: (createMatPaginationService),
+                  deps: [TranslateService]
+                }, {
+                    provide: HTTP_INTERCEPTORS,
+                    useClass: AuthInterceptor,
+                    multi: true
+                }
+                , {
+                    provide: HTTP_INTERCEPTORS,
+                    useClass: AuthExpiredInterceptor,
+                    multi: true
+                }
+            ]
+        };
+    }
+};

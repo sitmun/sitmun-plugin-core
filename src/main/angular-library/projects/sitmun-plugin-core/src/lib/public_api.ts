@@ -92,4 +92,5 @@ export * from './application/application-parameter.service';
 export * from './application/application-parameter-list.component';
 
 export * from './map/map.component';
+export * from './map/map-configuration-manager.service';
 export * from './sitmun-plugin-core.module';
