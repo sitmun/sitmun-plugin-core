@@ -147,7 +147,7 @@ export class MapComponent implements OnInit {
     private mapConfigurationManagerService: MapConfigurationManagerService) {
   }
 
-  map: ol.Map;
+  map: ol.Map = null;
 
   //geolocation: ol.Geolocation;
   //geolocationLayer: ol.layer.Vector;
@@ -651,6 +651,11 @@ export class MapComponent implements OnInit {
 
   overViewMapControl:ol.control.OverviewMap;
   ngOnInit() {
+
+    if (this.getMap() != null) {
+      //The map is already created do nothing
+      return;
+    }
 
     this.initializeMapConfigurationManager();
 
