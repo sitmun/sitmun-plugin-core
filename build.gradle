@@ -83,15 +83,16 @@ sonarqube {
   }
 }
 
+def cacheDir = project.hasProperty("cacheDir")? project.properties.cacheDir : "${project.buildDir}" 
+
 node {
   version = "${node_version}"
   npmVersion = "${npm_version}"
   yarnVersion = "${yarn_version}"
-  if (project.hasProperty("downloadNode")) {
-    download = project.properties.downloadNode
-  } else {
-    download = "${node_download}"
-  }
+  download = project.hasProperty("downloadNode")? project.properties.downloadNode : "${node_download}"  
+  workDir = file("${cacheDir}/nodejs")
+  npmWorkDir = file("${cacheDir}/npm")
+  yarnWorkDir = file("${cacheDir}/yarn")
 }
 
 
@@ -132,4 +133,5 @@ task install(dependsOn: 'publishToMavenLocal')
 clean {
   delete "node_modules"
   delete "dist"
+  delete "${cacheDir}"
 }
