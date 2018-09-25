@@ -67,12 +67,12 @@ dependencies {
 
 task enforceJavaVersion {
     def foundVersion = JavaVersion.current();
-    if (foundVersion != "${java_version}") 
+    if (foundVersion.toString() != "${java_version}") 
         throw new IllegalStateException("Wrong Java Version used. This project requires ${java_version}" + 
-        " , but found " + foundVersion);
+        ", but found " + foundVersion);
 }
 
-compileJava.dependsOn(enforceVersion);
+compileJava.dependsOn(enforceJavaVersion);
 
 publishing {
   publications {
