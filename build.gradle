@@ -17,8 +17,9 @@ plugins {
 }
 
 apply plugin: 'java'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+def java_version = JavaVersion.VERSION_1_8;
+sourceCompatibility = "${java_version}"
+targetCompatibility = "${java_version}"
 
 apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
@@ -63,6 +64,15 @@ dependencies {
   testImplementation "org.springframework.security:spring-security-test"
   testImplementation "org.assertj:assertj-core:${assertj_core_version}"
 }
+
+task enforceJavaVersion {
+    def foundVersion = JavaVersion.current();
+    if (foundVersion != "${java_version}") 
+        throw new IllegalStateException("Wrong Java Version used. This project requires ${java_version}" + 
+        " , but found " + foundVersion);
+}
+
+compileJava.dependsOn(enforceVersion);
 
 publishing {
   publications {
