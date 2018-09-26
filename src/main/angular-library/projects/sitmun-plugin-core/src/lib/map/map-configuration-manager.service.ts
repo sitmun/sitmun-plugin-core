@@ -22,6 +22,14 @@ export class Layer {
   url_bgcolor: string = "0x000000";
   url_exception: string;
   extent: any = null;
+  tileHeight?:number;
+  tileWidth?:number;
+  optionalParameters?:Array<OptionalParameter>;
+}
+
+export class OptionalParameter {
+  key:string;
+  value:string;
 }
 
 export class LayerConfiguration {

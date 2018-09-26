@@ -226,7 +226,25 @@ export class MapComponent implements OnInit {
     }
     var layer;
     var properties;
+    var layerParams;
     for (var i = 0, iLen:number = layerDataConfig.length; i < iLen; i++) {
+      layerParams = {
+        "LAYERS":layerDataConfig[i].name,
+        "TRANSPARENT": layerDataConfig[i].url_transparent?layerDataConfig[i].url_transparent.toUpperCase():"FALSE",
+        "BGCOLOR": layerDataConfig[i].url_bgcolor,
+        "VERSION": layerDataConfig[i].version,
+        "FORMAT": this.parseFormat(layerDataConfig[i].format),
+        "EXCEPTION": layerDataConfig[i].url_exception
+      };
+      if (layerDataConfig[i].optionalParameters) {
+        for (var j = 0, jLen = layerDataConfig[i].optionalParameters.length; j < jLen; j++) {
+          try {
+            layerParams[layerDataConfig[i].optionalParameters[j].key] = layerDataConfig[i].optionalParameters[j].value;
+          } catch (e) {
+            //ignore those params that generate an exception
+          }
+        }
+      }
       if (layerDataConfig[i].tiled) {
          layer = new ol.layer.Tile({
               extent: layerDataConfig[i].extent?
@@ -234,14 +252,7 @@ export class MapComponent implements OnInit {
                           undefined,
               source: new ol.source.TileWMS({
                 url: layerDataConfig[i].url,
-                params: {
-                  "LAYERS":layerDataConfig[i].name,
-                  "TRANSPARENT": layerDataConfig[i].url_transparent?layerDataConfig[i].url_transparent.toUpperCase():"FALSE",
-                  "BGCOLOR": layerDataConfig[i].url_bgcolor,
-                  "VERSION": layerDataConfig[i].version,
-                  "FORMAT": this.parseFormat(layerDataConfig[i].format),
-                  "EXCEPTION": layerDataConfig[i].url_exception
-                },
+                params: layerParams,
                 projection: this.projection,
                 attributions: layerDataConfig[i].attributions,
                 // Countries have transparency, so do not fade tiles:
@@ -251,7 +262,12 @@ export class MapComponent implements OnInit {
                           [layerDataConfig[i].extent[0], layerDataConfig[i].extent[1], layerDataConfig[i].extent[2], layerDataConfig[i].extent[3]]:
                             undefined,
                   resolutions: this.resolutions,
-                  tileSize: [this.tileWidth, this.tileHeight]
+                  tileSize: [layerDataConfig[i].tileWidth?
+                              layerDataConfig[i].tileWidth:
+                              this.tileWidth, 
+                              layerDataConfig[i].tileHeight?
+                              layerDataConfig[i].tileHeight:
+                              this.tileHeight]
                 })
               }),
               visible:layerDataConfig[i].visibility/*,
@@ -284,14 +300,7 @@ export class MapComponent implements OnInit {
                 undefined,
             source: new ol.source.ImageWMS({
               url: layerDataConfig[i].url,
-              params: {
-                "LAYERS":layerDataConfig[i].name,
-                "TRANSPARENT": layerDataConfig[i].url_transparent?layerDataConfig[i].url_transparent.toUpperCase():"FALSE",
-                "BGCOLOR": layerDataConfig[i].url_bgcolor,
-                "VERSION": layerDataConfig[i].version,
-                "FORMAT": this.parseFormat(layerDataConfig[i].format),
-                "EXCEPTION": layerDataConfig[i].url_exception
-              },
+              params: layerParams,
               projection: this.projection,
               //ratio: 1,
               attributions: layerDataConfig[i].attributions
@@ -357,6 +366,10 @@ export class MapComponent implements OnInit {
   configureLayers(layerDataConfig:Array<Layer>) {
     if (layerDataConfig) {
       if (this.layers && (this.layers.length)) {
+        if (this.loadingControl) {
+          //Hide loading control
+          this.loadingControl.reset();
+        }
         //Clear non base layers
         if (this.map) {
           for (var i = 0, iLen:number = this.layers.length; i < iLen; i++) {
@@ -886,14 +899,25 @@ export class MapComponent implements OnInit {
       /**
        * Hide the progress bar.
        */
-      hide() {
-        if (this.loading === this.loaded) {
+      hide(force?:boolean) {
+        force = ((force != null) && (force != undefined))?force:false;
+        if ((this.loading === this.loaded) || force) {
+          //Avoid having negative counters
+          this.loading = 0;
+          this.loaded = 0;
           this.element.style.visibility = 'hidden';
           if (this.progress) {
             this.element.style.width = 0;
           }
         }
       };
+
+      /**
+       * Reset the counters and hide the loading view.
+       */
+      reset() {
+        this.hide(true);
+      }
     }
     
     //Custom base layer selector control
