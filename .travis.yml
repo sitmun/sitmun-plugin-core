@@ -18,6 +18,7 @@ cache:
     - $HOME/.sonar/cache
     - $HOME/.m2/repository
     - .gradle
+    - node_modules
 
 # Safelist
 branches:

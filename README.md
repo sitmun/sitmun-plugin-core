@@ -4,6 +4,10 @@
 
 # SITMUN plugin Core
 
+## Requirements
+* Java 8 release
+* Node 8.x (LTS) or greater LTS release
+
 ## Dependencies
 This project has no dependencies on other plugins.
 
