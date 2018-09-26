@@ -1,25 +1,13 @@
-buildscript {
-  repositories {
-    mavenLocal()
-    jcenter()
-    maven { url "http://repo.spring.io/plugins-release" }
-    maven { url "https://plugins.gradle.org/m2/" }
-  }
-  dependencies {
-    classpath "org.springframework.boot:spring-boot-gradle-plugin:${spring_boot_version}"
-  }
-}
-
-
 plugins {
+  id "org.springframework.boot" version "1.5.8.RELEASE"
   id "org.sonarqube" version "2.6.2"
   id "com.moowork.node" version "1.2.0"
 }
 
 apply plugin: 'java'
-def java_version = JavaVersion.VERSION_1_8;
-sourceCompatibility = "${java_version}"
-targetCompatibility = "${java_version}"
+def targetJavaVersion = JavaVersion.VERSION_1_8;
+sourceCompatibility = "${targetJavaVersion}"
+targetCompatibility = "${targetJavaVersion}"
 
 apply plugin: 'maven-publish'
 apply plugin: 'jacoco'
@@ -65,14 +53,18 @@ dependencies {
   testImplementation "org.assertj:assertj-core:${assertj_core_version}"
 }
 
-task enforceJavaVersion {
-    def foundVersion = JavaVersion.current();
-    if (foundVersion.toString() != "${java_version}") 
-        throw new IllegalStateException("Wrong Java Version used. This project requires ${java_version}" + 
-        ", but found " + foundVersion);
+task checkJavaVersion {
+    if (!JavaVersion.current().equals(targetJavaVersion)) {
+        String message = """
+ERROR: Java ${targetJavaVersion} JDK required but ${JavaVersion.current()} found. 
+SOLUTION: 
+  a) Point JAVA_HOME to a ${targetJavaVersion} JDK and then run gradle, or
+  b) Run ./gradlew -Dorg.gradle.java.home=/path_to_jdk_${targetJavaVersion}_directory"""
+        throw new GradleException(message)
+    }
 }
 
-compileJava.dependsOn(enforceJavaVersion);
+compileJava.dependsOn checkJavaVersion
 
 publishing {
   publications {
@@ -95,36 +87,7 @@ sonarqube {
 
 def cacheDir = project.hasProperty("cacheDir")? project.properties.cacheDir : "${project.buildDir}" 
 
-node {
-  version = "${node_version}"
-  npmVersion = "${npm_version}"
-  yarnVersion = "${yarn_version}"
-  download = project.hasProperty("downloadNode")? project.properties.downloadNode : "${node_download}"  
-  workDir = file("${cacheDir}/nodejs")
-  npmWorkDir = file("${cacheDir}/npm")
-  yarnWorkDir = file("${cacheDir}/yarn")
-}
-
-
-task prepareNode {
-  description = 'Prepare the NPM environment.'
-  def taskDir = file("node_modules")
-  outputs.dir taskDir
-  enabled = !taskDir.exists()
-  doLast {
-    def nodeDownload = project.hasProperty("downloadNode") ? project.properties.downloadNode : "${node_download}"
-    if (nodeDownload) {
-      def rebuild = tasks.create(name: "npmRebuild", type: NpmTask)
-      rebuild.args = ['rebuild', 'node-sass']
-      rebuild.execute()
-    }
-    def install = tasks.create(name: "npmInstallToo", type: NpmTask)
-    install.args = ['install']
-    install.execute()
-  }
-}
-
-task npmBuildAngularHal(type: NpmTask, dependsOn: prepareNode) {
+task npmBuildAngularHal(type: NpmTask, dependsOn: npmInstall) {
   description = 'Build module angular-hal.'
   args = ['run-script', 'build-angular-hal']
 }
@@ -136,7 +99,8 @@ task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
 
 task installModules(dependsOn: npmBuildSitmunPluginCore)
 
-processResources.dependsOn(installModules)
+
+processResources.dependsOn installModules
 
 task install(dependsOn: 'publishToMavenLocal')
 
