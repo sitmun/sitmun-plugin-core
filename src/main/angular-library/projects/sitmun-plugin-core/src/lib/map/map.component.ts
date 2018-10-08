@@ -1,24 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, Input, ViewChild, Inject } from '@angular/core';
-
-export const messages = {
-  map: "Mapa",
-  mapSelectorTooltip: "Select map",
-  aerial: "Aerial",
-  aerialSelectorTooltip: "Select aerial",
-  hybrid: "Hybrid",
-  hybridSelectorTooltip: "Select hybrid",
-  zoomInTooltip: "Zoom in",
-  zoomOutTooltip: "Zoom out",
-  geolocationTooltip: "Locate user",
-  scaleLineTooltip: "Map scale",
-  attributionsTooltip: "Attributions",
-  layerSelectionTooltip: "Select base layer",
-  overviewTooltip: "Overview map",
-  lenghtTooltip: "Length measurement",
-  areaTooltip: "Area measurement",
-  continueLineMsg: "Click to continue drawing the line",
-  continuePolygonMsg: "Click to continue drawing the polygon"
-};
+import {TranslateService} from '@ngx-translate/core';
 
 //Openlayers imports
 import * as ol from 'openlayers';
@@ -34,9 +15,18 @@ import {LayerSelectionDialogData} from './layer-selection-dialog.component';
 
 import { ElementRef } from '@angular/core';
 
-import {MapConfigurationManagerService, Layer, LayerConfiguration, LayerGroup} from './map-configuration-manager.service';
+import {MapConfigurationManagerService, Layer, LayerConfiguration, LayerGroup, MapOptionsConfiguration} from './map-configuration-manager.service';
 
 import { Observable, of} from 'rxjs';
+import { UserConfigurationService } from '../public_api';
+
+try {
+	ol.proj.setProj4(proj4);
+} catch(ex) {
+  if ((typeof console != "undefined") && (typeof console.log == "function")) {
+    console.log("Failed to load proj4js in OpenLayers");
+  }
+}
 
 const locationImg = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACQAAAAnCAYAAABnlOo2AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAUVrAAFFawEaKylfAAAAB3RJTUUH4gUeDgsQG6NbUAAABbhJREFUWMOtmEuMFEUYx/9V3VXd8zLrsko0wZiYmBjwRpR4UExMwEQJF4KJiUbCBRMvxEQg6kEwcEBM5KBeFA+ACeADX6tLENcnykPQQEAPxA0cdmcHhpmeflR3lYep2S16u+ex0Ellemaqqn/9ff/6vq+KoP+LpO4JAGrcE6OPSjVp3MPoM+eyBoQheowFwNZAAoDEggWA7xMALgCu/7cyoLNesPuPOX2o0cKjhcJmB1jiKLWaRFGRAJCcBw3gyyYh558eGdmNiQkbQKKhBYBYf5e6zbEU6QOGACAFSi1//Xrx4/792wqt1hYkSfeBlOKy6767Kgh2UCmJBAIAoQEns1xJ+rHMEKX2awsX3vVotTpOhFg0gO4gGJvcxvmzo543kQAeAN8AS3SbsRTpBVOm1HpuZOT2ddPTl5AkLuZxKdsWGxh76pTvX5FAA22wwHDjjPtID1dZAMQJxqYgxII+NZd5xbbdXMbYcvi+AFDHrLUibSXVEWo3EVs/FYtvQYiRm4EBADuOy/uUeh3AbQAqAArGapzhoDnj26tp0SK74Psbuz3IAmBzDouxnjFkcRStGuZ8oYYqAnAMIJoXhygAwgE2FscvOUI8kfeAKmOTr7ru3s1BcOB9Kb89XyqdWwrcW5SynNVfKoV7CAnGpLyYEQqSLFGb2pHHOT9jRdHirMkbtl1/XMqdkBIwl7Rlhd8DOypJcmfWOM9xph4Lw3UArgGY0p+eHp/QLoJWVhw/kOfPPY4zqmE8Pek0gCpJksanrvthnuDKUXSH1k9BR3WmDUAAEJoTJKn+IVNjFiH4yPPO6rdqmkAKqL7jeYdt20aXXOXoxtIaojnJjnTLc0QpoFAgGsjXUNf1cr6G4eFA5kRy/UCuYVgq33Vf9iov+gLYqtQjWoiRbgEAnwDhviBYm6js0YkRUgzLkCyXzbGupHQ6M/ICWCnEkw86zlC6FFlZqQzfH0Uv500a2Xack/3b8aoLkOMxdrQSx2sy3ZYkZI+U2/5w3c+O2faRkmU1VoThsvuazQ1KqdxJz1N6Vj/XTK4zkrFzDAACkP8YG1vi+2vypldKYWkQrH4IWI3U7Hn6OanURaNomwNFc58FyOeF+JqQ3hnDLG66pg9CsFvK0zlBMTeXzdL7fjLJ2EHcouuUbZ9FHHdgIiOxzrxTHpDqUP88NLSX3AIYG8DHnP+qYQLdIqNYU1kuUykrxVsnJ3/3Ob94s0BTtl0b9bx/dOwygWLDZfka6gBRgI4XCttvxkoUwB7GviHtOX3dTCDZTUM3AEkg2lKvH/EZ+3e+QDXOa3t9/0/VBmnp1jeQuZdKAEQEoN8Vi1vpPGAsAO8x9oWer6WTccsoYZNuGkqDJQBiBYRv1Ovjdc5PDgo0wfnlg553zoAxS1eRDl+0jxATayvJnZXKpkGsxAFssaxD+sEeZgv8zs4j6RcovQ0WCgi/mp6+dLlYPNQv0HHOz/zt+1c0RNNwl7kNuiF19HrhGbd1AtkzrvumolT13O4SghcJ+VxrJcs6cVaQ76UhE0oA8L1arXGmWNzea4d5wHVHRRh6Ket0gEwxo9+da3pLZOuyswzA/YXzH3gU3Z01qMnY9eVCbNcgVQCTun6+qn8LDEFjEFGnI7cAEFBAHuD8FZqTInZZ1kHS7tvUrmqmdqtztNMv0JxACSCSgP92s3m86jjH0hNe4PzC4SA4p9oQJlBmIMwpcfu2UkdLIQCxolTaSI36hBGCFwj5QOukoevsphEI427WGdRCZhUQAfBVreb9VSrt6nQac5xPWmF4VRf715F9sKAyTtMGOrBK9+2cnrkAyuDc/k2pE0Qp/rCUayFlSQPUtYivGS6L08cvg9TUWVYiRo5rCzyKyuOFwqaYkCHSaoVqtrxoplZUkndqNl8LZYUBrkNBUX86nc2FkdX9lJi7AtkDAnWsZAq8813ojR+MEjXstczT1/9sLctpXytdQgAAAABJRU5ErkJggg==";
 
@@ -53,41 +43,11 @@ export class MapOptions {
   extent: ol.Extent;
 };
 
-export enum VIEWER_MODE_TYPES {
-  MAP, AERIAL, HYBRID
-};
-
-export const MAP_ID_TYPE:string = "map";
-export const AERIAL_ID_TYPE:string = "aerial";
-export const HYBRID_ID_TYPE:string = "hybrid";
-
-export class ViewerMode {
-  type:VIEWER_MODE_TYPES;
-  layers: Array<string>;
-  constructor(type: VIEWER_MODE_TYPES, layers: Array<string>) {
-    this.type = type;
-    this.layers = layers;
-  }
-  static getViewerModeId(id):string {
-    switch(id) {
-      case VIEWER_MODE_TYPES.AERIAL:
-        return AERIAL_ID_TYPE;
-      case VIEWER_MODE_TYPES.HYBRID:
-        return HYBRID_ID_TYPE;
-      case VIEWER_MODE_TYPES.MAP:
-      default:
-        return MAP_ID_TYPE;
-    }
-  }
-};
-
 export class MapConfiguration {
   initialZoom: number;
   initialLon: number;
   initialLat: number;
   initialProjection: string;
-  //viewerModes: Array<ViewerMode>;
-  initialViewerMode: VIEWER_MODE_TYPES;
   tileHeight: number;
   tileWidth: number;
   mapUnits: string;
@@ -97,6 +57,17 @@ export class MapConfiguration {
   mapMaxExtent: ol.Extent;
   mapResolutions: Array<number>;
 };
+
+export class BaseLayerGroup {
+  // BaseLayer Group Id
+  id: string;
+  // BaseLayer Group Name (to be shown in the selection list)
+  name: string;
+  // Member layer positions relative to the base layers array
+  memberPositions: number[];
+  // Member layer ids
+  memberIds: number[];
+}
 
 @Component({
   selector: 'sitmun-map-viewer-map',
@@ -108,16 +79,18 @@ export class MapConfiguration {
 export class MapComponent implements OnInit {
 
   // Default values
+  defaultMapUnits:string = "m";
+  defaultProjection:string = "EPSG:25831";
+  defaultScales;
+  projections;
+  scales;
   tileHeight: number = 500;
   tileWidth: number = 500;
   units = "m";
-  projection = "EPSG:4258";
+  projection = "EPSG:25831";
 
-  //viewerModes: Array<ViewerMode>;
-  defaultViewerMode: VIEWER_MODE_TYPES = VIEWER_MODE_TYPES.MAP;
-
-  maxScale: Number;
-  minScale: Number;
+  maxScale: number;
+  minScale: number;
 
   maxExtent: ol.Extent;
 
@@ -139,12 +112,116 @@ export class MapComponent implements OnInit {
     }
   };
 
-  @Input() loaddefaults:boolean = false;
+  _loadDefaults:boolean = false;
+  @Input() 
+  set loadDefaults(value:boolean) {
+    if (this._loadDefaults != value) {
+      if (value) {
+        this.loadDefaultMapConfiguration();
+      }
+      //TODO remove default configuration in else??
+    }
+    this._loadDefaults = value;
+  }
+  get loadDefaults():boolean {
+    return this._loadDefaults;
+  }
 
   mapOptions: MapOptions;
+  
+  messages = {
+    zoomInTooltip: "Zoom in",
+    zoomOutTooltip: "Zoom out",
+    geolocationTooltip: "Locate user",
+    scaleLineTooltip: "Map scale",
+    attributionsTooltip: "Attributions",
+    layerSelectionTooltip: "Select base layer",
+    overviewTooltip: "Overview map",
+    lenghtTooltip: "Length measurement",
+    areaTooltip: "Area measurement",
+    continueLineMsg: "Click to continue drawing the line",
+    continuePolygonMsg: "Click to continue drawing the polygon"
+  };
 
+  translateLabels() {
+    this.messages["zoomInTooltip"] = this.translate.instant("ZOOM_IN_TOOLTIP");
+    this.messages["zoomOutTooltip"] = this.translate.instant("ZOOM_OUT_TOOLTIP");
+    this.messages["geolocationTooltip"] = this.translate.instant("LOCATION_TOOLTIP");
+    this.messages["scaleLineTooltip"] = this.translate.instant("SCALE_BAR_TOOLTIP");
+    this.messages["attributionsTooltip"] = this.translate.instant("ATTRIBUTIONS_TOOLTIP");
+    this.messages["layerSelectionTooltip"] = this.translate.instant("BASE_LAYER_SELECTOR_TOOLTIP");
+    this.messages["overviewTooltip"] = this.translate.instant("OVERVIEW_MAP_TOOLTIP");
+    this.messages["lengthTooltip"] = this.translate.instant("LENGTH_MEASUREMENT_TOOLTIP");
+    this.messages["areaTooltip"] = this.translate.instant("AREA_MEASUREMENT_TOOLTIP");
+    this.messages["continueLineMsg"] = this.translate.instant("CONTINUE_LINE_MSG");
+    this.messages["continuePolygonMsg"] = this.translate.instant("CONTINUE_POLYGON_MSG");
+    this.updateTranslations();
+  }
+
+  updateTranslations() {
+    //zoom
+    if (this.zoomToolControl) {
+      var nodes = document.getElementsByClassName("ol-zoom-in");
+      if (nodes && (nodes.length > 0)) {
+        nodes[0].setAttribute("title", this.messages["zoomInTooltip"]);
+      }
+      nodes = document.getElementsByClassName("ol-zoom-out");
+      if (nodes && (nodes.length > 0)) {
+        nodes[0].setAttribute("title", this.messages["zoomOutTooltip"]);
+      }
+    }
+
+    //attributions
+    if (this.attributionToolControl) {
+      var nodes = document.getElementsByClassName("ol-attribution-btn");
+      if (nodes && (nodes.length > 0)) {
+        nodes[0].setAttribute("title", this.messages["attributionsTooltip"]);
+      }
+    }
+
+    //overview
+    if (this.overViewMapControl) {
+      var nodes = document.getElementsByClassName("ol-overviewmap-btn");
+      if (nodes && (nodes.length > 0)) {
+        nodes[0].setAttribute("title", this.messages["overviewTooltip"]);
+      }
+    }
+
+    //geolocation
+    if (this.locationToolControl) {
+      this.locationToolControl.updateTooltip(this.messages["geolocationTooltip"]);
+    }
+
+    //scalebar
+    if (this.scaleLineToolControl) {
+      this.scaleLineToolControl.updateTooltip(this.messages["scaleLineTooltip"]);
+    }
+
+    //layer selector
+    if (this.selectBaseLayerControl) {
+      this.selectBaseLayerControl.updateTooltip(this.messages["layerSelectionTooltip"]);
+    }
+
+    //measurement
+    if (this.measurementToolControl) {
+      this.measurementToolControl.updateMessages({
+        lengthTooltip: this.messages["lengthTooltip"],
+        areaTooltip: this.messages["areaTooltip"],
+        continueLineMsg: this.messages["continueLineMsg"],
+        continuePolygonMsg: this.messages["continuePolygonMsg"]
+      });
+    }
+  }
+
+  translate: TranslateService;
   constructor(private dialog: MatDialog, 
-    private mapConfigurationManagerService: MapConfigurationManagerService) {
+    private mapConfigurationManagerService: MapConfigurationManagerService,
+    translate: TranslateService) {
+    this.translate = translate;
+    this.translate.onLangChange.subscribe(() => {
+        this.translateLabels();
+    });
+    this.translateLabels();
   }
 
   map: ol.Map = null;
@@ -170,6 +247,8 @@ export class MapComponent implements OnInit {
   layerConfigurationSubscription;
   addLayersSubscription;
   removeLayersSubscription;
+  situationMapConfigurationSubscription;
+  mapOptionsConfigurationSubscription;
 
   showMessage(msg:string) {
     if (console && (typeof console.log == "function")) {
@@ -215,6 +294,275 @@ export class MapComponent implements OnInit {
       error => this.showMessage("error displayed"),
       () => this.showMessage("on complete displayed")
     );
+    this.situationMapConfigurationSubscription = this.mapConfigurationManagerService.getSituationMapConfigurationListener().subscribe(
+      layers => {
+                  this.situationMapLayers = [];
+                  this.parseLayers(this.situationMapLayers, layers);
+                  this.updateOverviewMap();
+                },
+      error => this.showMessage("error configuration"),
+      () => this.showMessage("on complete configuration")
+    );
+    this.mapOptionsConfigurationSubscription = this.mapConfigurationManagerService.getMapOptionsConfigurationListener().subscribe(
+      options => {
+                  if (options && (options.length > 0)) {
+                    this.updateMapOptions(options[0]);
+                  }
+                },
+      error => this.showMessage("error configuration"),
+      () => this.showMessage("on complete configuration")
+    );
+  }
+
+  setDefaultMapUnits(units) {
+    if (units) {
+      this.defaultMapUnits = units;
+    }
+  }
+  getDefaultMapUnits():string {
+    return this.defaultMapUnits;
+  }
+
+  setDefaultProjection(projection) {
+    if (projection) {
+      this.defaultProjection = projection;
+    }
+  }
+  getDefaultProjection():string {
+    return this.defaultProjection;
+  }
+
+  setDefaultScales(scales) {
+    if (scales && scales.length) {
+      this.defaultScales = scales;
+    }
+  }
+  getDefaultScales():Array<number> {
+    return this.defaultScales;
+  }
+
+  getProjectionUnits(projection) {
+    try {
+      var prj = ol.proj.get(projection);
+      if (prj) {
+        return prj.getUnits();
+      } else {
+        return "m";
+      }
+    } catch (e) {
+      return "m";
+    }
+  }
+
+  setProjection(projectionList:any) {
+    var projection:ol.proj.Projection = null;
+    
+    for (var i = 0, iLen = projectionList.length; i < iLen; i++) {
+      projection = ol.proj.get(projectionList[i]);
+      if (projection) {
+        break;
+      }
+    }
+    if (projection != null) {
+      this.projection = projection.getCode();
+    }
+  }
+
+  transformLonLat(lonlat, projectionFrom:string, projectionTo:string) {
+    if (lonlat) {
+      return ol.proj.transform(lonlat, new ol.proj.Projection({
+        code: projectionFrom
+      }), new ol.proj.Projection({
+        code: projectionTo
+      }));
+    }
+    return null;
+  }
+
+  transformExtent(extent, projectionFrom:string, projectionTo:string) {
+    if (extent) {
+      return ol.extent.applyTransform(
+        [extent[0], extent[1], extent[2], extent[3]], 
+          ol.proj.getTransform(new ol.proj.Projection({
+            code: projectionFrom
+          }), new ol.proj.Projection({
+            code: projectionTo
+          })));
+    }
+    return null;
+  }
+
+  updateMapOptions(options:MapOptionsConfiguration) {
+
+    if (options.projections) {
+      this.projections = options.projections.split(',');
+      if (this.projections.length == 0) {
+        this.projections = [this.getDefaultProjection()]
+      } else {
+        this.projections.forEach(function(projection, index, projections) {
+          projections[index] = projection.trim();
+        });
+      }
+    }
+
+    if (options.scales) {
+      var scales = options.scales.split(',');
+      if (scales.length) {
+        this.scales = [];
+        for (var i = 0, iLen = scales.length; i<iLen; i++) {
+          if ((scales[i] != undefined) && (scales[i] != null) && (scales[i] != "")) {
+            this.scales.push(parseFloat(scales[i].trim()));
+          }
+        }
+      } else {
+        this.scales = this.getDefaultScales();
+      }
+    } else {
+      this.scales = this.getDefaultScales();
+    }
+    
+    if (options.tileHeight) {
+      this.tileHeight = options.tileHeight;
+    }
+    if (options.tileWidth) {
+      this.tileWidth = options.tileWidth;
+    }
+
+    var maxZoom = this.scales.length-1;
+    if (options.maxScale) {
+      this.maxScale = options.maxScale;
+      var normalizedMaxScale = this.maxScale>1.0?(1.0/this.maxScale):this.maxScale;
+      var scale, prevScale;
+      for (var i = 0, iLen:number = this.scales.length; i < iLen; i++) {
+        scale = this.scales[i];
+        if (scale > 1.0) {
+          scale = 1.0/scale;
+        }
+        if (scale < normalizedMaxScale) {
+          //Get the closest zoom level one
+          var factor = 0;
+          if (i > 0) {
+            prevScale = this.scales[i-1];
+            if (prevScale > 1.0) {
+              prevScale = 1.0/prevScale;
+            }
+            if (Math.abs(normalizedMaxScale-scale) > 
+                Math.abs(normalizedMaxScale-prevScale)) {
+              //Closest to the prevous one
+              factor = 1;
+            }
+          }
+          maxZoom = this.scales.length-i-factor-1;
+          break;
+        }
+      }
+    } else {
+      this.maxScale = this.scales[this.scales.length-1];
+    }
+
+    var minZoom = 0;
+    if (options.minScale) {
+      this.minScale = options.minScale;
+    } else {
+      this.minScale = this.scales[0];
+    }
+    
+    var maxExtent;
+    if (options.maxExtent && options.projections) { 
+      //The extent's projection is assumed to be the first on the list
+      maxExtent = options.maxExtent;
+    }
+
+    if (options.parameters) {
+      for (var i = 0, iLen = options.parameters.length; i < iLen; i++) {
+        //TODO parse options
+      }
+    }
+
+    var oldProjection = this.projection + "";//Clone current projection
+    this.projection = this.projections[0];
+    var currentExtent = this.getMap().getView().calculateExtent();
+    if (oldProjection != this.projection) {
+      currentExtent = this.transformExtent(currentExtent, 
+                            oldProjection, this.projection);
+    }
+
+    this.units = this.getProjectionUnits(this.projection);
+
+    var resolutions = this.getResolutionsFromScales(this.scales, this.units);
+    if (resolutions) {
+      this.resolutions = resolutions;
+    } else {
+      this.resolutions = this.getResolutionsFromScales(this.getDefaultMapScales(), this.units);
+      if (!this.resolutions) {
+        this.resolutions = this.getDefaultMapResolutions();
+      }
+    }
+
+    var viewOptions = {
+      projection: new ol.proj.Projection({
+        code: this.projection,
+        units: this.units
+      }),        
+      resolutions: this.resolutions,
+      zoom: 0
+    };
+
+    if (maxExtent) {
+      this.maxExtent = maxExtent;
+      viewOptions["extent"] = this.maxExtent;
+    } else {
+      //No max extent restriction
+      this.maxExtent = null;
+    }
+
+    var extent;
+    if (options.extent) {
+      extent = options.extent;
+    } else {
+      if (this.maxExtent) {
+        extent = this.maxExtent;
+      } else {
+        //Use the transformed current extent
+        extent = currentExtent;
+      }
+    }
+
+    var view = new ol.View(viewOptions);
+
+    if (this.getMap()) {
+      this.getMap().setView(view);
+      //FIXME force layer repojection 
+      if (this.overViewMapControl) {
+        //Define center otherwise an error is raised
+        if (extent) {
+			viewOptions["center"] = ol.extent.getCenter(extent);
+        }
+        this.overViewMapControl.getOverviewMap().setView(
+          new ol.View(viewOptions)
+        );
+      }
+      if (extent) {
+        //Set the map and overview map centers
+        view.fit(extent);
+      }
+    }
+  }
+
+  getResolutionsFromScales(scales:number[], units?):number[] {
+    var resolutions = [];
+    for (var i = 0, iLen = scales.length; i < iLen; i++) {
+      resolutions.push(MapComponent.getResolutionFromScale(scales[i], units));
+    }
+    return resolutions;
+  }
+
+  getScalesFromResolutions(resolutions:number[], units?):number[] {
+    var scales = [];
+    for (var i = 0, iLen = resolutions.length; i < iLen; i++) {
+      scales.push(MapComponent.getScaleFromResolution(resolutions[i], units));
+    }
+    return scales;
   }
 
   parseLayers(layers, layerDataConfig:Array<Layer>) {
@@ -227,6 +575,14 @@ export class MapComponent implements OnInit {
     var layer;
     var properties;
     var layerParams;
+    var projection;
+
+    /*
+  minimumScale?:number;
+  maximumScale?:number;
+  projections?:string;
+  infoUrl?:string;
+    */
     for (var i = 0, iLen:number = layerDataConfig.length; i < iLen; i++) {
       layerParams = {
         "LAYERS":layerDataConfig[i].name,
@@ -244,16 +600,51 @@ export class MapComponent implements OnInit {
             //ignore those params that generate an exception
           }
         }
+      }         
+      properties = null;
+      if ((layerDataConfig[i].id != undefined) && (layerDataConfig[i].id != null)) {
+        properties = {
+          id: layerDataConfig[i].id
+        }
+      }
+      if ((layerDataConfig[i].serverName != undefined) && (layerDataConfig[i].serverName != null)) {
+        if (properties == null) {
+          properties = {
+            serverName: layerDataConfig[i].serverName
+          };
+        } else {
+          properties["serverName"] = layerDataConfig[i].serverName;
+        }
+      }
+      if ((layerDataConfig[i].projections != undefined) && (layerDataConfig[i].projections != null)) {
+        var projections = layerDataConfig[i].projections.split(',');
+        projections.forEach(function(projection, index, projections) {
+          projections[index] = projection.trim();
+        });
+        if (properties == null) {
+          properties = {
+            projections: projections
+          };
+        } else {
+          properties["projections"] = projections;
+        }
+        projection = projections[0];
+      } else {
+		projection = this.projection;
       }
       if (layerDataConfig[i].tiled) {
          layer = new ol.layer.Tile({
+              minResolution:layerDataConfig[i].minimumScale?
+                            MapComponent.getResolutionFromScale(layerDataConfig[i].minimumScale):undefined,
+              maxResolution:layerDataConfig[i].maximumScale?
+                            MapComponent.getResolutionFromScale(layerDataConfig[i].maximumScale):undefined,
               extent: layerDataConfig[i].extent?
                         [layerDataConfig[i].extent[0], layerDataConfig[i].extent[1], layerDataConfig[i].extent[2], layerDataConfig[i].extent[3]]:
                           undefined,
               source: new ol.source.TileWMS({
                 url: layerDataConfig[i].url,
                 params: layerParams,
-                projection: this.projection,
+                projection: projection + "",//Clone the value
                 attributions: layerDataConfig[i].attributions,
                 // Countries have transparency, so do not fade tiles:
                 transition: 0,
@@ -275,33 +666,22 @@ export class MapComponent implements OnInit {
               opacity:
                       layerDataConfig[i].opacity? 
                         layerDataConfig[i].opacity:undefined*/
-          });         
-        properties = null;
-        if ((layerDataConfig[i].id != undefined) && (layerDataConfig[i].id != null)) {
-          properties = {
-            id: layerDataConfig[i].id
-          }
-        }
-        if ((layerDataConfig[i].serverName != undefined) && (layerDataConfig[i].serverName != null)) {
-          if (properties == null) {
-            properties = {
-              serverName: layerDataConfig[i].serverName
-            };
-          } else {
-            properties["serverName"] = layerDataConfig[i].serverName;
-          }
-        }
+          });
         layer.setProperties(properties);
         layers.push(layer);
       } else {  
         layer = new ol.layer.Image({
+            minResolution:layerDataConfig[i].minimumScale?
+                          MapComponent.getResolutionFromScale(layerDataConfig[i].minimumScale):undefined,
+            maxResolution:layerDataConfig[i].maximumScale?
+                          MapComponent.getResolutionFromScale(layerDataConfig[i].maximumScale):undefined,
             extent: layerDataConfig[i].extent?
               [layerDataConfig[i].extent[0], layerDataConfig[i].extent[1], layerDataConfig[i].extent[2], layerDataConfig[i].extent[3]]:
                 undefined,
             source: new ol.source.ImageWMS({
               url: layerDataConfig[i].url,
               params: layerParams,
-              projection: this.projection,
+              projection: projection + "",//clone the value
               //ratio: 1,
               attributions: layerDataConfig[i].attributions
             }),
@@ -309,22 +689,7 @@ export class MapComponent implements OnInit {
             opacity:
                     layerDataConfig[i].opacity? 
                       layerDataConfig[i].opacity:undefined
-          }); 
-        properties = null;
-        if ((layerDataConfig[i].id != undefined) && (layerDataConfig[i].id != null)) {
-          properties = {
-            id: layerDataConfig[i].id
-          }
-        }
-        if ((layerDataConfig[i].serverName != undefined) && (layerDataConfig[i].serverName != null)) {
-          if (properties == null) {
-            properties = {
-              serverName: layerDataConfig[i].serverName
-            };
-          } else {
-            properties["serverName"] = layerDataConfig[i].serverName;
-          }
-        }
+          });
         layer.setProperties(properties);
         layers.push(layer);
       }
@@ -415,6 +780,12 @@ export class MapComponent implements OnInit {
               source.on('imageloaderror', function() {
                 loadingControl_.addLoaded();
               });
+              layer.on('change:visible', function(){
+                if (!layer.getVisible()) {
+                  //TODO Cancel the loading request, currently decrease the loading pending counter
+                  loadingControl_.addLoaded();
+                }
+              });
             }
           } else {
             //Update visibility
@@ -495,20 +866,13 @@ export class MapComponent implements OnInit {
     }
   }
 
-  mapViewLayers: Array<number>;
-  mapViewLayerNames: Array<string>;
-  aerialViewLayers: Array<number>;
-  aerialViewLayerNames: Array<string>;
-  hybridViewLayers: Array<number>;
-  hybridViewLayerNames: Array<string>;
-
   baseLayers;
+  baseLayerGroups;
   selectBaseLayerControl;
+  situationMapLayers;
   configureBaseLayers(groups:Array<LayerGroup>) {
+    var groupNames;
     if ((groups != null) && (groups != undefined)) {
-      var mapType = ViewerMode.getViewerModeId(VIEWER_MODE_TYPES.MAP);
-      var aerialType = ViewerMode.getViewerModeId(VIEWER_MODE_TYPES.AERIAL);
-      var hybridType = ViewerMode.getViewerModeId(VIEWER_MODE_TYPES.HYBRID);
 
       var baseLayersArray = [];
       var layersArray = [];
@@ -519,56 +883,40 @@ export class MapComponent implements OnInit {
 
       var layerIndex = 0;
       var isBaseLayerIndex = 0;
+      var baseLayerGroup:BaseLayerGroup;
+      this.baseLayerGroups = [];
+      var selectedGroup = 0;
+      groupNames = [];
       for (var i = 0, iLen = groups.length; i < iLen; i++) {
         group = groups[i];
-        if (group.id == mapType) {
-          this.mapViewLayers = new Array<number>();
-          this.mapViewLayerNames = [];
-          for (var j = 0, jLen = group.layers.length; j < jLen; j++) {
-            layer = group.layers[j];
-            layerIndex = layersNamesArray.indexOf(layer.serverName);
-            if (layerIndex == -1) {
-              if (layer.isBaseLayer) {
-                baseLayersArray.push(layer);
-              } else {
-                layersArray.push(layer);
-              }
-              layersNamesArray.push(layer.serverName);
+        
+        baseLayerGroup = new BaseLayerGroup();
+        baseLayerGroup.id = group.id;
+        if ((group.name != undefined) && (group.name != null)) {
+          baseLayerGroup.name = group.name;
+        } else {
+          baseLayerGroup.name = baseLayerGroup.id;
+        }
+        groupNames.push(baseLayerGroup.name);
+
+        baseLayerGroup.memberIds = [];
+        baseLayerGroup.memberPositions = [];
+        for (var j = 0, jLen = group.layers.length; j < jLen; j++) {
+          layer = group.layers[j];
+          layerIndex = layersNamesArray.indexOf(layer.serverName);
+          if (layerIndex == -1) {
+            if (layer.isBaseLayer) {
+              baseLayersArray.push(layer);
+            } else {
+              layersArray.push(layer);
             }
-            this.mapViewLayerNames.push(layer.serverName);
+            layersNamesArray.push(layer.serverName);
           }
-        } else if (group.id == aerialType) {
-          this.aerialViewLayers = new Array<number>();
-          this.aerialViewLayerNames = [];
-          for (var j = 0, jLen = group.layers.length; j < jLen; j++) {
-            layer = group.layers[j];
-            layerIndex = layersNamesArray.indexOf(layer.serverName);
-            if (layerIndex == -1) {
-              if (layer.isBaseLayer) {
-                baseLayersArray.push(layer);
-              } else {
-                layersArray.push(layer);
-              }
-              layersNamesArray.push(layer.serverName);
-            }
-            this.aerialViewLayerNames.push(layer.serverName);
-          }
-        } else if (group.id == hybridType) {
-          this.hybridViewLayers = new Array<number>();
-          this.hybridViewLayerNames = [];
-          for (var j = 0, jLen = group.layers.length; j < jLen; j++) {
-            layer = group.layers[j];
-            layerIndex = layersNamesArray.indexOf(layer.serverName);
-            if (layerIndex == -1) {
-              if (layer.isBaseLayer) {
-                baseLayersArray.push(layer);
-              } else {
-                layersArray.push(layer);
-              }
-              layersNamesArray.push(layer.serverName);
-            }
-            this.hybridViewLayerNames.push(layer.serverName);
-          }
+          baseLayerGroup.memberIds.push(layer.serverName);
+        }
+        this.baseLayerGroups.push(baseLayerGroup);
+        if (group.active) {
+          selectedGroup = i;
         }
       }
     }
@@ -590,7 +938,12 @@ export class MapComponent implements OnInit {
         }
       }
     } else {
-      this.baseLayers = [];
+      if (!this.baseLayers) {
+        this.baseLayers = [];
+      }
+      if (!this.baseLayerGroups) {
+        this.baseLayerGroups = [];
+      }
     }
 
     //Concatenate the base layers with the other non base layers
@@ -599,17 +952,12 @@ export class MapComponent implements OnInit {
     //Update layer insertion index to make it visible upon selecting the corresponding base layer group
     for (var i = 0, iLen = layersArray.length; i < iLen; i++) {
       layer = layersArray[i];
-      if (this.mapViewLayerNames && this.mapViewLayerNames.length &&
-         (this.mapViewLayerNames.indexOf(layer.serverName) != -1)) {
-          this.mapViewLayers.push(i);
-      }
-      if (this.aerialViewLayerNames && this.aerialViewLayerNames.length &&
-         (this.aerialViewLayerNames.indexOf(layer.serverName) != -1)) {
-          this.aerialViewLayers.push(i);
-      }
-      if (this.hybridViewLayerNames && this.hybridViewLayerNames.length &&
-         (this.hybridViewLayerNames.indexOf(layer.serverName) != -1)) {
-          this.hybridViewLayers.push(i);
+      for (var j = 0, jLen = this.baseLayerGroups.length; j < jLen; j++) {
+        baseLayerGroup = this.baseLayerGroups[j];
+        if (baseLayerGroup.memberIds.indexOf(layer.serverName) != -1) {
+          baseLayerGroup.memberPositions.push(i);
+          break;
+        }
       }
     }
 
@@ -623,29 +971,43 @@ export class MapComponent implements OnInit {
       }
       if (this.selectBaseLayerControl) {
         this.selectBaseLayerControl.onDataChanged({
+          layerGroups: this.baseLayerGroups,
+          groupNames: groupNames,
           layers: this.baseLayers,
-          mapViewLayers: this.mapViewLayers,
-          aerialViewLayers: this.aerialViewLayers,
-          hybridViewLayers: this.hybridViewLayers
+          selection: selectedGroup
         });
       }
 
-      this.updateOverViewMap();
+      if (!this.situationMapLayers || 
+        (this.situationMapLayers.length == 0)) {
+        //If there is no situation map configuration loaded then reload the overview with the new base layers
+        this.updateOverviewMap();
+      }
     }
   }
 
-  updateOverViewMap() {
-    if (this.layers && this.overViewMapControl) {
-      for (var i = 0, iLen:number = 
-        this.overViewMapControl.getOverviewMap().getLayers().getLength(); i < iLen; i++) {
-        this.overViewMapControl.getOverviewMap().removeLayer(
-          this.overViewMapControl.getOverviewMap().getLayers().item(0)
-        );
+  updateOverviewMap() {
+    if (this.overViewMapControl) {
+      var layers;
+      if (this.situationMapLayers && (this.situationMapLayers.length > 0)) {
+        layers = this.situationMapLayers;
+      } else {
+        layers = this.baseLayers;
       }
-      for (var i = 0, iLen:number = 
-        this.baseLayers.length; i < iLen; i++) {
-        //Remove all layers but the base ones
-        this.overViewMapControl.getOverviewMap().addLayer(this.baseLayers[i]);
+      if (this.overViewMapControl) {
+        for (var i = 0, iLen:number = 
+          this.overViewMapControl.getOverviewMap().getLayers().getLength(); i < iLen; i++) {
+          this.overViewMapControl.getOverviewMap().removeLayer(
+            this.overViewMapControl.getOverviewMap().getLayers().item(0)
+          );
+        }
+        if (layers) {
+          for (var i = 0, iLen:number = 
+            layers.length; i < iLen; i++) {
+            //Remove all layers but the base ones
+            this.overViewMapControl.getOverviewMap().addLayer(layers[i]);
+          }
+        }
       }
     }
   }
@@ -656,13 +1018,157 @@ export class MapComponent implements OnInit {
     this.baseLayersSubscription.unsubscribe();
     this.addLayersSubscription.unsubscribe();
     this.removeLayersSubscription.unsubscribe();
+    this.situationMapConfigurationSubscription.unsubscribe();
+    this.mapOptionsConfigurationSubscription.unsubscribe();
   }
 
   ngOnDestroy(): void {
     this.unsubscribeMapConfigurationManager();
   }
 
+  initProj4js() {
+    // mercator
+    proj4.defs("EPSG:54004", "+title=world mercator EPSG:54004 +proj=merc +lat_ts=0 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
+    /*var projection = new ol.proj.Projection({
+      code: "EPSG:54004",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+	*/
+    // ed50 / UTM
+    proj4.defs("EPSG:23029", "+title=ED50 / UTM zone 29N  +proj=utm +zone=29 +ellps=intl +units=m +no_defs");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:23029",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:23030", "+title=ED50 / UTM zone 30N  +proj=utm +zone=30 +ellps=intl +units=m +no_defs");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:23030",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:23031", "+title=ED50 / UTM zone 31N  +proj=utm +zone=31 +ellps=intl +units=m +no_defs");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:23031",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:23032", "+title=ED50 / UTM zone 32N  +proj=utm +zone=32 +ellps=intl +units=m +no_defs");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:23032",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+    */
+    // ETRS89 / UTM
+    proj4.defs("EPSG:25829", "+proj=utm +zone=29 +ellps=GRS80 +units=m +no_defs");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:25829",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:25830", "+proj=utm +zone=30 +ellps=GRS80 +units=m +no_defs");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:25830",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:25831", "+proj=utm +zone=31 +ellps=GRS80 +units=m +no_defs");
+                                 //'+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:25831",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+	*/
+    proj4.defs("EPSG:25832", "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:25832",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+	*/
+    // WGS84 / UTM
+    proj4.defs("EPSG:32629", "+proj=utm +zone=29 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:32629",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:32630", "+proj=utm +zone=30 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:32630",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:32631", "+proj=utm +zone=31 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:32631",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:32632", "+proj=utm +zone=32 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:32632",
+      units: "m"
+    });
+    ol.proj.addProjection(projection);
+	*/
+	
+    // geographic
+    proj4.defs("EPSG:4326", "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ");// wgs84
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:4326",
+      units: "degrees"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:4230", "+proj=longlat +ellps=intl +no_defs");// ed50
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:4230",
+      units: "degrees"
+    });
+    ol.proj.addProjection(projection);
+    */
+    proj4.defs("EPSG:4258", "+proj=longlat +ellps=GRS80 +no_defs");// etrs89
+    /*
+    projection = new ol.proj.Projection({
+      code: "EPSG:4258",
+      units: "degrees"
+    });
+    ol.proj.addProjection(projection);
+    */
+  }
+
   overViewMapControl:ol.control.OverviewMap;
+  measurementToolControl;
+  scaleLineToolControl;
+  attributionToolControl;
+  zoomToolControl;
+  locationToolControl;
   ngOnInit() {
 
     if (this.getMap() != null) {
@@ -672,9 +1178,10 @@ export class MapComponent implements OnInit {
 
     this.initializeMapConfigurationManager();
 
-    // Add custom projection
-    proj4.defs(this.projection,"+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs");
+    // Initialize projections
+    this.initProj4js();
 
+    //Retrieve info from input parameters
     if ((this.initialLat != null) && (this.initialLat != undefined) ||
         (this.initialLon != null) && (this.initialLon != undefined) ||
         (this.initialProjection != null) && (this.initialProjection != undefined) ||
@@ -706,7 +1213,8 @@ export class MapComponent implements OnInit {
         }
     }
 
-    var mapConfig = this.getMapConfig();
+    //Load a default map configuration (projection, zoom, center, max extent...)
+    var mapConfig = this.getDefaultMapConfiguration();
 
     var initialZoom: number = 0;
     var initialCenter: ol.Coordinate;
@@ -737,6 +1245,17 @@ export class MapComponent implements OnInit {
             ol.proj.transform(initialCenter, projectionFrom, projectionTo);
         }
       }
+      if (mapConfig.mapUnits) {
+        this.units = mapConfig.mapUnits;
+      }
+
+      if (mapConfig.tileHeight) {
+        this.tileHeight = mapConfig.tileHeight;
+      }
+
+      if (mapConfig.tileWidth) {
+        this.tileWidth = mapConfig.tileWidth;
+      }
 
       if (mapConfig.mapMaxExtent) {
         this.maxExtent = mapConfig.mapMaxExtent;
@@ -751,27 +1270,7 @@ export class MapComponent implements OnInit {
       }
 
       if (mapConfig.mapMinScale) {
-        this.maxScale = mapConfig.mapMinScale;
-      }
-
-      if (mapConfig.initialViewerMode) {
-        this.defaultViewerMode = mapConfig.initialViewerMode;
-      }
-
-      /*if (mapConfig.viewerModes) {
-        this.viewerModes = mapConfig.viewerModes;
-      }*/
-
-      if (mapConfig.mapUnits) {
-        this.units = mapConfig.mapUnits;
-      }
-
-      if (mapConfig.tileHeight) {
-        this.tileHeight = mapConfig.tileHeight;
-      }
-
-      if (mapConfig.tileWidth) {
-        this.tileWidth = mapConfig.tileWidth;
+        this.minScale = mapConfig.mapMinScale;
       }
 
     }
@@ -923,38 +1422,52 @@ export class MapComponent implements OnInit {
     //Custom base layer selector control
     class SelectBaseLayerControl extends ol.control.Control{
 
-      mapViewLayers: Array<number>;
-      aerialViewLayers: Array<number>;
-      hybridViewLayers: Array<number>;
+      groupNames;
+      layerGroups;
       layers;
-      btnMap: HTMLElement;
-      btnAerial: HTMLElement;
-      btnHybrid: HTMLElement;
 
-      selectedLayer: number;
+      selectedGroup: number;
 
       dialog: MatDialog;
       selectionDialogRef: MatDialogRef<LayerSelectionDialogComponent>;
+      toolContainer;
+
+      button;
 
       setDialog(dialog: MatDialog) {
         this.dialog = dialog;
       }
 
       onDataChanged(data) {
+        if (data.layerGroups) {
+          this.layerGroups = data.layerGroups;
+        }
         if (data.layers) {
           this.layers = data.layers;
         }
-        if (data.mapViewLayers) {
-          this.mapViewLayers = data.mapViewLayers;
-        }
-        if (data.aerialViewLayers) {
-          this.aerialViewLayers = data.aerialViewLayers;
-        }
-        if (data.hybridViewLayers) {
-          this.hybridViewLayers = data.hybridViewLayers;
+
+        if ((this.layerGroups && (this.layerGroups.length > 0)) && 
+            (this.layers && (this.layers.length > 0))) {
+          //Show the first on the list
+          if (data.groupNames) {
+            this.groupNames = data.groupNames;
+          } else {
+            this.groupNames = [];
+            for (var i = 0, iLen = this.layerGroups.length; i < iLen; i++) {
+              this.groupNames.push(this.layerGroups[i].name);
+            }
+          }
+          if ((data.selection != undefined) && 
+              (data.selection != null)) {
+            this.selectedGroup = data.selection;
+          } else {
+            this.selectedGroup = 0;
+          }
+        } else {
+          this.selectedGroup = -1
         }
         //Reload
-        this.selectBaseLayer(this.selectedLayer);
+        this.selectLayerGroup(this.selectedGroup);
       }
 
       showSelectionDialog() {
@@ -967,13 +1480,8 @@ export class MapComponent implements OnInit {
 
           var data = new LayerSelectionDialogData();
 
-          /*
-          data.title = messages["layerSelectionTooltip"];
-          data.mapLayerTitle = messages["map"];
-          data.aerialLayerTitle = messages["aerial"];
-          data.hybridLayerTitle = messages["hybrid"];
-          */
-          data.selected = this.selectedLayer;
+          data.selected = this.selectedGroup;
+          data.itemList = this.groupNames;
 
           dialogConfig.data = data;
 
@@ -983,12 +1491,11 @@ export class MapComponent implements OnInit {
           this.selectionDialogRef.afterClosed().subscribe(
             data => {
                 try {
-                  if (data["mapOption"]) {
-                    this_.selectMap();
-                  } else if (data["aerialOption"]) {
-                    this_.selectAerial();
-                  } else if ("hybridOption") {
-                    this_.selectHybrid();
+                  for (var i = 0, iLen = this.layerGroups.length; i < iLen; i++) {
+                    if (data[this.layerGroups[i].name]) {
+                      this_.selectLayerGroup(i);
+                      break;
+                    }
                   }
                 } catch (e) {
                   //
@@ -1008,26 +1515,24 @@ export class MapComponent implements OnInit {
 
         var element = document.createElement("DIV");
         element.className = "ol-change-baselayer ol-unselectable ol-control"
+        //initially hidden
+        element.style.display = "none";
+        element.style.visibility = "hidden";
 
         super({
           element: element,
           target: options.target
         });
 
-        this.selectedLayer = 0;
+        this.selectedGroup = -1;
 
         var this_ = this;
 
-        if ((options.layers != null) && (options.layers != undefined)) {
-          this.layers = options.layers;
+        var controlBtn = document.createElement("BUTTON"); 
+        if ((options.tooltip != null) && (options.tooltip != null)) {
+          controlBtn.title = options.tooltip;
         }
 
-        var controlBtn = document.createElement("BUTTON"); 
-        if ((options.layerSelectorTooltip != null) && (options.layerSelectorTooltip != null)) {
-          controlBtn.title = options.layerSelectorTooltip;
-        }
-        //controlBtn.setAttribute("i18n", "@@layerSelectorTooltip");
-        //controlBtn.setAttribute("i18n-title", "");
         controlBtn.setAttribute("type", "button");
         controlBtn.id="map-layer-selector-btn";
         controlBtn.className = "mat-raised-button";
@@ -1043,141 +1548,63 @@ export class MapComponent implements OnInit {
               this_.showSelectionDialog();
             }, false);
 
-        if ((options.mapViewLayers != null) && (options.mapViewLayers != undefined)) {
-          this.mapViewLayers = options.mapViewLayers;
-          /*this.btnMap = document.createElement("BUTTON");
-          if (options.mapSelectorTooltip) {
-            this.btnMap.title = options.mapSelectorTooltip;
-          }
-          //this.btnMap.setAttribute("i18n", "@@mapSelectorTooltip");
-          //this.btnMap.setAttribute("i18n-title", "");
-          this.btnMap.setAttribute("type", "button");
-          this.btnMap.id="map-layer-selector-btn";
-          this.btnMap.innerHTML = messages["map"];
-          this.btnMap.className = "ol-baselayer-selector mat-raised-button";
-          element.appendChild(this.btnMap);
-          this.btnMap.addEventListener('click', function() {  
-              this_.selectMap();
-            }, false);
-          this.btnMap.addEventListener('touchstart', function() {  
-              this_.selectMap();
-            }, false);*/
-        }
-        if ((options.aerialViewLayers != null) && (options.aerialViewLayers != undefined)) {
-          this.aerialViewLayers = options.aerialViewLayers;
-          /*this.btnAerial = document.createElement("BUTTON");
-          if (options.aerialSelectorTooltip) {
-            this.btnAerial.title = options.aerialSelectorTooltip;
-          }
-          //this.btnAerial.setAttribute("i18n", "@@aerialSelectorTooltip");
-          //this.btnAerial.setAttribute("i18n-title", "");
-          this.btnAerial.setAttribute("type", "button");
-          this.btnAerial.id="aerial-layer-selector-btn";
-          this.btnAerial.innerHTML = messages["aerial"];
-          this.btnAerial.className = "ol-baselayer-selector mat-raised-button";
-          this.btnHybrid = document.createElement("BUTTON");
-          element.appendChild(this.btnAerial);
-          this.btnAerial.addEventListener('click', function() {  
-              this_.selectAerial();
-            }, false);
-          this.btnAerial.addEventListener('touchstart', function() {  
-              this_.selectAerial();
-            }, false);*/
-        }
-        if ((options.hybridViewLayers != null) && (options.hybridViewLayers != undefined)) {
-          this.hybridViewLayers = options.hybridViewLayers;
-          /*if (options.hybridSelectorTooltip) {
-            this.btnHybrid.title = options.hybridSelectorTooltip;
-          }
-          //this.btnHybrid.setAttribute("i18n", "@@hybridSelectorTooltip");
-          //this.btnHybrid.setAttribute("i18n-title", "");
-          this.btnHybrid.setAttribute("type", "button");
-          this.btnHybrid.id="hybrid-layer-selector-btn";
-          this.btnHybrid.innerHTML = messages["hybrid"];
-          this.btnHybrid.className = "ol-baselayer-selector mat-raised-button";
-          element.appendChild(this.btnHybrid);
-          this.btnHybrid.addEventListener('click', function() {  
-              this_.selectHybrid();
-            }, false);
-          this.btnHybrid.addEventListener('touchstart', function() {  
-              this_.selectHybrid();
-            }, false);*/
+        this.button = controlBtn;
+
+        this.toolContainer = element;            
+
+        this.onDataChanged({
+          layerGroups: options.layerGroups,
+          layers: options.layers,
+          selection: options.selection
+        });
+      }
+
+      hideControlButton() {
+        if (this.toolContainer) {
+          this.toolContainer.style.display = "none";
+          this.toolContainer.style.visibility = "hidden";
+          //TODO FIXME Notify control hidden
         }
       }
 
-      selectMap() {
-        /*if (this.btnMap.getAttribute("active") != "true") {
-          this.btnMap.className += " ol-baselayer-active";
-          this.btnMap.setAttribute("active", "true");
-          if ((this.btnAerial != null) && (this.btnAerial != undefined)) {
-            this.btnAerial.className = this.btnAerial.className.replace(" ol-baselayer-active", "");
-            this.btnAerial.setAttribute("active", "false");
-          }
-          if ((this.btnHybrid != null) && (this.btnHybrid != undefined)) {
-            this.btnHybrid.className = this.btnHybrid.className.replace(" ol-baselayer-active", "");
-            this.btnHybrid.setAttribute("active", "false")
-          }
-          this.selectBaseLayer(VIEWER_MODE_TYPES.MAP);
-        }*/
-        this.selectBaseLayer(VIEWER_MODE_TYPES.MAP);
-      }
-
-      selectAerial() {
-        /*if (this.btnAerial.getAttribute("active") != "true") {
-          this.btnAerial.className += " ol-baselayer-active";
-          this.btnAerial.setAttribute("active", "true");
-          if ((this.btnMap != null) && (this.btnMap != undefined)) {
-            this.btnMap.className = this.btnMap.className.replace(" ol-baselayer-active", "");
-            this.btnMap.setAttribute("active", "false");
-          }
-          if ((this.btnHybrid != null) && (this.btnHybrid != undefined)) {
-            this.btnHybrid.className = this.btnHybrid.className.replace(" ol-baselayer-active", "");
-            this.btnHybrid.setAttribute("active", "false");
-          }
-          this.selectBaseLayer(VIEWER_MODE_TYPES.AERIAL);
-        }*/
-        this.selectBaseLayer(VIEWER_MODE_TYPES.AERIAL);
-      }
-
-      selectHybrid() {
-        /*if (this.btnHybrid.getAttribute("active") != "true") {
-          this.btnHybrid.className += " ol-baselayer-active";
-          this.btnHybrid.setAttribute("active", "true");
-          if ((this.btnAerial != null) && (this.btnAerial != undefined)) {
-            this.btnAerial.className = this.btnAerial.className.replace(" ol-baselayer-active", "");
-            this.btnAerial.setAttribute("active", "false");
-          }
-          if ((this.btnMap != null) && (this.btnMap != undefined)) {
-            this.btnMap.className = this.btnMap.className.replace(" ol-baselayer-active", "");
-            this.btnMap.setAttribute("active", "false");
-          }
-          this.selectBaseLayer(VIEWER_MODE_TYPES.HYBRID);
-        }*/
-        this.selectBaseLayer(VIEWER_MODE_TYPES.HYBRID);
-      }
-
-      selectBaseLayer(value) {
-        var visibility;
-        var layerList;
-        switch(value) {
-          case VIEWER_MODE_TYPES.AERIAL:
-            layerList = this.aerialViewLayers;
-            break;
-          case VIEWER_MODE_TYPES.HYBRID:
-            layerList = this.hybridViewLayers;
-            break;
-          default: 
-            layerList = this.mapViewLayers;
+      showControlButton() {
+        if (this.toolContainer) {
+          this.toolContainer.style.display = "";
+          this.toolContainer.style.visibility = "visible";          
+          //TODO FIXME Notify control shown
         }
-        if ((layerList == null) || (layerList == undefined) || (this.layers == null) || 
-            (this.layers == undefined)) {
-          //No information for the requested type return
-          //TODO raise error?
-          return;
+      }
+
+      selectLayerGroup(value) {
+        if (value < 0) {
+          this.hideControlButton();
+        } else {
+          if (this.layerGroups && this.layerGroups.length > 1) {
+            this.showControlButton();
+          } else {
+            this.hideControlButton();
+          }
+          var layerList = this.layerGroups[value].memberPositions;
+          if ((layerList == null) || (layerList == undefined) || (this.layers == null) || 
+              (this.layers == undefined)) {
+            //No information for the requested type return
+            //TODO raise error?
+            return;
+          }
+          this.selectedGroup = value;
+          var layerName;
+          var layerId;
+          for (var i = 0, iLen = this.layers.length; i < iLen; i++) {
+            layerName = this.layers[i].getProperties()["serverName"] || "";
+            layerId = this.layers[i].getProperties()["id"] || "";
+            this.layers[i].setVisible(layerList.indexOf(i) != -1);
+          }
         }
-        this.selectedLayer = value;
-        for (var i = 0, iLen = this.layers.length; i < iLen; i++) {
-          this.layers[i].setVisible(layerList.indexOf(i) != -1);
+      }
+
+      updateTooltip(tooltip) {
+        if (this.button) {
+          this.button.title = tooltip;
         }
       }
     }
@@ -1187,6 +1614,8 @@ export class MapComponent implements OnInit {
       geolocation: ol.Geolocation;
 
       geolocationLayer: ol.layer.Vector;
+
+      button;
 
       constructor(opt_options) {  
         var options = opt_options || {};
@@ -1213,6 +1642,8 @@ export class MapComponent implements OnInit {
           element: element,
           target: options.target
         });
+
+        this.button = button;
 
         var this_ = this;
 
@@ -1292,6 +1723,12 @@ export class MapComponent implements OnInit {
         };
         button.addEventListener('click', requestLocation, false);
         button.addEventListener('touchstart', requestLocation, false);
+      }
+
+      updateTooltip(title) {
+        if (this.button) {
+          this.button.title = title;
+        }
       }
     };
 
@@ -1377,6 +1814,29 @@ export class MapComponent implements OnInit {
        */
       mouseOutHandler;
 
+      lengthSelected:boolean;
+      areaSelected:boolean;
+
+      updateMessages(messages) {
+        if (this.buttonLength) {
+          this.buttonLength.title = messages.lengthTooltip;
+        }
+
+        if (this.buttonArea) {
+          this.buttonArea.title = messages.areaTooltip;
+        }
+
+        this.continueLineMsg = messages.continueLineMsg;
+        this.continuePolygonMsg = messages.continuePolygonMsg;
+
+        if (this.areaSelected || this.lengthSelected) {
+          if (this.helpTooltipElement) {
+            this.helpTooltipElement.innerHTML = 
+              this.areaSelected?this.continuePolygonMsg:this.continueLineMsg;
+          }
+        }
+      }
+
       constructor(opt_options) {
         var options = opt_options || {};
 
@@ -1387,6 +1847,9 @@ export class MapComponent implements OnInit {
           element: element,
           target: options.target
         });
+
+        this.areaSelected = false;
+        this.lengthSelected = false;
 
         this.overlayCount = 0;
 
@@ -1483,8 +1946,8 @@ export class MapComponent implements OnInit {
         this.buttonLength.setAttribute("type", "button");
         this.buttonLength.setAttribute("tool-type", "length");
         this.buttonLength.setAttribute("tool-active", "false");
-        if (options.lenghtTooltip) {
-          this.buttonLength.title = options.lenghtTooltip;
+        if (options.lengthTooltip) {
+          this.buttonLength.title = options.lengthTooltip;
         }
         this.buttonLength.className="mat-raised-button measurement-length";
         this.buttonLength.appendChild(icon);
@@ -1590,7 +2053,6 @@ export class MapComponent implements OnInit {
       }
 
       onActivate(typeSelected:string) {
-        
         //Add event handling
         this.source.clear();
         this.clearTooltips();
@@ -1608,12 +2070,14 @@ export class MapComponent implements OnInit {
           this.buttonLength.className = 
             this.buttonLength.className.replace(" tool-active", "");
           this.buttonLength.setAttribute("tool-active", "false");
+          this.areaSelected = true;
         } else {
           this.buttonLength.className += " tool-active";
           this.buttonLength.setAttribute("tool-active", "true");
           this.buttonArea.className  = 
             this.buttonArea.className.replace(" tool-active", "");
           this.buttonArea.setAttribute("tool-active", "false");
+          this.lengthSelected = true;
         }
       }
 
@@ -1633,10 +2097,12 @@ export class MapComponent implements OnInit {
           this.buttonArea.className = 
             this.buttonArea.className.replace(" tool-active", "");
           this.buttonArea.setAttribute("tool-active", "false");
+          this.areaSelected = false;
         } else {
           this.buttonLength.className = 
             this.buttonLength.className.replace(" tool-active", "");
           this.buttonLength.setAttribute("tool-active", "false");
+          this.lengthSelected = false;
         }
       }
 
@@ -1825,6 +2291,11 @@ export class MapComponent implements OnInit {
       units_;
       tooltipMessage;
 
+      updateTooltip(tooltip) {
+        this.tooltipMessage = tooltip;
+        this.update();
+      }
+
       /**
        * constructor
        */
@@ -1931,13 +2402,6 @@ export class MapComponent implements OnInit {
 
       updateElement() {
         this.update();
-      }
-
-      getScaleForResolution(resolution, units) {
-        var dpi = 25.4 / 0.28;
-        var mpu = ol.proj.METERS_PER_UNIT[units];
-        var inchesPerMeter = 39.37;
-        return (resolution * (mpu * inchesPerMeter * dpi));
       }
 
       formatNumber(num, dec?, tsep?, dsep?):string {
@@ -2085,18 +2549,18 @@ export class MapComponent implements OnInit {
           this.innerElement_.style.width = Math.round(bottomPx) + "px"; 
         }
         
-        if (this.eBottom.style.visibility == "visible"){
+        if (this.eBottom && this.eBottom.style.visibility == "visible"){
             //this.eBottom.style.width = Math.round(bottomPx) + "px"; 
             this.eBottom.innerHTML = bottomRounded + " " + bottomUnits ;
         }
             
-        if (this.eTop.style.visibility == "visible"){
+        if (this.eTop && this.eTop.style.visibility == "visible"){
             //this.eTop.style.width = Math.round(topPx) + "px";
             this.eTop.innerHTML = topRounded + " " + topUnits;
         }
 
         if (this.element_) {
-          var scale = this.getScaleForResolution(this.getMap().getView().getResolution(), 
+          var scale = MapComponent.getScaleFromResolution(this.getMap().getView().getResolution(), 
                                                 this.getMap().getView().getProjection().getUnits());
           // update the element title and width
           this.element_.title = this.tooltipMessage + this.formatNumber(scale);
@@ -2235,9 +2699,9 @@ export class MapComponent implements OnInit {
     attributionsCollapseLabel.className = "material-icons";
     attributionsCollapseLabel.innerHTML = "keyboard_arrow_right";
 
-    var attribution = new ol.control.Attribution({
+    this.attributionToolControl = new ol.control.Attribution({
       collapsible: true,
-      tipLabel: messages["attributionsTooltip"],
+      tipLabel: this.messages["attributionsTooltip"],
       collapseLabel: attributionsCollapseLabel,
       label:attributionsLabel
     });
@@ -2252,11 +2716,11 @@ export class MapComponent implements OnInit {
     zoomOutNode.innerHTML = "zoom_out";
     */
 
-    var zoom = new ol.control.Zoom({
+    this.zoomToolControl = new ol.control.Zoom({
       //zoomInLabel: zoomInNode,
       //zoomOutLabel: zoomOutNode,
-      zoomInTipLabel: messages["zoomInTooltip"],
-      zoomOutTipLabel: messages["zoomOutTooltip"]
+      zoomInTipLabel: this.messages["zoomInTooltip"],
+      zoomOutTipLabel: this.messages["zoomOutTooltip"]
     });
 
     var layers = [];
@@ -2266,21 +2730,32 @@ export class MapComponent implements OnInit {
     if (this.layers) {
       layers = layers.concat(this.layers)
     }
+    var viewOptions = {
+      projection: new ol.proj.Projection({
+        code: this.projection,
+        units: this.units
+      })
+    };
+    if (this.maxExtent) {
+      viewOptions["extent"] = this.maxExtent;
+    }
+    if (this.resolutions) {
+
+      viewOptions["resolutions"] = this.resolutions;
+    }
+    if (initialCenter) {
+
+      viewOptions["center"] = initialCenter;
+    }
+    if ((initialZoom != null) && (initialZoom != undefined)) {
+      viewOptions["zoom"] = initialZoom;
+    }
     this.map = new ol.Map({
       target: 'map',//this.mapContainer.nativeElement,
       layers: layers,
       // Configure default controls
-      controls: ol.control.defaults({attribution: false, zoom:false, rotate:false}).extend([attribution, zoom]),
-      view: new ol.View({
-        projection: new ol.proj.Projection({
-          code: this.projection,
-          units: this.units
-        }),
-        resolutions: this.resolutions,
-        center: initialCenter,
-        zoom: initialZoom,
-        extent: this.maxExtent
-      })
+      controls: ol.control.defaults({attribution: false, zoom:false, rotate:false}).extend([this.attributionToolControl, this.zoomToolControl]),
+      view: new ol.View(viewOptions)
     });
 
     //Update attribution button to apply a material style
@@ -2289,7 +2764,7 @@ export class MapComponent implements OnInit {
       var buttonList = attributionNodeList[0].getElementsByTagName("BUTTON");
       if ((buttonList != null) && (buttonList != undefined)) {
         for (var i = 0, iLen = buttonList.length; i < iLen; i++) {
-          buttonList[i].className += " mat-raised-button";
+          buttonList[i].className += " mat-raised-button ol-attribution-btn";
         }
       }
     }
@@ -2317,53 +2792,38 @@ export class MapComponent implements OnInit {
     //////////////////////////////////
 
     // Scale line control
-    var scaleLineControl = //new ol.control.ScaleLine();
+    this.scaleLineToolControl = //new ol.control.ScaleLine();
                             new ScaleBarControl({
                               showTopBar: true,//metric
                               showBottomBar: false,//non-metric
+                              tooltipMessage: this.messages["scaleLineTooltip"]
                             });
 
-    this.map.addControl(scaleLineControl);
+    this.map.addControl(this.scaleLineToolControl);
     var scaleLineElementContainerList = document.getElementsByClassName("ol-scale-line");
-    if (messages["scaleLineTooltip"]) {
+    /*if (this.messages["scaleLineTooltip"]) {
       if ((scaleLineElementContainerList != null) && (scaleLineElementContainerList.length > 0)) {
         //Set tool tip
-        scaleLineElementContainerList[0].setAttribute("title", messages["scaleLineTooltip"]);
+        scaleLineElementContainerList[0].setAttribute("title", this.messages["scaleLineTooltip"]);
       }
-    }
+    }*/
 
+    this.locationToolControl = new GeolocationControl({
+      geolocationTooltip: this.messages["geolocationTooltip"]
+    });
     // Geolocation control
-    this.map.addControl(new GeolocationControl({
-      geolocationTooltip: messages["geolocationTooltip"]
-    }));
+    this.map.addControl(this.locationToolControl);
 
-    /*if ((this.defaultViewerMode != null) && (this.defaultViewerMode != undefined) && 
-        (this.viewerModes != null) && (this.viewerModes != undefined)) {*/
-    if ((this.defaultViewerMode != null) && (this.defaultViewerMode != undefined)) {
-      // Base layer selection control
-      this.selectBaseLayerControl = new SelectBaseLayerControl({
-        mapSelectorTooltip: messages["mapSelectorTooltip"],
-        aerialSelectorTooltip: messages["aerialSelectorTooltip"],
-        hybridSelectorTooltip: messages["hybridSelectorTooltip"],
-        layerSelectionTooltip: messages["layerSelectionTooltip"],
-        mapViewLayers: this.mapViewLayers,
-        aerialViewLayers: this.aerialViewLayers,
-        hybridViewLayers: this.hybridViewLayers,
-        layers: this.layers
-      });
-      this.selectBaseLayerControl.setDialog(this.dialog);
-      this.map.addControl(this.selectBaseLayerControl);
-
-      // Initialize the map base layer
-      switch(this.defaultViewerMode) {
-        case VIEWER_MODE_TYPES.AERIAL: this.selectBaseLayerControl.selectAerial();
-                    break;
-        case VIEWER_MODE_TYPES.HYBRID: this.selectBaseLayerControl.selectHybrid();
-                    break;
-        default: this.selectBaseLayerControl.selectMap();
-                    break;
-      }
-    }
+    // Create the base layer selection control it will remain hidden until
+    // more than one base layer group has been defined
+    // Base layer selection control
+    this.selectBaseLayerControl = new SelectBaseLayerControl({
+      layerGroups: this.baseLayerGroups,
+      layers: this.baseLayers,
+      tooltip: this.messages["layerSelectionTooltip"]
+    });
+    this.selectBaseLayerControl.setDialog(this.dialog);
+    this.map.addControl(this.selectBaseLayerControl);
 
     this.loadingControl = new LoadingControl({
       progress: false
@@ -2378,130 +2838,262 @@ export class MapComponent implements OnInit {
     overViewNodeCollapsed.className = "material-icons";
     overViewNodeCollapsed.innerHTML = "keyboard_arrow_left";
 
+    this.overViewMapControl = new ol.control.OverviewMap({
+      label: overViewNode,
+      collapseLabel: overViewNodeCollapsed,
+      tipLabel: this.messages["overviewTooltip"],
+      layers: [new ol.layer.Vector()],//Add a layer to avoid copying the current map configuration
+      view: new ol.View({//Configure the overview map view similar to the map's view
+        projection: new ol.proj.Projection({
+          code: this.map.getView().getProjection().getCode(),
+          units: this.map.getView().getProjection().getUnits()
+        }),
+        resolutions: this.map.getView().getResolutions(),
+        center: this.map.getView().getCenter(),
+        zoom: this.map.getView().getZoom(),
+        extent: this.maxExtent
+      })
+    });
+    this.map.addControl(this.overViewMapControl);
+
     //Update attribution button to apply a material style
-    var overviewNodeList = document.getElementsByClassName("ol-overview");
+    var overviewNodeList = document.getElementsByClassName("ol-overviewmap");
     if ((overviewNodeList != null) && (overviewNodeList != undefined) && (overviewNodeList.length > 0)) {
       var buttonList = overviewNodeList[0].getElementsByTagName("BUTTON");
       if ((buttonList != null) && (buttonList != undefined)) {
         for (var i = 0, iLen = buttonList.length; i < iLen; i++) {
-          buttonList[i].className += " mat-raised-button";
+          buttonList[i].className += " mat-raised-button ol-overviewmap-btn";
         }
       }
     }
 
-    this.overViewMapControl = new ol.control.OverviewMap({
-      label: overViewNode,
-      collapseLabel: overViewNodeCollapsed,
-      tipLabel: messages["overviewTooltip"],
-      layers: [new ol.layer.Vector()]
-    });
-    this.map.addControl(this.overViewMapControl);
-
     //Measurement control
-    var measurementControl = new MeasurementControl({
-      lenghtTooltip: messages["lenghtTooltip"],
-      areaTooltip: messages["areaTooltip"],
-      continueLineMsg: messages["continueLineMsg"],
-      continuePolygonMsg:  messages["continuePolygonMsg"],
+    this.measurementToolControl = new MeasurementControl({
+      lengthTooltip: this.messages["lengthTooltip"],
+      areaTooltip: this.messages["areaTooltip"],
+      continueLineMsg: this.messages["continueLineMsg"],
+      continuePolygonMsg:  this.messages["continuePolygonMsg"],
       strokeFinishedColorStyle: measurementStrokeFinishedColorStyle,
       strokeMeasuringColorStyle: measurementStrokeMeasuringColorStyle,
       strokeImageMeasuringColorStyle: measurementStrokeImageMeasuringColorStyle,
       backgroundColorStyle: measurementBackgroundColorStyle,
       drawHelpTooltip: false
     });
-    this.map.addControl(measurementControl);
+    this.map.addControl(this.measurementToolControl);
 
-    // Load default base layers
-    if (this.loaddefaults) {
-      this.configureBaseLayers(this.getDefaultBaseLayers());
+    // Load default values
+    if (this._loadDefaults) {
+      this.loadDefaultMapConfiguration();
     }
   }
 
-  getMapConfig() {
+  public static normalizeScale(scale) {
+    var normScale=(scale>1.0)?(1.0/scale):scale;
+    return normScale;
+  }
+
+  public static getScaleFromResolution(resolution, units?) {
+    units = units?units:"m";
+    var dpi = 25.4 / 0.28;
+    var mpu = ol.proj.METERS_PER_UNIT[units];
+    var inchesPerMeter = 39.37;
+    return (resolution * (mpu * inchesPerMeter * dpi));
+  }
+
+  public static getResolutionFromScale(scale, units?) {
+    units = units?units:"m";
+    var normScale = MapComponent.normalizeScale(scale);
+    var dpi = 25.4 / 0.28;
+    var mpu = ol.proj.METERS_PER_UNIT[units];
+    var inchesPerMeter = 39.37;
+    return (1 /(normScale * (mpu * inchesPerMeter * dpi)));
+  }
+
+  defaultsLoaded:boolean = false;
+  loadDefaultMapConfiguration() {
+    //TODO load default configuration
+    //Projection, escales, extent??
+    if (this.getMap() != null) {
+      if (!this.defaultsLoaded) {
+        this.defaultsLoaded = true;
+        this.updateMapOptions(this.getDefaultMapOptionsConfiguration());
+        this.configureBaseLayers(this.getDefaultBaseLayersConfiguration());
+      }
+    }
+  }
+
+  defaultInitialZoom = 0;
+  setDefaultInitialZoom(zoom) {
+    this.defaultInitialZoom = zoom;
+  }
+  getDefaultInitialZoom():number {
+    return this.defaultInitialZoom;
+  }
+
+  defaultInitialLon = 405808.5;
+  setDefaultInitialLon(lon) {
+    this.defaultInitialLon = lon;
+  }
+  getDefaultInitialLon():number {
+    return this.defaultInitialLon;
+  }
+  
+  defaultInitialLat = 4623846.5;
+  setDefaultInitialLat(lat) {
+    this.defaultInitialLat = lat;
+  }
+  getDefaultInitialLat():number {
+    return this.defaultInitialLat;
+  }
+  
+  defaultTileHeight = 500;
+  setDefaultTileHeight(height) {
+    this.defaultTileHeight = height;
+  }
+  getDefaultTileHeight():number {
+    return this.defaultTileHeight;
+  }
+  
+  defaultTileWidth = 500;
+  setDefaultTileWidth(width) {
+    this.defaultTileWidth = width;
+  }
+  getDefaultTileWidth():number {
+    return this.defaultTileWidth;
+  }
+  
+  defaultMapMaxScale = 3000000;
+  setDefaultMapMaxScale(scale) {
+    this.defaultMapMaxScale = scale;
+  }
+  getDefaultMapMaxScale():number {
+    return this.defaultMapMaxScale;
+  }
+  
+  defaultMapMinScale = 3000;
+  setDefaultMapMinScale(scale) {
+    this.defaultMapMinScale = scale;
+  }
+  getDefaultMapMinScale():number {
+    return this.defaultMapMinScale;
+  }
+  
+  defaultMapMaxExtent:[number, number, number, number] = [
+    320000, //xMin
+    4561229,//yMin
+    491617, //xMax
+    4686464 //yMax
+  ];
+  setDefaultMapMaxExtent(extent) {
+    this.defaultMapMaxExtent = extent;
+  }
+  getDefaultMapMaxExtent():[number, number, number, number] {
+    return this.defaultMapMaxExtent;
+  }
+
+  defaultMapResolutions = [
+    264.5831904584105,
+    ​185.20823332088733,
+    ​132.29159522920526,
+    ​105.83327618336418,
+    ​79.37495713752315,
+    ​52.91663809168209,
+    ​26.458319045841044,
+    ​13.229159522920522,
+    ​6.614579761460261,
+    ​5.2916638091682096,
+    ​2.6458319045841048,
+    ​1.3231805354825108,
+    ​0.6614579761460262,
+    ​0.2645831904584105,
+    ​0.1322915952292052
+  ];
+  setDefaultMapResolutions(resolutions) {
+    this.defaultMapResolutions = resolutions;
+  }
+  getDefaultMapResolutions() {
+    return this.defaultMapResolutions;
+  }
+
+  defaultMapScales = [
+    1000000,
+    700000,
+    ​500000,
+    400000,
+    300000,
+    200000,
+    100000,
+    50000,
+    25000,
+    20000,
+    10000,
+    5001,
+    2500,
+    1000,
+    500
+  ];
+  setDefaultMapScales(scales) {
+    this.defaultMapResolutions = scales;
+  }
+  getDefaultMapScales() {
+    return this.defaultMapScales;
+  }
+
+  getDefaultMapConfiguration() {
     var configuration = new MapConfiguration();
-    configuration.initialZoom = 0;
-    configuration.initialLon = 405808.5;
-    configuration.initialLat = 4623846.5;
-    configuration.initialProjection = "EPSG:25831";
-    /*configuration.viewerModes = [
-      new ViewerMode(VIEWER_MODE_TYPES.MAP, ["imgmapa_et", "imgmapa", "imgeix"]),
-      new ViewerMode(VIEWER_MODE_TYPES.AERIAL, ["ICC1", "imgaeria_fons", "imgeix"]),
-      new ViewerMode(VIEWER_MODE_TYPES.HYBRID, ["imghibrid_fons", "imghibrid_ctra", "imghibrid_et", "ICC2", "imgeix"])
-    ];*/
-    configuration.initialViewerMode = VIEWER_MODE_TYPES.MAP;
-    configuration.tileHeight = 500;
-    configuration.tileWidth = 500;
-    configuration.mapUnits = "m";
-    configuration.mapProjection = "EPSG:25831";
-    configuration.mapMaxScale = 3000000;
-    configuration.mapMinScale = 3000;
-    configuration.mapMaxExtent = [
-      320000, //xMin
-      4561229,//yMin
-      491617, //xMax
-      4686464 //yMax
-    ];
-    configuration.mapResolutions = [
-      264.5831904584105,
-      ​185.20823332088733,
-      ​132.29159522920526,
-      ​105.83327618336418,
-      ​79.37495713752315,
-      ​52.91663809168209,
-      ​26.458319045841044,
-      ​13.229159522920522,
-      ​6.614579761460261,
-      ​5.2916638091682096,
-      ​2.6458319045841048,
-      ​1.3231805354825108,
-      ​0.6614579761460262,
-      ​0.2645831904584105,
-      ​0.1322915952292052
-    ];
+    configuration.initialZoom = this.getDefaultInitialZoom();
+    configuration.initialLon = this.getDefaultInitialLon();
+    configuration.initialLat = this.getDefaultInitialLat();
+    configuration.initialProjection = this.getDefaultProjection();
+    configuration.tileHeight = this.getDefaultTileHeight();
+    configuration.tileWidth = this.getDefaultTileWidth();
+    configuration.mapProjection = this.getDefaultProjection();
+    configuration.mapUnits = this.getProjectionUnits(configuration.mapProjection);
+    /*
+    configuration.mapMaxScale = this.getDefaultMapMaxScale();
+    configuration.mapMinScale = this.getDefaultMapMinScale();
+    configuration.mapMaxExtent = this.getDefaultMapMaxExtent();
+    configuration.mapResolutions = this.getDefaultMapResolutions();
+    */
     return configuration;   
   }
 
-  getDefaultBaseLayers() {
+  getDefaultMapOptionsConfiguration() {
+    var configuration = new MapOptionsConfiguration();
+    //configuration.extent = [this.getDefaultInitialLon(), this.getDefaultInitialLat()];
+    configuration.tileHeight = this.getDefaultTileHeight();
+    configuration.tileWidth = this.getDefaultTileWidth();
+    configuration.projections = this.getDefaultProjection();
+    configuration.maxScale = this.getDefaultMapMaxScale();
+    configuration.minScale = this.getDefaultMapMinScale();
+    configuration.maxExtent = this.getDefaultMapMaxExtent();
+    configuration.scales = this.getDefaultMapScales().join(",");
+    return configuration;   
+  }
+
+  getDefaultBaseLayersConfiguration() {
     var baseLayers = new Array<LayerGroup>();
 
     var layerGroup = new LayerGroup();
-    layerGroup.id = MAP_ID_TYPE;
+    layerGroup.id = "map";
+    layerGroup.name = "Mapa";
     layerGroup.layers = [];
 
     var layer = new Layer();
     layer["visibility"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
     layer["desc"] = "";
-    layer["url_transparent"] = "true";
+    layer["url_transparent"] = "TRUE";
     layer["url_bgcolor"] = "0x000000";
-    layer["extent"] = [254000, 4479000, 538000, 4755000];
-    layer["title"] = "";
-    layer["serverName"] = "imgmapa_et";
-    layer["id"] = "imgmapa_et";
-    layer["format"] = "png";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
+    layer["extent"] = null;
+    layer["title"] = "Base Mapa - imgmapa";
+    layer["serverName"] = "226-212-210-245"; 
+    layer["id"] = "226-212-210-245"; 
+    layer["format"] = "png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_MUNIS";
-    layer["tiled"] = false;
-    layerGroup.layers.push(layer);
-
-    layer = new Layer();
-    layer["visibility"] = false;
-    layer["opacity"] = 1;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0x000000";
-    layer["extent"] = [254000, 4479000, 538000, 4755000];
-    layer["title"] = "";
-    layer["serverName"] = "imgmapa";
-    layer["id"] = "imgmapa";
-    layer["format"] = "png";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
-    layer["isBaseLayer"] = true;
     layer["name"] = "M_PROV_FONS,M_EURB_250M,M_EDIF_1M_141A,M_BTE50_412A,M_EDIF_1M_611A,M_XHE50_111L,M_BTE50_313L_FFCC,M_EIX,M_EIX_sobre_EDIF,M_XCE50_AUTO,M_XCE50_BASICA,M_XCE50_LOCAL,M_XCE50_ALTRES,M_XCE50_AUTO_f,M_XCE50_BASICA_f,M_XCE50_LOCAL_f,M_XCE50_ALTRES_f,M_MUNIS_f,M_MUNIS";
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
@@ -2509,105 +3101,149 @@ export class MapComponent implements OnInit {
     layer = new Layer();
     layer["visibility"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0x000000";
-    layer["extent"] = [254000, 4479000, 538000, 4755000];
-    layer["title"] = "";
-    layer["serverName"] = "imgeix";
-    layer["id"] = "imgeix";
-    layer["format"] = "gif";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
+    layer["desc"] = ""; 
+    layer["url_transparent"] = "TRUE"; 
+    layer["url_bgcolor"] = "0x000000"; 
+    layer["extent"] = null;
+    layer["title"] = "Base Mapa - imgmapa_et"; 
+    layer["serverName"] = "226-212-210-238"; 
+    layer["id"] = "226-212-210-238"; 
+    layer["format"] = "png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_EIX_ET,M_EDI_ET,M_MUNIS_ET";
+    layer["name"] = "M_MUNIS"; 
+    layer["tiled"] = false;
+    layerGroup.layers.push(layer);
+    
+    layer = new Layer();
+    layer["visibility"] = false;
+    layer["opacity"] = 1;
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
+    layer["desc"] = ""; 
+    layer["url_transparent"] = "TRUE"; 
+    layer["url_bgcolor"] = "0x000000"; 
+    layer["extent"] = null;
+    layer["title"] = "Base Mapa - imgeix"; 
+    layer["serverName"] = "226-212-210-247"; 
+    layer["id"] = "226-212-210-247"; 
+    layer["format"] = "png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["isBaseLayer"] = false;
+    layer["name"] = "M_EIX_ET,M_EDI_ET,M_MUNIS_ET"; 
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
 
     baseLayers.push(layerGroup);
 
     layerGroup = new LayerGroup();
-    layerGroup.id = AERIAL_ID_TYPE;
+    layerGroup.id = "aerial";
+    layerGroup.name = "Aerèa";
     layerGroup.layers = [];
-    layer = new Layer();
 
+    layer = new Layer();
     layer["visibility"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0x000000";
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
+    layer["desc"] = ""; 
+    layer["url_transparent"] = "TRUE"; 
+    layer["url_bgcolor"] = "0x000000"; 
     layer["extent"] = [254904.96, 4484796.89, 530907.3, 4749795.1];
-    layer["title"] = "Cartografia ICC 1";
-    layer["serverName"] = "ICC1";
-    layer["id"] = "ICC1";
-    layer["format"] = "png";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://mapcache.icc.cat/map/bases/service?";
-    layer["isBaseLayer"] = true;
-    layer["name"] = "orto";
+    layer["title"] = "Base Aerial - ICC1"; 
+    layer["serverName"] = "272-266-258-252"; 
+    layer["id"] = "272-266-258-252"; 
+    layer["format"] = "image/png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://mapcache.icc.cat/map/bases/service"; 
+    layer["isBaseLayer"] = false;
+    layer["name"] = "orto"; 
     layer["tiled"] = true;
-    layer["url_exception"] = "INIMAGE";
+    layer["tileHeight"] = 256; 
+    layer["tileWidth"] = 256;
     layerGroup.layers.push(layer);
 
     layer = new Layer();
     layer["visibility"] = false;
     layer["opacity"] = 0.7;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0xFEFEFE";
-    layer["extent"] = [254000, 4479000, 538000, 4755000];
-    layer["title"] = "";
-    layer["serverName"] = "imgaeria_fons";
-    layer["id"] = "imgaeria_fons";
-    layer["format"] = "png";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
+    layer["desc"] = ""; 
+    layer["url_transparent"] = "TRUE"; 
+    layer["url_bgcolor"] = "0xFEFEFE"; 
+    layer["extent"] = null;
+    layer["title"] = "Base Aerial - imgaeria_fons"; 
+    layer["serverName"] = "272-266-258-256"; 
+    layer["id"] = "272-266-258-256"; 
+    layer["format"] = "image/png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_PROV_FONS,M_MUNIS";
+    layer["name"] = "M_PROV_FONS,M_MUNIS"; 
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
 
     layer = new Layer();
     layer["visibility"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0x000000";
-    layer["extent"] = [254000, 4479000, 538000, 4755000];
-    layer["title"] = "";
-    layer["serverName"] = "imgeix";
-    layer["id"] = "imgeix";
-    layer["format"] = "gif";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
+    layer["desc"] = ""; 
+    layer["url_transparent"] = "TRUE"; 
+    layer["url_bgcolor"] = "0x000000"; 
+    layer["extent"] = null;
+    layer["title"] = "Base Aerial - imgeix"; 
+    layer["serverName"] = "272-266-258-281"; 
+    layer["id"] = "272-266-258-281"; 
+    layer["format"] = "png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_EIX_ET,M_EDI_ET,M_MUNIS_ET";
+    layer["name"] = "M_EIX_ET,M_EDI_ET,M_MUNIS_ET"; 
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
 
     baseLayers.push(layerGroup);
-
+    
     layerGroup = new LayerGroup();
-    layerGroup.id = HYBRID_ID_TYPE;
+    layerGroup.id = "hybrid";
+    layerGroup.name = "Hìbrida";
     layerGroup.layers = [];
+
+    layer = new Layer();
+    layer["visibility"] = false;
+    layer["opacity"] = 1;
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
+    layer["desc"] = ""; 
+    layer["url_transparent"] = "TRUE"; 
+    layer["url_bgcolor"] = "0x000000"; 
+    layer["extent"] = [254904.96, 4484796.89, 530907.3, 4749795.1];
+    layer["title"] = "Base Aerial - ICC2"; 
+    layer["serverName"] = "273-267-265-254"; 
+    layer["id"] = "273-267-265-254"; 
+    layer["format"] = "image/png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://mapcache.icc.cat/map/bases/service"; 
+    layer["isBaseLayer"] = false;
+    layer["name"] = "orto"; 
+    layer["tiled"] = true;
+    layer["tileHeight"] = 256; 
+    layer["tileWidth"] = 256;
+    layerGroup.layers.push(layer);
+
     layer = new Layer();
     layer["visibility"] = false;
     layer["opacity"] = 0.7;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0xFEFEFE";
-    layer["extent"] = [254000, 4479000, 538000, 4755000];
-    layer["title"] = "";
-    layer["serverName"] = "imghibrid_fons";
-    layer["id"] = "imghibrid_fons";
-    layer["format"] = "png";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
+    layer["desc"] = ""; 
+    layer["url_transparent"] = "TRUE"; 
+    layer["url_bgcolor"] = "0xFEFEFE"; 
+    layer["extent"] = null;
+    layer["title"] = "Base Hybrid - imghibrid_fons"; 
+    layer["serverName"] = "273-267-265-259"; 
+    layer["id"] = "273-267-265-259"; 
+    layer["format"] = "image/png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
     layer["isBaseLayer"] = false;
     layer["name"] = "M_PROV_FONS,M_EURB_250M,M_EDIF_1M_141A,M_EDIF_1M_611A,M_EIX,M_EIX_sobre_EDIF";
     layer["tiled"] = false;
@@ -2616,18 +3252,18 @@ export class MapComponent implements OnInit {
     layer = new Layer();
     layer["visibility"] = false;
     layer["opacity"] = 0.85;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0x000000";
-    layer["extent"] = [254000, 4479000, 538000, 4755000];
-    layer["title"] = "";
-    layer["serverName"] = "imghibrid_ctra";
-    layer["id"] = "imghibrid_ctra";
-    layer["format"] = "jpg";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
-    layer["isBaseLayer"] = false;
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
+    layer["desc"] = ""; 
+    layer["url_transparent"] = "TRUE"; 
+    layer["url_bgcolor"] = "0x000000"; 
+    layer["extent"] = null;
+    layer["title"] = "Base Hybrid - imghibrid_ctra"; 
+    layer["serverName"] = "273-267-265-261"; 
+    layer["id"] = "273-267-265-261"; 
+    layer["format"] = "png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["isBaseLayer"] = false
     layer["name"] = "IH_XCE50_AUTO,IH_XCE50_BASICA,IH_XCE50_LOCAL,IH_XCE50_ALTRES,M_XCE50_AUTO_f,M_XCE50_BASICA_f,M_XCE50_LOCAL_f,M_XCE50_ALTRES_f";
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
@@ -2635,219 +3271,25 @@ export class MapComponent implements OnInit {
     layer = new Layer();
     layer["visibility"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0x000000";
-    layer["extent"] = [254000, 4479000, 538000, 4755000];
-    layer["title"] = "";
-    layer["serverName"] = "imghibrid_et";
-    layer["id"] = "imghibrid_et";
-    layer["format"] = "png";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
+    layer["desc"] = ""; 
+    layer["url_transparent"] = "TRUE"; 
+    layer["url_bgcolor"] = "0x000000"; 
+    layer["extent"] = null;
+    layer["title"] = "Base Hybrid - imghibrid_et"; 
+    layer["serverName"] = "273-267-265-263"; 
+    layer["id"] = "273-267-265-263"; 
+    layer["format"] = "png"; 
+    layer["version"] = "1.1.1"; 
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_MUNIS";
+    layer["name"] = "M_MUNIS"; 
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
-
-    layer = new Layer();
-    layer["visibility"] = false;
-    layer["opacity"] = 1;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0x000000";
-    layer["extent"] = [254904.96, 4484796.89, 530907.3, 4749795.1];
-    layer["title"] = "Cartografia ICC 2";
-    layer["serverName"] = "ICC2";
-    layer["id"] = "ICC2";
-    layer["format"] = "png";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://mapcache.icc.cat/map/bases/service?";
-    layer["isBaseLayer"] = true;
-    layer["name"] = "orto";
-    layer["tiled"] = true;
-    layer["url_exception"] = "INIMAGE";
-    layerGroup.layers.push(layer);
-
-  
-    // Configuration data
-
-    layer = new Layer();
-    layer["visibility"] = false;
-    layer["opacity"] = 1;
-    layer["attributions"] = "© Instituto de Cartografía y Geología de Cataluña";
-    layer["desc"] = "";
-    layer["url_transparent"] = "true";
-    layer["url_bgcolor"] = "0x000000";
-    layer["extent"] = [254000, 4479000, 538000, 4755000];
-    layer["title"] = "";
-    layer["serverName"] = "imgeix";
-    layer["id"] = "imgeix";
-    layer["format"] = "gif";
-    layer["version"] = "1.1.1";
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
-    layer["isBaseLayer"] = false;
-    layer["name"] = "M_EIX_ET,M_EDI_ET,M_MUNIS_ET";
-    layer["tiled"] = false;
-    layerGroup.layers.push(layer);
-
+    
     baseLayers.push(layerGroup);
     
     return baseLayers;
-  }
-
-  getLayers() {
-    return [
-      {
-        visibility: false,
-        id:"imgmapa",
-        desc:"",
-        url:"http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer",
-        opacity:1,
-        tiled:false,
-        url_transparent:"true",
-        url_bgcolor:"0x000000",
-        isBaseLayer:true,
-        name:"M_PROV_FONS,M_EURB_250M,M_EDIF_1M_141A,M_BTE50_412A,M_EDIF_1M_611A,M_XHE50_111L,M_BTE50_313L_FFCC,M_EIX,M_EIX_sobre_EDIF,M_XCE50_AUTO,M_XCE50_BASICA,M_XCE50_LOCAL,M_XCE50_ALTRES,M_XCE50_AUTO_f,M_XCE50_BASICA_f,M_XCE50_LOCAL_f,M_XCE50_ALTRES_f,M_MUNIS_f,M_MUNIS",
-        format: "image/png",
-        version:"1.1.1",
-        attributions: "\u00A9 Institut Cartogràfic i Geològic de Catalunya",
-        extent: [254000.000000, 4479000.000000, 538000.000000, 4755000.000000]
-      },
-      {
-        visibility: false,
-        id:"ICC1",
-        desc:"Cartografia ICC 1",
-        url:"http://mapcache.icc.cat/map/bases/service?",
-        opacity:1,
-        tiled:true,
-        url_transparent:"true",
-        url_bgcolor:"0x000000",
-        url_exception:"INIMAGE",
-        isBaseLayer:true,
-        name:"orto",
-        format: "image/png",
-        version:"1.1.1",
-        attributions: "\u00A9 Institut Cartogràfic i Geològic de Catalunya",
-        extent: [254904.96, 4484796.89, 530907.30, 4749795.10]
-  
-        
-      },
-      {
-        visibility: false,
-        id:"ICC2",
-        desc:"Cartografia ICC 2",
-        url:"http://mapcache.icc.cat/map/bases/service?",
-        opacity:1,
-        tiled:true,
-        url_transparent:"true",
-        url_bgcolor:"0x000000",
-        url_exception:"INIMAGE",
-        isBaseLayer:true,
-        name:"orto",
-        format: "image/png",
-        version:"1.1.1",
-        attributions: "\u00A9 Institut Cartogràfic i Geològic de Catalunya",
-        extent: [254904.96, 4484796.89, 530907.30, 4749795.10]
-      },
-      {
-        visibility: false,
-        id:"imgmapa_et",
-        desc:"",
-        url:"http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer",
-        opacity:1,
-        tiled:false,
-        url_transparent:"true",
-        url_bgcolor:"0x000000",
-        isBaseLayer:false,
-        name:"M_MUNIS",
-        format: "image/png",
-        version:"1.1.1",
-        attributions: "\u00A9 Institut Cartogràfic i Geològic de Catalunya",
-        extent: [254000.000000, 4479000.000000, 538000.000000, 4755000.000000]
-      },
-      {
-        visibility: false,
-        id:"imgaeria_fons",
-        desc:"",
-        url:"http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer",
-        opacity:0.7,
-        tiled:false,
-        url_transparent:"true",
-        url_bgcolor:"0xFEFEFE",
-        isBaseLayer:false,
-        name:"M_PROV_FONS,M_MUNIS",
-        format: "image/png",
-        version:"1.1.1",
-        attributions: "\u00A9 Institut Cartogràfic i Geològic de Catalunya",
-        extent: [254000.000000, 4479000.000000, 538000.000000, 4755000.000000]
-      },
-      {
-        visibility: false,
-        id:"imghibrid_fons",
-        desc:"",
-        url:"http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer",
-        opacity:0.7,
-        tiled:false,
-        url_transparent:"true",
-        url_bgcolor:"0xFEFEFE",
-        isBaseLayer:false,
-        name:"M_PROV_FONS,M_EURB_250M,M_EDIF_1M_141A,M_EDIF_1M_611A,M_EIX,M_EIX_sobre_EDIF",
-        format: "image/png",
-        version:"1.1.1",
-        attributions: "\u00A9 Institut Cartogràfic i Geològic de Catalunya",
-        extent: [254000.000000, 4479000.000000, 538000.000000, 4755000.000000]
-      },
-      {
-        visibility: false,
-        id:"imghibrid_ctra",
-        desc:"",
-        url:"http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer",
-        opacity:0.85,
-        tiled:false,
-        url_transparent:"true",
-        url_bgcolor:"0x000000",
-        isBaseLayer:false,
-        name:"IH_XCE50_AUTO,IH_XCE50_BASICA,IH_XCE50_LOCAL,IH_XCE50_ALTRES,M_XCE50_AUTO_f,M_XCE50_BASICA_f,M_XCE50_LOCAL_f,M_XCE50_ALTRES_f",
-        format:"image/jpg",
-        version:"1.1.1",
-        attributions: "\u00A9 Institut Cartogràfic i Geològic de Catalunya",
-        extent: [254000.000000, 4479000.000000, 538000.000000, 4755000.000000]
-      },
-      {
-        visibility: false,
-        id:"imghibrid_et",
-        desc:"",
-        url:"http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer",
-        opacity:1,
-        tiled:false,
-        url_transparent:"true",
-        url_bgcolor:"0x000000",
-        isBaseLayer:false,
-        name:"M_MUNIS",
-        format: "image/png",
-        version:"1.1.1",
-        attributions: "\u00A9 Institut Cartogràfic i Geològic de Catalunya",
-        extent: [254000.000000, 4479000.000000, 538000.000000, 4755000.000000]
-      },
-      {
-        visibility: false,
-        id:"imgeix",
-        desc:"",
-        url:"http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer",
-        opacity:1,
-        tiled:false,
-        url_transparent:"true",
-        isBaseLayer:false,
-        name:"M_EIX_ET,M_EDI_ET,M_MUNIS_ET",
-        format: "image/gif",
-        version:"1.1.1",
-        attributions: "\u00A9 Institut Cartogràfic i Geològic de Catalunya",
-        extent: [254000.000000, 4479000.000000, 538000.000000, 4755000.000000]
-      }
-    ];
   }
 
   parseFormat(format:String) {

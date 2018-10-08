@@ -6,6 +6,10 @@ import { TaskType } from './task-type.model';
 import { TaskGroup } from './task-group.model';
 import { TaskAvailability } from './task-availability.model';
 import { TaskParameter } from './task-parameter.model';
+
+//FIXME move to plugin-demo
+export const GEOADMIN_TREE_TASK_ID:string  = "geoadmin";
+
 export class Task extends Resource {
   public name: string;
   public order: Number;

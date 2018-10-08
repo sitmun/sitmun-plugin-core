@@ -5,9 +5,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material";
 export class LayerSelectionDialogData {
   selected: number;
   title: string;
-  mapLayerTitle: string;
-  aerialLayerTitle: string;
-  hybridLayerTitle: string;
+  itemList: string[];
 }
 
 const messages = {
@@ -25,9 +23,7 @@ export class LayerSelectionDialogComponent implements OnInit {
 
     form: FormGroup;
     title:string;
-    mapLayerTitle: string;
-    aerialLayerTitle: string;
-    hybridLayerTitle: string;
+    itemList: string[];
     cancel: string = messages["cancel"];
     confirm: string = messages["confirm"];
 
@@ -39,18 +35,16 @@ export class LayerSelectionDialogComponent implements OnInit {
         @Inject(MAT_DIALOG_DATA) data:LayerSelectionDialogData) {
 
         this.title = data.title;
-        this.mapLayerTitle = data.mapLayerTitle;
-        this.aerialLayerTitle = data.aerialLayerTitle;
-        this.hybridLayerTitle = data.hybridLayerTitle;
+        this.itemList = data.itemList;
 
         this.selected = data.selected;
 
+        var groups = {};
+        for (var i = 0, iLen = this.itemList.length; i < iLen; i++) {
+            groups[this.itemList[i]] = [data.selected == i];
+        }
 
-        this.form = fb.group({
-            mapOption: [data.selected == 0],
-            aerialOption: [data.selected == 1],
-            hybridOption: [data.selected == 2]
-        });
+        this.form = fb.group(groups);
     }
 
     ngOnInit() {
@@ -66,23 +60,8 @@ export class LayerSelectionDialogComponent implements OnInit {
 
     change(option:number) {
         //Check it again
-        var elementId;
-        switch(option) {
-            case 1:
-                this.form.get("aerialOption").setValue(true);
-                this.form.get("mapOption").setValue(false);
-                this.form.get("hybridOption").setValue(false);
-                break;
-            case 2:
-                this.form.get("hybridOption").setValue(true);
-                this.form.get("mapOption").setValue(false);
-                this.form.get("aerialOption").setValue(false);
-                break;
-            default:
-                this.form.get("mapOption").setValue(true);
-                this.form.get("aerialOption").setValue(false);
-                this.form.get("hybridOption").setValue(false);
-                break;
+        for (var i = 0, iLen = this.itemList.length; i < iLen; i++) {
+            this.form.get(this.itemList[i]).setValue(i == option);
         }
         this.selected = option;
     }

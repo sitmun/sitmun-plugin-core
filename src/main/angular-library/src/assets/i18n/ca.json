@@ -88,5 +88,16 @@
     "AERIAL_BASE_LAYER_OPTION": "Aèrea",
     "HYBRID_BASE_LAYER_OPTION": "Híbrida",
     "OK_BUTTON": "CONFIRMAR",
-    "CANCEL_BUTTON": "CANCEL·LAR"
+	"CANCEL_BUTTON": "CANCEL·LAR",
+    "ZOOM_IN_TOOLTIP": "Apropar zoom",
+	"ZOOM_OUT_TOOLTIP": "Allunyar zoom",
+	"LOCATION_TOOLTIP": "Localitzar l'usuari",
+	"BASE_LAYER_SELECTOR_TOOLTIP": "Selector de capa base",
+	"LENGTH_MEASUREMENT_TOOLTIP": "Mesura de longitud",
+	"AREA_MEASUREMENT_TOOLTIP": "Mesura d'àrea",
+	"CONTINUE_LINE_MSG": "Feu clic per continuar dibuixant la línia",
+	"CONTINUE_POLYGON_MSG": "Feu clic per continuar dibuixant el polígon",
+	"ATTRIBUTIONS_TOOLTIP": "Atribucions",
+	"OVERVIEW_MAP_TOOLTIP": "Mapa de situació",
+	"SCALE_BAR_TOOLTIP": "Escala 1:"
 }

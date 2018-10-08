@@ -24,6 +24,13 @@ export class Layer {
   extent: any = null;
   tileHeight?:number;
   tileWidth?:number;
+  queryable?:boolean = false;
+  minimumScale?:number;
+  maximumScale?:number;
+  projections?:string;
+  infoUrl?:string;
+  metadataUrl?:string;
+  legendUrl?:string;
   optionalParameters?:Array<OptionalParameter>;
 }
 
@@ -40,8 +47,22 @@ export class LayerConfiguration {
 }
 
 export class LayerGroup {
+  active?:boolean;
+  name?: String;
   id: String;
   layers: Array<Layer>;
+}
+
+export class MapOptionsConfiguration {
+  scales?: string;
+  projections?: string;
+  minScale?:number;
+  maxScale?:number;
+  extent?:any;
+  maxExtent?:any;
+  tileWidth?:number;
+  tileHeight?:number;
+  parameters?: Array<OptionalParameter>
 }
 
 @Injectable({
@@ -60,13 +81,15 @@ export class MapConfigurationManagerService {
   private addLayersSubject = new BehaviorSubject([]);
   private removeLayersSubject = new BehaviorSubject([]);
 
+  private situationMapConfigurationSubject = new BehaviorSubject([]);
+  private mapOptionsConfigurationSubject = new BehaviorSubject([]);
+
   constructor() { 
    //
   }
 
   count = 0;
 
-  //getLayerConfiguration(): Observable<Layer[]> {
   loadLayersConfiguration(configuration) {
     if (this.layers != null) {
       this.clearLayers(false);
@@ -74,7 +97,6 @@ export class MapConfigurationManagerService {
     this.setLayers(configuration);
   }
 
-  //getLayerConfiguration(): Observable<Layer[]> {
   loadBaseLayersConfiguration(configuration) {
     this.setBaseLayerGroups(configuration);
   }
@@ -218,6 +240,24 @@ export class MapConfigurationManagerService {
     layer.visibility = visibility;
     layer.position = position;
     this.layerConfigurationSubject.next([layer]);
+  }
+
+  getSituationMapConfigurationListener(): Observable<Layer[]> {
+    return this.situationMapConfigurationSubject.asObservable();
+  }
+
+  loadSituationMapConfiguration(layers:Array<Layer>) {
+    // Send the new values so that all subscribers are updated
+    this.situationMapConfigurationSubject.next(layers);
+  }
+
+  getMapOptionsConfigurationListener(): Observable<MapOptionsConfiguration[]> {
+    return this.mapOptionsConfigurationSubject.asObservable();
+  }
+
+  loadMapOptionsConfiguration(configuration:MapOptionsConfiguration) {
+    // Send the new values so that all subscribers are updated
+    this.mapOptionsConfigurationSubject.next([configuration]);
   }
 
 }
