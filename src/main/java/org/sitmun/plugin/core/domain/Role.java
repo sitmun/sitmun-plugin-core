@@ -11,42 +11,46 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "stm_roles")
 public class Role {
-	
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "rol_codigo")
-  private long id;
 
-  @NotNull
-  @Column(name = "rol_nombre", unique = true, nullable = false)
-  private String name;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "rol_codigo")
+	private long id;
 
-  @Column(name = "rol_observ")
-  private String comments;
+	@NotNull
+	@Column(name = "rol_nombre", unique = true, nullable = false)
+	private String name;
 
-  public long getId() {
-    return id;
-  }
+	@Column(name = "rol_observ")
+	private String comments;
 
-  public void setId(long id) {
-    this.id = id;
-  }
+	public long getId() {
+		return id;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public String getComments() {
-    return comments;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public void setComments(String comments) {
-    this.comments = comments;
-  }
+	public String getComments() {
+		return comments;
+	}
 
+	public void setComments(String comments) {
+		this.comments = comments;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return ((Role) o).getId() == this.getId();
+	}
 
 }

@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assumptions.assumeThat;
 public class ApplicationRepositoryTest {
 
   @Autowired
-  private AplicacionRepository applicationRepository;
+  private ApplicationRepository applicationRepository;
 
   @Autowired
   private CartographyGroupRepository cartographyGroupRepository;

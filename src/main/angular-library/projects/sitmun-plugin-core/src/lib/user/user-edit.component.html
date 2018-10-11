@@ -4,9 +4,11 @@
       <mat-card-title><h2>{{user._links ? ('global.edit'|translate) : ('global.add'|translate)}} {{'user.item' | translate}}</h2></mat-card-title>
     </mat-card-header>
     <mat-card-content>
+  
     <mat-tab-group dynamicHeight="true">
     <mat-tab label="{{ 'user.data'| translate}}">
      <div class="container">
+       
       <mat-form-field>
         <input  matInput placeholder="{{ 'user.username'| translate}}" [(ngModel)]="user.username"
                name="username" #username required>

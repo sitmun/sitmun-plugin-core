@@ -1,6 +1,7 @@
 package org.sitmun.plugin.core.security;
 
 import org.sitmun.plugin.core.domain.User;
+import org.sitmun.plugin.core.domain.UserConfiguration;
 import org.sitmun.plugin.core.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,11 +43,18 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     if ((authentication == null) || (targetDomainObject == null) || !(permission instanceof String)) {
       return false;
     }
-    if (!(authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User))
-      return false;
+    
+    Optional<User> currentUser = null;
+    if ((authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User)) {
+        currentUser = this.userService.getUserWithPermissionsByUsername(
+        	      ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername());
+    	
+    } else {
+        currentUser = this.userService.getUserWithPermissionsByUsername(authentication.getPrincipal().toString());
+    	
+    }
+      
 
-    Optional<User> currentUser = this.userService.getUserWithPermissionsByUsername(
-      ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername());
     if (currentUser.isPresent()) {
       User user = currentUser.get();
       try {
@@ -61,7 +70,13 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
       } catch (BeansException e) {
         LOGGER.error("Can't resolve bean for class " + targetDomainObject.getClass(), e);
       }
-      return true;
+      //return true;
+      Set<UserConfiguration> permissions = user.getPermissions();
+		boolean isAdminSitmun = permissions.stream()
+				.anyMatch(p -> p.getRole().getName().equalsIgnoreCase(AuthoritiesConstants.ADMIN_SITMUN));
+		if (isAdminSitmun)
+			return true;
+		return ( ((String) permission).equalsIgnoreCase(SecurityConstants.READ_PERMISSION));
     } else {
       return false;
     }

@@ -11,6 +11,7 @@ public class SecurityConstants {
     public static final String DELETE_PERMISSION = "delete";
 	public static final String ADMIN_PERMISSION = "administration";
 	public static final String SITMUN_ADMIN_USERNAME = "admin";
+	public static final String SITMUN_PUBLIC_USERNAME = "public";
 
 }
 

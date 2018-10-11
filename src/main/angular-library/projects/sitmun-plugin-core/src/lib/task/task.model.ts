@@ -10,12 +10,14 @@ import { TaskParameter } from './task-parameter.model';
 //FIXME move to plugin-demo
 export const GEOADMIN_TREE_TASK_ID:string  = "geoadmin";
 
+import { TaskUI } from './task-ui.model';
 export class Task extends Resource {
   public name: string;
   public order: Number;
   public createdDate: any;
   public group: TaskGroup;
   public type: TaskType;
+  public ui: TaskUI;
   public parameters: TaskParameter[];
   public connection: Connection;
   public roles: Role[];

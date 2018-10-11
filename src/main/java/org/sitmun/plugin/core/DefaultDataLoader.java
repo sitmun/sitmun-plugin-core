@@ -46,17 +46,16 @@ public class DefaultDataLoader implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-		
-		
+
 		ArrayList authorities = new ArrayList<>();
 		authorities.add(new SimpleGrantedAuthority(AuthoritiesConstants.ROLE_ADMIN));
-		
-		UsernamePasswordAuthenticationToken authReq
-	      = new UsernamePasswordAuthenticationToken("system", "system",authorities);
-	     
-	    SecurityContext sc = SecurityContextHolder.getContext();
-	    sc.setAuthentication(authReq);
-	    
+
+		UsernamePasswordAuthenticationToken authReq = new UsernamePasswordAuthenticationToken("system", "system",
+				authorities);
+
+		SecurityContext sc = SecurityContextHolder.getContext();
+		sc.setAuthentication(authReq);
+
 		Optional<Role> optRole = roleRepository.findOneByName(AuthoritiesConstants.ADMIN_SITMUN);
 		Role sitmunAdminRole = null;
 		if (!optRole.isPresent()) {
@@ -136,74 +135,30 @@ public class DefaultDataLoader implements ApplicationRunner {
 			sitmunAdmin = optUser.get();
 
 		}
-		/*
-		defaultTerritory = territoryRepository.findOneByName(this.defaultTerritoryName).get();
-		ArrayList<Territory> territoriesToCreate = new ArrayList<Territory>();
-		ArrayList<User> usersToCreate = new ArrayList<User>();
+
+		// Sitmun Public User
+		User sitmunPublicUser = null;
+		optUser = userRepository.findOneByUsername(SecurityConstants.SITMUN_PUBLIC_USERNAME);
+		if (!optUser.isPresent()) {
+			sitmunPublicUser = new User();
+			sitmunPublicUser.setAdministrator(false);
+			sitmunPublicUser.setBlocked(false);
+			sitmunPublicUser.setFirstName("Public");
+			sitmunPublicUser.setLastName("Sitmun");
+			sitmunPublicUser.setUsername(SecurityConstants.SITMUN_PUBLIC_USERNAME);
+			sitmunPublicUser.setPassword("public");
+			sitmunPublicUser = userService.createUser(sitmunPublicUser);
+			UserConfiguration userConf = new UserConfiguration();
+			userConf.setTerritory(defaultTerritory);
+			userConf.setRole(publicRole);
+			userConf.setUser(sitmunPublicUser);
+			this.userConfigurationRepository.save(userConf);
+
+		} else {
+			sitmunPublicUser = optUser.get();
+
+		}
 		
-		Territory territory1 = new Territory();
-		territory1.setName("Badalona");
-		// territoryRepository.save(territory1);
-
-		Territory territory2 = new Territory();
-		territory2.setName("Rubí");
-		// territoryRepository.save(territory2);
-		territoriesToCreate.add(territory1);
-		territoriesToCreate.add(territory2);
-
-		territoryRepository.save(territoriesToCreate);
-
-
-		// Territory 1 Admin
-		User organizacionAdmin = new User();
-		organizacionAdmin.setAdministrator(true);
-		organizacionAdmin.setBlocked(false);
-		organizacionAdmin.setFirstName("Admin");
-		organizacionAdmin.setLastName("Badalona");
-		organizacionAdmin.setPassword("admin-badalona");
-		organizacionAdmin.setUsername("admin-badalona");
-		organizacionAdmin = userService.createUser(organizacionAdmin);
-		//usersToCreate.add(organizacionAdmin);
-
-		// Territory 1 user
-		User territory1User = new User();
-		territory1User.setAdministrator(false);
-		territory1User.setBlocked(false);
-		territory1User.setFirstName("User");
-		territory1User.setLastName("Badalona");
-		territory1User.setPassword("user-badalona");
-		territory1User.setUsername("user-badalona");
-		territory1User = userService.createUser(territory1User);
-
-		// Territory 2 user
-		User territory2User = new User();
-		territory2User.setAdministrator(false);
-		territory2User.setBlocked(false);
-		territory2User.setFirstName("User");
-		territory2User.setLastName("Rubí");
-		territory2User.setPassword("user-rubi");
-		territory2User.setUsername("user-rubi");
-		territory2User = userService.createUser(territory2User);
-
-		UserConfiguration userConf = new UserConfiguration();
-		userConf.setTerritory(territory1);
-		userConf.setRole(organizacionAdminRole);
-		userConf.setUser(organizacionAdmin);
-		this.userConfigurationRepository.save(userConf);
-
-		userConf = new UserConfiguration();
-		userConf.setTerritory(territory1);
-		userConf.setRole(territorialRole);
-		userConf.setUser(territory1User);
-		this.userConfigurationRepository.save(userConf);
-
-		userConf = new UserConfiguration();
-		userConf.setTerritory(territory2);
-		userConf.setRole(territorialRole);
-		userConf.setUser(territory2User);
-
-		this.userConfigurationRepository.save(userConf);
-	*/
 		sc.setAuthentication(null);
 		SecurityContextHolder.clearContext();
 

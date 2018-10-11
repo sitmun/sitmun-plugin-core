@@ -13,11 +13,17 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
+import org.springframework.hateoas.Identifiable;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.ResourceSupport;
+
 @Entity
 @Table(name = "stm_appfon", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"apf_codapp", "apf_codfon"})
 })
-public class ApplicationBackground {
+public class ApplicationBackground implements Identifiable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,7 +45,7 @@ public class ApplicationBackground {
   @NotNull
   private Background background;
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 
@@ -70,6 +76,14 @@ public class ApplicationBackground {
   public void setBackground(Background background) {
     this.background = background;
   }
+
+	public ResourceSupport toResource(RepositoryEntityLinks links) {
+		Link selfLink = links.linkForSingleResource(this).withSelfRel();
+		ResourceSupport res = new Resource<>(this, selfLink);
+		res.add(links.linkForSingleResource(this).slash("application").withRel("application"));
+		res.add(links.linkForSingleResource(this).slash("background").withRel("background"));
+		return res;
+	}
 
 
 }

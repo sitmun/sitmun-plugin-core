@@ -180,5 +180,11 @@ public class Territory {
   public void setType(TerritoryType type) {
     this.type = type;
   }
+  
+
+	@Override
+	public boolean equals(Object o) {
+		return ((Territory) o).getId() == this.getId();
+	}
 
 }

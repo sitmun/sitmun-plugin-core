@@ -15,7 +15,7 @@ export class AuthInterceptor implements HttpInterceptor {
             return next.handle(request);
         }
 */
-         
+        //request.url = request.url.replace('localhost:8080','localhost:4200');
         if (!request || !request.url || !(request.url.includes("api")) ) {
             return next.handle(request);
         }

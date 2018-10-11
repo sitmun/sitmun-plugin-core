@@ -23,3 +23,7 @@ database/
 /node_modules/
 .vscode/
 package-lock.json
+/out-tsc/
+/authorization-service-ad.txt
+/todo.txt
+/tsconfig.development.json

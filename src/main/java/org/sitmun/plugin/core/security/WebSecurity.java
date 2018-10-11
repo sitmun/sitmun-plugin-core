@@ -6,17 +6,18 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -29,6 +30,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 	private UserDetailsService userDetailsService;
 	private PasswordEncoder passwordEncoder;
 	private final TokenProvider tokenProvider;
+	private AnonymousAuthenticationFilter anonymousAuthenticationFilter;
 	
 
 	public WebSecurity(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder,
@@ -38,11 +40,15 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 		this.userDetailsService = userDetailsService;
 		this.passwordEncoder = passwordEncoder;
 		this.tokenProvider = tokenProvider;
+		anonymousAuthenticationFilter = new AnonymousAuthenticationFilter("anonymous",SecurityConstants.SITMUN_PUBLIC_USERNAME, AuthorityUtils.createAuthorityList(AuthoritiesConstants.USUARIO_PUBLICO));
 	}
 
 	@Override
 	@SuppressWarnings("squid:S4502")
 	protected void configure(HttpSecurity http) throws Exception {
+		//COnfigurar acceso anńimo
+		//https://stackoverflow.com/questions/48173057/customize-spring-security-for-trusted-space
+		
 		http
 				.addFilterBefore(corsFilter(), UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling()
@@ -60,11 +66,14 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 				.authorizeRequests()
-				.antMatchers("/api/authenticate").permitAll()
-				//.antMatchers(HttpMethod.POST, "/api/users").permitAll()
-				.antMatchers("/api/**").authenticated()
+				.antMatchers("/api/users").authenticated()
+				.antMatchers("/api/account").authenticated()
+				.antMatchers("/api/**").permitAll()
+				
 			.and()
-				.apply(securityConfigurerAdapter());
+				.apply(securityConfigurerAdapter())
+			.and()
+				.anonymous().authenticationFilter(anonymousAuthenticationFilter);
 		
 	}
 	

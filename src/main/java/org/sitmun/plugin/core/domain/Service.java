@@ -48,7 +48,7 @@ public class Service {
   @Column(name = "ser_f_alta")
   private Date createdDate;
 
-  @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "service",  orphanRemoval = true)
   private Set<Cartography> layers = new HashSet<>();
 
   @ManyToOne

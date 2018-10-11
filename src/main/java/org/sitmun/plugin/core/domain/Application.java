@@ -17,166 +17,181 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
+import org.springframework.hateoas.Identifiable;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.ResourceSupport;
+
 @Entity
 @Table(name = "stm_apps")
-public class Application {
+public class Application implements Identifiable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "app_codigo")
-  private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "app_codigo")
+	private long id;
 
-  @Column(name = "app_nombre")
-  private String name;
+	@Column(name = "app_nombre")
+	private String name;
 
-  @Column(name = "app_tipo")
-  private String type;
+	@Column(name = "app_tipo")
+	private String type;
 
-  @Column(name = "app_titulo")
-  private String title;
+	@Column(name = "app_titulo")
+	private String title;
 
-  @Column(name = "app_tema")
-  private String theme;
+	@Column(name = "app_tema")
+	private String theme;
 
-  @Column(name = "app_f_alta")
-  private Date createdDate;
+	@Column(name = "app_f_alta")
+	private Date createdDate;
 
-  @ManyToMany(cascade = CascadeType.ALL)
-  @JoinTable(name = "stm_approl", joinColumns = @JoinColumn(name = "apr_codrol"), inverseJoinColumns = @JoinColumn(name = "apr_codapp"))
-  private Set<Role> availableRoles = new HashSet<>();
+	@ManyToMany
+	@JoinTable(name = "stm_approl", joinColumns = @JoinColumn(name = "apr_codrol"), inverseJoinColumns = @JoinColumn(name = "apr_codapp"))
+	private Set<Role> availableRoles = new HashSet<>();
 
-  @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<ApplicationParameter> parameters = new HashSet<>();
+	@OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<ApplicationParameter> parameters = new HashSet<>();
 
-  @ManyToMany
-  @JoinTable(name = "stm_apparb", joinColumns = @JoinColumn(name = "apa_codarb"), inverseJoinColumns = @JoinColumn(name = "apa_codapp"))
-  private Set<Tree> trees;
-  //comma-separated values
-  @Column(name = "app_escalas")
-  private String scales;
-  //comma-separated EPSG codes
-  @Column(name = "app_project")
-  private String projections;
-  @Column(name = "app_autorefr")
-  private Boolean treeAutoRefresh;
-  @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Set<ApplicationBackground> backgrounds = new HashSet<>();
-  @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "cod_gca")
-  private CartographyGroup situationMap;
+	@ManyToMany
+	@JoinTable(name = "stm_apparb", joinColumns = @JoinColumn(name = "apa_codarb"), inverseJoinColumns = @JoinColumn(name = "apa_codapp"))
+	private Set<Tree> trees;
+	// comma-separated values
+	@Column(name = "app_escalas")
+	private String scales;
+	// comma-separated EPSG codes
+	@Column(name = "app_project")
+	private String projections;
+	@Column(name = "app_autorefr")
+	private Boolean treeAutoRefresh;
+	@OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<ApplicationBackground> backgrounds = new HashSet<>();
+	@ManyToOne
+	@JoinColumn(name = "cod_gca")
+	private CartographyGroup situationMap;
 
- 
-  public long getId() {
-    return id;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public void setId(long id) {
-    this.id = id;
-  }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public String getType() {
-    return type;
-  }
+	public String getType() {
+		return type;
+	}
 
-  public void setType(String type) {
-    this.type = type;
-  }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-  public String getTitle() {
-    return title;
-  }
+	public String getTitle() {
+		return title;
+	}
 
-  public void setTitle(String title) {
-    this.title = title;
-  }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-  public String getTheme() {
-    return theme;
-  }
+	public String getTheme() {
+		return theme;
+	}
 
-  public void setTheme(String theme) {
-    this.theme = theme;
-  }
+	public void setTheme(String theme) {
+		this.theme = theme;
+	}
 
-  public Date getCreatedDate() {
-    return createdDate;
-  }
+	public Date getCreatedDate() {
+		return createdDate;
+	}
 
-  public void setCreatedDate(Date createdDate) {
-    this.createdDate = createdDate;
-  }
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 
-  public Set<Role> getAvailableRoles() {
-    return availableRoles;
-  }
+	public Set<Role> getAvailableRoles() {
+		return availableRoles;
+	}
 
-  public void setAvailableRoles(Set<Role> availableRoles) {
-    this.availableRoles = availableRoles;
-  }
+	public void setAvailableRoles(Set<Role> availableRoles) {
+		this.availableRoles = availableRoles;
+	}
 
-  public Set<ApplicationParameter> getParameters() {
-    return parameters;
-  }
+	public Set<ApplicationParameter> getParameters() {
+		return parameters;
+	}
 
-  public void setParameters(Set<ApplicationParameter> parameters) {
-    this.parameters = parameters;
-  }
+	public void setParameters(Set<ApplicationParameter> parameters) {
+		this.parameters = parameters;
+	}
 
-  public Set<Tree> getTrees() {
-    return trees;
-  }
+	public Set<Tree> getTrees() {
+		return trees;
+	}
 
-  public void setTrees(Set<Tree> trees) {
-    this.trees = trees;
-  }
+	public void setTrees(Set<Tree> trees) {
+		this.trees = trees;
+	}
 
-  public String getScales() {
-    return scales;
-  }
+	public String getScales() {
+		return scales;
+	}
 
-  public void setScales(String scales) {
-    this.scales = scales;
-  }
+	public void setScales(String scales) {
+		this.scales = scales;
+	}
 
-  public String getProjections() {
-    return projections;
-  }
+	public String getProjections() {
+		return projections;
+	}
 
-  public void setProjections(String projections) {
-    this.projections = projections;
-  }
+	public void setProjections(String projections) {
+		this.projections = projections;
+	}
 
-  public Boolean getTreeAutoRefresh() {
-    return treeAutoRefresh;
-  }
+	public Boolean getTreeAutoRefresh() {
+		return treeAutoRefresh;
+	}
 
-  public void setTreeAutoRefresh(Boolean treeAutoRefresh) {
-    this.treeAutoRefresh = treeAutoRefresh;
-  }
+	public void setTreeAutoRefresh(Boolean treeAutoRefresh) {
+		this.treeAutoRefresh = treeAutoRefresh;
+	}
 
-  public Set<ApplicationBackground> getBackgrounds() {
-    return backgrounds;
-  }
+	public Set<ApplicationBackground> getBackgrounds() {
+		return backgrounds;
+	}
 
-  public void setBackgrounds(Set<ApplicationBackground> backgrounds) {
-    this.backgrounds = backgrounds;
-  }
+	public void setBackgrounds(Set<ApplicationBackground> backgrounds) {
+		this.backgrounds = backgrounds;
+	}
 
-  public CartographyGroup getSituationMap() {
-    return situationMap;
-  }
+	public CartographyGroup getSituationMap() {
+		return situationMap;
+	}
 
-  public void setSituationMap(CartographyGroup situationMap) {
-    this.situationMap = situationMap;
-  }
+	public void setSituationMap(CartographyGroup situationMap) {
+		this.situationMap = situationMap;
+	}
 
+	public ResourceSupport toResource(RepositoryEntityLinks links) {
+		Link selfLink = links.linkForSingleResource(this).withSelfRel();
+		ResourceSupport res = new Resource<>(this, selfLink);
+		res.add(links.linkForSingleResource(this).slash("availableRoles").withRel("availableRoles"));
+		res.add(links.linkForSingleResource(this).slash("parameters").withRel("parameters"));
+		res.add(links.linkForSingleResource(this).slash("trees").withRel("trees"));
+		res.add(links.linkForSingleResource(this).slash("backgrounds").withRel("backgrounds"));
+		res.add(links.linkForSingleResource(this).slash("situationMap").withRel("situationMap"));
+		return res;
+	}
 
 }

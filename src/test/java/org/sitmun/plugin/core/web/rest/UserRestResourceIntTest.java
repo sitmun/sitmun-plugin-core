@@ -152,8 +152,8 @@ public class UserRestResourceIntTest {
 		organizacionAdmin.setLastName(USER_LASTNAME);
 		organizacionAdmin.setPassword(USER_PASSWORD);
 		organizacionAdmin.setUsername(TERRITORY1_ADMIN_USERNAME);
-		organizacionAdmin = userService.createUser(organizacionAdmin);
-		// usersToCreate.add(organizacionAdmin);
+		//organizacionAdmin = userService.createUser(organizacionAdmin);
+		usersToCreate.add(organizacionAdmin);
 
 		// Territory 1 user
 		territory1User = new User();
@@ -163,8 +163,8 @@ public class UserRestResourceIntTest {
 		territory1User.setLastName(USER_LASTNAME);
 		territory1User.setPassword(USER_PASSWORD);
 		territory1User.setUsername(TERRITORY1_USER_USERNAME);
-		territory1User = userService.createUser(territory1User);
-		// usersToCreate.add(territory1User);
+		//territory1User = userService.createUser(territory1User);
+		usersToCreate.add(territory1User);
 
 		// Territory 2 user
 		territory2User = new User();
@@ -174,10 +174,10 @@ public class UserRestResourceIntTest {
 		territory2User.setLastName(USER_LASTNAME);
 		territory2User.setPassword(USER_PASSWORD);
 		territory2User.setUsername(TERRITORY2_USER_USERNAME);
-		territory2User = userService.createUser(territory2User);
-		// usersToCreate.add(territory2User);
+		//territory2User = userService.createUser(territory2User);
+		usersToCreate.add(territory2User);
 
-		// userRepository.save(usersToCreate);
+		userRepository.save(usersToCreate);
 
 		UserConfiguration userConf = new UserConfiguration();
 		userConf.setTerritory(territory1);
@@ -291,12 +291,12 @@ public class UserRestResourceIntTest {
 	public void getUsersAsSitmunAdmin() throws Exception {
 		mvc.perform(get(USER_URI)).andDo(print()).andExpect(status().isOk())
 				.andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
-				.andExpect(jsonPath("$._embedded.users", hasSize(4)));
+				.andExpect(jsonPath("$._embedded.users", hasSize(5)));
 	}
 
 	@Test
 	@WithMockUser(username = TERRITORY1_ADMIN_USERNAME)
-	public void getUsersAsOrganizacionAdmin() throws Exception {
+	public void getUsersAsOrganizationAdmin() throws Exception {
 		mvc.perform(get(USER_URI)
 
 		).andDo(print()).andExpect(status().isOk()).andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
@@ -327,12 +327,6 @@ public class UserRestResourceIntTest {
 				.andExpect(status().isOk());
 	}
 
-	@Test
-	public void getUsersAsOrganizationAdmin() throws Exception {
-		// TO DO
-		// It returns only the users linked to my territory
-		// ok is expected
-	}
 
 	@Test
 	public void createNewUserAsOrganizationAdmin() throws Exception {

@@ -1,5 +1,20 @@
 package org.sitmun.plugin.core.web.rest;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.Matchers.startsWith;
+import static org.sitmun.plugin.core.security.SecurityConstants.HEADER_STRING;
+import static org.sitmun.plugin.core.security.SecurityConstants.TOKEN_PREFIX;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,27 +35,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.Matchers.startsWith;
-import static org.sitmun.plugin.core.security.SecurityConstants.HEADER_STRING;
-import static org.sitmun.plugin.core.security.SecurityConstants.TOKEN_PREFIX;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -56,8 +56,8 @@ public class AccountRestResourceIntTest {
 	private static final String USER_CHANGEDLASTNAME = "Territory 1";
 	private static final Boolean USER_BLOCKED = false;
 	private static final Boolean USER_ADMINISTRATOR = false;
-	private static final String ACCOUNT_URI = "/api/account";
-	private static final String AUTHENTICATION_URI = "/api/authenticate";
+	private static final String ACCOUNT_URI = "http://localhost/api/account";
+	private static final String AUTHENTICATION_URI = "http://localhost/api/authenticate";
 	@Autowired
 	TokenProvider tokenProvider;
 	@Autowired
@@ -81,12 +81,13 @@ public class AccountRestResourceIntTest {
 
 		SecurityContext sc = SecurityContextHolder.getContext();
 		sc.setAuthentication(authReq);
+		Date expiratedDate = new Date();
+		expiratedDate.setYear(1900);
 		expiredToken = Jwts.builder().setSubject(USER_USERNAME)
-				.signWith(SignatureAlgorithm.HS512, tokenProvider.getSecretKey().getBytes()).setExpiration(new Date())
+				.signWith(SignatureAlgorithm.HS512, tokenProvider.getSecretKey().getBytes()).setExpiration(expiratedDate)
 				.compact();
 		token = tokenProvider.createToken(USER_USERNAME);
 		admintoken = tokenProvider.createToken("admin");
-
 		user = new User();
 		user.setAdministrator(USER_ADMINISTRATOR);
 		user.setBlocked(USER_BLOCKED);
@@ -127,19 +128,6 @@ public class AccountRestResourceIntTest {
 				.andExpect(jsonPath("$.lastName", equalTo(USER_LASTNAME)));
 	}
 	
-	/*
-	@Test
-	public void recoverAdminAccount() throws Exception {
-		mvc.perform(get(ACCOUNT_URI).header(HEADER_STRING, TOKEN_PREFIX + admintoken)).andDo(print())
-				.andExpect(status().isOk())
-				//.andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
-				.andExpect(jsonPath("$.username", equalTo("admin")));
-		mvc.perform(get("/api/users/1/permissions").header(HEADER_STRING, TOKEN_PREFIX + admintoken)).andDo(print())
-		.andExpect(status().isOk())
-		//.andExpect(content().contentType(Util.APPLICATION_HAL_JSON_UTF8))
-		;
-	}
-*/
 	@Test
 	public void recoverAccountExpiredToken() throws Exception {
 		mvc.perform(get(ACCOUNT_URI).header(HEADER_STRING, TOKEN_PREFIX + expiredToken))

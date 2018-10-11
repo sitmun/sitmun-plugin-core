@@ -1,5 +1,5 @@
 {
-  "compileOnSave": false,
+  "compileOnSave": true,
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist",
@@ -20,6 +20,8 @@
     "paths": {
       "angular-hal": [
         "dist/angular-hal"
+      ],"sitmun-plugin-core": [
+        "src/main/angular-library/projects/sitmun-plugin-core/src/lib/public_api"
       ]
     }
   }

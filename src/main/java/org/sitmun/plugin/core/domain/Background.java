@@ -12,80 +12,91 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
+import org.springframework.hateoas.Identifiable;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.Resource;
+import org.springframework.hateoas.ResourceSupport;
+
 @Entity
 @Table(name = "stm_fondo")
-public class Background {
+public class Background implements Identifiable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "fon_codigo")
-  private long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "fon_codigo")
+	private long id;
 
-  @Column(name = "fon_nombre")
-  private String name;
+	@Column(name = "fon_nombre")
+	private String name;
 
-  @Column(name = "fon_desc")
-  private String description;
+	@Column(name = "fon_desc")
+	private String description;
 
+	@Column(name = "fon_activo")
+	private Boolean active;
 
-  @Column(name = "fon_activo")
-  private Boolean active;
+	@Column(name = "fon_f_alta")
+	private Date createdDate;
 
-  @Column(name = "fon_f_alta")
-  private Date createdDate;
+	@ManyToOne
+	@JoinColumn(name = "fon_codcga")
+	@NotNull
+	private CartographyGroup cartographyGroup;
 
-  @ManyToOne
-  @JoinColumn(name = "fon_codcga")
-  @NotNull
-  private CartographyGroup cartographyGroup;
+	public Long getId() {
+		return id;
+	}
 
-  public long getId() {
-    return id;
-  }
+	public void setId(long id) {
+		this.id = id;
+	}
 
-  public void setId(long id) {
-    this.id = id;
-  }
+	public String getName() {
+		return name;
+	}
 
-  public String getName() {
-    return name;
-  }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public String getDescription() {
+		return description;
+	}
 
-  public String getDescription() {
-    return description;
-  }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
-  public void setDescription(String description) {
-    this.description = description;
-  }
+	public Boolean getActive() {
+		return active;
+	}
 
-  public Boolean getActive() {
-    return active;
-  }
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 
-  public void setActive(Boolean active) {
-    this.active = active;
-  }
+	public Date getCreatedDate() {
+		return createdDate;
+	}
 
-  public Date getCreatedDate() {
-    return createdDate;
-  }
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
 
-  public void setCreatedDate(Date createdDate) {
-    this.createdDate = createdDate;
-  }
+	public CartographyGroup getCartographyGroup() {
+		return cartographyGroup;
+	}
 
-  public CartographyGroup getCartographyGroup() {
-    return cartographyGroup;
-  }
+	public void setCartographyGroup(CartographyGroup cartographyGroup) {
+		this.cartographyGroup = cartographyGroup;
+	}
 
-  public void setCartographyGroup(CartographyGroup cartographyGroup) {
-    this.cartographyGroup = cartographyGroup;
-  }
-
+	public ResourceSupport toResource(RepositoryEntityLinks links) {
+		Link selfLink = links.linkForSingleResource(this).withSelfRel();
+		ResourceSupport res = new Resource<>(this, selfLink);
+		res.add(links.linkForSingleResource(this).slash("cartographyGroup").withRel("cartographyGroup"));
+		return res;
+	}
 
 }
