@@ -53,7 +53,7 @@ public class Task implements Identifiable{
 		this.parameters = parameters;
 	}
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany
 	@JoinTable(name = "stm_roltar", joinColumns = @JoinColumn(name = "rta_codrol"), inverseJoinColumns = @JoinColumn(name = "rta_codtar"))
 	private Set<Role> roles;
 

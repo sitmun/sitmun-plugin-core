@@ -7,7 +7,7 @@ import { environment } from '../environments/environment';
 import { ExternalConfigurationService } from './ExternalConfigurationService';
 import { AngularHalModule } from 'angular-hal';
 import { HomeComponent } from './home/home.component';
-import { SitmunPluginCoreModule, AuthInterceptor,AuthExpiredInterceptor, TerritoryListComponent, TerritoryEditComponent, TerritoryTypeListComponent, TerritoryTypeEditComponent, RoleListComponent, RoleEditComponent, UserListComponent, UserEditComponent, UserChangePasswordComponent,LoginComponent,LoginService,AccountEditComponent,AccountChangePasswordComponent,HasAnyAuthorityDirective,HasAnyAuthorityOnTerritoryDirective,ConnectionListComponent,ConnectionEditComponent,TaskListComponent,TaskEditComponent,TaskTypeListComponent,TaskTypeEditComponent,TaskGroupListComponent,TaskGroupEditComponent,ServiceListComponent,ServiceEditComponent,CartographyEditComponent,CartographyListComponent,CartographyGroupEditComponent,CartographyGroupListComponent,BackgroundListComponent, BackgroundEditComponent,TreeListComponent,TreeEditComponent,ApplicationListComponent,ApplicationEditComponent } from 'sitmun-plugin-core';
+import { SitmunPluginCoreModule, AuthInterceptor,AuthExpiredInterceptor, TerritoryListComponent, TerritoryEditComponent, TerritoryTypeListComponent, TerritoryTypeEditComponent, RoleListComponent, RoleEditComponent, UserListComponent, UserEditComponent, UserChangePasswordComponent,LoginComponent,LoginService,AccountEditComponent,AccountChangePasswordComponent,HasAnyAuthorityDirective,HasAnyAuthorityOnTerritoryDirective,ConnectionListComponent,ConnectionEditComponent,TaskListComponent,TaskEditComponent,TaskTypeListComponent,TaskTypeEditComponent,TaskGroupListComponent,TaskGroupEditComponent,ServiceListComponent,ServiceEditComponent,CartographyEditComponent,CartographyListComponent,CartographyGroupEditComponent,CartographyGroupListComponent,BackgroundListComponent, BackgroundEditComponent,TreeListComponent,TreeEditComponent,ApplicationListComponent,ApplicationEditComponent,TaskUIListComponent,TaskUIEditComponent } from 'sitmun-plugin-core';
 import { registerLocaleData } from '@angular/common';
 import localeCa from '@angular/common/locales/ca';
 import localeEs from '@angular/common/locales/es';
@@ -141,6 +141,17 @@ const appRoutes: Routes = [
     {
         path: 'task-type-edit/:id',
         component: TaskTypeEditComponent
+    },  {
+        path: 'task-ui-list',
+        component: TaskUIListComponent
+    },
+    {
+        path: 'task-ui-add',
+        component: TaskUIEditComponent
+    },
+    {
+        path: 'task-ui-edit/:id',
+        component: TaskUIEditComponent
     },  {
         path: 'service-list',
         component: ServiceListComponent

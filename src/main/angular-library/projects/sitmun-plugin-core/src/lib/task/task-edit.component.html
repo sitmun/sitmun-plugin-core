@@ -33,6 +33,12 @@
 			[(ngModel)]="task.connection"> <mat-option
 			*ngFor="let connection of connections" [value]="connection">
 		{{connection.name}} </mat-option> </mat-select> </mat-form-field>
+		<mat-form-field> <mat-select
+			[compareWith]="compareResource" name="ui"
+			placeholder="{{ 'task.ui'| translate }}"
+			[(ngModel)]="task.ui"> <mat-option
+			*ngFor="let ui of taskUIs" [value]="ui">
+		{{ui.name}} </mat-option> </mat-select> </mat-form-field>
 
 	</div>
 	</mat-tab>

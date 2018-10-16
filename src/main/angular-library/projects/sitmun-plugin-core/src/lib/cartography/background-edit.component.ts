@@ -38,9 +38,6 @@ export class BackgroundEditComponent implements OnInit {
             this.background.createdDate = new Date();
             this.background.createdDate.setTime(Date.parse(background.createdDate));
             
-            //ResourceHelper.resolveRelations(this.task);
-            //alert('llego');
-            
             this.background.getRelation(CartographyGroup, 'cartographyGroup').subscribe(
                     (group: CartographyGroup) => this.background.cartographyGroup = group,
                     error => this.background.cartographyGroup = new CartographyGroup());

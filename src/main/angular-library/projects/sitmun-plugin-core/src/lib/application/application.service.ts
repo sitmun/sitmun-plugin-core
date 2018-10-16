@@ -14,14 +14,7 @@ export class ApplicationService extends RestService<Application> {
   constructor(injector: Injector,private http: HttpClient) {
     super(Application, "applications", injector);
   }
-  /*
-  getFullApplicationData(application: Application){
-    application = ResourceHelper.resolveRelations(application); 
-    delete application._links;
-    return application;
-  }    
-  */
-    
+
   remove(item: Application) {
     return this.http.delete(item._links.self.href);
    

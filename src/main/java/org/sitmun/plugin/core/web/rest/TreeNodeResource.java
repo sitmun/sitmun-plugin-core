@@ -4,11 +4,8 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.sitmun.plugin.core.domain.Cartography;
-import org.sitmun.plugin.core.domain.CartographyGroup;
-import org.sitmun.plugin.core.repository.CartographyGroupRepository;
 import org.sitmun.plugin.core.repository.TreeNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,7 +13,6 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,11 +40,8 @@ public class TreeNodeResource {
 		if (cartographys.size() > 0) {
 			cartography = cartographys.get(0);
 		}
-		
 		if (cartography != null) {
-
 			Resource<ResourceSupport> resource = new Resource<ResourceSupport>(cartography.toResource(links));
-
 			resource.add(linkTo(methodOn(TreeNodeResource.class).getTreeNodeCartography(id)).withSelfRel());
 			return ResponseEntity.ok(resource);
 		} else {

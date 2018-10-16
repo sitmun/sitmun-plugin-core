@@ -3,10 +3,11 @@ import {Resource} from './resource';
 import {ResourceArray} from './resource-array';
 import {HalOptions} from './rest.service';
 import {SubTypeBuilder} from './subtype-builder';
-import {isNullOrUndefined} from 'util';
+import {isNullOrUndefined, isPrimitive} from 'util';
 import * as url from 'url';
 
 export class ResourceHelper {
+
     private static _headers: HttpHeaders;
     private static proxy_uri: string;
     private static root_uri: string;
@@ -52,13 +53,22 @@ export class ResourceHelper {
         const result: any = {};
         for (const key in resource) {
             if (!isNullOrUndefined(resource[key])) {
-                if (resource[key] instanceof Resource) {
+                if (ResourceHelper.className(resource[key])
+                    .find((className: string) => className == 'Resource')) {
                     if (resource[key]['_links'])
                         result[key] = resource[key]['_links']['self']['href'];
-                } else if (resource[key] instanceof Array) {
+                } else if (Array.isArray(resource[key])) {
                     let array: any[] = resource[key];
                     if (array) {
-                        array.forEach((element) => this.resolveRelations(element));
+                        result[key] = new Array();
+                        array.forEach((element) => {
+                            if (isPrimitive(element)) {
+                                result[key].push(element);
+                            }
+                            else {
+                                result[key].push(this.resolveRelations(element));
+                            }
+                        });
                     }
                 } else {
                     result[key] = resource[key];
@@ -75,7 +85,7 @@ export class ResourceHelper {
     }
 
     static getClassName(obj: any): string {
-        var funcNameRegex = /function (.{1,})\(/;
+        var funcNameRegex = /function (.+?)\(/;
         var results = (funcNameRegex).exec(obj.constructor.toString());
         return (results && results.length > 1) ? results[1] : '';
     }
@@ -140,7 +150,7 @@ export class ResourceHelper {
                  entity[p] = [];
              else*/
             entity[p] = payload[p];
-        }       
+        }
         return entity;
     }
 

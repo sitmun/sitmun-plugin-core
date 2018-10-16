@@ -27,6 +27,7 @@ import {TaskTypeService} from './task/task-type.service';
 import {TaskGroupService} from './task/task-group.service';
 import {TaskParameterService} from './task/task-parameter.service';
 import {TaskAvailabilityService} from './task/task-availability.service';
+import {TaskUIService} from './task/task-ui.service';
 import {ServiceService} from './service/service.service';
 import {ServiceParameterService} from './service/service-parameter.service';
 import {CartographyService} from './cartography/cartography.service';
@@ -98,6 +99,8 @@ import { ApplicationEditComponent } from './application/application-edit.compone
 import { ApplicationListComponent } from './application/application-list.component';
 import { ApplicationParameterListComponent,ApplicationParameterEditDialog } from './application/application-parameter-list.component';
 import { ApplicationBackgroundListComponent,ApplicationBackgroundEditDialog } from './application/application-background-list.component';
+import { TaskUIEditComponent } from './task/task-ui-edit.component';
+import { TaskUIListComponent } from './task/task-ui-list.component';
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -201,7 +204,9 @@ export function createMatPaginationService(translate: TranslateService){
         ApplicationParameterListComponent,
         ApplicationParameterEditDialog,
         ApplicationBackgroundEditDialog,
-        ApplicationBackgroundListComponent],
+        ApplicationBackgroundListComponent,
+        TaskUIEditComponent,
+        TaskUIListComponent],
   providers:[
         TerritoryService,
         TerritoryTypeService,
@@ -212,6 +217,7 @@ export function createMatPaginationService(translate: TranslateService){
         ConnectionService,
         TaskService,
         TaskTypeService,
+        TaskUIService,
         TaskGroupService,
         TaskParameterService,
         TaskAvailabilityService,
@@ -320,6 +326,7 @@ export class SitmunPluginCoreModule {
                 UserService,  
                 ConnectionService,
                 TaskService,
+                TaskUIService,
                 TaskTypeService,
                 TaskGroupService,
                 TaskParameterService,

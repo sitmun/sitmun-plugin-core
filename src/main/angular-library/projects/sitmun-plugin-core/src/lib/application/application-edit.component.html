@@ -13,35 +13,36 @@
 			placeholder="{{'application.name' | translate}}"
 			[(ngModel)]="application.name" name="name" #name required> </mat-form-field>
 
-				<mat-form-field> <input matInput
+		<mat-form-field> <input matInput
 			placeholder="{{'application.type' | translate}}"
 			[(ngModel)]="application.type" name="type" #type> </mat-form-field>
-		
-		
-		 		<mat-form-field> <input matInput
+
+
+		<mat-form-field> <input matInput
 			placeholder="{{'application.title' | translate}}"
-			[(ngModel)]="application.title" name="title" #title > </mat-form-field>
-		 
-		 		<mat-form-field> <input matInput
+			[(ngModel)]="application.title" name="title" #title> </mat-form-field>
+
+		<mat-form-field> <input matInput
 			placeholder="{{'application.theme' | translate}}"
-			[(ngModel)]="application.theme" name="theme" #theme > </mat-form-field>
-		 
+			[(ngModel)]="application.theme" name="theme" #theme> </mat-form-field>
 
 
 
 
-				<mat-form-field> <input matInput
+
+		<mat-form-field> <input matInput
 			placeholder="{{'application.scales' | translate}}"
 			[(ngModel)]="application.scales" name="scales" #scales> </mat-form-field>
-		 
-				<mat-form-field> <input matInput
+
+		<mat-form-field> <input matInput
 			placeholder="{{'application.projections' | translate}}"
-			[(ngModel)]="application.projections" name="projections" #projections > </mat-form-field>
-		
-		     <mat-checkbox [(ngModel)]="application.treeAutoRefresh"
-               name="treeAutoRefresh" #treeAutoRefresh>{{ 'application.treeAutoRefresh'| translate}}
-      		</mat-checkbox>
-		
+			[(ngModel)]="application.projections" name="projections" #projections>
+		</mat-form-field>
+
+		<mat-checkbox [(ngModel)]="application.treeAutoRefresh"
+			name="treeAutoRefresh" #treeAutoRefresh>{{
+		'application.treeAutoRefresh'| translate}} </mat-checkbox>
+
 		<mat-form-field> <mat-select
 			[compareWith]="compareResource" name="situationMap"
 			placeholder="{{ 'application.situationMap'| translate }}"
@@ -52,10 +53,8 @@
 
 
 	</div>
-	</mat-tab> 
-	
-	<mat-tab label="{{ 'application.trees'| translate}}"> 
-<table mat-table [dataSource]="trees" class="mat-elevation-z8">
+	</mat-tab> <mat-tab label="{{ 'application.trees'| translate}}">
+	<table mat-table [dataSource]="trees" class="mat-elevation-z8">
 
 		<!-- Checkbox Column -->
 		<ng-container matColumnDef="select">
@@ -80,15 +79,11 @@
 			(click)="treeSelection.toggle(row)">
 		</tr>
 	</table>
-	</mat-tab>
-	<mat-tab
-		label="{{ 'application.backgrounds'| translate}}"> <sitmun-application-background-list
-		[application]="application">
-		</sitmun-application-background-list>
-	</mat-tab>
-	<mat-tab label="{{ 'application.parameters'| translate}}"> <sitmun-application-parameter-list
-		[application]="application"></sitmun-application-parameter-list> </mat-tab> <mat-tab
-		label="{{ 'application.roles'| translate}}">
+	</mat-tab> <mat-tab label="{{ 'application.backgrounds'| translate}}">
+	<sitmun-application-background-list [application]="application">
+	</sitmun-application-background-list> </mat-tab> <mat-tab label="{{ 'application.parameters'| translate}}">
+	<sitmun-application-parameter-list [application]="application"></sitmun-application-parameter-list>
+	</mat-tab> <mat-tab label="{{ 'application.roles'| translate}}">
 	<table mat-table [dataSource]="roles" class="mat-elevation-z8">
 
 		<!-- Checkbox Column -->
