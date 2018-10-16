@@ -97,7 +97,7 @@ export class TreeEditComponent implements OnInit, OnDestroy {
               this.tree.availableRoles = this.roleSelection.selected;
             }
 
-            this.tree.roles = this.tree.roles.map(function(role) {
+            this.tree.availableRoles = this.tree.availableRoles.map(function(role) {
                 return role._links.self.href;
             });
 
