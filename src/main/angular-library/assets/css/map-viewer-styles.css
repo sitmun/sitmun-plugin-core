@@ -27,8 +27,67 @@ sitmun-map-viewer-map {
     width: 100%;
 }
 
+/* Feature info dialog styles */
+
+.feature-info-item-container .caption {
+    font-weight: bold;
+    color: rgba(158,17,57,1);
+}
+
+.feature-info-item-container .content {
+    margin-left: 5px;
+    padding: 5px;
+}
+
+.feature-info-item-container .loading-small-img {
+    height: 25px !important;
+    width: 25px !important;
+}
+
+.feature-info-item-container .expander {
+    cursor: pointer;
+    vertical-align: middle;
+    height: 25px !important;
+    width: 25px !important;
+    color: rgba(158,17,57,1) !important;
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+}
+
+.feature-info-item-container span.mat-raised-button, 
+.feature-info-item-container button.mat-raised-button {
+    margin-left: 5px;
+}
+
+.feature-info-item-container span {
+    border-radius: 0 0 2px 2px;
+}
+
+.feature-info-item-container table {
+    border: rgba(158,17,57,1) 2px solid;
+}
+
+.feature-info-item-container tr .caption {
+    background-color: rgba(158,17,57,1);
+    color: white;
+}
+
+.feature-info-item-container td span.object-info {
+    cursor: pointer;
+    vertical-align: middle;
+    height: 15px !important;
+    width: 15px !important;
+    color: rgba(158,17,57,1) !important;
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+}
+
+.feature-info-item-container td {
+    border: rgba(158,17,57,1) 1px solid;
+    padding: 5px;
+    text-align: center;
+}
+
 /* Layer selection dialog styles */
-.mat-dialog-content {
+.mat-dialog-content layer-selection-dialog {
     overflow-y: hidden !important;
 }
 
@@ -105,6 +164,41 @@ button.geolocation-active {
 
 .ol-change-baselayer span.ol-baselayer-active, .ol-change-baselayer button.ol-baselayer-active {
     background-color: rgba(158,17,57,1) !important;
+}
+
+.ol-get-feature-info {
+    background-color: transparent !important;
+}
+
+.ol-get-feature-info span, .ol-get-feature-info button {
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+    background-color: rgba(158,17,57,1) !important;
+}
+
+.ol-get-feature-info span.tool-disabled, .ol-get-feature-info button.tool-disabled {
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+    background-color: rgb(160,160,160,1) !important;
+}
+
+.ol-get-feature-info span.tool-active, .ol-get-feature-info button.tool-active {
+    outline: none;/*Avoid unwanted border on click on certain browsers e.g. chrome*/
+    background-color: rgba(215,31,83,1) !important;
+}
+
+.ol-get-feature-info span {
+    border-radius: 0 0 2px 2px;
+}
+
+.ol-get-feature-info span:hover,
+.ol-get-feature-info button:hover,
+.ol-get-feature-info span.tool-active:hover,
+.ol-get-feature-info button.tool-active:hover {
+    background-color: rgba(158,17,57,1);
+}
+
+.ol-get-feature-info span.tool-disabled:hover,
+.ol-get-feature-info button.tool-disabled:hover {
+    background-color: rgba(160,160,160,1);
 }
 
 .ol-attribution {
@@ -240,6 +334,11 @@ button.geolocation-active {
     background-color: transparent !important;
 }
 
+.ol-loading-small-img {
+    height: 25px !important;
+    width: 25px !important;
+}
+
 .ol-loading:hover {
     background-color: transparent !important;
 }
@@ -306,6 +405,11 @@ button.geolocation-active {
     margin-top: 16px !important;
 }
 
+.ol-getFeatureInfo {
+    top: 244px;
+    right: 16px;
+}
+
 .ol-control button {
     min-width: 24px !important;
     min-height: 24px !important;
@@ -313,14 +417,16 @@ button.geolocation-active {
 
 .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
 .ol-change-baselayer button, .ol-attribution button,
-.ol-measurement button, .ol-overviewmap button {
+.ol-measurement button, .ol-overviewmap button,
+.ol-get-feature-info button {
     height: 24px;
     width: 24px;
 }
 
 .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
 .ol-change-baselayer button i, .ol-attribution button i,
-.ol-overviewmap button i {
+.ol-overviewmap button i,
+.ol-get-feature-info button i {
     font-size: 18px !important;
 }
 
@@ -377,14 +483,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 36px !important;
         width: 36px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 24px !important;
     }
 
@@ -397,8 +505,13 @@ button.geolocation-active {
         margin-left: 36px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 202px;
+		right: 16px;
+	}
+
+	.ol-get-feature-info {
+		top: 286px;
 		right: 16px;
 	}
 
@@ -439,14 +552,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 36px !important;
         width: 36px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 24px !important;
     }
 
@@ -459,8 +574,13 @@ button.geolocation-active {
         margin-left: 36px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 202px;
+		right: 16px;
+	}
+
+	.ol-get-feature-info {
+		top: 286px;
 		right: 16px;
 	}
 
@@ -501,14 +621,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 36px !important;
         width: 36px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 24px !important;
     }
 
@@ -521,8 +643,13 @@ button.geolocation-active {
         margin-left: 36px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 202px;
+		right: 16px;
+	}
+
+	.ol-get-feature-info {
+		top: 286px;
 		right: 16px;
 	}
 
@@ -569,14 +696,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 36px !important;
         width: 36px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 24px !important;
     }
 
@@ -589,8 +718,13 @@ button.geolocation-active {
         margin-left: 36px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 202px;
+		right: 16px;
+	}
+
+	.ol-get-feature-info {
+		top: 286px;
 		right: 16px;
 	}
 
@@ -636,14 +770,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button, 
+    .ol-get-feature-info button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 18px !important;
     }
 
@@ -656,8 +792,13 @@ button.geolocation-active {
         margin-left: 24px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 202px;
+		right: 16px;
+	}
+
+	.ol-get-feature-info {
+		top: 286px;
 		right: 16px;
 	}
 
@@ -703,14 +844,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 18px !important;
     }
 
@@ -723,8 +866,13 @@ button.geolocation-active {
         margin-left: 24px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 200px;
+		right: 24px;
+	}
+
+	.ol-get-feature-info {
+		top: 300px;
 		right: 24px;
 	}
 
@@ -770,14 +918,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i  {
         font-size: 18px !important;
     }
 
@@ -790,8 +940,13 @@ button.geolocation-active {
         margin-left: 24px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 200px;
+		right: 24px;
+	}
+
+	.ol-get-feature-info {
+		top: 300px;
 		right: 24px;
 	}
 
@@ -837,14 +992,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 18px !important;
     }
 
@@ -857,8 +1014,13 @@ button.geolocation-active {
         margin-left: 24px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 200px;
+		right: 24px;
+	}
+
+	.ol-get-feature-info {
+		top: 300px;
 		right: 24px;
 	}
 
@@ -906,14 +1068,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 18px !important;
     }
 
@@ -926,8 +1090,13 @@ button.geolocation-active {
         margin-left: 24px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 200px;
+		right: 24px;
+	}
+
+	.ol-get-feature-info {
+		top: 300px;
 		right: 24px;
 	}
 
@@ -974,14 +1143,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 18px !important;
     }
 
@@ -994,8 +1165,13 @@ button.geolocation-active {
         margin-left: 24px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 200px;
+		right: 24px;
+	}
+
+	.ol-get-feature-info {
+		top: 300px;
 		right: 24px;
 	}
 
@@ -1042,14 +1218,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 18px !important;
     }
 
@@ -1062,8 +1240,13 @@ button.geolocation-active {
         margin-left: 24px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 200px;
+		right: 24px;
+	}
+
+	.ol-get-feature-info {
+		top: 300px;
 		right: 24px;
 	}
 
@@ -1110,14 +1293,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 24px !important;
         width: 24px !important;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 18px !important;
     }
 
@@ -1130,8 +1315,13 @@ button.geolocation-active {
         margin-left: 24px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 200px;
+		right: 24px;
+	}
+
+	.ol-get-feature-info {
+		top: 300px;
 		right: 24px;
 	}
 
@@ -1178,14 +1368,16 @@ button.geolocation-active {
     
     .geolocation-btn button, .ol-zoom-in, .ol-zoom-out, 
     .ol-change-baselayer button, .ol-attribution button,
-    .ol-measurement button, .ol-overviewmap button {
+    .ol-measurement button, .ol-overviewmap button,
+    .ol-get-feature-info button {
         height: 24px;
         width: 24px;
     }
     
     .geolocation-btn button i, .ol-zoom-in i, .ol-zoom-out i, 
     .ol-change-baselayer button i, .ol-attribution button i,
-    .ol-overviewmap button i {
+    .ol-overviewmap button i,
+    .ol-get-feature-info button i {
         font-size: 18px !important;
     }
 
@@ -1198,8 +1390,13 @@ button.geolocation-active {
         margin-left: 24px !important;
     }
 
-	.ol-measurement {
+	.ol-measurement {/*includes 2 tools*/
 		top: 200px;
+		right: 24px;
+	}
+
+	.ol-get-feature-info {
+		top: 300px;
 		right: 24px;
 	}
 

@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>{{'FEATURE_INFO_DIALOG_TITLE'| translate}}</h2>
+
+<mat-dialog-content>
+  <table>
+      <tr *ngFor="let item of itemList; let itemIndex = index;">
+            <td class="feature-info-item-container">
+                <span class="caption">{{item}}</span><img *ngIf="!getItemLoaded(itemIndex)" class="ol-loading-small-img" src="assets/img/loading.gif">
+                <span *ngIf="getItemCollapsed(itemIndex)" (click)="expandContent(itemIndex)" class="expander material-icons">
+                    expand_more
+                </span>
+                <span *ngIf="getItemExpanded(itemIndex)" (click)="collapseContent(itemIndex)" class="expander material-icons">
+                    expand_less
+                </span>
+                <div *ngIf="getItemHTMLLoaded(itemIndex)&&getItemExpanded(itemIndex)" class="content" [innerHTML]="getItemContent(itemIndex)"></div>
+                <div *ngIf="getItemTextLoaded(itemIndex)&&getItemExpanded(itemIndex)" class="content" >
+                    {{getItemContent(itemIndex)}}
+                </div>
+            </td>
+      </tr>
+    </table>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button class="mat-raised-button"(click)="close()">{{'CLOSE_BUTTON' | translate}}</button>
+</mat-dialog-actions>

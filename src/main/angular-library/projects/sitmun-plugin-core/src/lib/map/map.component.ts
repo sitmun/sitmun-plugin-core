@@ -6,16 +6,15 @@ import * as ol from 'openlayers';
 import * as proj4x from 'proj4';
 const proj4 = (proj4x as any).default;
 
-import {LayerSelectionDialogComponent} from './layer-selection-dialog.component';
+import {LayerSelectionDialogComponent, LayerSelectionDialogData} from './layer-selection-dialog.component';
+import {FeatureInfoDialogComponent, FeatureInfoDialogData, FeatureInfoRequestData} from './feature-info-dialog.component';
 
 //Material imports
 import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 
-import {LayerSelectionDialogData} from './layer-selection-dialog.component';
-
 import { ElementRef } from '@angular/core';
 
-import {MapConfigurationManagerService, Layer, LayerConfiguration, LayerGroup, MapOptionsConfiguration} from './map-configuration-manager.service';
+import {MapConfigurationManagerService, Layer, LayerConfiguration, LayerGroup, MapOptionsConfiguration, MapComponentStatus} from './map-configuration-manager.service';
 
 import { Observable, of} from 'rxjs';
 import { UserConfigurationService } from '../public_api';
@@ -81,7 +80,6 @@ export class MapComponent implements OnInit {
   // Default values
   defaultMapUnits:string = "m";
   defaultProjection:string = "EPSG:25831";
-  defaultScales;
   projections;
   scales;
   tileHeight: number = 500;
@@ -136,6 +134,7 @@ export class MapComponent implements OnInit {
     scaleLineTooltip: "Map scale",
     attributionsTooltip: "Attributions",
     layerSelectionTooltip: "Select base layer",
+    getFeatureInfoTooltip: "Information from cartography",
     overviewTooltip: "Overview map",
     lenghtTooltip: "Length measurement",
     areaTooltip: "Area measurement",
@@ -150,6 +149,7 @@ export class MapComponent implements OnInit {
     this.messages["scaleLineTooltip"] = this.translate.instant("SCALE_BAR_TOOLTIP");
     this.messages["attributionsTooltip"] = this.translate.instant("ATTRIBUTIONS_TOOLTIP");
     this.messages["layerSelectionTooltip"] = this.translate.instant("BASE_LAYER_SELECTOR_TOOLTIP");
+    this.messages["getFeatureInfoTooltip"] = this.translate.instant("GET_FEATURE_INFO_TOOLTIP");
     this.messages["overviewTooltip"] = this.translate.instant("OVERVIEW_MAP_TOOLTIP");
     this.messages["lengthTooltip"] = this.translate.instant("LENGTH_MEASUREMENT_TOOLTIP");
     this.messages["areaTooltip"] = this.translate.instant("AREA_MEASUREMENT_TOOLTIP");
@@ -202,6 +202,11 @@ export class MapComponent implements OnInit {
       this.selectBaseLayerControl.updateTooltip(this.messages["layerSelectionTooltip"]);
     }
 
+    //layer selector
+    if (this.getFeatureInfoControl) {
+      this.getFeatureInfoControl.updateTooltip(this.messages["getFeatureInfoTooltip"]);
+    }
+
     //measurement
     if (this.measurementToolControl) {
       this.measurementToolControl.updateMessages({
@@ -215,6 +220,7 @@ export class MapComponent implements OnInit {
 
   translate: TranslateService;
   constructor(private dialog: MatDialog, 
+    private featureInfoDialog: MatDialog,
     private mapConfigurationManagerService: MapConfigurationManagerService,
     translate: TranslateService) {
     this.translate = translate;
@@ -329,16 +335,7 @@ export class MapComponent implements OnInit {
     }
   }
   getDefaultProjection():string {
-    return this.defaultProjection;
-  }
-
-  setDefaultScales(scales) {
-    if (scales && scales.length) {
-      this.defaultScales = scales;
-    }
-  }
-  getDefaultScales():Array<number> {
-    return this.defaultScales;
+    return this.defaultProjection.slice();//Return the value cloned
   }
 
   getProjectionUnits(projection) {
@@ -393,6 +390,11 @@ export class MapComponent implements OnInit {
   }
 
   updateMapOptions(options:MapOptionsConfiguration) {
+    if (!options) {
+      //If no options defined load default values
+      this.updateMapOptions(this.getDefaultMapOptionsConfiguration());
+      return;
+    }
 
     if (options.projections) {
       this.projections = options.projections.split(',');
@@ -403,6 +405,8 @@ export class MapComponent implements OnInit {
           projections[index] = projection.trim();
         });
       }
+    } else {
+      this.projections = [this.getDefaultProjection()]
     }
 
     if (options.scales) {
@@ -415,16 +419,18 @@ export class MapComponent implements OnInit {
           }
         }
       } else {
-        this.scales = this.getDefaultScales();
+        this.scales = [];
+        this.scales = this.scales.concat(this.getDefaultMapScales());
       }
     } else {
-      this.scales = this.getDefaultScales();
+      this.scales = [];
+      this.scales = this.scales.concat(this.getDefaultMapScales());
     }
     
-    if (options.tileHeight) {
+    if ((options.tileHeight != undefined) && (options.tileHeight != null)) {
       this.tileHeight = options.tileHeight;
     }
-    if (options.tileWidth) {
+    if ((options.tileWidth != undefined) && (options.tileWidth != null)) {
       this.tileWidth = options.tileWidth;
     }
 
@@ -616,6 +622,24 @@ export class MapComponent implements OnInit {
           properties["serverName"] = layerDataConfig[i].serverName;
         }
       }
+      if (layerDataConfig[i].title) {
+        if (properties == null) {
+          properties = {
+            queryable: layerDataConfig[i].title
+          };
+        } else {
+          properties["title"] = layerDataConfig[i].title;
+        }
+      }
+      if (layerDataConfig[i].queryable) {
+        if (properties == null) {
+          properties = {
+            queryable: layerDataConfig[i].queryable
+          };
+        } else {
+          properties["queryable"] = layerDataConfig[i].queryable;
+        }
+      }
       if ((layerDataConfig[i].projections != undefined) && (layerDataConfig[i].projections != null)) {
         var projections = layerDataConfig[i].projections.split(',');
         projections.forEach(function(projection, index, projections) {
@@ -630,7 +654,7 @@ export class MapComponent implements OnInit {
         }
         projection = projections[0];
       } else {
-		projection = this.projection;
+		    projection = this.projection;
       }
       if (layerDataConfig[i].tiled) {
          layer = new ol.layer.Tile({
@@ -737,8 +761,16 @@ export class MapComponent implements OnInit {
         }
         //Clear non base layers
         if (this.map) {
+          var layer;
           for (var i = 0, iLen:number = this.layers.length; i < iLen; i++) {
-            this.map.removeLayer(this.layers[i]);
+            layer = this.layers[i];
+            if (layer && layer.getProperties() && layer.getProperties()["loading"]) {
+              layer.setProperties({loading: false});
+              if (this.loadingControl) {
+                this.loadingControl.addLoaded();
+              }
+            }
+            this.map.removeLayer(layer);
           }
           while(this.layers.length) {
             this.layers.pop();
@@ -762,6 +794,7 @@ export class MapComponent implements OnInit {
         var source;
         var layerIndex;
         var loadingControl_ = this.loadingControl;
+        var getFeatureInfoControl_ = this.getFeatureInfoControl;
         //Add the layers at the end of the map layers array
         for (var i = 0, iLen:number = newLayers.length; i < iLen; i++) {
           layer = newLayers[i];
@@ -772,18 +805,45 @@ export class MapComponent implements OnInit {
             if (loadingControl_ && !(layer.getSource() instanceof ol.source.TileWMS)) {
               source = layer.getSource();  
               source.on('imageloadstart', function() {
-                loadingControl_.addLoading();
+                if (layer.getProperties() && !layer.getProperties()["loading"]) {
+                  layer.setProperties({loading: true});
+                  loadingControl_.addLoading();
+                }
               });  
               source.on('imageloadend', function() {
-                loadingControl_.addLoaded();
+                if (layer.getProperties() && layer.getProperties()["loading"]) {
+                  layer.setProperties({loading: false});
+                  loadingControl_.addLoaded();
+                }
               });
               source.on('imageloaderror', function() {
-                loadingControl_.addLoaded();
+                if (layer.getProperties() && layer.getProperties()["loading"]) {
+                  layer.setProperties({loading: false});
+                  loadingControl_.addLoaded();
+                }
               });
               layer.on('change:visible', function(){
                 if (!layer.getVisible()) {
-                  //TODO Cancel the loading request, currently decrease the loading pending counter
-                  loadingControl_.addLoaded();
+                  if (layer.getProperties() && layer.getProperties()["loading"]) {
+                    //Cancel the loading request
+                    layer.setProperties({loading: false});
+                    loadingControl_.addLoaded();
+                  }
+                  if (getFeatureInfoControl_ != null) {
+                    getFeatureInfoControl_.updateVisibleLayers(layer.getVisible());    
+                  }
+                } else {
+                }
+              });
+            } else if (getFeatureInfoControl_ != null) {
+              layer.on('change:visible', function(){
+                getFeatureInfoControl_.updateVisibleLayers(layer.getVisible());
+                if (!layer.getVisible()) {
+                  if (layer.getProperties() && layer.getProperties()["loading"]) {
+                    //Cancel the loading request
+                    layer.setProperties({loading: false});
+                    loadingControl_.addLoaded();
+                  }
                 }
               });
             }
@@ -800,6 +860,12 @@ export class MapComponent implements OnInit {
       this.layers = this.layers.concat(newLayers);
   
       this.updateVectorDataLayers();
+
+      if (this.getFeatureInfoControl != null) {
+        this.getFeatureInfoControl.onDataChanged({
+          layers: this.getQueryableLayers()
+        });
+      }
     }
   }
 
@@ -819,13 +885,19 @@ export class MapComponent implements OnInit {
         layer = layerDataConfig[i];
         layerToRemove = this.getMapLayerById(layer.id);
         if (layerToRemove != null) {
+          if (layerToRemove.getProperties() && layerToRemove.getProperties()["loading"]) {
+            layerToRemove.setProperties({loading: false});
+            if (this.loadingControl) {
+              this.loadingControl.addLoaded();
+            }
+          }
           this.map.removeLayer(layerToRemove);
         }
         //Update layers
         if (this.layers != null) {
           indexToRemove = -1;
           for (var j = 0, jLen = this.layers.length; j < jLen; j++) {
-            if (this.layers[j].getProperties("id") == layer.id) {
+            if (this.layers[j].getProperties()["id"] == layer.id) {
               indexToRemove = j;
               break;
             }
@@ -852,6 +924,12 @@ export class MapComponent implements OnInit {
         }
         if ((configuration.position != undefined) && (configuration.position != null) &&
             (configuration.position >= 0)) {
+          if (layer.getProperties() && layer.getProperties()["loading"]) {
+            layer.setProperties({loading: false});
+            if (this.loadingControl) {
+              this.loadingControl.addLoaded();
+            }
+          }
           this.map.removeLayer(layer);
           var baseIndex = this.baseLayers?this.baseLayers.length:0;
           this.map.getLayers().insertAt(configuration.position+baseIndex, layer);
@@ -870,6 +948,7 @@ export class MapComponent implements OnInit {
   baseLayerGroups;
   selectBaseLayerControl;
   situationMapLayers;
+  getFeatureInfoControl;
   configureBaseLayers(groups:Array<LayerGroup>) {
     var groupNames;
     if ((groups != null) && (groups != undefined)) {
@@ -965,9 +1044,18 @@ export class MapComponent implements OnInit {
     this.parseLayers(this.baseLayers, layersArray);
     if (this.baseLayers && this.map) {
       var index = 0;
+      var layer;
+      var source;
+      var getFeatureInfoControl_ = this.getFeatureInfoControl;
       //Add the layers at the beginning of the map layers array
       for (var i = 0, iLen:number = this.baseLayers.length; i < iLen; i++) {
-        this.map.getLayers().insertAt(index++, this.baseLayers[i]);
+        layer = this.baseLayers[i];
+        this.map.getLayers().insertAt(index++, layer);
+        if (getFeatureInfoControl_ != null) {
+          layer.on('change:visible', function(){
+            getFeatureInfoControl_.updateVisibleLayers(layer.getVisible());
+          });
+        }
       }
       if (this.selectBaseLayerControl) {
         this.selectBaseLayerControl.onDataChanged({
@@ -983,7 +1071,28 @@ export class MapComponent implements OnInit {
         //If there is no situation map configuration loaded then reload the overview with the new base layers
         this.updateOverviewMap();
       }
+
+      if (this.getFeatureInfoControl != null) {
+        this.getFeatureInfoControl.onDataChanged({
+          layers: this.getQueryableLayers()
+        });
+      }
     }
+  }
+
+  getQueryableLayers() {
+    var queryableLayers = null;
+    if (this.getMap() && this.getMap().getLayers() != null) {
+      this.getMap().getLayers().forEach(function (layer, index, layers) {
+        if (layer.getProperties()["queryable"]) {
+          if (queryableLayers == null) {
+            queryableLayers = [];
+          }
+          queryableLayers.push(layer);
+        }
+      });
+    }
+    return queryableLayers;
   }
 
   updateOverviewMap() {
@@ -1176,8 +1285,6 @@ export class MapComponent implements OnInit {
       return;
     }
 
-    this.initializeMapConfigurationManager();
-
     // Initialize projections
     this.initProj4js();
 
@@ -1300,6 +1407,26 @@ export class MapComponent implements OnInit {
     ////////////////////////////////
     // Custom control declaration //
     ////////////////////////////////
+
+    var isEventSupported = (function(){
+      var TAGNAMES = {
+        'select':'input','change':'input',
+        'submit':'form','reset':'form',
+        'error':'img','load':'img','abort':'img'
+      }
+      function isEventSupported(eventName) {
+        var el = document.createElement(TAGNAMES[eventName] || 'div');
+        eventName = 'on' + eventName;
+        var isSupported = (eventName in el);
+        if (!isSupported) {
+          el.setAttribute(eventName, 'return;');
+          isSupported = typeof el[eventName] == 'function';
+        }
+        el = null;
+        return isSupported;
+      }
+      return isEventSupported;
+    })();
 
     //Custom Loading control
     class LoadingControl extends ol.control.Control{
@@ -1541,12 +1668,15 @@ export class MapComponent implements OnInit {
         icon.innerHTML="layers";
         controlBtn.appendChild(icon);
         element.appendChild(controlBtn);
-        controlBtn.addEventListener('click', function() {  
-              this_.showSelectionDialog();
-            }, false);
-        controlBtn.addEventListener('touchstart', function() {  
-              this_.showSelectionDialog();
-            }, false);
+        if (isEventSupported('touchstart')) {
+          controlBtn.addEventListener('touchstart', function() {  
+                this_.showSelectionDialog();
+              }, false);
+        } else {
+          controlBtn.addEventListener('click', function() {  
+                this_.showSelectionDialog();
+              }, false);
+        }
 
         this.button = controlBtn;
 
@@ -1721,8 +1851,11 @@ export class MapComponent implements OnInit {
             setGeolocationActive(true);
           }
         };
-        button.addEventListener('click', requestLocation, false);
-        button.addEventListener('touchstart', requestLocation, false);
+        if (isEventSupported('touchstart')) {
+          button.addEventListener('touchstart', requestLocation, false);
+        } else {
+          button.addEventListener('click', requestLocation, false);
+        }
       }
 
       updateTooltip(title) {
@@ -1921,26 +2054,6 @@ export class MapComponent implements OnInit {
         var icon = document.createElement('i');
         icon.className="material-icons";
         icon.innerHTML="straighten";
-
-        var isEventSupported = (function(){
-          var TAGNAMES = {
-            'select':'input','change':'input',
-            'submit':'form','reset':'form',
-            'error':'img','load':'img','abort':'img'
-          }
-          function isEventSupported(eventName) {
-            var el = document.createElement(TAGNAMES[eventName] || 'div');
-            eventName = 'on' + eventName;
-            var isSupported = (eventName in el);
-            if (!isSupported) {
-              el.setAttribute(eventName, 'return;');
-              isSupported = typeof el[eventName] == 'function';
-            }
-            el = null;
-            return isSupported;
-          }
-          return isEventSupported;
-        })();
 
         this.buttonLength = document.createElement('button');
         this.buttonLength.setAttribute("type", "button");
@@ -2688,6 +2801,281 @@ export class MapComponent implements OnInit {
       'yd': 36
     };
 
+    //Custom GetFeatureInfo control
+    class GetFeatureInfoControl extends ol.control.Control{
+
+      dialog: MatDialog;
+      controlDialogRef: MatDialogRef<FeatureInfoDialogComponent>;
+      toolContainer;
+
+      button;
+      active:boolean;
+
+      layers;
+      listener;
+      visibleLayers;
+      defaultInfoFormat;
+      disabled;
+
+      setDialog(dialog: MatDialog) {
+        this.dialog = dialog;
+      }
+
+      onDataChanged(data) {
+        //Check if there are queryable layers available
+        this.visibleLayers = 0;
+        var this_ = this;
+        if (data && data.layers && data.layers.length) {
+          this.layers = data.layers;
+          this.showTool();
+          //Check if there are queryable layers visible
+          data.layers.forEach(function(layer, index, layers){
+            if (layer.getVisible()) {
+              this_.visibleLayers++;
+            }
+          });
+          if (this.visibleLayers > 0) {
+            this.enableTool();
+          } else {
+            this.disableTool();
+          }
+        } else {
+          this.layers = [];
+          //hide tool
+          this.hideTool();
+        }
+      }
+
+      updateVisibleLayers(showLayer) {
+        this.visibleLayers = this.visibleLayers + (showLayer?1:-1);
+        if (this.visibleLayers < 0) {
+          this.visibleLayers = 0;
+        }
+      }
+
+      showToolDialog(location) {
+        if (!location) {
+          // No point or area info
+          return;
+        }
+        if ((this.dialog != null) && (this.dialog != undefined)) {
+          const dialogConfig = new MatDialogConfig();
+
+          dialogConfig.disableClose = true;
+          dialogConfig.autoFocus = true;
+          dialogConfig.hasBackdrop = true;
+
+          var data = new FeatureInfoDialogData();
+
+          data.requests = this.getQueryRequests(location);
+
+          dialogConfig.data = data;
+
+          var this_ = this;
+
+          this.controlDialogRef = this.dialog.open(FeatureInfoDialogComponent, dialogConfig);
+          this.controlDialogRef.afterClosed().subscribe(
+            data => {
+                try {
+                  // Do something??
+                } catch (e) {
+                  //
+                }
+            }
+          );
+        }
+      }
+      
+      createGetFeatureInfoUrl(layer:ol.layer.Layer, location) {
+        //Example
+        //http://sitmun.diba.cat/arcgis/services/PUBLIC/DTE50/MapServer/WMSServer?SERVICE=WMS&REQUEST=GetFeatureInfo&LAYERS=DTE50_MUN&QUERY_LAYERS=DTE50_MUN&EXCEPTIONS=INIMAGE&VERSION=1.3.0&TRANSPARENT=true&FORMAT=image/png8&STYLES=&CRS=EPSG:25831&INFO_FORMAT=text/xml&WIDTH=1355&HEIGHT=753&BBOX=297073.421925,4554115.600155,548030.578075,4693577.399845&I=438&J=286
+        var source = layer.getSource();
+        var params = {};
+        var format = layer.getProperties()["infoFormat"];
+        params["INFO_FORMAT"] = format?format:this.defaultInfoFormat;
+        if (source instanceof ol.source.TileWMS) {
+          var tileWmsSource:ol.source.TileWMS = source;
+          return tileWmsSource.getGetFeatureInfoUrl(
+            location, 
+            this.getMap().getView().getResolution(),
+            this.getMap().getView().getProjection(),
+            params
+          );
+        } else if (source instanceof ol.source.ImageWMS) {
+          var imageWmsSource:ol.source.ImageWMS = source;
+          return imageWmsSource.getGetFeatureInfoUrl(
+            location, 
+            this.getMap().getView().getResolution(),
+            this.getMap().getView().getProjection(),
+            params);
+        }
+		    return null;
+      }
+      
+      getQueryRequests(location):Array<FeatureInfoRequestData> {
+        var requests = new Array<FeatureInfoRequestData>();
+        //Crear peticiones get feature info para cada capa visible
+        var this_ = this;
+        this.layers.forEach(function(layer, index, layers) {
+          if (layer.getVisible()) {
+            var url = this_.createGetFeatureInfoUrl(layer, location);
+            if (url) {
+              var request = new FeatureInfoRequestData();
+              request.title = layer.getProperties()["title"];
+              request.request = url;
+              var format = layer.getProperties()["infoFormat"];
+              request.type = format?format:this_.defaultInfoFormat;
+              requests.push(request);
+            }
+          }
+        });
+        return requests;
+      }
+
+      toggleActivate() {
+        if (!this.disabled) {
+          if (!this.active) {
+            this.activate()
+          } else {
+            this.deactivate();
+          };
+        }
+      }
+      
+      activate() {
+        if (this.disabled) {
+          return;
+        }
+        if (!this.active) {
+          if (this.button) {
+            if (this.button.className.indexOf(" tool-active") == -1) {
+              this.button.className += " tool-active";
+            }
+          }
+          this.active = true;
+          //register map clicks
+          var this_ = this;
+          this.listener = function(evt:ol.MapBrowserEvent) {
+            this_.showToolDialog(this_.getMap().getCoordinateFromPixel(evt.pixel));
+          };
+          this.getMap().on("click", this.listener);
+        }
+      }
+      
+      deactivate() {
+        if (this.active) {
+          if (this.button) {
+            if (this.button.className.indexOf(" tool-active") != -1) {
+              this.button.className = this.button.className.replace(" tool-active", "");
+            }
+          }
+          this.active = false;
+          //unregister map clicks
+          if (this.listener) {
+            this.getMap().un("click", this.listener);
+          }
+          this.listener = null;
+        }
+      }
+
+      constructor(opt_options) {  
+        var options = opt_options || {};
+
+        var element = document.createElement("DIV");
+        element.className = "ol-get-feature-info ol-unselectable ol-control"
+        //initially hidden
+        element.style.display = "none";
+        element.style.visibility = "hidden";
+
+        super({
+          element: element,
+          target: options.target
+        });
+
+        if (options.defaultInfoFormat) {
+          this.defaultInfoFormat = options.defaultInfoFormat;
+        } else {
+          this.defaultInfoFormat = "text/xml";
+        }
+
+        var this_ = this;
+
+        var controlBtn = document.createElement("BUTTON"); 
+        if ((options.tooltip != null) && (options.tooltip != null)) {
+          controlBtn.title = options.tooltip;
+        }
+
+        controlBtn.setAttribute("type", "button");
+        controlBtn.id="get-feature-info-btn";
+        controlBtn.className = "mat-raised-button";
+        var icon = document.createElement('i');
+        icon.className="material-icons";
+        icon.innerHTML="perm_device_information";
+        controlBtn.appendChild(icon);
+        element.appendChild(controlBtn);
+
+        if (isEventSupported('touchstart')) {
+          controlBtn.addEventListener('touchstart', function() {
+                this_.toggleActivate();
+            }, false);
+        } else {
+            controlBtn.addEventListener('click', function() {
+                this_.toggleActivate();
+            }, false);
+        }
+
+        this.button = controlBtn;
+
+        this.toolContainer = element;            
+
+        this.onDataChanged({
+          layers: options.layers
+        });
+      }
+      
+      enableTool() {
+        this.disabled = false;
+        if (this.button) {
+          if (this.button.className.indexOf(" tool-disabled") != -1) {
+            this.button.className = this.button.className.replace(" tool-disabled", "");
+          }
+        }
+      }
+      
+      disableTool() {
+        this.disabled = true;
+		    this.deactivate();
+        if (this.button) {
+          if (this.button.className.indexOf(" tool-disabled") == -1) {
+            this.button.className = this.button.className += " tool-disabled";
+          }
+        }
+      }
+
+      hideTool() {
+		    this.deactivate();
+        if (this.toolContainer) {
+          this.toolContainer.style.display = "none";
+          this.toolContainer.style.visibility = "hidden";
+          //TODO FIXME Notify control hidden
+        }
+      }
+
+      showTool() {
+        if (this.toolContainer) {
+          this.toolContainer.style.display = "";
+          this.toolContainer.style.visibility = "visible";          
+          //TODO FIXME Notify control shown
+        }
+      }
+
+      updateTooltip(tooltip) {
+        if (this.button) {
+          this.button.title = tooltip;
+        }
+      }
+    }
+
     ///////////////////////
     // Map configuration //
     ///////////////////////
@@ -2825,6 +3213,15 @@ export class MapComponent implements OnInit {
     this.selectBaseLayerControl.setDialog(this.dialog);
     this.map.addControl(this.selectBaseLayerControl);
 
+    // Base layer selection control
+    this.getFeatureInfoControl = new GetFeatureInfoControl({
+      layers: this.getQueryableLayers(),
+      tooltip: this.messages["getFeatureInfoTooltip"],
+      defaultInfoFormat: this.defaultMapInfoFormat
+    });
+    this.getFeatureInfoControl.setDialog(this.featureInfoDialog);
+    this.map.addControl(this.getFeatureInfoControl);
+
     this.loadingControl = new LoadingControl({
       progress: false
     });
@@ -2881,10 +3278,18 @@ export class MapComponent implements OnInit {
     });
     this.map.addControl(this.measurementToolControl);
 
+    //Register to receive map data updates
+    this.initializeMapConfigurationManager();
+
     // Load default values
     if (this._loadDefaults) {
       this.loadDefaultMapConfiguration();
     }
+
+    var mapStatus = new MapComponentStatus();
+    mapStatus.loaded = true;
+    //Notify the map has been initialized and is ready 
+    this.mapConfigurationManagerService.setMapComponentStatus(mapStatus);
   }
 
   public static normalizeScale(scale) {
@@ -3033,10 +3438,18 @@ export class MapComponent implements OnInit {
     500
   ];
   setDefaultMapScales(scales) {
-    this.defaultMapResolutions = scales;
+    this.defaultMapScales = scales;
   }
   getDefaultMapScales() {
     return this.defaultMapScales;
+  }
+
+  defaultMapInfoFormat:string = "text/xml";
+  setDefaultMapInfoFormat(format:string) {
+    this.defaultMapInfoFormat = format;
+  }
+  getDefaultMapInfoFormat():string {
+    return this.defaultMapInfoFormat;
   }
 
   getDefaultMapConfiguration() {
@@ -3081,6 +3494,7 @@ export class MapComponent implements OnInit {
 
     var layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 1;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
     layer["desc"] = "";
@@ -3100,6 +3514,7 @@ export class MapComponent implements OnInit {
 
     layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 1;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
     layer["desc"] = ""; 
@@ -3119,6 +3534,7 @@ export class MapComponent implements OnInit {
     
     layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 1;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
     layer["desc"] = ""; 
@@ -3145,6 +3561,7 @@ export class MapComponent implements OnInit {
 
     layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 1;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
     layer["desc"] = ""; 
@@ -3166,6 +3583,7 @@ export class MapComponent implements OnInit {
 
     layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 0.7;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
     layer["desc"] = ""; 
@@ -3185,6 +3603,7 @@ export class MapComponent implements OnInit {
 
     layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 1;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
     layer["desc"] = ""; 
@@ -3211,6 +3630,7 @@ export class MapComponent implements OnInit {
 
     layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 1;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
     layer["desc"] = ""; 
@@ -3232,6 +3652,7 @@ export class MapComponent implements OnInit {
 
     layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 0.7;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
     layer["desc"] = ""; 
@@ -3251,6 +3672,7 @@ export class MapComponent implements OnInit {
 
     layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 0.85;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
     layer["desc"] = ""; 
@@ -3270,6 +3692,7 @@ export class MapComponent implements OnInit {
 
     layer = new Layer();
     layer["visibility"] = false;
+    layer["queryable"] = false;
     layer["opacity"] = 1;
     layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
     layer["desc"] = ""; 

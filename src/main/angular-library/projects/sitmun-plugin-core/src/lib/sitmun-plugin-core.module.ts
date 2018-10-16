@@ -53,6 +53,7 @@ import {UserConfigurationListComponent,UserConfigurationEditDialog} from './user
 import { MapComponent } from './map/map.component';
 import { MapConfigurationManagerService } from './map/map-configuration-manager.service';
 import { LayerSelectionDialogComponent } from './map/layer-selection-dialog.component';
+import { FeatureInfoDialogComponent, MessageDialogComponent } from './map/feature-info-dialog.component';
 
 import { MatPaginationIntlService } from './mat-pagination-intl.service';
 
@@ -158,6 +159,8 @@ export function createMatPaginationService(translate: TranslateService){
         UserPositionEditDialog,
         UserConfigurationEditDialog,
         LayerSelectionDialogComponent,
+        FeatureInfoDialogComponent,
+        MessageDialogComponent,
         MapComponent,
         LoginComponent,
         HasAnyAuthorityDirective,
@@ -250,6 +253,8 @@ export function createMatPaginationService(translate: TranslateService){
         UserPositionEditDialog,
         UserConfigurationEditDialog,
         LayerSelectionDialogComponent,
+        FeatureInfoDialogComponent,
+        MessageDialogComponent,
         TaskAvailabilityEditDialog,
         TaskParameterEditDialog,
         ServiceParameterEditDialog,

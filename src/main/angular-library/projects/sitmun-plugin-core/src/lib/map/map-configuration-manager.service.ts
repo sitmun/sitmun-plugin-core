@@ -65,6 +65,10 @@ export class MapOptionsConfiguration {
   parameters?: Array<OptionalParameter>
 }
 
+export class MapComponentStatus {
+  loaded: boolean = false;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -83,6 +87,8 @@ export class MapConfigurationManagerService {
 
   private situationMapConfigurationSubject = new BehaviorSubject([]);
   private mapOptionsConfigurationSubject = new BehaviorSubject([]);
+
+  private mapComponentStatusSubject = new BehaviorSubject([]);
 
   constructor() { 
    //
@@ -258,6 +264,15 @@ export class MapConfigurationManagerService {
   loadMapOptionsConfiguration(configuration:MapOptionsConfiguration) {
     // Send the new values so that all subscribers are updated
     this.mapOptionsConfigurationSubject.next([configuration]);
+  }
+
+  getMapComponentStatusListener(): Observable<MapComponentStatus[]> {
+    return this.mapComponentStatusSubject.asObservable();
+  }
+
+  setMapComponentStatus(status:MapComponentStatus) {
+    //Notify the map component status
+    this.mapComponentStatusSubject.next([status]);
   }
 
 }
