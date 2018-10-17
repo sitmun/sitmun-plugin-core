@@ -81,7 +81,6 @@ export class TreeNodeListComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
             this.loadTreeNodes();
 
         });
@@ -96,7 +95,6 @@ export class TreeNodeListComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
             this.loadTreeNodes();
         });
     }
@@ -122,7 +120,7 @@ export class TreeNodeEditDialog implements OnInit {
     isGroup:boolean = false;
 
     cartographies: Cartography[] = new Array<Cartography>();
-    parentNodes: TreeNode[] = new Array<TreeNode>();
+    parentNodes: TreeNode[];
     constructor(
         private treeService: TreeService,
         private treeNodeService: TreeNodeService,
@@ -131,30 +129,24 @@ export class TreeNodeEditDialog implements OnInit {
         @Inject(MAT_DIALOG_DATA) public treeNode: TreeNode) {
     }
 
-    //TODO let cartography be null
-
     ngOnInit() {
         this.getAllCartographies();
         this.getAllParentNodes();
         if (this.treeNode._links) {
-            console.log(">> Resolve node relations");
             this.treeNode.getRelation(Tree, 'tree').subscribe(
                 (tree: Tree) => this.treeNode.tree = tree,
                 error => this.treeNode.tree = new Tree());
             var this_ = this;
-            this.resolveCartography(this.treeNode, function() {
+            this.treeNode.getRelation(Cartography, 'cartography').finally(function(){
                 this_.isGroup = isNullOrUndefined(this_.treeNode.cartography);
-            });
+            }).subscribe(
+                (cartography: Cartography) => this.treeNode.cartography = cartography,
+                error => this.treeNode.cartography = null);
+            this.treeNode.getRelation(TreeNode, 'parent').subscribe(
+                (parent: TreeNode) => this.treeNode.parent = parent,
+                error => this.treeNode.parent = null);
         }
 
-    }
-
-    resolveCartography(node: TreeNode, callback) {
-        callback = isNullOrUndefined(callback)?function(){}:callback;
-        node.getRelation(Cartography, 'cartography').finally(callback).subscribe(
-            (cartography: Cartography) => node.cartography = cartography,
-            //error => this.treeNode.cartography = new Cartography());
-            error => node.cartography = null);
     }
 
     save() {
@@ -177,33 +169,32 @@ export class TreeNodeEditDialog implements OnInit {
     }
 
     getAllParentNodes() {
+        this.parentNodes = new Array<TreeNode>();
         this.treeNodeService.getAll()
             .subscribe((treeNodes: TreeNode[]) => {
                 if (treeNodes && treeNodes.length) {
                     var treeNode;
                     //Get the parent nodes only
                     var this_ = this;
-                    for (var i = 0, iLen = treeNodes.length; i < iLen; i++) {
-                        treeNode = treeNodes[i];
-                        this.resolveCartography(treeNode, function() {
-                            console.log("Parent node found: " + treeNode.name);
-                            this_.parentNodes.push(treeNode);
-                        });
-                    }
+                    treeNodes.forEach(function(node, index, nodes){
+                        node.getRelation(Cartography, 'cartography').finally(function(){
+                            if ((node.cartography == null) && !this_.compareResource(node, this_.treeNode)) {
+                                this_.parentNodes.push(node);
+                            }
+                        }).subscribe(
+                            (cartography: Cartography) => node.cartography = cartography,
+                            error => node.cartography = null);
+                    });
                 }
             });
     }
 
     isGroupChanged($event){ 
-        console.log($event);
-
         if ($event.checked) {
             //Is group reset information
             this.treeNode.active = false;
             this.treeNode.cartography = null;
         }
-
-        //$event.source.toggle();
         //MatCheckboxChange {checked,MatCheckbox}
     }
 
