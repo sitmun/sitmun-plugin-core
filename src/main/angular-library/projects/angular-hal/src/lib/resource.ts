@@ -79,7 +79,7 @@ export abstract class Resource {
     public addRelation<T extends Resource>(relation: string, resource: T): Observable<any> {
         if (!isNullOrUndefined(this._links) && !isNullOrUndefined(this._links[relation])) {
             let header = ResourceHelper.headers.append('Content-Type', 'text/uri-list');
-            return ResourceHelper.getHttp().put(ResourceHelper.getProxy(this._links[relation].href), resource._links.self.href, {headers: header});
+            return ResourceHelper.getHttp().post(ResourceHelper.getProxy(this._links[relation].href), resource._links.self.href, {headers: header});
         } else {
             return observableThrowError('no relation found');
         }
@@ -104,6 +104,19 @@ export abstract class Resource {
             return observableThrowError('no relation found');
         }
     }
+    
+    
+        // Bind the given resource to this resource by the given relation
+    public substituteAllRelation<T extends Resource>(relation: string, resources: Resource[]): Observable<any> {
+        if (!isNullOrUndefined(this._links) && !isNullOrUndefined(this._links[relation])) {
+            let header = ResourceHelper.headers.append('Content-Type', 'text/uri-list');
+            return ResourceHelper.getHttp().put(ResourceHelper.getProxy(this._links[relation].href), resources.map((resource) => resource._links.self.href), {headers: header});
+        } else {
+            return observableThrowError('no relation found');
+        }
+    }
+
+
 
     // Unbind the resource with the given relation from this resource
     public deleteRelation<T extends Resource>(relation: string, resource: T): Observable<any> {
@@ -123,7 +136,7 @@ export abstract class Resource {
     
         // Unbind the resource with the given relation from this resource
     public deleteAllRelation<T extends Resource>(relation: string): Observable<any> {
-        return ResourceHelper.getHttp().delete(ResourceHelper.getProxy(this._links[relation].href  ), {headers: ResourceHelper.headers});
+        return ResourceHelper.getHttp().delete(ResourceHelper.getProxy(this._links[relation].href ), {headers: ResourceHelper.headers});
         
     }
 

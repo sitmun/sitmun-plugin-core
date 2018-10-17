@@ -18,7 +18,7 @@ import { TaskAvailability} from './task-availability.model';
 import { TaskAvailabilityService } from './task-availability.service';
 import { Task } from './task.model';
 import {TaskService} from './task.service';
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import { map, concatAll } from 'rxjs/operators';
@@ -59,6 +59,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
         private taskUIService: TaskUIService,
         private taskGroupService: TaskGroupService,
         private taskParameterService: TaskParameterService,
+        private changeDetectorRefs: ChangeDetectorRef,
         private taskAvailabilityService: TaskAvailabilityService) {
     }
 
@@ -103,6 +104,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
                                             this.selection.select(row)
                                     }
                                 });
+                                this.changeDetectorRefs.detectChanges();
 
                             },
                             error => this.task.roles = new Array<Role>());
@@ -241,13 +243,22 @@ export class TaskEditComponent implements OnInit, OnDestroy {
 
         } else {
             
-            let taskRoles = this.task.roles;
             
-            forkJoin(taskRoles.map(role => this.task.deleteRelation('roles', role))).subscribe(result => {
-                 forkJoin(this.selection.selected.map(role => this.task.addRelation('roles', role))).subscribe(result => {
-                
-                }
-                , error => console.error(error));
+            
+            let rolesUpdate = null;
+            let taskRoles = this.task.roles;
+            if (taskRoles)
+                rolesUpdate = concat(forkJoin(taskRoles.map(role => this.task.deleteRelation('roles', role))));
+            if (this.selection.selected) {
+                if (rolesUpdate != null)
+                    rolesUpdate = concat(rolesUpdate, forkJoin(this.selection.selected.map(role => this.task.addRelation('roles', role))));
+                else
+                    rolesUpdate = concat(forkJoin(this.selection.selected.map(role => this.task.addRelation('roles', role))));
+            }
+
+
+            rolesUpdate.subscribe(result => {
+
             }
                 , error => console.error(error));
                 

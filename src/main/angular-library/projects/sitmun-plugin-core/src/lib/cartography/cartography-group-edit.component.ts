@@ -7,7 +7,7 @@ import { RoleService } from '../role/role.service';
 
 import { CartographyGroup } from './cartography-group.model';
 import {CartographyGroupService} from './cartography-group.service';
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription, Observable, forkJoin, merge, concat, pipe, from} from 'rxjs';
@@ -43,9 +43,8 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
         private router: Router,
         private roleService: RoleService,
         private cartographyGroupService: CartographyGroupService,
+        private changeDetectorRefs: ChangeDetectorRef,
         private cartographyService: CartographyService) {
-        this.getAllCartographies();
-        this.getAllRoles();
 
     }
 
@@ -59,31 +58,41 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
                 this.cartographyGroupService.get(id).subscribe((cartographyGroup: any) => {
                     if (cartographyGroup) {
                         this.cartographyGroup = cartographyGroup;
-                        this.cartographyGroup.getRelationArray(Cartography, 'members').subscribe(
-                            (members: Cartography[]) => {
-                                this.cartographyGroup.members = members;
-                                this.cartographyDataSource.data.forEach(row => {
-                                    for (let member of this.cartographyGroup.members) {
-                                        if (row._links.self.href == member._links.self.href)
-                                            this.cartographySelection.select(row);
-                                    }
-                                });
-                            },
-                            error => this.cartographyGroup.members = new Array<Cartography>());
+                        this.cartographyService.getAll()
+                            .subscribe((cartographies: Cartography[]) => {
+                                this.cartographies = cartographies;
+                                this.cartographyDataSource = new MatTableDataSource<Cartography>(this.cartographies);
+                                this.cartographyGroup.getRelationArray(Cartography, 'members').subscribe(
+                                    (members: Cartography[]) => {
+                                        this.cartographyGroup.members = members;
+                                        this.cartographyDataSource.data.forEach(row => {
+                                            for (let member of this.cartographyGroup.members) {
+                                                if (row._links.self.href == member._links.self.href)
+                                                    this.cartographySelection.select(row);
+                                            }
+                                        });
+                                        this.changeDetectorRefs.detectChanges();
+                                    },
+                                    error => this.cartographyGroup.members = new Array<Cartography>());
+                            });
+                        this.roleService.getAll()
+                            .subscribe((roles: Role[]) => {
+                                this.roles = roles;
+                                this.roleDataSource = new MatTableDataSource<Role>(this.roles);
+                                this.cartographyGroup.getRelationArray(Role, 'roles').subscribe(
+                                    (roles: Role[]) => {
+                                        this.cartographyGroup.roles = roles;
+                                        this.roleDataSource.data.forEach(row => {
+                                            for (let member of this.cartographyGroup.roles) {
+                                                if (row._links.self.href == member._links.self.href)
+                                                    this.roleSelection.select(row);
+                                            }
+                                        });
+                                        this.changeDetectorRefs.detectChanges();
 
-                        this.cartographyGroup.getRelationArray(Role, 'roles').subscribe(
-                            (roles: Role[]) => {
-                                this.cartographyGroup.roles = roles;
-                                this.roleDataSource.data.forEach(row => {
-                                    for (let member of this.cartographyGroup.roles) {
-                                        if (row._links.self.href == member._links.self.href)
-                                            this.roleSelection.select(row);
-                                    }
-                                });
-
-                            },
-                            error => this.cartographyGroup.roles = new Array<Role>());
-
+                                    },
+                                    error => this.cartographyGroup.roles = new Array<Role>());
+                            });
 
 
                     } else {
@@ -91,6 +100,10 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
                         this.gotoList();
                     }
                 });
+            } else {
+                this.getAllCartographies();
+                this.getAllRoles();
+
             }
         });
     }
@@ -134,7 +147,7 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
             this.cartographyGroup.roles = this.cartographyGroup.roles.map(function(role) {
                 return role._links.self.href;
             });
-            
+
             if (this.cartographySelection.selected != null) {
                 this.cartographyGroup.members = this.cartographySelection.selected;
             }
@@ -152,27 +165,40 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
 
         } else {
 
+
+            let rolesUpdate = null;
             let cartographyGroupRoles = this.cartographyGroup.roles;
-            
+            if (cartographyGroupRoles)
+                rolesUpdate = concat(forkJoin(cartographyGroupRoles.map(role => this.cartographyGroup.deleteRelation('roles', role))));
+            if (this.roleSelection.selected) {
+                if (rolesUpdate != null)
+                    rolesUpdate = concat(rolesUpdate, forkJoin(this.roleSelection.selected.map(role => this.cartographyGroup.addRelation('roles', role))));
+                else
+                    rolesUpdate = concat(forkJoin(this.roleSelection.selected.map(role => this.cartographyGroup.addRelation('roles', role))));
+            }
+
+
+            rolesUpdate.subscribe(result => {
+
+            }
+                , error => console.error(error));
+
+            let membersUpdate = null;
             let cartographyGroupMembers = this.cartographyGroup.members;
+            if (cartographyGroupMembers)
+                membersUpdate = concat(forkJoin(cartographyGroupMembers.map(member => this.cartographyGroup.deleteRelation('members', member))));
+            if (this.cartographySelection.selected) {
+                if (membersUpdate != null)
+                    membersUpdate = concat(membersUpdate, forkJoin(this.cartographySelection.selected.map(member => this.cartographyGroup.addRelation('members', member))));
+                else
+                    membersUpdate = concat(forkJoin(this.cartographySelection.selected.map(member => this.cartographyGroup.addRelation('members', member))));
+            }
 
-            forkJoin(cartographyGroupRoles.map(role => this.cartographyGroup.deleteRelation('roles', role))).subscribe(result => {
-                            }
+
+            membersUpdate.subscribe(result => {
+
+            }
                 , error => console.error(error));
-            forkJoin(this.roleSelection.selected.map(role => this.cartographyGroup.addRelation('roles', role))).subscribe(result => {
-
-                }
-                    , error => console.error(error));
-
-            forkJoin(cartographyGroupMembers.map(member => this.cartographyGroup.deleteRelation('members', member))).subscribe(result => {
-                            }
-                , error => console.error(error));
-            forkJoin(this.cartographySelection.selected.map(member => this.cartographyGroup.addRelation('members', member))).subscribe(result => {
-
-                }
-                    , error => console.error(error));
-            
-
             delete this.cartographyGroup.roles;
             delete this.cartographyGroup.members;
 

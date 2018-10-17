@@ -4,7 +4,7 @@ import { TerritoryType } from './territory-type.model';
 import { TerritoryTypeService } from './territory-type.service';
 import { Territory } from './territory.model';
 import {TerritoryService} from './territory.service';
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription, Observable, forkJoin, merge, concat, pipe, from} from 'rxjs';
@@ -35,6 +35,7 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
     constructor(private route: ActivatedRoute,
         private router: Router,
         private territoryService: TerritoryService,
+        private changeDetectorRefs: ChangeDetectorRef,
         private territoryTypeService: TerritoryTypeService) {
     }
 
@@ -43,7 +44,7 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
             const id = params['id'];
             this.territory.type = new TerritoryType();
             this.getAllTerritoryTypes();
-            this.getAllTerritories();
+
 
 
             if (id) {
@@ -56,21 +57,26 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
                             (tpe: TerritoryType) => this.territory.type = tpe,
                             error => this.territory.type = new TerritoryType());
                         //
-                        this.territory.getRelationArray(Territory, 'members').subscribe(
-                            (members: Territory[]) => {
+                        this.territoryService.getAll()
+                            .subscribe((territories: Territory[]) => {
+                                this.territories = territories;
+                                this.dataSource = new MatTableDataSource<Territory>(this.territories);
+                                this.territory.getRelationArray(Territory, 'members').subscribe(
+                                    (members: Territory[]) => {
 
-                                this.territory.members = members;
-                                this.dataSource.data.forEach(row => {
-                                    for (let member of this.territory.members) {
-                                        if (row._links.self.href == member._links.self.href)
-                                            this.selection.select(row);
-                                    }
-                                });
+                                        this.territory.members = members;
+                                        this.dataSource.data.forEach(row => {
+                                            for (let member of this.territory.members) {
+                                                if (row._links.self.href == member._links.self.href)
+                                                    this.selection.select(row);
+                                            }
+                                        });
+                                        this.changeDetectorRefs.detectChanges();
 
-                            },
-                            error => this.territory.members = new Array<Territory>());
+                                    },
+                                    error => this.territory.members = new Array<Territory>());
 
-
+                            });
 
 
                     } else {
@@ -78,6 +84,8 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
                         this.gotoList();
                     }
                 });
+            } else {
+                this.getAllTerritories();
             }
         });
     }
@@ -129,12 +137,19 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
                 , error => console.error(error));
 
         } else {
+            let membersUpdate = null;
             let territoryMembers = this.territory.members;
-
-            forkJoin(territoryMembers.map(member => this.territory.deleteRelation('members', member))).subscribe(result => {
+            if (territoryMembers)
+                membersUpdate = concat(forkJoin(territoryMembers.map(member => this.territory.deleteRelation('members', member))));
+            if (this.selection.selected) {
+                if (membersUpdate != null)
+                    membersUpdate = concat(membersUpdate, forkJoin(this.selection.selected.map(member => this.territory.addRelation('members', member))));
+                else
+                    membersUpdate = concat(forkJoin(this.selection.selected.map(member => this.territory.addRelation('members', member))));
             }
-                , error => console.error(error));
-            forkJoin(this.selection.selected.map(member => this.territory.addRelation('members', member))).subscribe(result => {
+
+
+            membersUpdate.subscribe(result => {
 
             }
                 , error => console.error(error));

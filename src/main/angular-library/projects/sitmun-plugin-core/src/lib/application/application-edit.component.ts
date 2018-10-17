@@ -14,7 +14,7 @@ import { ApplicationBackground} from './application-background.model';
 import { ApplicationBackgroundService } from './application-background.service';
 import { Application } from './application.model';
 import {ApplicationService} from './application.service';
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription, Observable, forkJoin, merge, concat, pipe, from} from 'rxjs';
@@ -54,9 +54,10 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
         private applicationService: ApplicationService,
         private cartographyGroupService: CartographyGroupService,
         private applicationParameterService: ApplicationParameterService,
+        private changeDetectorRefs: ChangeDetectorRef,
         private applicationBackgroundService: ApplicationBackgroundService) {
-        this.getAllRoles();
-        this.getAllTrees();
+
+
         this.getAllCartographyGroups();
 
     }
@@ -64,11 +65,6 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             const id = params['id'];
-            //this.application.type._links.self.href = null;
-            //this.application.members = new Array<Application>();
-
-
-
             if (id) {
                 this.applicationService.get(id).subscribe((application: any) => {
                     if (application) {
@@ -76,45 +72,58 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
                         this.application.createdDate = new Date();
                         this.application.createdDate.setTime(Date.parse(application.createdDate));
 
-                        //ResourceHelper.resolveRelations(this.application);
-
                         this.application.getRelation(CartographyGroup, 'situationMap').subscribe(
                             (situationMap: CartographyGroup) => this.application.situationMap = situationMap,
                             error => this.application.situationMap = new CartographyGroup());
 
+                        this.roleService.getAll()
+                            .subscribe((roles: Role[]) => {
+                                this.roles = roles;
+                                this.roleDataSource = new MatTableDataSource<Role>(this.roles);
+                                this.application.getRelationArray(Role, 'availableRoles').subscribe(
+                                    (availableRoles: Role[]) => {
 
-                        this.application.getRelationArray(Role, 'availableRoles').subscribe(
-                            (availableRoles: Role[]) => {
+                                        this.application.availableRoles = availableRoles;
+                                        this.roleDataSource.data.forEach(row => {
+                                            for (let member of this.application.availableRoles) {
+                                                if (row._links.self.href == member._links.self.href)
+                                                    this.roleSelection.select(row);
+                                            }
+                                        });
+                                        this.changeDetectorRefs.detectChanges();
 
-                                this.application.availableRoles = availableRoles;
-                                this.roleDataSource.data.forEach(row => {
-                                    for (let member of this.application.availableRoles) {
-                                        if (row._links.self.href == member._links.self.href)
-                                            this.roleSelection.select(row)
-                                    }
-                                });
+                                    },
+                                    error => this.application.availableRoles = new Array<Role>());
+                            });
 
-                            },
-                            error => this.application.availableRoles = new Array<Role>());
+                        this.treeService.getAll()
+                            .subscribe((trees: Tree[]) => {
+                                this.trees = trees;
+                                this.treeDataSource = new MatTableDataSource<Tree>(this.trees);
+                                this.application.getRelationArray(Tree, 'trees').subscribe(
+                                    (trees: Tree[]) => {
 
-                        this.application.getRelationArray(Tree, 'trees').subscribe(
-                            (trees: Tree[]) => {
+                                        this.application.trees = trees;
+                                        this.treeDataSource.data.forEach(row => {
+                                            for (let member of this.application.trees) {
+                                                if (row._links.self.href == member._links.self.href) {
+                                                    this.treeSelection.select(row);
+                                                    this.changeDetectorRefs.detectChanges();
+                                                }
+                                            }
+                                        });
 
-                                this.application.trees = trees;
-                                this.treeDataSource.data.forEach(row => {
-                                    for (let member of this.application.trees) {
-                                        if (row._links.self.href == member._links.self.href)
-                                            this.treeSelection.select(row)
-                                    }
-                                });
-
-                            },
-                            error => this.application.availableRoles = new Array<Role>());
+                                    },
+                                    error => this.application.trees = new Array<Tree>());
+                            });
                     } else {
                         console.log(`application with id '${id}' not found, returning to list`);
                         this.gotoList();
                     }
                 });
+            } else {
+                this.getAllRoles();
+                this.getAllTrees();
             }
         });
     }
@@ -187,32 +196,52 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
                 , error => console.error(error));
 
         } else {
-
+            let rolesUpdate = null;
             let applicationRoles = this.application.availableRoles;
             if (applicationRoles)
-                forkJoin(applicationRoles.map(role => this.application.deleteRelation('availableRoles', role))).subscribe(result => {
-                }
-                    , error => console.error(error));
-            if (this.roleSelection.selected)
-                forkJoin(this.roleSelection.selected.map(role => this.application.addRelation('availableRoles', role))).subscribe(result => {
+                rolesUpdate = concat(forkJoin(applicationRoles.map(role => this.application.deleteRelation('availableRoles', role))));
+            if (this.roleSelection.selected) {
+                if (rolesUpdate != null)
+                    rolesUpdate = concat(rolesUpdate, forkJoin(this.roleSelection.selected.map(role => this.application.addRelation('availableRoles', role))));
+                else
+                    rolesUpdate = concat(forkJoin(this.roleSelection.selected.map(role => this.application.addRelation('availableRoles', role))));
+            }
 
-                }
-                    , error => console.error(error));
+
+            rolesUpdate.subscribe(result => {
+
+            }
+                , error => console.error(error));
 
             let applicationTrees = this.application.trees;
 
-            if (applicationTrees)
-
-                forkJoin(applicationTrees.map(tree => this.application.deleteRelation('trees', tree))).subscribe(result => {
-                }
-                    , error => console.error(error));
-            if (this.treeSelection.selected)
-                forkJoin(this.treeSelection.selected.map(tree => this.application.addRelation('trees', tree))).subscribe(result => {
-
-                }
-                    , error => console.error(error));
+            let treesUpdate = null;
 
 
+            if (applicationTrees) {
+                applicationTrees.forEach(tree => {
+                    if (treesUpdate != null)
+                        treesUpdate = concat(treesUpdate, this.application.deleteRelation('trees', tree));
+                    else
+                        treesUpdate = concat(this.application.deleteRelation('trees', tree));
+                });
+
+
+            }
+
+
+            if (this.treeSelection.selected) {
+                this.treeSelection.selected.forEach(tree => {
+                    if (treesUpdate != null)
+                        treesUpdate = concat(treesUpdate, this.application.addRelation('trees', tree));
+                    else
+                        treesUpdate = concat(this.application.addRelation('trees', tree));
+                });
+            }
+            treesUpdate.subscribe(result => {
+
+            }
+                , error => console.error(error));
 
             let update = concat(
                 this.application.deleteAllRelation('situationMap')

@@ -4,7 +4,7 @@
 
    <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef [translate]="'applicationBackground.background'"> Name</th>
-    <td mat-cell *matCellDef="let element"> {{element.background.name}} </td>
+    <td mat-cell *matCellDef="let element"> {{element.background?.name}} </td>
   </ng-container>
    <ng-container matColumnDef="value">
     <th mat-header-cell *matHeaderCellDef [translate]="'applicationBackground.order'"> Value</th>
