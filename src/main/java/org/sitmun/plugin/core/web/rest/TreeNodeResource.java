@@ -42,7 +42,7 @@ public class TreeNodeResource {
 		}
 		if (cartography != null) {
 			Resource<ResourceSupport> resource = new Resource<ResourceSupport>(cartography.toResource(links));
-			resource.add(linkTo(methodOn(TreeNodeResource.class).getTreeNodeCartography(id)).withSelfRel());
+			//resource.add(linkTo(methodOn(TreeNodeResource.class).getTreeNodeCartography(id)).withSelfRel());
 			return ResponseEntity.ok(resource);
 		} else {
 			return ResponseEntity.notFound().build();

@@ -50,13 +50,13 @@ public class ApplicationResource {
 	}
 
 	@GetMapping("/applications/{id}/backgrounds")
-	public ResponseEntity<?> getApplicationAvailableRoles(@PathVariable Long id) {
+	public ResponseEntity<?> getBackgrounds(@PathVariable Long id) {
 		List<ApplicationBackground> backgrounds = applicationRepository.findApplicationBackgrounds(id);
 
 		Resources<ResourceSupport> resources = new Resources<ResourceSupport>(
 				backgrounds.stream().map(background -> background.toResource(links)).collect(Collectors.toList()));
 
-		resources.add(linkTo(methodOn(ApplicationResource.class).getApplicationAvailableRoles(id)).withSelfRel());
+		resources.add(linkTo(methodOn(ApplicationResource.class).getBackgrounds(id)).withSelfRel());
 		return ResponseEntity.ok(resources);
 	}
 
@@ -72,7 +72,7 @@ public class ApplicationResource {
 
 			Resource<ResourceSupport> resource = new Resource<ResourceSupport>(situationMap.toResource(links));
 
-			resource.add(linkTo(methodOn(ApplicationResource.class).getApplicationSituationMap(id)).withSelfRel());
+			//resource.add(linkTo(methodOn(ApplicationResource.class).getApplicationSituationMap(id)).withSelfRel());
 			return ResponseEntity.ok(resource);
 		} else {
 			return ResponseEntity.notFound().build();
