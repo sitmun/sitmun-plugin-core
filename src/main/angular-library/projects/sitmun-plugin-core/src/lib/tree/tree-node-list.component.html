@@ -10,6 +10,10 @@
     <th mat-header-cell *matHeaderCellDef [translate]="'treeNode.ordee'"> ordee</th>
     <td mat-cell *matCellDef="let element"> {{element.ordee}} </td>
   </ng-container>
+  <ng-container matColumnDef="parent">
+    <th mat-header-cell *matHeaderCellDef [translate]="'treeNode.parent'"> parent</th>
+    <td mat-cell *matCellDef="let element"> {{getNodeParentName(element)}} </td>
+  </ng-container>
   <ng-container matColumnDef="actions" >
         <th mat-header-cell *matHeaderCellDef [translate]="'global.actions'"> Actions </th>
         <td mat-cell *matCellDef="let element">

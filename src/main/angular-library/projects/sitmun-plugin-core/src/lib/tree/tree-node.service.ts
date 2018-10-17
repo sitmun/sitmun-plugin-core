@@ -25,6 +25,7 @@ export class TreeNodeService extends RestService<TreeNode> {
     if (item._links!=null) {
       const itemTree = item.tree;
       const itemCartography = item.cartography;
+      const itemParent = item.parent;
         
       delete item.tree;
       delete item.cartography;
@@ -33,12 +34,17 @@ export class TreeNodeService extends RestService<TreeNode> {
       if (item.tree !=null){
           item.substituteRelation('tree',itemTree).subscribe(result => {
       
-      }, error => console.error(error));
+          }, error => console.error(error));
       }
       if (item.cartography !=null){
           item.substituteRelation('cartography',itemCartography).subscribe(result => {
       
-      }, error => console.error(error));
+          }, error => console.error(error));
+      }
+      if (item.parent !=null){
+          item.substituteRelation('parent',itemParent).subscribe(result => {
+      
+          }, error => console.error(error));
       }
       
     } else {

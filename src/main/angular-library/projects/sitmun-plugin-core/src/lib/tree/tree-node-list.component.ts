@@ -8,6 +8,7 @@ import { Cartography } from '../cartography/cartography.model';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { isNullOrUndefined } from 'util';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class TreeNodeListComponent implements OnInit {
     items: TreeNode[];
     _tree: Tree;
 
-    displayedColumns = ['name', 'ordee', 'actions'];
+    displayedColumns = ['name', 'ordee', 'parent', 'actions'];
     dataSource = null;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -42,14 +43,27 @@ export class TreeNodeListComponent implements OnInit {
         this._tree = tree;
         this.loadTreeNodes();
     }
-
-
     loadTreeNodes() {
         if (this._tree != null) {
             this._tree.getRelationArray(TreeNode, 'nodes').subscribe(
                 (items: TreeNode[]) => {
 
                     this.items = items;
+                    if (this.items != null) {
+                        var this_ = this;
+                        this.items.forEach(function(item, index, items){
+                            item.getRelation(TreeNode, "parent").subscribe(
+                                (node:TreeNode) => {
+                                    if (node != null) {
+                                        item.parent = node;
+                                    }
+                                },
+                                (error:any) => {
+                                    item.parent = null;
+                                }
+                            );
+                        });
+                    }
 
                     this.dataSource = new MatTableDataSource<TreeNode>(this.items);
                     this.dataSource.paginator = this.paginator;
@@ -94,7 +108,9 @@ export class TreeNodeListComponent implements OnInit {
 
     }
 
-
+    getNodeParentName(item: TreeNode) {
+        return (item.parent != null)?item.parent.name:"";
+    }
 }
 @Component({
     selector: 'sitmun-tree-node-dialog',
@@ -102,8 +118,11 @@ export class TreeNodeListComponent implements OnInit {
     styleUrls: ['./tree-node-edit.dialog.css']
 })
 export class TreeNodeEditDialog implements OnInit {
+    
+    isGroup:boolean = false;
 
     cartographies: Cartography[] = new Array<Cartography>();
+    parentNodes: TreeNode[] = new Array<TreeNode>();
     constructor(
         private treeService: TreeService,
         private treeNodeService: TreeNodeService,
@@ -112,20 +131,30 @@ export class TreeNodeEditDialog implements OnInit {
         @Inject(MAT_DIALOG_DATA) public treeNode: TreeNode) {
     }
 
+    //TODO let cartography be null
 
     ngOnInit() {
         this.getAllCartographies();
+        this.getAllParentNodes();
         if (this.treeNode._links) {
+            console.log(">> Resolve node relations");
             this.treeNode.getRelation(Tree, 'tree').subscribe(
                 (tree: Tree) => this.treeNode.tree = tree,
                 error => this.treeNode.tree = new Tree());
-
-            this.treeNode.getRelation(Cartography, 'cartography').subscribe(
-                (cartography: Cartography) => this.treeNode.cartography = cartography,
-                error => this.treeNode.cartography = new Cartography());
-
+            var this_ = this;
+            this.resolveCartography(this.treeNode, function() {
+                this_.isGroup = isNullOrUndefined(this_.treeNode.cartography);
+            });
         }
 
+    }
+
+    resolveCartography(node: TreeNode, callback) {
+        callback = isNullOrUndefined(callback)?function(){}:callback;
+        node.getRelation(Cartography, 'cartography').finally(callback).subscribe(
+            (cartography: Cartography) => node.cartography = cartography,
+            //error => this.treeNode.cartography = new Cartography());
+            error => node.cartography = null);
     }
 
     save() {
@@ -145,6 +174,37 @@ export class TreeNodeEditDialog implements OnInit {
                 this.cartographies = cartographies;
 
             });
+    }
+
+    getAllParentNodes() {
+        this.treeNodeService.getAll()
+            .subscribe((treeNodes: TreeNode[]) => {
+                if (treeNodes && treeNodes.length) {
+                    var treeNode;
+                    //Get the parent nodes only
+                    var this_ = this;
+                    for (var i = 0, iLen = treeNodes.length; i < iLen; i++) {
+                        treeNode = treeNodes[i];
+                        this.resolveCartography(treeNode, function() {
+                            console.log("Parent node found: " + treeNode.name);
+                            this_.parentNodes.push(treeNode);
+                        });
+                    }
+                }
+            });
+    }
+
+    isGroupChanged($event){ 
+        console.log($event);
+
+        if ($event.checked) {
+            //Is group reset information
+            this.treeNode.active = false;
+            this.treeNode.cartography = null;
+        }
+
+        //$event.source.toggle();
+        //MatCheckboxChange {checked,MatCheckbox}
     }
 
 }

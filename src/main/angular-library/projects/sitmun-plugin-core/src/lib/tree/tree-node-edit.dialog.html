@@ -4,30 +4,55 @@
    <mat-dialog-content>
     
      <div class="container">
-      <mat-form-field>
-        <input matInput placeholder="{{ 'treeNode.name'| translate}}" [(ngModel)]="treeNode.name"
+        <mat-form-field>
+          <input matInput placeholder="{{ 'treeNode.name'| translate}}" [(ngModel)]="treeNode.name"
                name="name" #name required>
-      </mat-form-field>
-      
-	<mat-checkbox [(ngModel)]="treeNode.active"
-               name="active" #active>{{ 'treeNode.active'| translate}}
-      </mat-checkbox>
-      
-      <mat-form-field> <mat-select
-			[compareWith]="compareResource" name="cartography"
-			placeholder="{{ 'treeNode.cartography'| translate }}"
-			[(ngModel)]="treeNode.cartography"> <mat-option
-			*ngFor="let cartography of cartographies" [value]="cartography">
-		{{cartography.name}} </mat-option> </mat-select> </mat-form-field>
-  
-      <mat-form-field>
-        <input matInput placeholder="{{ 'treeNode.tooltip'| translate}}" [(ngModel)]="treeNode.tooltip"
-               name="tooltip" #tooltip>
-      </mat-form-field>
-      <mat-form-field> <input matInput type="number"
-			placeholder="{{'treeNode.ordee' | translate}}" [(ngModel)]="treeNode.ordee"
-			name="ordee" #ordee> 
-		</mat-form-field>
+        </mat-form-field>
+
+        <mat-checkbox name="isGroup" [(ngModel)]="isGroup" 
+          (change)="isGroupChanged($event)">
+          {{ 'treeNode.isGroup'| translate}}
+        </mat-checkbox>
+     
+        <div *ngIf="!isGroup">
+          <mat-checkbox [(ngModel)]="treeNode.active"
+                  name="active" #active>{{ 'treeNode.active'| translate}}
+          </mat-checkbox>
+          
+          <mat-form-field> 
+            <mat-select
+              [compareWith]="compareResource" name="cartography"
+              placeholder="{{ 'treeNode.cartography'| translate }}"
+              [(ngModel)]="treeNode.cartography"> 
+              <mat-option
+                *ngFor="let cartography of cartographies" [value]="cartography">
+                {{cartography.name}} 
+              </mat-option> 
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field>
+            <mat-select
+              [compareWith]="compareResource" name="parentNode"
+              placeholder="{{ 'treeNode.parent'| translate }}"
+              [(ngModel)]="treeNode.parent"> 
+              <mat-option
+                *ngFor="let parentNode of parentNodes" [value]="parentNode">
+                {{parentNode.name}} 
+              </mat-option> 
+            </mat-select>
+          </mat-form-field>
+
+        <mat-form-field>
+          <input matInput placeholder="{{ 'treeNode.tooltip'| translate}}" [(ngModel)]="treeNode.tooltip"
+                name="tooltip" #tooltip>
+        </mat-form-field>
+        <mat-form-field> 
+          <input matInput type="number"
+            placeholder="{{'treeNode.ordee' | translate}}" [(ngModel)]="treeNode.ordee"
+            name="ordee" #ordee> 
+        </mat-form-field>
       
       </div>      
     
