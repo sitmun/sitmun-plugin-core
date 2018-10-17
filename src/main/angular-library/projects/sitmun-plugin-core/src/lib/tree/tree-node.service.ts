@@ -29,29 +29,32 @@ export class TreeNodeService extends RestService<TreeNode> {
         
       delete item.tree;
       delete item.cartography;
+      delete item.parent;
         
       result = this.http.put(item._links.self.href, item);
-      if (item.tree !=null){
+      if (itemTree !=null){
           item.substituteRelation('tree',itemTree).subscribe(result => {
       
           }, error => console.error(error));
       }
-      if (item.cartography !=null){
+      if (itemCartography !=null){
           item.substituteRelation('cartography',itemCartography).subscribe(result => {
       
           }, error => console.error(error));
       }
-      if (item.parent !=null){
+      if (itemParent !=null){
           item.substituteRelation('parent',itemParent).subscribe(result => {
       
           }, error => console.error(error));
       }
       
     } else {
-      item.tree = item.tree._links.self.href;
-      item.cartography = item.cartography._links.self.href;
-        
-  
+      if (item.tree && item.tree._links && item.tree._links.self) {
+        item.tree = item.tree._links.self.href;
+      }
+      if (item.cartography && item.cartography._links && item.cartography._links.self) {
+        item.cartography = item.cartography._links.self.href;
+      }      
       result = this.http.post(this.TREE_NODE_API , item);
     }
     return result;

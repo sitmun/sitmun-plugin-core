@@ -160,6 +160,14 @@ export class TreeNodeEditDialog implements OnInit {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
     }
 
+
+    getResourceId(c1: Resource) {
+        if (c1 && c1._links && c1._links.self && c1._links.self.href) {
+            return c1._links.self.href.substring(c1._links.self.href.lastIndexOf("/")+1);
+        }
+        return null;
+    }
+
     getAllCartographies() {
         this.cartographyService.getAll()
             .subscribe((cartographies: Cartography[]) => {
@@ -176,9 +184,11 @@ export class TreeNodeEditDialog implements OnInit {
                     var treeNode;
                     //Get the parent nodes only
                     var this_ = this;
+                    var treeNode = this.getResourceId(this.treeNode);
                     treeNodes.forEach(function(node, index, nodes){
+                        var nodeId = this_.getResourceId(node);
                         node.getRelation(Cartography, 'cartography').finally(function(){
-                            if ((node.cartography == null) && !this_.compareResource(node, this_.treeNode)) {
+                            if ((node.cartography == null) && nodeId && (nodeId != treeNode)) {
                                 this_.parentNodes.push(node);
                             }
                         }).subscribe(
