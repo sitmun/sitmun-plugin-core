@@ -179,12 +179,19 @@ public class Territory {
 
   public void setType(TerritoryType type) {
     this.type = type;
-  }
-  
+  }  
 
 	@Override
 	public boolean equals(Object o) {
-		return ((Territory) o).getId() == this.getId();
+    if ((o != null) && (o instanceof Territory)) {
+      return ((Territory) o).getId() == this.getId();
+    }
+    return false;
+  }
+  
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 }

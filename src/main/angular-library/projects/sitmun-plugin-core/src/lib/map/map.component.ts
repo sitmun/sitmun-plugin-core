@@ -232,9 +232,6 @@ export class MapComponent implements OnInit {
 
   map: ol.Map = null;
 
-  //geolocation: ol.Geolocation;
-  //geolocationLayer: ol.layer.Vector;
-
   setExtent(extent: ol.Extent) {
     if ((extent != null) && (extent != undefined)) {
       this.getMap().getView().fit(extent);
@@ -248,6 +245,7 @@ export class MapComponent implements OnInit {
     return this.map;
   }
 
+  // MapConfigurationManagerService event subscriptors
   layerSubscription;
   baseLayersSubscription;
   layerConfigurationSubscription;
@@ -481,7 +479,7 @@ export class MapComponent implements OnInit {
 
     if (options.parameters) {
       for (var i = 0, iLen = options.parameters.length; i < iLen; i++) {
-        //TODO parse options
+        //TODO parse other options
       }
     }
 
@@ -539,14 +537,18 @@ export class MapComponent implements OnInit {
     if (this.getMap()) {
       this.getMap().setView(view);
       //FIXME force layer repojection 
+      //update controls with event listeners
       if (this.overViewMapControl) {
         //Define center otherwise an error is raised
         if (extent) {
-			viewOptions["center"] = ol.extent.getCenter(extent);
+			    viewOptions["center"] = ol.extent.getCenter(extent);
         }
         this.overViewMapControl.getOverviewMap().setView(
           new ol.View(viewOptions)
         );
+      }
+      if (this.scaleLineToolControl != null) {
+        this.scaleLineToolControl.updateMap(this.getMap());
       }
       if (extent) {
         //Set the map and overview map centers
@@ -583,12 +585,6 @@ export class MapComponent implements OnInit {
     var layerParams;
     var projection;
 
-    /*
-  minimumScale?:number;
-  maximumScale?:number;
-  projections?:string;
-  infoUrl?:string;
-    */
     for (var i = 0, iLen:number = layerDataConfig.length; i < iLen; i++) {
       layerParams = {
         "LAYERS":layerDataConfig[i].name,
@@ -1002,13 +998,6 @@ export class MapComponent implements OnInit {
     if (this.baseLayers && (this.baseLayers.length)) {
       //Clear non base layers
       if (this.map) {
-        //var mapLayers = [];
-        //mapLayers.concat(this.map.getLayers());
-        //for (var i = 0, iLen = mapLayers.length; i < iLen; i++) {
-        //  if (!mapLayers[i].isBaseLayer) {
-        //    this.map.removeLayer(mapLayers[i]);
-        //  }
-        //}
         for (var i = 0, iLen:number = this.baseLayers.length; i < iLen; i++) {
           this.map.removeLayer(this.baseLayers[i]);
         }
@@ -1143,7 +1132,7 @@ export class MapComponent implements OnInit {
       units: "m"
     });
     ol.proj.addProjection(projection);
-	*/
+    */
     // ed50 / UTM
     proj4.defs("EPSG:23029", "+title=ED50 / UTM zone 29N  +proj=utm +zone=29 +ellps=intl +units=m +no_defs");
     /*
@@ -1195,14 +1184,14 @@ export class MapComponent implements OnInit {
     ol.proj.addProjection(projection);
     */
     proj4.defs("EPSG:25831", "+proj=utm +zone=31 +ellps=GRS80 +units=m +no_defs");
-                                 //'+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
+                //'+proj=utm +zone=31 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs'
     /*
     projection = new ol.proj.Projection({
       code: "EPSG:25831",
       units: "m"
     });
     ol.proj.addProjection(projection);
-	*/
+    */
     proj4.defs("EPSG:25832", "+proj=utm +zone=32 +ellps=GRS80 +units=m +no_defs");
     /*
     projection = new ol.proj.Projection({
@@ -1210,7 +1199,7 @@ export class MapComponent implements OnInit {
       units: "m"
     });
     ol.proj.addProjection(projection);
-	*/
+	  */
     // WGS84 / UTM
     proj4.defs("EPSG:32629", "+proj=utm +zone=29 +ellps=WGS84 +datum=WGS84 +units=m +no_defs ");
     /*
@@ -1243,7 +1232,7 @@ export class MapComponent implements OnInit {
       units: "m"
     });
     ol.proj.addProjection(projection);
-	*/
+	  */
 	
     // geographic
     proj4.defs("EPSG:4326", "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ");// wgs84
@@ -1627,13 +1616,8 @@ export class MapComponent implements OnInit {
                 } catch (e) {
                   //
                 }
-              //this_.selectedLayer = data.selected;
             }
           );
-          /*this.selectionDialogRef
-            .afterClosed()
-            .pipe(filter(name => name))
-            .subscribe(name => this.files.push({ name, content: '' }));*/
         }
       }
 
@@ -1693,7 +1677,7 @@ export class MapComponent implements OnInit {
         if (this.toolContainer) {
           this.toolContainer.style.display = "none";
           this.toolContainer.style.visibility = "hidden";
-          //TODO FIXME Notify control hidden
+          //TODO Notify control hidden
         }
       }
 
@@ -1701,7 +1685,7 @@ export class MapComponent implements OnInit {
         if (this.toolContainer) {
           this.toolContainer.style.display = "";
           this.toolContainer.style.visibility = "visible";          
-          //TODO FIXME Notify control shown
+          //TODO Notify control shown
         }
       }
 
@@ -1718,7 +1702,7 @@ export class MapComponent implements OnInit {
           if ((layerList == null) || (layerList == undefined) || (this.layers == null) || 
               (this.layers == undefined)) {
             //No information for the requested type return
-            //TODO raise error?
+            //TODO raise error if needed be
             return;
           }
           this.selectedGroup = value;
@@ -1759,8 +1743,6 @@ export class MapComponent implements OnInit {
         if (options.geolocationTooltip) {
           button.title = options.geolocationTooltip;
         }
-        //button.setAttribute("i18n", "@@geolocationTooltip");
-        //button.setAttribute("i18n-title", "");
         button.className="mat-raised-button";
         button.appendChild(icon);
 
@@ -2426,14 +2408,6 @@ export class MapComponent implements OnInit {
         element.appendChild(innerElement);
 
         function render(mapEvent) {
-          /*
-          var frameState = mapEvent.frameState;
-          if (!frameState) {
-            this.viewState_ = null;
-          } else {
-            this.viewState_ = frameState.viewState;
-          }
-          */
           this.draw();
           if (!this.rendered) {
             this.rendered = true;
@@ -2476,10 +2450,15 @@ export class MapComponent implements OnInit {
       setMap(map:ol.Map) {
         super.setMap(map);
         this.geodesic = map.getView().getProjection().getCode() == "EPSG:900913";
-        var this_ = this;                        
+        var this_ = this;
         this.getMap().getView().on('change:resolution', function(evt){
           this_.updateElement();
         });
+      }
+
+      updateMap(map:ol.Map) {
+        this.setMap(map);
+        this.updateElement();
       }
 
       getValidUnits(units) {
@@ -2659,15 +2638,17 @@ export class MapComponent implements OnInit {
         // and the values inside them
 
         if (this.innerElement_) {
-          this.innerElement_.style.width = Math.round(bottomPx) + "px"; 
+          //Update bar width with top value always
+          this.innerElement_.style.width = Math.round(topPx) + "px"; 
         }
         
-        if (this.eBottom && this.eBottom.style.visibility == "visible"){
-            //this.eBottom.style.width = Math.round(bottomPx) + "px"; 
+        if (this.eBottom && this.eBottom.style && (this.eBottom.style.visibility == "visible")) {
+            //Update bottom bar width with its corresponding value
+            this.eBottom.style.width = Math.round(bottomPx) + "px"; 
             this.eBottom.innerHTML = bottomRounded + " " + bottomUnits ;
         }
             
-        if (this.eTop && this.eTop.style.visibility == "visible"){
+        if (this.eTop && this.eTop.style && (this.eTop.style.visibility == "visible")) {
             //this.eTop.style.width = Math.round(topPx) + "px";
             this.eTop.innerHTML = topRounded + " " + topUnits;
         }
@@ -2744,6 +2725,7 @@ export class MapComponent implements OnInit {
 
     }
 
+    // Auxiliary functions to calculate and register resolution changes
     var VincentyConstants = {
       a: 6378137,
       b: 6356752.3142,
@@ -3057,7 +3039,7 @@ export class MapComponent implements OnInit {
         if (this.toolContainer) {
           this.toolContainer.style.display = "none";
           this.toolContainer.style.visibility = "hidden";
-          //TODO FIXME Notify control hidden
+          //TODO Notify control hidden
         }
       }
 
@@ -3065,7 +3047,7 @@ export class MapComponent implements OnInit {
         if (this.toolContainer) {
           this.toolContainer.style.display = "";
           this.toolContainer.style.visibility = "visible";          
-          //TODO FIXME Notify control shown
+          //TODO Notify control shown
         }
       }
 
@@ -3094,19 +3076,7 @@ export class MapComponent implements OnInit {
       label:attributionsLabel
     });
 
-    /*
-    var zoomInNode = document.createElement('I');
-    zoomInNode.className = "material-icons";
-    zoomInNode.innerHTML = "zoom_in";
-
-    var zoomOutNode = document.createElement('I');
-    zoomOutNode.className = "material-icons";
-    zoomOutNode.innerHTML = "zoom_out";
-    */
-
     this.zoomToolControl = new ol.control.Zoom({
-      //zoomInLabel: zoomInNode,
-      //zoomOutLabel: zoomOutNode,
       zoomInTipLabel: this.messages["zoomInTooltip"],
       zoomOutTipLabel: this.messages["zoomOutTooltip"]
     });
@@ -3139,7 +3109,7 @@ export class MapComponent implements OnInit {
       viewOptions["zoom"] = initialZoom;
     }
     this.map = new ol.Map({
-      target: 'map',//this.mapContainer.nativeElement,
+      target: 'map',
       layers: layers,
       // Configure default controls
       controls: ol.control.defaults({attribution: false, zoom:false, rotate:false}).extend([this.attributionToolControl, this.zoomToolControl]),
@@ -3164,14 +3134,10 @@ export class MapComponent implements OnInit {
 
     var zoomInBtnList = document.getElementsByClassName("ol-zoom-in");
     if ((zoomInBtnList != null) && (zoomInBtnList.length > 0)) {
-      //zoomInBtn.setAttribute("i18n", "@@zoomInTooltip");
-      //zoomInBtn.setAttribute("i18n-title", "");
       zoomInBtnList[0].className += " mat-raised-button";
     }
     var zoomOutBtnList = document.getElementsByClassName("ol-zoom-out");
     if ((zoomOutBtnList != null) && (zoomOutBtnList.length > 0)) {
-      //zoomOutBtn.setAttribute("i18n", "@@zoomOutTooltip");
-      //zoomOutBtn.setAttribute("i18n-title", "");
       zoomOutBtnList[0].className += " mat-raised-button";
     }
 
@@ -3180,7 +3146,7 @@ export class MapComponent implements OnInit {
     //////////////////////////////////
 
     // Scale line control
-    this.scaleLineToolControl = //new ol.control.ScaleLine();
+    this.scaleLineToolControl = 
                             new ScaleBarControl({
                               showTopBar: true,//metric
                               showBottomBar: false,//non-metric
@@ -3189,12 +3155,6 @@ export class MapComponent implements OnInit {
 
     this.map.addControl(this.scaleLineToolControl);
     var scaleLineElementContainerList = document.getElementsByClassName("ol-scale-line");
-    /*if (this.messages["scaleLineTooltip"]) {
-      if ((scaleLineElementContainerList != null) && (scaleLineElementContainerList.length > 0)) {
-        //Set tool tip
-        scaleLineElementContainerList[0].setAttribute("title", this.messages["scaleLineTooltip"]);
-      }
-    }*/
 
     this.locationToolControl = new GeolocationControl({
       geolocationTooltip: this.messages["geolocationTooltip"]
@@ -3316,8 +3276,8 @@ export class MapComponent implements OnInit {
 
   defaultsLoaded:boolean = false;
   loadDefaultMapConfiguration() {
-    //TODO load default configuration
-    //Projection, escales, extent??
+    //Load default configuration
+    //Projection, escales, extent
     if (this.getMap() != null) {
       if (!this.defaultsLoaded) {
         this.defaultsLoaded = true;

@@ -50,7 +50,15 @@ public class Role {
 
 	@Override
 	public boolean equals(Object o) {
-		return ((Role) o).getId() == this.getId();
+		if ((o != null) && (o instanceof Role)) {
+			return ((Role) o).getId() == this.getId();
+		}
+		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return super.hashCode();
 	}
 
 }

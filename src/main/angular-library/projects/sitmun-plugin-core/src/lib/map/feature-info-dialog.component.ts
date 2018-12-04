@@ -219,7 +219,7 @@ export class FeatureInfoDialogComponent implements OnInit {
                                 for (var j in featureAttributes) {
                                     td = document.createElement("td");
                                     if (properties[j]) {
-                                        //TODO FIXME show object information in an 'alert type' dialog
+                                        //Show object information in an 'alert type' dialog
                                         /*if ((properties[j] instanceof Object) && 
                                             (j.toLowerCase() == "geometry")) {
                                             //infoNode = document.createElement("span");
