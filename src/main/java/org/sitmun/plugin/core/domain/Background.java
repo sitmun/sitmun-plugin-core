@@ -4,11 +4,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -23,14 +25,15 @@ import org.springframework.hateoas.ResourceSupport;
 public class Background implements Identifiable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
+	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
 	@Column(name = "fon_codigo")
 	private long id;
 
-	@Column(name = "fon_nombre")
+	@Column(name = "fon_nombre", length = 30)
 	private String name;
 
-	@Column(name = "fon_desc")
+	@Column(name = "fon_desc", length = 250)
 	private String description;
 
 	@Column(name = "fon_activo")
@@ -40,7 +43,7 @@ public class Background implements Identifiable {
 	private Date createdDate;
 
 	@ManyToOne
-	@JoinColumn(name = "fon_codcga")
+	@JoinColumn(name = "fon_codgca",foreignKey=@ForeignKey(name = "STM_FON_FK_GCA"))
 	@NotNull
 	private CartographyGroup cartographyGroup;
 

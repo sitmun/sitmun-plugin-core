@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -13,15 +14,16 @@ import javax.validation.constraints.NotNull;
 public class Role {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
+	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
 	@Column(name = "rol_codigo")
 	private long id;
 
 	@NotNull
-	@Column(name = "rol_nombre", unique = true, nullable = false)
+	@Column(name = "rol_nombre", unique = true, nullable = false, length = 250)
 	private String name;
 
-	@Column(name = "rol_observ")
+	@Column(name = "rol_observ", length = 500)
 	private String comments;
 
 	public long getId() {

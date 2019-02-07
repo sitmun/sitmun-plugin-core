@@ -5,12 +5,14 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
@@ -24,24 +26,25 @@ import org.springframework.hateoas.ResourceSupport;
 public class CartographyGroup implements Identifiable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
+	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
 	@Column(name = "gca_codigo")
 	private long id;
 
-	@Column(name = "gca_nombre")
+	@Column(name = "gca_nombre", length = 80)
 	private String name;
 
-	@Column(name = "gca_tipo")
+	@Column(name = "gca_tipo", length = 30)
 	private String type;
 
 	@ManyToMany
-	@JoinTable(name = "stm_gcacar", joinColumns = @JoinColumn(name = "gcc_codcar"), inverseJoinColumns = @JoinColumn(name = "gcc_codgca"))
+	@JoinTable(name = "stm_gcacar", joinColumns = @JoinColumn(name = "gcc_codgca",foreignKey=@ForeignKey(name = "STM_GCC_FK_GCA")), inverseJoinColumns = @JoinColumn(name = "gcc_codcar",foreignKey=@ForeignKey(name = "STM_GCC_FK_CAR")))
 	private Set<Cartography> members;
 
 	// roles para los que estará disponible este grupo de cartografía se gestiona
 	// desde aquí
 	@ManyToMany
-	@JoinTable(name = "stm_rolgca", joinColumns = @JoinColumn(name = "rgc_codrol"), inverseJoinColumns = @JoinColumn(name = "rgc_codgca"))
+	@JoinTable(name = "stm_rolgca", joinColumns = @JoinColumn(name = "rgc_codrol",foreignKey=@ForeignKey(name = "STM_RGC_FK_ROL")), inverseJoinColumns = @JoinColumn(name = "rgc_codgca",foreignKey=@ForeignKey(name = "STM_RGC_FK_GCA")))
 	private Set<Role> roles;
 
 	public Long getId() {

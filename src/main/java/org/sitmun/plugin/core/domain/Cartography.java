@@ -7,12 +7,14 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
@@ -26,20 +28,21 @@ import org.springframework.hateoas.ResourceSupport;
 public class Cartography implements Identifiable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
+	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
 	@Column(name = "car_codigo")
 	private long id;
 
-	@Column(name = "car_nombre")
+	@Column(name = "car_nombre", length = 100)
 	private String name;
 
-	@Column(name = "car_tipo")
+	@Column(name = "car_tipo", length = 30)
 	private String type;
 
 	@Column(name = "car_visible")
 	private Boolean visible;
 
-	@Column(name = "car_transp")
+	@Column(name = "car_transp", length = 11)
 	private Integer transparency;
 
 	@Column(name = "car_queryabl")
@@ -48,55 +51,55 @@ public class Cartography implements Identifiable {
 	@Column(name = "car_queryact")
 	private Boolean queryAct;
 
-	@Column(name = "car_querylay")
+	@Column(name = "car_querylay", length = 500)
 	private Boolean queryLay;
 
 	@Column(name = "car_f_alta")
 	private Date createdDate;
 
-	@Column(name = "car_orden")
+	@Column(name = "car_orden", length = 11)
 	private Integer order;
 
-	@Column(name = "car_esc_min")
+	@Column(name = "car_esc_min", length = 11)
 	private Integer minimumScale;
 
-	@Column(name = "car_esc_max")
+	@Column(name = "car_esc_max", length = 11)
 	private Integer maximumScale;
 
 	// Nombre de las capa
-	@Column(name = "car_capas")
+	@Column(name = "car_capas", length = 500)
 	private String layers;
 
 	@ManyToOne
-	@JoinColumn(name = "car_codser")
+	@JoinColumn(name = "car_codser",foreignKey=@ForeignKey(name = "STM_CAR_FK_SER"))
 	private Service service;
 
 	@ManyToOne
-	@JoinColumn(name = "car_codcon")
+	@JoinColumn(name = "car_codcon",foreignKey=@ForeignKey(name = "STM_CAR_FK_CON"))
 	private Connection connection;
 
 	@OneToMany(mappedBy = "cartography", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<CartographyAvailability> availabilities = new HashSet<>();
 
 	// CAR_SELECTABL
-	@Column(name = "car_selectable")
+	@Column(name = "car_selectabl")
 	private Boolean selectable;
 
 	// CAR_SELECTLAY
-	@Column(name = "car_seleclay")
+	@Column(name = "car_selectlay", length = 500)
 	private String selectionLayer;
 
 	// CAR_CODSERSEL
 	@ManyToOne
-	@JoinColumn(name = "car_codsersel")
+	@JoinColumn(name = "car_codsersel",foreignKey=@ForeignKey(name = "STM_CAR_FK_SERSEL"))
 	private Service selectionService;
 
 	// CAR_LEYENDTIP
-	@Column(name = "car_leyendtip")
+	@Column(name = "car_leyendtip", length = 50)
 	private String legendTip;
 
 	// CAR_LEYENDURL
-	@Column(name = "car_leyendurl")
+	@Column(name = "car_leyendurl", length = 250)
 	private String legendUrl;
 
 	// CAR_EDITABLE

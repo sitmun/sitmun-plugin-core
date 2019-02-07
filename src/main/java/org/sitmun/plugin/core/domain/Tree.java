@@ -7,6 +7,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
@@ -27,18 +29,19 @@ import org.springframework.hateoas.ResourceSupport;
 public class Tree implements Identifiable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
+	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
 	@Column(name = "arb_codigo")
 	private long id;
 
-	@Column(name = "arb_nombre")
+	@Column(name = "arb_nombre", length = 100)
 	private String name;
 
 	@OneToMany(mappedBy = "tree", cascade = CascadeType.ALL, orphanRemoval = true, fetch=FetchType.EAGER)
 	private Set<TreeNode> nodes = new HashSet<>();
 
 	@ManyToMany
-	@JoinTable(name = "stm_arbrol", joinColumns = @JoinColumn(name = "arr_codrol"), inverseJoinColumns = @JoinColumn(name = "arr_codarb"))
+	@JoinTable(name = "stm_arbrol", joinColumns = @JoinColumn(name = "arr_codarb",foreignKey=@ForeignKey(name = "STM_ARR_FK_ARB")), inverseJoinColumns = @JoinColumn(name = "arr_codrol",foreignKey=@ForeignKey(name = "STM_ARR_FK_ROL")))
 	private Set<Role> availableRoles = new HashSet<>();
 
 	public Set<Role> getAvailableRoles() {

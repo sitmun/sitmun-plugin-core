@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,7 +16,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Identifiable;
@@ -28,47 +31,53 @@ import org.springframework.hateoas.ResourceSupport;
 public class Application implements Identifiable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
+	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
 	@Column(name = "app_codigo")
 	private long id;
 
-	@Column(name = "app_nombre")
+	@Column(name = "app_nombre", length = 80)
 	private String name;
 
-	@Column(name = "app_tipo")
+	@Column(name = "app_tipo", length = 250)
 	private String type;
 
-	@Column(name = "app_titulo")
+	@Column(name = "app_titulo", length = 250)
 	private String title;
 
-	@Column(name = "app_tema")
+	@Column(name = "app_tema", length = 80)
 	private String theme;
 
 	@Column(name = "app_f_alta")
 	private Date createdDate;
 
 	@ManyToMany
-	@JoinTable(name = "stm_approl", joinColumns = @JoinColumn(name = "apr_codrol"), inverseJoinColumns = @JoinColumn(name = "apr_codapp"))
+	@JoinTable(name = "stm_approl", joinColumns = @JoinColumn(name = "apr_codapp",foreignKey=@ForeignKey(name = "STM_APR_FK_APP")), inverseJoinColumns = @JoinColumn(name = "apr_codrol",foreignKey=@ForeignKey(name = "STM_APR_FK_ROl")))
 	private Set<Role> availableRoles = new HashSet<>();
 
 	@OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ApplicationParameter> parameters = new HashSet<>();
 
 	@ManyToMany
-	@JoinTable(name = "stm_apparb", joinColumns = @JoinColumn(name = "apa_codarb"), inverseJoinColumns = @JoinColumn(name = "apa_codapp"))
+	@JoinTable(name = "stm_apparb", joinColumns = @JoinColumn(name = "apa_codapp",foreignKey=@ForeignKey(name = "STM_APA_FK_APP")), inverseJoinColumns = @JoinColumn(name = "apa_codarb",foreignKey=@ForeignKey(name = "STM_APA_FK_ARB")))
 	private Set<Tree> trees;
+	
 	// comma-separated values
-	@Column(name = "app_escalas")
+	@Column(name = "app_escalas", length = 250)
 	private String scales;
+	
 	// comma-separated EPSG codes
-	@Column(name = "app_project")
+	@Column(name = "app_project", length = 250)
 	private String projections;
+	
 	@Column(name = "app_autorefr")
 	private Boolean treeAutoRefresh;
+	
 	@OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<ApplicationBackground> backgrounds = new HashSet<>();
+	
 	@ManyToOne
-	@JoinColumn(name = "cod_gca")
+	@JoinColumn(name = "app_codgca",foreignKey=@ForeignKey(name = "STM_APP_FK_GCA"))
 	private CartographyGroup situationMap;
 
 	public Long getId() {
