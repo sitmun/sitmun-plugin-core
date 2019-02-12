@@ -7,12 +7,14 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -20,28 +22,28 @@ import javax.persistence.Table;
 public class Service {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
+  @SequenceGenerator(name="stm_generator", sequenceName = "stm_seq")
   @Column(name = "ser_codigo")
   private long id;
 
 
-  @Column(name = "ser_nombre")
+  @Column(name = "ser_nombre", length = 30)
   private String name;
 
-  @Column(name = "ser_url")
+  @Column(name = "ser_url", length = 250)
   private String url;
 
-  @Column(name = "ser_proj")
+  @Column(name = "ser_projects", length = 1000)
   private String projections;
 
-
-  @Column(name = "ser_leyenda")
+  @Column(name = "ser_leyenda", length = 250)
   private String legend;
   
-  @Column(name = "ser_tipo")
+  @Column(name = "ser_tipo", length = 30)
   private String type;
 
-  @Column(name = "ser_infourl")
+  @Column(name = "ser_infourl", length = 250)
   private String infoUrl;
 
 
@@ -52,7 +54,7 @@ public class Service {
   private Set<Cartography> layers = new HashSet<>();
 
   @ManyToOne
-  @JoinColumn(name = "ser_codcon")
+  @JoinColumn(name = "ser_codcon",foreignKey=@ForeignKey(name = "STM_SER_FK_CON"))
   private Connection connection;
   
   

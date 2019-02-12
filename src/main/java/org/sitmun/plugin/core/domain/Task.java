@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
@@ -28,11 +30,12 @@ import org.springframework.hateoas.ResourceSupport;
 public class Task implements Identifiable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
+	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
 	@Column(name = "tar_codigo")
 	private long id;
 
-	@Column(name = "tar_nombre")
+	@Column(name = "tar_nombre", length = 50)
 	private String name;
 
 	@Column(name = "tar_orden")
@@ -42,7 +45,7 @@ public class Task implements Identifiable{
 	private Date createdDate;
 
 	@ManyToOne
-	@JoinColumn(name = "tar_codcon")
+	@JoinColumn(name = "tar_codcon",foreignKey=@ForeignKey(name = "STM_TAR_FK_CON"))
 	private Connection connection;
 
 	public Set<TaskParameter> getParameters() {
@@ -54,7 +57,7 @@ public class Task implements Identifiable{
 	}
 
 	@ManyToMany
-	@JoinTable(name = "stm_roltar", joinColumns = @JoinColumn(name = "rta_codrol"), inverseJoinColumns = @JoinColumn(name = "rta_codtar"))
+	@JoinTable(name = "stm_roltar", joinColumns = @JoinColumn(name = "rta_codrol",foreignKey=@ForeignKey(name = "STM_RTA_FK_ROL")), inverseJoinColumns = @JoinColumn(name = "rta_codtar",foreignKey=@ForeignKey(name = "STM_RTA_FK_TAR")))
 	private Set<Role> roles;
 
 	@OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -64,16 +67,16 @@ public class Task implements Identifiable{
 	private Set<TaskParameter> parameters = new HashSet<>();
 
 	@ManyToOne
-	@JoinColumn(name = "tar_codgta")
+	@JoinColumn(name = "tar_codgta",foreignKey=@ForeignKey(name = "STM_TAR_FK_GTA"))
 	private TaskGroup group;
 
 	@ManyToOne
-	@JoinColumn(name = "tar_codtta")
+	@JoinColumn(name = "tar_codtta",foreignKey=@ForeignKey(name = "STM_TAR_FK_TTA"))
 	private TaskType type;
 
 
 	@ManyToOne
-	@JoinColumn(name = "tar_codtui")
+	@JoinColumn(name = "tar_codtui",foreignKey=@ForeignKey(name = "STM_TAR_FK_TUI"))
 	private TaskUI ui;
 
 	public TaskUI getUi() {
