@@ -44,6 +44,7 @@ dependencies {
   implementation "org.webjars:webjars-locator"
   implementation "org.webjars:bootstrap:${bootstrap_version}"
   implementation "org.webjars:requirejs:${requirejs_version}"
+  implementation "info.picocli:picocli:${picocli_version}"
 
   implementation "io.jsonwebtoken:jjwt:${jjwt_version}"
 
@@ -100,9 +101,31 @@ task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
 task installModules(dependsOn: npmBuildSitmunPluginCore)
 
 
-processResources.dependsOn installModules
+// processResources.dependsOn installModules
 
 task install(dependsOn: 'publishToMavenLocal')
+
+
+task oracle8iSchemaExport (type: JavaExec) {
+  mkdir 'src/main/sql/'
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.sitmun.plugin.core.tools.SitmunSchemaExport'
+  args '-d', 'org.hibernate.dialect.Oracle8iDialect', '-f', 'src/main/sql/oracle8i.sql'
+}
+
+task postgreSQLSchemaExport (type: JavaExec) {
+  mkdir 'src/main/sql/'
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.sitmun.plugin.core.tools.SitmunSchemaExport'
+  args '-d', 'org.hibernate.dialect.PostgreSQLDialect', '-f', 'src/main/sql/postgresql.sql'
+}
+
+task h2SchemaExport (type: JavaExec) {
+  mkdir 'src/main/sql/'
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.sitmun.plugin.core.tools.SitmunSchemaExport'
+  args '-d', 'org.hibernate.dialect.H2Dialect', '-f', 'src/main/sql/h2.sql'
+}
 
 clean {
   delete "node_modules"
