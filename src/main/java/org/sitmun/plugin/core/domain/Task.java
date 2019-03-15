@@ -25,8 +25,8 @@ public class Task implements Identifiable {
   @Column(name = "TAR_NOMBRE", length = 50)
   private String name;
 
-  @Column(name = "TAR_ORDEN")
-  private Integer order;
+  @Column(name = "TAR_ORDEN", precision = 6)
+  private BigInteger order;
 
   @Column(name = "TAR_F_ALTA")
   private Date createdDate;
@@ -83,11 +83,11 @@ public class Task implements Identifiable {
     this.name = name;
   }
 
-  public Integer getOrder() {
+  public BigInteger getOrder() {
     return order;
   }
 
-  public void setOrder(Integer order) {
+  public void setOrder(BigInteger order) {
     this.order = order;
   }
 

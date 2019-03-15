@@ -45,6 +45,7 @@ public class ApplicationRestResourceIntTest {
   private static final String PUBLIC_CARTOGRAPHY_NAME = null;
   private static final String PUBLIC_TREE_NODE_NAME = null;
   private static final String TREE_NODE_URI = "http://localhost/api/tree-nodes";
+  private static final String APP_BACKGROUNDS_URI = "http://localhost/api/application-backgrounds";
   private static final String PUBLIC_SERVICE_NAME = null;
   private static final String SERVICE_URI = "http://localhost/api/services";
   @Autowired
@@ -98,6 +99,7 @@ public class ApplicationRestResourceIntTest {
   private Territory territory;
 
   private BigInteger appId;
+  private BigInteger backAppId;
 
   @Before
   public void init() {
@@ -196,9 +198,12 @@ public class ApplicationRestResourceIntTest {
     ApplicationBackground publicApplicationBackground = new ApplicationBackground();
     publicApplicationBackground.setBackground(publicBackground);
     publicApplicationBackground.setApplication(publicApplication);
+    publicApplicationBackground.setOrder(BigInteger.ONE);
     applicationBackgrounds.add(publicApplicationBackground);
     applicationBackgroundRepository.save(applicationBackgrounds);
 
+
+    backAppId = publicApplicationBackground.getId();
 
     ApplicationParameter applicationParam1 = new ApplicationParameter();
     applicationParam1.setName(NON_PUBLIC_APPLICATION_PARAM_NAME);
@@ -254,6 +259,14 @@ public class ApplicationRestResourceIntTest {
       .andExpect(jsonPath("$.name").value("Non-public Application"));
   }
 
+  @Test
+  @WithMockUser(username = ADMIN_USERNAME)
+  public void getInformationAboutBackgrounds() throws Exception {
+    mvc.perform(get(APP_BACKGROUNDS_URI + "/" + backAppId))
+      .andDo(print())
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$.order").value(1));
+  }
 
 
   @Test

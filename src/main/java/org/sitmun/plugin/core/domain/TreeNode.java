@@ -22,8 +22,8 @@ public class TreeNode {
   @Column(name = "ARN_TOOLTIP", length = 100)
   private String tooltip;
 
-  @Column(name = "ARN_ORDEN")
-  private Integer ordee;
+  @Column(name = "ARN_ORDEN", precision = 6)
+  private BigInteger orden;
 
   @Column(name = "ARN_ACTIVO")
   private Boolean active;
@@ -65,12 +65,12 @@ public class TreeNode {
     this.tooltip = tooltip;
   }
 
-  public Integer getOrdee() {
-    return ordee;
+  public BigInteger getOrden() {
+    return orden;
   }
 
-  public void setOrdee(Integer ordee) {
-    this.ordee = ordee;
+  public void setOrden(BigInteger orden) {
+    this.orden = orden;
   }
 
   public Boolean getActive() {

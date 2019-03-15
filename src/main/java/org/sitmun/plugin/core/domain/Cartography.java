@@ -31,8 +31,8 @@ public class Cartography implements Identifiable {
   @Column(name = "CAR_VISIBLE")
   private Boolean visible;
 
-  @Column(name = "CAR_TRANSP", length = 11)
-  private Integer transparency;
+  @Column(name = "CAR_TRANSP", precision = 11)
+  private BigInteger transparency;
 
   @Column(name = "CAR_QUERYABL")
   private Boolean queryable;
@@ -46,14 +46,14 @@ public class Cartography implements Identifiable {
   @Column(name = "CAR_F_ALTA")
   private Date createdDate;
 
-  @Column(name = "CAR_ORDEN", length = 11)
-  private Integer order;
+  @Column(name = "CAR_ORDEN", precision = 11)
+  private BigInteger order;
 
-  @Column(name = "CAR_ESC_MIN", length = 11)
-  private Integer minimumScale;
+  @Column(name = "CAR_ESC_MIN", precision = 11)
+  private BigInteger minimumScale;
 
-  @Column(name = "CAR_ESC_MAX", length = 11)
-  private Integer maximumScale;
+  @Column(name = "CAR_ESC_MAX", precision = 11)
+  private BigInteger maximumScale;
 
   // Nombre de las capa
   @Column(name = "CAR_CAPAS", length = 500)
@@ -139,11 +139,11 @@ public class Cartography implements Identifiable {
     this.visible = visible;
   }
 
-  public Integer getTransparency() {
+  public BigInteger getTransparency() {
     return transparency;
   }
 
-  public void setTransparency(Integer transparency) {
+  public void setTransparency(BigInteger transparency) {
     this.transparency = transparency;
   }
 
@@ -179,27 +179,27 @@ public class Cartography implements Identifiable {
     this.createdDate = createdDate;
   }
 
-  public Integer getOrder() {
+  public BigInteger getOrder() {
     return order;
   }
 
-  public void setOrder(Integer order) {
+  public void setOrder(BigInteger order) {
     this.order = order;
   }
 
-  public Integer getMinimumScale() {
+  public BigInteger getMinimumScale() {
     return minimumScale;
   }
 
-  public void setMinimumScale(Integer minimumScale) {
+  public void setMinimumScale(BigInteger minimumScale) {
     this.minimumScale = minimumScale;
   }
 
-  public Integer getMaximumScale() {
+  public BigInteger getMaximumScale() {
     return maximumScale;
   }
 
-  public void setMaximumScale(Integer maximumScale) {
+  public void setMaximumScale(BigInteger maximumScale) {
     this.maximumScale = maximumScale;
   }
 

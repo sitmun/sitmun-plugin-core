@@ -29,8 +29,8 @@ public class TaskParameter {
   @JoinColumn(name = "PTT_CODTAR", foreignKey = @ForeignKey(name = "STM_PTT_FK_TAR"))
   private Task task;
 
-  @Column(name = "PTT_ORDEN")
-  private Integer order;
+  @Column(name = "PTT_ORDEN", precision = 6)
+  private BigInteger order;
 
   public BigInteger getId() {
     return id;
@@ -72,11 +72,11 @@ public class TaskParameter {
     this.task = task;
   }
 
-  public Integer getOrder() {
+  public BigInteger getOrder() {
     return order;
   }
 
-  public void setOrder(Integer order) {
+  public void setOrder(BigInteger order) {
     this.order = order;
   }
 

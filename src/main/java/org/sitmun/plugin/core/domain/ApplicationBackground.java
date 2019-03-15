@@ -20,8 +20,8 @@ public class ApplicationBackground implements Identifiable {
   @Column(name = "APF_CODIGO", precision = 11)
   private BigInteger id;
 
-  @Column(name = "APF_ORDEN")
-  private Integer order;
+  @Column(name = "APF_ORDEN", precision = 6)
+  private BigInteger order;
 
   @ManyToOne
   @JoinColumn(name = "APF_CODAPP", foreignKey = @ForeignKey(name = "STM_APF_FK_APP"))
@@ -43,11 +43,11 @@ public class ApplicationBackground implements Identifiable {
     this.id = id;
   }
 
-  public Integer getOrder() {
+  public BigInteger getOrder() {
     return order;
   }
 
-  public void setOrder(Integer order) {
+  public void setOrder(BigInteger order) {
     this.order = order;
   }
 

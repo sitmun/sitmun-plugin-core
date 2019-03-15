@@ -19,8 +19,8 @@ public class TaskUI {
   @Column(name = "TUI_TOOLTIP", length = 100)
   private String tooltip;
 
-  @Column(name = "TUI_ORDEN")
-  private Integer order;
+  @Column(name = "TUI_ORDEN", precision = 6)
+  private BigInteger order;
 
   @Column(name = "TUI_TIPO", length = 30)
   private String type;
@@ -34,11 +34,11 @@ public class TaskUI {
     this.tooltip = tooltip;
   }
 
-  public Integer getOrder() {
+  public BigInteger getOrder() {
     return order;
   }
 
-  public void setOrder(Integer order) {
+  public void setOrder(BigInteger order) {
     this.order = order;
   }
 

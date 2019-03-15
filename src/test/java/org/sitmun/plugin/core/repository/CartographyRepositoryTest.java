@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,7 +37,7 @@ public class CartographyRepositoryTest {
     cartography.setMaximumScale(null);
     cartography.setMinimumScale(null);
     cartography.setCreatedDate(new Date());
-    cartography.setOrder(0);
+    cartography.setOrder(BigInteger.ZERO);
     cartography.setQueryable(true);
     cartography.setQueryAct(true);
     cartography.setQueryLay(true);
@@ -47,7 +48,7 @@ public class CartographyRepositoryTest {
     cartography.setLegendTip(null);
     cartography.setType(null);
     cartography.setGeometryType(null);
-    cartography.setTransparency(0);
+    cartography.setTransparency(BigInteger.ZERO);
     cartography.setLegendUrl(null);
     cartography.setMetadataUrl(null);
     cartography.setVisible(true);

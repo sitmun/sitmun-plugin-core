@@ -75,7 +75,7 @@ public class ApplicationRepositoryTest {
     ApplicationBackground applicationBackground = new ApplicationBackground();
     applicationBackground.setApplication(application);
     applicationBackground.setBackground(background);
-    applicationBackground.setOrder(1);
+    applicationBackground.setOrder(BigInteger.ONE);
     application.getBackgrounds().add(applicationBackground);
 
     ApplicationParameter parameter = new ApplicationParameter();
