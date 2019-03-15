@@ -151,7 +151,7 @@
         CAR_NOMBRE varchar(100),
         CAR_ORDEN decimal(11,0),
         CAR_QUERYACT boolean,
-        CAR_QUERYLAY boolean,
+        CAR_QUERYLAY varchar(500),
         CAR_QUERYABL boolean,
         CAR_SELECTABL boolean,
         CAR_SELECTLAY varchar(500),

@@ -15,7 +15,7 @@ export class Cartography extends Resource {
 
   public queryAct: Boolean;
 
-  public queryLay: Boolean;
+  public queryLay: string;
 
   public createdDate: any;
 

@@ -151,7 +151,7 @@
         CAR_NOMBRE varchar2(100 char),
         CAR_ORDEN number(11,0),
         CAR_QUERYACT number(1,0),
-        CAR_QUERYLAY number(1,0),
+        CAR_QUERYLAY varchar2(500 char),
         CAR_QUERYABL number(1,0),
         CAR_SELECTABL number(1,0),
         CAR_SELECTLAY varchar2(500 char),

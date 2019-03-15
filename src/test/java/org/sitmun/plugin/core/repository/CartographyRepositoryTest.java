@@ -40,7 +40,7 @@ public class CartographyRepositoryTest {
     cartography.setOrder(BigInteger.ZERO);
     cartography.setQueryable(true);
     cartography.setQueryAct(true);
-    cartography.setQueryLay(true);
+    cartography.setQueryLay(null);
     cartography.setSelectable(true);
     cartography.setService(null);
     cartography.setSelectionService(null);

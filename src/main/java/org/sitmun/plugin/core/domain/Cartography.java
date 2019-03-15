@@ -41,7 +41,7 @@ public class Cartography implements Identifiable {
   private Boolean queryAct;
 
   @Column(name = "CAR_QUERYLAY", length = 500)
-  private Boolean queryLay;
+  private String queryLay;
 
   @Column(name = "CAR_F_ALTA")
   @Temporal(TemporalType.TIMESTAMP)
@@ -164,11 +164,11 @@ public class Cartography implements Identifiable {
     this.queryAct = queryAct;
   }
 
-  public Boolean getQueryLay() {
+  public String getQueryLay() {
     return queryLay;
   }
 
-  public void setQueryLay(Boolean queryLay) {
+  public void setQueryLay(String queryLay) {
     this.queryLay = queryLay;
   }
 
