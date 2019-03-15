@@ -1,63 +1,51 @@
 package org.sitmun.plugin.core.domain;
 
+import javax.persistence.*;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
 @Entity
-@Table(name = "stm_servicio")
+@Table(name = "STM_SERVICIO")
 public class Service {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
-  @SequenceGenerator(name="stm_generator", sequenceName = "stm_seq")
-  @Column(name = "ser_codigo")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
+  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @Column(name = "SER_CODIGO")
   private long id;
 
 
-  @Column(name = "ser_nombre", length = 30)
+  @Column(name = "SER_NOMBRE", length = 30)
   private String name;
 
-  @Column(name = "ser_url", length = 250)
+  @Column(name = "SER_URL", length = 250)
   private String url;
 
-  @Column(name = "ser_projects", length = 1000)
+  @Column(name = "SER_PROJECTS", length = 1000)
   private String projections;
 
-  @Column(name = "ser_leyenda", length = 250)
+  @Column(name = "SER_LEYENDA", length = 250)
   private String legend;
-  
-  @Column(name = "ser_tipo", length = 30)
+
+  @Column(name = "SER_TIPO", length = 30)
   private String type;
 
-  @Column(name = "ser_infourl", length = 250)
+  @Column(name = "SER_INFOURL", length = 250)
   private String infoUrl;
 
 
-  @Column(name = "ser_f_alta")
+  @Column(name = "SER_F_ALTA")
   private Date createdDate;
 
-  @OneToMany(mappedBy = "service",  orphanRemoval = true)
+  @OneToMany(mappedBy = "service", orphanRemoval = true)
   private Set<Cartography> layers = new HashSet<>();
 
   @ManyToOne
-  @JoinColumn(name = "ser_codcon",foreignKey=@ForeignKey(name = "STM_SER_FK_CON"))
+  @JoinColumn(name = "SER_CODCON", foreignKey = @ForeignKey(name = "STM_SER_FK_CON"))
   private Connection connection;
-  
-  
+
+
   @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<ServiceParameter> parameters = new HashSet<>();
 
@@ -76,14 +64,14 @@ public class Service {
   public void setName(String name) {
     this.name = name;
   }
-  
+
 
   public String getType() {
-	return type;
+    return type;
   }
 
   public void setType(String type) {
-	this.type = type;
+    this.type = type;
   }
 
   public String getUrl() {
@@ -143,11 +131,11 @@ public class Service {
   }
 
   public Set<ServiceParameter> getParameters() {
-	return parameters;
+    return parameters;
   }
 
   public void setParameters(Set<ServiceParameter> parameters) {
-	this.parameters = parameters;
+    this.parameters = parameters;
   }
 
 }

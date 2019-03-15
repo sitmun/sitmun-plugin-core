@@ -1,73 +1,62 @@
 package org.sitmun.plugin.core.domain;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
-
 @Entity
-@Table(name = "stm_disptarea", uniqueConstraints = { @UniqueConstraint(columnNames = { "dta_codter", "dta_codtar" }) })
+@Table(name = "STM_DISPTAREA", uniqueConstraints = {@UniqueConstraint(columnNames = {"DTA_CODTER", "DTA_CODTAR"})})
 public class TaskAvailability {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
-	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
-	@Column(name = "dta_codigo")
-	private long id;
-	
-	@Column(name = "dta_f_alta")
-	private Date createdDate;
-	@ManyToOne
-	@JoinColumn(name = "dta_codter",foreignKey=@ForeignKey(name = "STM_DTA_FK_TER"))
-	// @OnDelete(action = OnDeleteAction.CASCADE)
-	@NotNull
-	private Territory territory;
-	@ManyToOne
-	@JoinColumn(name = "dta_codtar",foreignKey=@ForeignKey(name = "STM_DTA_FK_TAR"))
-	// @OnDelete(action = OnDeleteAction.CASCADE)
-	@NotNull
-	private Task task;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
+  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @Column(name = "DTA_CODIGO")
+  private long id;
 
-	public long getId() {
-		return id;
-	}
+  @Column(name = "DTA_F_ALTA")
+  private Date createdDate;
+  @ManyToOne
+  @JoinColumn(name = "DTA_CODTER", foreignKey = @ForeignKey(name = "STM_DTA_FK_TER"))
+  // @OnDelete(action = OnDeleteAction.CASCADE)
+  @NotNull
+  private Territory territory;
+  @ManyToOne
+  @JoinColumn(name = "DTA_CODTAR", foreignKey = @ForeignKey(name = "STM_DTA_FK_TAR"))
+  // @OnDelete(action = OnDeleteAction.CASCADE)
+  @NotNull
+  private Task task;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public long getId() {
+    return id;
+  }
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+  public void setId(long id) {
+    this.id = id;
+  }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+  public Date getCreatedDate() {
+    return createdDate;
+  }
 
-	public Territory getTerritory() {
-		return territory;
-	}
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
 
-	public void setTerritory(Territory territory) {
-		this.territory = territory;
-	}
+  public Territory getTerritory() {
+    return territory;
+  }
 
-	public Task getTask() {
-		return task;
-	}
+  public void setTerritory(Territory territory) {
+    this.territory = territory;
+  }
 
-	public void setTask(Task task) {
-		this.task = task;
-	}
+  public Task getTask() {
+    return task;
+  }
+
+  public void setTask(Task task) {
+    this.task = task;
+  }
 
 }

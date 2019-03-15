@@ -1,730 +1,730 @@
 
-    alter table stm_apparb 
+    alter table STM_APPARB 
         drop constraint STM_APA_FK_ARB;
 
-    alter table stm_apparb 
+    alter table STM_APPARB 
         drop constraint STM_APA_FK_APP;
 
-    alter table stm_appfon 
+    alter table STM_APPFON 
         drop constraint STM_APF_FK_APP;
 
-    alter table stm_appfon 
+    alter table STM_APPFON 
         drop constraint STM_APF_FK_FON;
 
-    alter table stm_approl 
-        drop constraint STM_APR_FK_ROl;
+    alter table STM_APPROL 
+        drop constraint STM_APR_FK_ROL;
 
-    alter table stm_approl 
+    alter table STM_APPROL 
         drop constraint STM_APR_FK_APP;
 
-    alter table stm_apps 
+    alter table STM_APPS 
         drop constraint STM_APP_FK_GCA;
 
-    alter table stm_arbolnod 
+    alter table STM_ARBOLNOD 
         drop constraint STM_ARN_FK_CAR;
 
-    alter table stm_arbolnod 
-        drop constraint STM_ARN_FK_PADRE;
+    alter table STM_ARBOLNOD 
+        drop constraint STM_ARN_FK_ARN;
 
-    alter table stm_arbolnod 
+    alter table STM_ARBOLNOD 
         drop constraint STM_ARN_FK_ARB;
 
-    alter table stm_arbrol 
+    alter table STM_ARBROL 
         drop constraint STM_ARR_FK_ROL;
 
-    alter table stm_arbrol 
+    alter table STM_ARBROL 
         drop constraint STM_ARR_FK_ARB;
 
-    alter table stm_cargo 
+    alter table STM_CARGO 
         drop constraint STM_CGO_FK_TER;
 
-    alter table stm_cargo 
+    alter table STM_CARGO 
         drop constraint STM_CGO_FK_USU;
 
-    alter table stm_carto 
+    alter table STM_CARTO 
         drop constraint STM_CAR_FK_CON;
 
-    alter table stm_carto 
+    alter table STM_CARTO 
         drop constraint STM_CAR_FK_SERSEL;
 
-    alter table stm_carto 
+    alter table STM_CARTO 
         drop constraint STM_CAR_FK_SER;
 
-    alter table stm_dispcarto 
+    alter table STM_DISPCARTO 
         drop constraint STM_DCA_FK_CAR;
 
-    alter table stm_dispcarto 
+    alter table STM_DISPCARTO 
         drop constraint STM_DCA_FK_TER;
 
-    alter table stm_disptarea 
+    alter table STM_DISPTAREA 
         drop constraint STM_DTA_FK_TAR;
 
-    alter table stm_disptarea 
+    alter table STM_DISPTAREA 
         drop constraint STM_DTA_FK_TER;
 
-    alter table stm_eterrit 
+    alter table STM_ETERRIT 
         drop constraint STM_TER_FK_TGR;
 
-    alter table stm_fondo 
+    alter table STM_FONDO 
         drop constraint STM_FON_FK_GCA;
 
-    alter table stm_gcacar 
+    alter table STM_GCACAR 
         drop constraint STM_GCC_FK_CAR;
 
-    alter table stm_gcacar 
+    alter table STM_GCACAR 
         drop constraint STM_GCC_FK_GCA;
 
-    alter table stm_grpter 
+    alter table STM_GRPTER 
         drop constraint STM_GRT_FK_TERM;
 
-    alter table stm_grpter 
+    alter table STM_GRPTER 
         drop constraint STM_GRT_FK_TER;
 
-    alter table stm_paramapp 
+    alter table STM_PARAMAPP 
         drop constraint STM_PAP_FK_APP;
 
-    alter table stm_paramser 
+    alter table STM_PARAMSER 
         drop constraint STM_PSE_FK_SER;
 
-    alter table stm_paramtta 
+    alter table STM_PARAMTTA 
         drop constraint STM_PTT_FK_TAR;
 
-    alter table stm_rolgca 
+    alter table STM_ROLGCA 
         drop constraint STM_RGC_FK_GCA;
 
-    alter table stm_rolgca 
+    alter table STM_ROLGCA 
         drop constraint STM_RGC_FK_ROL;
 
-    alter table stm_roltar 
-        drop constraint STM_RTA_FK_TAR;
+    alter table STM_ROLTAR 
+        drop constraint STM_RTA_FK_T;
 
-    alter table stm_roltar 
+    alter table STM_ROLTAR 
         drop constraint STM_RTA_FK_ROL;
 
-    alter table stm_servicio 
+    alter table STM_SERVICIO 
         drop constraint STM_SER_FK_CON;
 
-    alter table stm_tarea 
+    alter table STM_TAREA 
         drop constraint STM_TAR_FK_CON;
 
-    alter table stm_tarea 
+    alter table STM_TAREA 
         drop constraint STM_TAR_FK_GTA;
 
-    alter table stm_tarea 
+    alter table STM_TAREA 
         drop constraint STM_TAR_FK_TTA;
 
-    alter table stm_tarea 
+    alter table STM_TAREA 
         drop constraint STM_TAR_FK_TUI;
 
-    alter table stm_usuconf 
+    alter table STM_USUCONF 
         drop constraint STM_UCF_FK_ROL;
 
-    alter table stm_usuconf 
+    alter table STM_USUCONF 
         drop constraint STM_UCF_FK_TER;
 
-    alter table stm_usuconf 
+    alter table STM_USUCONF 
         drop constraint STM_UCF_FK_USU;
 
-    drop table if exists stm_apparb cascade;
+    drop table if exists STM_APPARB cascade;
 
-    drop table if exists stm_appfon cascade;
+    drop table if exists STM_APPFON cascade;
 
-    drop table if exists stm_approl cascade;
+    drop table if exists STM_APPROL cascade;
 
-    drop table if exists stm_apps cascade;
+    drop table if exists STM_APPS cascade;
 
-    drop table if exists stm_arbol cascade;
+    drop table if exists STM_ARBOL cascade;
 
-    drop table if exists stm_arbolnod cascade;
+    drop table if exists STM_ARBOLNOD cascade;
 
-    drop table if exists stm_arbrol cascade;
+    drop table if exists STM_ARBROL cascade;
 
-    drop table if exists stm_cargo cascade;
+    drop table if exists STM_CARGO cascade;
 
-    drop table if exists stm_carto cascade;
+    drop table if exists STM_CARTO cascade;
 
-    drop table if exists stm_conexion cascade;
+    drop table if exists STM_CONEXION cascade;
 
-    drop table if exists stm_dispcarto cascade;
+    drop table if exists STM_DISPCARTO cascade;
 
-    drop table if exists stm_disptarea cascade;
+    drop table if exists STM_DISPTAREA cascade;
 
-    drop table if exists stm_eterrit cascade;
+    drop table if exists STM_ETERRIT cascade;
 
-    drop table if exists stm_fondo cascade;
+    drop table if exists STM_FONDO cascade;
 
-    drop table if exists stm_gcacar cascade;
+    drop table if exists STM_GCACAR cascade;
 
-    drop table if exists stm_grpcarto cascade;
+    drop table if exists STM_GRPCARTO cascade;
 
-    drop table if exists stm_grptar cascade;
+    drop table if exists STM_GRPTAR cascade;
 
-    drop table if exists stm_grpter cascade;
+    drop table if exists STM_GRPTER cascade;
 
-    drop table if exists stm_log cascade;
+    drop table if exists STM_LOG cascade;
 
-    drop table if exists stm_paramapp cascade;
+    drop table if exists STM_PARAMAPP cascade;
 
-    drop table if exists stm_paramser cascade;
+    drop table if exists STM_PARAMSER cascade;
 
-    drop table if exists stm_paramtta cascade;
+    drop table if exists STM_PARAMTTA cascade;
 
-    drop table if exists stm_roles cascade;
+    drop table if exists STM_ROLES cascade;
 
-    drop table if exists stm_rolgca cascade;
+    drop table if exists STM_ROLGCA cascade;
 
-    drop table if exists stm_roltar cascade;
+    drop table if exists STM_ROLTAR cascade;
 
-    drop table if exists stm_servicio cascade;
+    drop table if exists STM_SERVICIO cascade;
 
-    drop table if exists stm_tarea cascade;
+    drop table if exists STM_TAREA cascade;
 
-    drop table if exists stm_tarea_ui cascade;
+    drop table if exists STM_TAREA_UI cascade;
 
-    drop table if exists stm_tipogrp cascade;
+    drop table if exists STM_TIPOGRP cascade;
 
-    drop table if exists stm_tipotarea cascade;
+    drop table if exists STM_TIPOTAREA cascade;
 
-    drop table if exists stm_usuario cascade;
+    drop table if exists STM_USUARIO cascade;
 
-    drop table if exists stm_usuconf cascade;
+    drop table if exists STM_USUCONF cascade;
 
-    drop sequence stm_seq;
+    drop sequence STM_SEQ;
 
-    create sequence stm_seq start 1 increment 50;
+    create sequence STM_SEQ start 1 increment 50;
 
-    create table stm_apparb (
-        apa_codapp int8 not null,
-        apa_codarb int8 not null,
-        primary key (apa_codapp, apa_codarb)
+    create table STM_APPARB (
+        APA_CODAPP int8 not null,
+        APA_CODARB int8 not null,
+        primary key (APA_CODAPP, APA_CODARB)
     );
 
-    create table stm_appfon (
-        apf_codigo int8 not null,
-        apf_orden int4,
-        apf_codapp int8,
-        apf_codfon int8,
-        primary key (apf_codigo)
+    create table STM_APPFON (
+        APF_CODIGO int8 not null,
+        APF_ORDEN int4,
+        APF_CODAPP int8,
+        APF_CODFON int8,
+        primary key (APF_CODIGO)
     );
 
-    create table stm_approl (
-        apr_codapp int8 not null,
-        apr_codrol int8 not null,
-        primary key (apr_codapp, apr_codrol)
+    create table STM_APPROL (
+        APR_CODAPP int8 not null,
+        APR_CODROL int8 not null,
+        primary key (APR_CODAPP, APR_CODROL)
     );
 
-    create table stm_apps (
-        app_codigo int8 not null,
-        app_f_alta timestamp,
-        app_nombre varchar(80),
-        app_project varchar(250),
-        app_escalas varchar(250),
-        app_tema varchar(80),
-        app_titulo varchar(250),
-        app_autorefr boolean,
-        app_tipo varchar(250),
-        app_codgca int8,
-        primary key (app_codigo)
+    create table STM_APPS (
+        APP_CODIGO int8 not null,
+        APP_F_ALTA timestamp,
+        APP_NOMBRE varchar(80),
+        APP_PROJECT varchar(250),
+        APP_ESCALAS varchar(250),
+        APP_TEMA varchar(80),
+        APP_TITULO varchar(250),
+        APP_AUTOREFR boolean,
+        APP_TIPO varchar(250),
+        APP_CODGCA int8,
+        primary key (APP_CODIGO)
     );
 
-    create table stm_arbol (
-        arb_codigo int8 not null,
-        arb_nombre varchar(100),
-        primary key (arb_codigo)
+    create table STM_ARBOL (
+        ARB_CODIGO int8 not null,
+        ARB_NOMBRE varchar(100),
+        primary key (ARB_CODIGO)
     );
 
-    create table stm_arbolnod (
-        anr_codigo int8 not null,
-        arn_activo boolean,
-        arn_nombre varchar(80),
-        arn_orden int4,
-        arn_tooltip varchar(100),
-        arn_codcar int8,
-        arn_codpadre int8,
-        arn_codarb int8,
-        primary key (anr_codigo)
+    create table STM_ARBOLNOD (
+        ANR_CODIGO int8 not null,
+        ARN_ACTIVO boolean,
+        ARN_NOMBRE varchar(80),
+        ARN_ORDEN int4,
+        ARN_TOOLTIP varchar(100),
+        ARN_CODCAR int8,
+        ARN_CODPADRE int8,
+        ARN_CODARB int8,
+        primary key (ANR_CODIGO)
     );
 
-    create table stm_arbrol (
-        arr_codarb int8 not null,
+    create table STM_ARBROL (
+        ARR_CODARB int8 not null,
         arr_codrol int8 not null,
-        primary key (arr_codarb, arr_codrol)
+        primary key (ARR_CODARB, arr_codrol)
     );
 
-    create table stm_cargo (
-        cgo_codigo int8 not null,
-        cgo_f_alta timestamp,
-        cgo_f_caduc timestamp,
-        cgo_correo varchar(250),
-        cgo_cargo varchar(250),
-        cgo_org varchar(250),
-        cgo_codter int8,
-        cgo_codusu int8,
-        primary key (cgo_codigo)
+    create table STM_CARGO (
+        CGO_CODIGO int8 not null,
+        CGO_F_ALTA timestamp,
+        CGO_F_CADUC timestamp,
+        CGO_CORREO varchar(250),
+        CGO_CARGO varchar(250),
+        CGO_ORG varchar(250),
+        CGO_CODTER int8,
+        CGO_CODUSU int8,
+        primary key (CGO_CODIGO)
     );
 
-    create table stm_carto (
-        car_codigo int8 not null,
-        car_f_alta timestamp,
-        car_editable boolean,
-        car_tipogeom varchar(255),
-        car_capas varchar(500),
-        car_leyendtip varchar(50),
-        car_leyendurl varchar(250),
-        car_esc_max int4,
-        car_metaurl varchar(255),
-        car_esc_min int4,
-        car_nombre varchar(100),
-        car_orden int4,
-        car_queryact boolean,
-        car_querylay boolean,
-        car_queryabl boolean,
-        car_selectabl boolean,
-        car_selectlay varchar(500),
-        car_tematizable boolean,
-        car_transp int4,
-        car_tipo varchar(30),
-        car_visible boolean,
-        car_codcon int8,
-        car_codsersel int8,
-        car_codser int8,
-        primary key (car_codigo)
+    create table STM_CARTO (
+        CAR_CODIGO int8 not null,
+        CAR_F_ALTA timestamp,
+        CAR_EDITABLE boolean,
+        CAR_TIPOGEOM varchar(255),
+        CAR_CAPAS varchar(500),
+        CAR_LEYENDTIP varchar(50),
+        CAR_LEYENDURL varchar(250),
+        CAR_ESC_MAX int4,
+        CAR_METAURL varchar(255),
+        CAR_ESC_MIN int4,
+        CAR_NOMBRE varchar(100),
+        CAR_ORDEN int4,
+        CAR_QUERYACT boolean,
+        CAR_QUERYLAY boolean,
+        CAR_QUERYABL boolean,
+        CAR_SELECTABL boolean,
+        CAR_SELECTLAY varchar(500),
+        CAR_TEMATIZABLE boolean,
+        CAR_TRANSP int4,
+        CAR_TIPO varchar(30),
+        CAR_VISIBLE boolean,
+        CAR_CODCON int8,
+        CAR_CODSERSEL int8,
+        CAR_CODSER int8,
+        primary key (CAR_CODIGO)
     );
 
-    create table stm_conexion (
-        con_codigo int8 not null,
-        con_constring varchar(250),
-        con_nombre varchar(80),
-        con_password varchar(50),
-        con_driver varchar(50),
-        con_usuario varchar(50),
-        primary key (con_codigo)
+    create table STM_CONEXION (
+        CON_CODIGO int8 not null,
+        CON_CONSTRING varchar(250),
+        CON_NOMBRE varchar(80),
+        CON_PASSWORD varchar(50),
+        CON_DRIVER varchar(50),
+        CON_USUARIO varchar(50),
+        primary key (CON_CODIGO)
     );
 
-    create table stm_dispcarto (
-        dca_codigo int8 not null,
-        dca_f_alta timestamp,
-        dca_codcar int8,
-        dca_codter int8,
-        primary key (dca_codigo)
+    create table STM_DISPCARTO (
+        DCA_CODIGO int8 not null,
+        DCA_F_ALTA timestamp,
+        DCA_CODCAR int8,
+        DCA_CODTER int8,
+        primary key (DCA_CODIGO)
     );
 
-    create table stm_disptarea (
-        dta_codigo int8 not null,
-        dta_f_alta timestamp,
-        dta_codtar int8,
-        dta_codter int8,
-        primary key (dta_codigo)
+    create table STM_DISPTAREA (
+        DTA_CODIGO int8 not null,
+        DTA_F_ALTA timestamp,
+        DTA_CODTAR int8,
+        DTA_CODTER int8,
+        primary key (DTA_CODIGO)
     );
 
-    create table stm_eterrit (
-        ter_codigo int8 not null,
-        ter_direcc varchar(250),
-        ter_bloq boolean,
-        ter_observ varchar(250),
-        ter_f_alta timestamp,
-        ter_correo varchar(250),
-        ter_ext varchar(250),
-        ter_logo varchar(250),
-        ter_nombre varchar(250) not null,
-        ter_nadmin varchar(250),
-        ter_ambito varchar(250),
-        ter_codtgr int8,
-        primary key (ter_codigo)
+    create table STM_ETERRIT (
+        TER_CODIGO int8 not null,
+        TER_DIRECC varchar(250),
+        TER_BLOQ boolean,
+        TER_OBSERV varchar(250),
+        TER_F_ALTA timestamp,
+        TER_CORREO varchar(250),
+        TER_EXT varchar(250),
+        TER_LOGO varchar(250),
+        TER_NOMBRE varchar(250) not null,
+        TER_NADMIN varchar(250),
+        TER_AMBITO varchar(250),
+        TER_CODTGR int8,
+        primary key (TER_CODIGO)
     );
 
-    create table stm_fondo (
-        fon_codigo int8 not null,
-        fon_activo boolean,
-        fon_f_alta timestamp,
-        fon_desc varchar(250),
-        fon_nombre varchar(30),
-        fon_codgca int8,
-        primary key (fon_codigo)
+    create table STM_FONDO (
+        FON_CODIGO int8 not null,
+        FON_ACTIVO boolean,
+        FON_F_ALTA timestamp,
+        FON_DESC varchar(250),
+        FON_NOMBRE varchar(30),
+        FON_CODGCA int8,
+        primary key (FON_CODIGO)
     );
 
-    create table stm_gcacar (
-        gcc_codgca int8 not null,
-        gcc_codcar int8 not null,
-        primary key (gcc_codgca, gcc_codcar)
+    create table STM_GCACAR (
+        GCC_CODGCA int8 not null,
+        GCC_CODCAR int8 not null,
+        primary key (GCC_CODGCA, GCC_CODCAR)
     );
 
-    create table stm_grpcarto (
-        gca_codigo int8 not null,
-        gca_nombre varchar(80),
-        gca_tipo varchar(30),
-        primary key (gca_codigo)
+    create table STM_GRPCARTO (
+        GCA_CODIGO int8 not null,
+        GCA_NOMBRE varchar(80),
+        GCA_TIPO varchar(30),
+        primary key (GCA_CODIGO)
     );
 
-    create table stm_grptar (
-        gta_codigo int8 not null,
-        gta_nombre varchar(80),
-        primary key (gta_codigo)
+    create table STM_GRPTAR (
+        GTA_CODIGO int8 not null,
+        GTA_NOMBRE varchar(80),
+        primary key (GTA_CODIGO)
     );
 
-    create table stm_grpter (
-        grt_codter int8 not null,
-        grt_codterm int8 not null,
-        primary key (grt_codterm, grt_codter)
+    create table STM_GRPTER (
+        GRT_CODTER int8 not null,
+        GRT_CODTERM int8 not null,
+        primary key (GRT_CODTERM, GRT_CODTER)
     );
 
-    create table stm_log (
-        log_codigo int8 not null,
-        log_codapp varchar(255),
-        log_codtar varchar(255),
-        log_codter varchar(255),
-        log_codusu varchar(255),
-        log_cont int8,
-        log_fecha timestamp,
-        log_tipo varchar(50),
-        primary key (log_codigo)
+    create table STM_LOG (
+        LOG_CODIGO int8 not null,
+        LOG_CODAPP varchar(255),
+        LOG_CODTAR varchar(255),
+        LOG_CODTER varchar(255),
+        LOG_CODUSU varchar(255),
+        LOG_CONT int8,
+        LOG_FECHA timestamp,
+        LOG_TIPO varchar(50),
+        primary key (LOG_CODIGO)
     );
 
-    create table stm_paramapp (
-        pap_codigo int8 not null,
-        pap_nombre varchar(30),
-        pap_tipo varchar(250),
-        pap_valor varchar(250),
-        pap_codapp int8,
-        primary key (pap_codigo)
+    create table STM_PARAMAPP (
+        PAP_CODIGO int8 not null,
+        PAP_NOMBRE varchar(30),
+        PAP_TIPO varchar(250),
+        PAP_VALOR varchar(250),
+        PAP_CODAPP int8,
+        primary key (PAP_CODIGO)
     );
 
-    create table stm_paramser (
-        pse_codigo int8 not null,
-        pse_nombre varchar(30),
-        pse_tipo varchar(250),
-        pse_valor varchar(250),
-        pse_codser int8,
-        primary key (pse_codigo)
+    create table STM_PARAMSER (
+        PSE_CODIGO int8 not null,
+        PSE_NOMBRE varchar(30),
+        PSE_TIPO varchar(250),
+        PSE_VALOR varchar(250),
+        PSE_CODSER int8,
+        primary key (PSE_CODIGO)
     );
 
-    create table stm_paramtta (
-        ptt_codigo int8 not null,
-        ptt_nombre varchar(50),
-        ptt_orden int4,
-        ptt_tipo varchar(30),
-        ptt_valor varchar(512),
-        ptt_codtar int8,
-        primary key (ptt_codigo)
+    create table STM_PARAMTTA (
+        PTT_CODIGO int8 not null,
+        PTT_NOMBRE varchar(50),
+        PTT_ORDEN int4,
+        PTT_TIPO varchar(30),
+        PTT_VALOR varchar(512),
+        PTT_CODTAR int8,
+        primary key (PTT_CODIGO)
     );
 
-    create table stm_roles (
-        rol_codigo int8 not null,
-        rol_observ varchar(500),
-        rol_nombre varchar(250) not null,
-        primary key (rol_codigo)
+    create table STM_ROLES (
+        ROL_CODIGO int8 not null,
+        ROL_OBSERV varchar(500),
+        ROL_NOMBRE varchar(250) not null,
+        primary key (ROL_CODIGO)
     );
 
-    create table stm_rolgca (
-        rgc_codrol int8 not null,
-        rgc_codgca int8 not null,
-        primary key (rgc_codrol, rgc_codgca)
+    create table STM_ROLGCA (
+        RGC_CODROL int8 not null,
+        RGC_CODGCA int8 not null,
+        primary key (RGC_CODROL, RGC_CODGCA)
     );
 
-    create table stm_roltar (
-        rta_codrol int8 not null,
-        rta_codtar int8 not null,
-        primary key (rta_codrol, rta_codtar)
+    create table STM_ROLTAR (
+        RTA_CODROL int8 not null,
+        RTA_CODTAR int8 not null,
+        primary key (RTA_CODROL, RTA_CODTAR)
     );
 
-    create table stm_servicio (
-        ser_codigo int8 not null,
-        ser_f_alta timestamp,
-        ser_infourl varchar(250),
-        ser_leyenda varchar(250),
-        ser_nombre varchar(30),
-        ser_projects varchar(1000),
-        ser_tipo varchar(30),
-        ser_url varchar(250),
-        ser_codcon int8,
-        primary key (ser_codigo)
+    create table STM_SERVICIO (
+        SER_CODIGO int8 not null,
+        SER_F_ALTA timestamp,
+        SER_INFOURL varchar(250),
+        SER_LEYENDA varchar(250),
+        SER_NOMBRE varchar(30),
+        SER_PROJECTS varchar(1000),
+        SER_TIPO varchar(30),
+        SER_URL varchar(250),
+        SER_CODCON int8,
+        primary key (SER_CODIGO)
     );
 
-    create table stm_tarea (
-        tar_codigo int8 not null,
-        tar_f_alta timestamp,
-        tar_nombre varchar(50),
-        tar_orden int4,
-        tar_codcon int8,
-        tar_codgta int8,
-        tar_codtta int8,
-        tar_codtui int8,
-        primary key (tar_codigo)
+    create table STM_TAREA (
+        TAR_CODIGO int8 not null,
+        TAR_F_ALTA timestamp,
+        TAR_NOMBRE varchar(50),
+        TAR_ORDEN int4,
+        TAR_CODCON int8,
+        TAR_CODGTA int8,
+        TAR_CODTTA int8,
+        TAR_CODTUI int8,
+        primary key (TAR_CODIGO)
     );
 
-    create table stm_tarea_ui (
-        tui_codigo int8 not null,
-        tui_nombre varchar(30),
-        tui_orden int4,
-        tui_tooltip varchar(100),
-        tui_tipo varchar(30),
-        primary key (tui_codigo)
+    create table STM_TAREA_UI (
+        TUI_CODIGO int8 not null,
+        TUI_NOMBRE varchar(30),
+        TUI_ORDEN int4,
+        TUI_TOOLTIP varchar(100),
+        TUI_TIPO varchar(30),
+        primary key (TUI_CODIGO)
     );
 
-    create table stm_tipogrp (
-        tgr_codigo int8 not null,
-        tgr_nombre varchar(250) not null,
-        primary key (tgr_codigo)
+    create table STM_TIPOGRP (
+        TGR_CODIGO int8 not null,
+        TGR_NOMBRE varchar(250) not null,
+        primary key (TGR_CODIGO)
     );
 
-    create table stm_tipotarea (
-        tta_codigo int8 not null,
-        tta_nombre varchar(30),
-        primary key (tta_codigo)
+    create table STM_TIPOTAREA (
+        TTA_CODIGO int8 not null,
+        TTA_NOMBRE varchar(30),
+        primary key (TTA_CODIGO)
     );
 
-    create table stm_usuario (
-        usu_codigo int8 not null,
-        usu_adm boolean,
-        usu_bloq boolean,
-        usu_nombre varchar(30),
-        usu_apellidos varchar(40),
-        usu_password varchar(128),
-        usu_usuario varchar(30) not null,
-        primary key (usu_codigo)
+    create table STM_USUARIO (
+        USU_CODIGO int8 not null,
+        USU_ADM boolean,
+        USU_BLOQ boolean,
+        USU_NOMBRE varchar(30),
+        USU_APELLIDOS varchar(40),
+        USU_PASSWORD varchar(128),
+        USU_USUARIO varchar(30) not null,
+        primary key (USU_CODIGO)
     );
 
-    create table stm_usuconf (
-        ucf_codigo int8 not null,
-        ucf_codrol int8,
-        ucf_codter int8,
-        ucf_codusu int8,
-        primary key (ucf_codigo)
+    create table STM_USUCONF (
+        UCF_CODIGO int8 not null,
+        UCF_CODROL int8,
+        UCF_CODTER int8,
+        UCF_CODUSU int8,
+        primary key (UCF_CODIGO)
     );
 
-    alter table stm_appfon 
-        add constraint UK4kuh9k9q18frfohh52ykcr5dd unique (apf_codapp, apf_codfon);
+    alter table STM_APPFON 
+        add constraint UKhhx6qumb08a4359bjf5f4xegk unique (APF_CODAPP, APF_CODFON);
 
-    alter table stm_dispcarto 
-        add constraint UKqs36umt12ykfouct1kp13eq11 unique (dca_codter, dca_codcar);
+    alter table STM_DISPCARTO 
+        add constraint UK2pey2ycq7c2m366cioxfvx9ps unique (DCA_CODTER, DCA_CODCAR);
 
-    alter table stm_disptarea 
-        add constraint UKkjxchf9edsutjpxpi5ejxxufk unique (dta_codter, dta_codtar);
+    alter table STM_DISPTAREA 
+        add constraint UKhellrgq9kppvqlpa1jfjq5x0q unique (DTA_CODTER, DTA_CODTAR);
 
-    alter table stm_eterrit 
-        add constraint UK_ojij5ditcq8ru4xyyv8d4hdif unique (ter_nombre);
+    alter table STM_ETERRIT 
+        add constraint UK_aybq80n4mf7784mfvje1f0kaw unique (TER_NOMBRE);
 
-    alter table stm_roles 
-        add constraint UK_3tibp1rvigw8r4488uq7ejw5j unique (rol_nombre);
+    alter table STM_ROLES 
+        add constraint UK_9d2lyfn2i5mrahk8x07b49xbf unique (ROL_NOMBRE);
 
-    alter table stm_tipogrp 
-        add constraint UK_eq25o43qfag7sghcgqovilrh8 unique (tgr_nombre);
+    alter table STM_TIPOGRP 
+        add constraint UK_3b7h1d69q6wxpbu2f1j6ldlbc unique (TGR_NOMBRE);
 
-    alter table stm_usuario 
-        add constraint UK_hb5bfcb8w3wu6h55sshqxt3u6 unique (usu_usuario);
+    alter table STM_USUARIO 
+        add constraint UK_s3k4fa9at32bdnxy4vf97ko3u unique (USU_USUARIO);
 
-    alter table stm_usuconf 
-        add constraint UK4ax9yy3x8sbt7vo4py8skc8q2 unique (ucf_codusu, ucf_codter, ucf_codrol);
+    alter table STM_USUCONF 
+        add constraint UK6xq8qwiqibb5pvawnpin9bg74 unique (UCF_CODUSU, UCF_CODTER, UCF_CODROL);
 
-    alter table stm_apparb 
+    alter table STM_APPARB 
         add constraint STM_APA_FK_ARB 
-        foreign key (apa_codarb) 
-        references stm_arbol;
+        foreign key (APA_CODARB) 
+        references STM_ARBOL;
 
-    alter table stm_apparb 
+    alter table STM_APPARB 
         add constraint STM_APA_FK_APP 
-        foreign key (apa_codapp) 
-        references stm_apps;
+        foreign key (APA_CODAPP) 
+        references STM_APPS;
 
-    alter table stm_appfon 
+    alter table STM_APPFON 
         add constraint STM_APF_FK_APP 
-        foreign key (apf_codapp) 
-        references stm_apps;
+        foreign key (APF_CODAPP) 
+        references STM_APPS;
 
-    alter table stm_appfon 
+    alter table STM_APPFON 
         add constraint STM_APF_FK_FON 
-        foreign key (apf_codfon) 
-        references stm_fondo;
+        foreign key (APF_CODFON) 
+        references STM_FONDO;
 
-    alter table stm_approl 
-        add constraint STM_APR_FK_ROl 
-        foreign key (apr_codrol) 
-        references stm_roles;
+    alter table STM_APPROL 
+        add constraint STM_APR_FK_ROL 
+        foreign key (APR_CODROL) 
+        references STM_ROLES;
 
-    alter table stm_approl 
+    alter table STM_APPROL 
         add constraint STM_APR_FK_APP 
-        foreign key (apr_codapp) 
-        references stm_apps;
+        foreign key (APR_CODAPP) 
+        references STM_APPS;
 
-    alter table stm_apps 
+    alter table STM_APPS 
         add constraint STM_APP_FK_GCA 
-        foreign key (app_codgca) 
-        references stm_grpcarto;
+        foreign key (APP_CODGCA) 
+        references STM_GRPCARTO;
 
-    alter table stm_arbolnod 
+    alter table STM_ARBOLNOD 
         add constraint STM_ARN_FK_CAR 
-        foreign key (arn_codcar) 
-        references stm_carto;
+        foreign key (ARN_CODCAR) 
+        references STM_CARTO;
 
-    alter table stm_arbolnod 
-        add constraint STM_ARN_FK_PADRE 
-        foreign key (arn_codpadre) 
-        references stm_arbolnod;
+    alter table STM_ARBOLNOD 
+        add constraint STM_ARN_FK_ARN 
+        foreign key (ARN_CODPADRE) 
+        references STM_ARBOLNOD;
 
-    alter table stm_arbolnod 
+    alter table STM_ARBOLNOD 
         add constraint STM_ARN_FK_ARB 
-        foreign key (arn_codarb) 
-        references stm_arbol;
+        foreign key (ARN_CODARB) 
+        references STM_ARBOL;
 
-    alter table stm_arbrol 
+    alter table STM_ARBROL 
         add constraint STM_ARR_FK_ROL 
         foreign key (arr_codrol) 
-        references stm_roles;
+        references STM_ROLES;
 
-    alter table stm_arbrol 
+    alter table STM_ARBROL 
         add constraint STM_ARR_FK_ARB 
-        foreign key (arr_codarb) 
-        references stm_arbol;
+        foreign key (ARR_CODARB) 
+        references STM_ARBOL;
 
-    alter table stm_cargo 
+    alter table STM_CARGO 
         add constraint STM_CGO_FK_TER 
-        foreign key (cgo_codter) 
-        references stm_eterrit;
+        foreign key (CGO_CODTER) 
+        references STM_ETERRIT;
 
-    alter table stm_cargo 
+    alter table STM_CARGO 
         add constraint STM_CGO_FK_USU 
-        foreign key (cgo_codusu) 
-        references stm_usuario;
+        foreign key (CGO_CODUSU) 
+        references STM_USUARIO;
 
-    alter table stm_carto 
+    alter table STM_CARTO 
         add constraint STM_CAR_FK_CON 
-        foreign key (car_codcon) 
-        references stm_conexion;
+        foreign key (CAR_CODCON) 
+        references STM_CONEXION;
 
-    alter table stm_carto 
+    alter table STM_CARTO 
         add constraint STM_CAR_FK_SERSEL 
-        foreign key (car_codsersel) 
-        references stm_servicio;
+        foreign key (CAR_CODSERSEL) 
+        references STM_SERVICIO;
 
-    alter table stm_carto 
+    alter table STM_CARTO 
         add constraint STM_CAR_FK_SER 
-        foreign key (car_codser) 
-        references stm_servicio;
+        foreign key (CAR_CODSER) 
+        references STM_SERVICIO;
 
-    alter table stm_dispcarto 
+    alter table STM_DISPCARTO 
         add constraint STM_DCA_FK_CAR 
-        foreign key (dca_codcar) 
-        references stm_carto;
+        foreign key (DCA_CODCAR) 
+        references STM_CARTO;
 
-    alter table stm_dispcarto 
+    alter table STM_DISPCARTO 
         add constraint STM_DCA_FK_TER 
-        foreign key (dca_codter) 
-        references stm_eterrit 
+        foreign key (DCA_CODTER) 
+        references STM_ETERRIT 
         on delete cascade;
 
-    alter table stm_disptarea 
+    alter table STM_DISPTAREA 
         add constraint STM_DTA_FK_TAR 
-        foreign key (dta_codtar) 
-        references stm_tarea;
+        foreign key (DTA_CODTAR) 
+        references STM_TAREA;
 
-    alter table stm_disptarea 
+    alter table STM_DISPTAREA 
         add constraint STM_DTA_FK_TER 
-        foreign key (dta_codter) 
-        references stm_eterrit;
+        foreign key (DTA_CODTER) 
+        references STM_ETERRIT;
 
-    alter table stm_eterrit 
+    alter table STM_ETERRIT 
         add constraint STM_TER_FK_TGR 
-        foreign key (ter_codtgr) 
-        references stm_tipogrp;
+        foreign key (TER_CODTGR) 
+        references STM_TIPOGRP;
 
-    alter table stm_fondo 
+    alter table STM_FONDO 
         add constraint STM_FON_FK_GCA 
-        foreign key (fon_codgca) 
-        references stm_grpcarto;
+        foreign key (FON_CODGCA) 
+        references STM_GRPCARTO;
 
-    alter table stm_gcacar 
+    alter table STM_GCACAR 
         add constraint STM_GCC_FK_CAR 
-        foreign key (gcc_codcar) 
-        references stm_carto;
+        foreign key (GCC_CODCAR) 
+        references STM_CARTO;
 
-    alter table stm_gcacar 
+    alter table STM_GCACAR 
         add constraint STM_GCC_FK_GCA 
-        foreign key (gcc_codgca) 
-        references stm_grpcarto;
+        foreign key (GCC_CODGCA) 
+        references STM_GRPCARTO;
 
-    alter table stm_grpter 
+    alter table STM_GRPTER 
         add constraint STM_GRT_FK_TERM 
-        foreign key (grt_codterm) 
-        references stm_eterrit;
+        foreign key (GRT_CODTERM) 
+        references STM_ETERRIT;
 
-    alter table stm_grpter 
+    alter table STM_GRPTER 
         add constraint STM_GRT_FK_TER 
-        foreign key (grt_codter) 
-        references stm_eterrit;
+        foreign key (GRT_CODTER) 
+        references STM_ETERRIT;
 
-    alter table stm_paramapp 
+    alter table STM_PARAMAPP 
         add constraint STM_PAP_FK_APP 
-        foreign key (pap_codapp) 
-        references stm_apps;
+        foreign key (PAP_CODAPP) 
+        references STM_APPS;
 
-    alter table stm_paramser 
+    alter table STM_PARAMSER 
         add constraint STM_PSE_FK_SER 
-        foreign key (pse_codser) 
-        references stm_servicio;
+        foreign key (PSE_CODSER) 
+        references STM_SERVICIO;
 
-    alter table stm_paramtta 
+    alter table STM_PARAMTTA 
         add constraint STM_PTT_FK_TAR 
-        foreign key (ptt_codtar) 
-        references stm_tarea;
+        foreign key (PTT_CODTAR) 
+        references STM_TAREA;
 
-    alter table stm_rolgca 
+    alter table STM_ROLGCA 
         add constraint STM_RGC_FK_GCA 
-        foreign key (rgc_codgca) 
-        references stm_roles;
+        foreign key (RGC_CODGCA) 
+        references STM_ROLES;
 
-    alter table stm_rolgca 
+    alter table STM_ROLGCA 
         add constraint STM_RGC_FK_ROL 
-        foreign key (rgc_codrol) 
-        references stm_grpcarto;
+        foreign key (RGC_CODROL) 
+        references STM_GRPCARTO;
 
-    alter table stm_roltar 
-        add constraint STM_RTA_FK_TAR 
-        foreign key (rta_codtar) 
-        references stm_roles;
+    alter table STM_ROLTAR 
+        add constraint STM_RTA_FK_T 
+        foreign key (RTA_CODTAR) 
+        references STM_ROLES;
 
-    alter table stm_roltar 
+    alter table STM_ROLTAR 
         add constraint STM_RTA_FK_ROL 
-        foreign key (rta_codrol) 
-        references stm_tarea;
+        foreign key (RTA_CODROL) 
+        references STM_TAREA;
 
-    alter table stm_servicio 
+    alter table STM_SERVICIO 
         add constraint STM_SER_FK_CON 
-        foreign key (ser_codcon) 
-        references stm_conexion;
+        foreign key (SER_CODCON) 
+        references STM_CONEXION;
 
-    alter table stm_tarea 
+    alter table STM_TAREA 
         add constraint STM_TAR_FK_CON 
-        foreign key (tar_codcon) 
-        references stm_conexion;
+        foreign key (TAR_CODCON) 
+        references STM_CONEXION;
 
-    alter table stm_tarea 
+    alter table STM_TAREA 
         add constraint STM_TAR_FK_GTA 
-        foreign key (tar_codgta) 
-        references stm_grptar;
+        foreign key (TAR_CODGTA) 
+        references STM_GRPTAR;
 
-    alter table stm_tarea 
+    alter table STM_TAREA 
         add constraint STM_TAR_FK_TTA 
-        foreign key (tar_codtta) 
-        references stm_tipotarea;
+        foreign key (TAR_CODTTA) 
+        references STM_TIPOTAREA;
 
-    alter table stm_tarea 
+    alter table STM_TAREA 
         add constraint STM_TAR_FK_TUI 
-        foreign key (tar_codtui) 
-        references stm_tarea_ui;
+        foreign key (TAR_CODTUI) 
+        references STM_TAREA_UI;
 
-    alter table stm_usuconf 
+    alter table STM_USUCONF 
         add constraint STM_UCF_FK_ROL 
-        foreign key (ucf_codrol) 
-        references stm_roles 
+        foreign key (UCF_CODROL) 
+        references STM_ROLES 
         on delete cascade;
 
-    alter table stm_usuconf 
+    alter table STM_USUCONF 
         add constraint STM_UCF_FK_TER 
-        foreign key (ucf_codter) 
-        references stm_eterrit 
+        foreign key (UCF_CODTER) 
+        references STM_ETERRIT 
         on delete cascade;
 
-    alter table stm_usuconf 
+    alter table STM_USUCONF 
         add constraint STM_UCF_FK_USU 
-        foreign key (ucf_codusu) 
-        references stm_usuario;
+        foreign key (UCF_CODUSU) 
+        references STM_USUARIO;
