@@ -2,17 +2,17 @@ package org.sitmun.plugin.core.repository;
 
 
 import org.sitmun.plugin.core.domain.UserPosition;
-import org.sitmun.plugin.core.domain.UserPosition;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
+
 @RepositoryRestResource(collectionResourceRel = "user-positions", path = "user-positions")
-public interface UserPositionRepository extends CrudRepository<UserPosition, Long> {
+public interface UserPositionRepository extends CrudRepository<UserPosition, BigInteger> {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -25,7 +25,7 @@ public interface UserPositionRepository extends CrudRepository<UserPosition, Lon
 	
 	@Override
 	@PreAuthorize("hasPermission(#entity, 'administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.UserPosition', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(#entity, 'administration') or hasPermission(filterObject, 'read')")
@@ -33,5 +33,5 @@ public interface UserPositionRepository extends CrudRepository<UserPosition, Lon
 	
 	@Override
 	@PostAuthorize("hasPermission(#entity, 'administration') or hasPermission(returnObject, 'read')")
-	UserPosition findOne(Long id);
+	UserPosition findOne(BigInteger id);
 }

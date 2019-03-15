@@ -1,6 +1,7 @@
 package org.sitmun.plugin.core.domain;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "STM_CONEXION")
@@ -9,8 +10,8 @@ public class Connection {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "CON_CODIGO")
-  private long id;
+  @Column(name = "CON_CODIGO", precision = 11)
+  private BigInteger id;
 
   @Column(name = "CON_NOMBRE", length = 80)
   private String name;
@@ -27,11 +28,11 @@ public class Connection {
   @Column(name = "CON_CONSTRING", length = 250)
   private String connectionString;
 
-  public long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

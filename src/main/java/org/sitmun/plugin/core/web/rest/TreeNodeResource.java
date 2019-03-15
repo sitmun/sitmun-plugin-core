@@ -1,10 +1,5 @@
 package org.sitmun.plugin.core.web.rest;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
-import java.util.List;
-
 import org.sitmun.plugin.core.domain.Cartography;
 import org.sitmun.plugin.core.repository.TreeNodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +15,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.math.BigInteger;
+import java.util.List;
+
 @RepositoryRestController
 public class TreeNodeResource {
 
@@ -34,7 +32,7 @@ public class TreeNodeResource {
 	}
 
 	@GetMapping("/tree-nodes/{id}/cartography")
-	public ResponseEntity<?> getTreeNodeCartography(@PathVariable Long id) {
+	public ResponseEntity<?> getTreeNodeCartography(@PathVariable BigInteger id) {
 		Cartography cartography = null;
 		List<Cartography> cartographys = treeNodeRepository.findCartography(id);
 		if (cartographys.size() > 0) {

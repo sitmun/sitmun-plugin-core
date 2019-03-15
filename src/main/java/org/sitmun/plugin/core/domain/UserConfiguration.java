@@ -4,6 +4,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "STM_USUCONF", uniqueConstraints = {@UniqueConstraint(name = "STM_UCF_UK", columnNames = {"UCF_CODUSU", "UCF_CODTER", "UCF_CODROL"})})
@@ -12,8 +13,8 @@ public class UserConfiguration {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "UCF_CODIGO")
-  private long id;
+  @Column(name = "UCF_CODIGO", precision = 11)
+  private BigInteger id;
 
   @JoinColumn(name = "UCF_CODUSU", foreignKey = @ForeignKey(name = "STM_UCF_FK_USU"))
   @ManyToOne
@@ -32,11 +33,11 @@ public class UserConfiguration {
   @JoinColumn(name = "UCF_CODROL", foreignKey = @ForeignKey(name = "STM_UCF_FK_ROL"))
   private Role role;
 
-  public long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

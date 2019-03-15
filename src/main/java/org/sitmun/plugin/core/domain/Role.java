@@ -2,6 +2,7 @@ package org.sitmun.plugin.core.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "STM_ROLES", uniqueConstraints = {@UniqueConstraint(name = "STM_ROL_NOM_UK", columnNames = {"ROL_NOMBRE"})})
@@ -10,8 +11,8 @@ public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "ROL_CODIGO")
-  private long id;
+  @Column(name = "ROL_CODIGO", precision = 11)
+  private BigInteger id;
 
   @NotNull
   @Column(name = "ROL_NOMBRE", nullable = false, length = 250)
@@ -20,11 +21,11 @@ public class Role {
   @Column(name = "ROL_OBSERV", length = 500)
   private String comments;
 
-  public long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

@@ -7,6 +7,7 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.Set;
 
 @Entity
@@ -16,8 +17,8 @@ public class CartographyGroup implements Identifiable {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "GCA_CODIGO")
-  private long id;
+  @Column(name = "GCA_CODIGO", precision = 11)
+  private BigInteger id;
 
   @Column(name = "GCA_NOMBRE", length = 80)
   private String name;
@@ -35,11 +36,11 @@ public class CartographyGroup implements Identifiable {
   @JoinTable(name = "STM_ROLGCA", joinColumns = @JoinColumn(name = "RGC_CODROL", foreignKey = @ForeignKey(name = "STM_RGC_FK_ROL")), inverseJoinColumns = @JoinColumn(name = "RGC_CODGCA", foreignKey = @ForeignKey(name = "STM_RGC_FK_GCA")))
   private Set<Role> roles;
 
-  public Long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

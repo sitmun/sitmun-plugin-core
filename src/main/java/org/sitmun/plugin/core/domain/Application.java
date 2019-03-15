@@ -7,6 +7,7 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,8 +19,8 @@ public class Application implements Identifiable {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "APP_CODIGO")
-  private long id;
+  @Column(name = "APP_CODIGO", precision = 11)
+  private BigInteger id;
 
   @Column(name = "APP_NOMBRE", length = 80)
   private String name;
@@ -65,11 +66,11 @@ public class Application implements Identifiable {
   @JoinColumn(name = "APP_CODGCA", foreignKey = @ForeignKey(name = "STM_APP_FK_GCA"))
   private CartographyGroup situationMap;
 
-  public Long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

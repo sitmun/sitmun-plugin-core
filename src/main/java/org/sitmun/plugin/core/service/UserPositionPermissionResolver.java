@@ -1,5 +1,10 @@
 package org.sitmun.plugin.core.service;
 
+import org.sitmun.plugin.core.domain.Territory;
+import org.sitmun.plugin.core.domain.User;
+import org.sitmun.plugin.core.domain.UserConfiguration;
+import org.sitmun.plugin.core.domain.UserPosition;
+import org.sitmun.plugin.core.repository.UserPositionRepository;
 import org.sitmun.plugin.core.security.AuthoritiesConstants;
 import org.sitmun.plugin.core.security.PermissionResolver;
 import org.sitmun.plugin.core.security.SecurityConstants;
@@ -8,12 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import org.sitmun.plugin.core.domain.Territory;
-import org.sitmun.plugin.core.domain.User;
-import org.sitmun.plugin.core.domain.UserConfiguration;
-import org.sitmun.plugin.core.domain.UserPosition;
-import org.sitmun.plugin.core.repository.UserPositionRepository;
 
 @Component
 public class UserPositionPermissionResolver implements PermissionResolver<UserPosition> {
@@ -48,7 +47,7 @@ public class UserPositionPermissionResolver implements PermissionResolver<UserPo
 			}
 		} else if (permission.equalsIgnoreCase(SecurityConstants.READ_PERMISSION)) {
 			// Si son mis cargos o soy el admin del territorio
-			return (authUser.getId().longValue() == entity.getUser().getId()) ||permissions.stream()
+			return (authUser.getId().equals(entity.getUser().getId())) ||permissions.stream()
 					.filter(p -> p.getRole().getName()
 							.equalsIgnoreCase(AuthoritiesConstants.ADMIN_ORGANIZACION))
 					.map(UserConfiguration::getTerritory).map(Territory::getId).collect(Collectors.toList())

@@ -8,6 +8,7 @@ import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "STM_APPFON", uniqueConstraints = {@UniqueConstraint(name = "STM_APF_UK", columnNames = {"APF_CODAPP", "APF_CODFON"})})
@@ -16,8 +17,8 @@ public class ApplicationBackground implements Identifiable {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "APF_CODIGO")
-  private long id;
+  @Column(name = "APF_CODIGO", precision = 11)
+  private BigInteger id;
 
   @Column(name = "APF_ORDEN")
   private Integer order;
@@ -34,11 +35,11 @@ public class ApplicationBackground implements Identifiable {
   @NotNull
   private Background background;
 
-  public Long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

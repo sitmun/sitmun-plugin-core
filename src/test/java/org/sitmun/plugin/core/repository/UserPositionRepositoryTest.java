@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 
 @RunWith(SpringRunner.class)
@@ -72,16 +71,16 @@ public class UserPositionRepositoryTest {
 
   @Test
   public void saveUserPosition() {
-    assumeThat(userPositionRepository.findOne(userPosition.getId())).isNull();
+    assertThat(userPosition.getId()).isNull();
     userPositionRepository.save(userPosition);
     assertThat(userPosition.getId()).isNotZero();
   }
 
   @Test
   public void findOneUserPositionById() {
-    assumeThat(userPositionRepository.findOne(userPosition.getId())).isNull();
+    assertThat(userPosition.getId()).isNull();
     userPositionRepository.save(userPosition);
-    assumeThat(userPosition.getId()).isNotZero();
+    assertThat(userPosition.getId()).isNotZero();
 
     assertThat(userPositionRepository.findOne(userPosition.getId())).isNotNull();
   }

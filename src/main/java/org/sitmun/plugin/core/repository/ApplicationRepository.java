@@ -1,9 +1,6 @@
 package org.sitmun.plugin.core.repository;
 
 
-import java.util.List;
-import java.util.Optional;
-
 import org.sitmun.plugin.core.domain.Application;
 import org.sitmun.plugin.core.domain.ApplicationBackground;
 import org.sitmun.plugin.core.domain.CartographyGroup;
@@ -17,10 +14,14 @@ import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.Optional;
+
 
 //@Api(tags = "Applications")
 @RepositoryRestResource(collectionResourceRel = "applications", path = "applications"/*, excerptProjection = ApplicationProjection.class*/)
-public interface ApplicationRepository extends CrudRepository<Application, Long> {
+public interface ApplicationRepository extends CrudRepository<Application, BigInteger> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -33,7 +34,7 @@ public interface ApplicationRepository extends CrudRepository<Application, Long>
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Application','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Application', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(returnObject, 'administration') or hasPermission(filterObject, 'read')")
@@ -41,7 +42,7 @@ public interface ApplicationRepository extends CrudRepository<Application, Long>
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Application','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Application', 'read')")
-	Application findOne(@P("entityId") Long entityId);
+	Application findOne(@P("entityId") BigInteger entityId);
 
 	@RestResource(exported = false)
 	Optional<Application> findOneByName(String name);
@@ -49,17 +50,17 @@ public interface ApplicationRepository extends CrudRepository<Application, Long>
 	@RestResource(exported = false)
 	@PostFilter("hasPermission(returnObject, 'administration') or hasPermission(filterObject, 'read')")
 	@Query("select application.trees from Application application where application.id =:id")    
-	List<Tree> findApplicationTrees(@Param("id") Long id);
+	List<Tree> findApplicationTrees(@Param("id") BigInteger id);
 
 	@RestResource(exported = false)
 	@PostFilter("hasPermission(returnObject, 'administration') or hasPermission(filterObject, 'read')")
 	@Query("select application.backgrounds from Application application where application.id =:id")    
-	List<ApplicationBackground> findApplicationBackgrounds(@Param("id") Long id);
+	List<ApplicationBackground> findApplicationBackgrounds(@Param("id") BigInteger id);
 
 	@RestResource(exported = false)
 	@PostFilter("hasPermission(returnObject, 'administration') or hasPermission(filterObject, 'read')")
 	@Query("select application.situationMap from Application application where application.id =:id")    
-	List<CartographyGroup> findSituationMap(@Param("id") Long id);
+	List<CartographyGroup> findSituationMap(@Param("id") BigInteger id);
     
 
 }

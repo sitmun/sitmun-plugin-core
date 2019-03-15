@@ -14,6 +14,7 @@ import org.sitmun.plugin.core.service.dto.UserDTO;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class UserService implements PermissionResolver<User> {
 		if (user.getPassword() != null) {
 			user.setPassword(bcryptPasswordEncoder.encode(user.getPassword()));
 		}
-		boolean newUser = (user.getId() == 0);
+		boolean newUser = (user.getId() == null);
 		user = applicationUserRepository.save(user);
 
 		// fix for creation with "ORGANIZATION ADMIN" role
@@ -90,17 +91,17 @@ public class UserService implements PermissionResolver<User> {
 
 	}
 
-	public Optional<User> findUser(Long id) {
+	public Optional<User> findUser(BigInteger id) {
 		return Optional.of(applicationUserRepository.findOne(id));
 	}
 
-	public void changeUserPassword(Long id, String password) {
+	public void changeUserPassword(BigInteger id, String password) {
 		User user = applicationUserRepository.findOne(id);
 		user.setPassword(bcryptPasswordEncoder.encode(password));
 		applicationUserRepository.save(user);
 	}
 
-	public void updateUser(Long id, String firstName, String lastName) {
+	public void updateUser(BigInteger id, String firstName, String lastName) {
 		User user = applicationUserRepository.findOne(id);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
@@ -114,7 +115,7 @@ public class UserService implements PermissionResolver<User> {
 	}
 
 	public boolean resolvePermission(User authUser, User user, String permission) {
-		if (authUser.getId().longValue() == user.getId())
+		if (authUser.getId().equals(user.getId()))
 			return true;
 		Set<UserConfiguration> permissions = authUser.getPermissions();
 		boolean isAdminSitmun = permissions.stream()
@@ -128,7 +129,7 @@ public class UserService implements PermissionResolver<User> {
 		// si tengo el rol de admin de territorio y el usuario tiene permisos asociados
 		// a este territorio
 		if (isAdminOrganization) {
-			if (user.getId() != 0) {
+			if (user.getId() != null) {
         return this.getUserWithPermissionsByUsername(user.getUsername()).map(u ->
             u.getPermissions().stream()
               .anyMatch(targetDomainObjectPermissions ->

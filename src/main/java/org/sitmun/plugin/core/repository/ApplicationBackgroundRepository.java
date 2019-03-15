@@ -1,15 +1,16 @@
 package org.sitmun.plugin.core.repository;
 
 import org.sitmun.plugin.core.domain.ApplicationBackground;
-import org.sitmun.plugin.core.domain.ApplicationBackground;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
+
 @RepositoryRestResource(collectionResourceRel = "application-backgrounds", path = "application-backgrounds")
-public interface ApplicationBackgroundRepository extends PagingAndSortingRepository<ApplicationBackground, Long> {
+public interface ApplicationBackgroundRepository extends PagingAndSortingRepository<ApplicationBackground, BigInteger> {
 	@SuppressWarnings("unchecked")
 	@Override
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasPermission(#entity, 'administration') or hasPermission(#entity, 'write')")
@@ -21,7 +22,7 @@ public interface ApplicationBackgroundRepository extends PagingAndSortingReposit
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.ApplicationBackground','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.ApplicationBackground', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(returnObject, 'administration') or hasPermission(filterObject, 'read')")
@@ -29,6 +30,6 @@ public interface ApplicationBackgroundRepository extends PagingAndSortingReposit
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.ApplicationBackground','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.ApplicationBackground', 'read')")
-	ApplicationBackground findOne(@P("entityId") Long entityId);
+	ApplicationBackground findOne(@P("entityId") BigInteger entityId);
 
 }

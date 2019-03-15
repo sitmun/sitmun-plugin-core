@@ -5,6 +5,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
@@ -14,8 +15,8 @@ public class CartographyAvailability {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "DCA_CODIGO")
-  private long id;
+  @Column(name = "DCA_CODIGO", precision = 11)
+  private BigInteger id;
 
   @Column(name = "DCA_F_ALTA")
   private Date createdDate;
@@ -34,11 +35,11 @@ public class CartographyAvailability {
   @NotNull
   private Cartography cartography;
 
-  public long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

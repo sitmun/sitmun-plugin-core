@@ -2,6 +2,7 @@ package org.sitmun.plugin.core.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,8 +14,8 @@ public class Territory {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "TER_CODIGO")
-  private long id;
+  @Column(name = "TER_CODIGO", precision = 11)
+  private BigInteger id;
 
   @NotNull
   @Column(name = "TER_NOMBRE", nullable = false, length = 250)
@@ -59,11 +60,11 @@ public class Territory {
   @JoinColumn(name = "TER_CODTGR", foreignKey = @ForeignKey(name = "STM_TER_FK_TGR"))
   private TerritoryType type;
 
-  public long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

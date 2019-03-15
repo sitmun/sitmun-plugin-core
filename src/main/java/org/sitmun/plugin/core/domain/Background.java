@@ -8,6 +8,7 @@ import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 import java.util.Date;
 
 @Entity
@@ -17,8 +18,8 @@ public class Background implements Identifiable {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "FON_CODIGO")
-  private long id;
+  @Column(name = "FON_CODIGO", precision = 11)
+  private BigInteger id;
 
   @Column(name = "FON_NOMBRE", length = 30)
   private String name;
@@ -37,11 +38,11 @@ public class Background implements Identifiable {
   @NotNull
   private CartographyGroup cartographyGroup;
 
-  public Long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

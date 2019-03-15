@@ -2,6 +2,7 @@ package org.sitmun.plugin.core.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "STM_PARAMSER")
@@ -10,8 +11,8 @@ public class ServiceParameter {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "PSE_CODIGO")
-  private long id;
+  @Column(name = "PSE_CODIGO", precision = 11)
+  private BigInteger id;
 
   @Column(name = "PSE_NOMBRE", length = 30)
   private String name;
@@ -28,11 +29,11 @@ public class ServiceParameter {
   @JoinColumn(name = "PSE_CODSER", foreignKey = @ForeignKey(name = "STM_PSE_FK_SER"))
   private Service service;
 
-  public long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

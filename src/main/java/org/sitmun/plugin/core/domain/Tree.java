@@ -7,6 +7,7 @@ import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,8 +18,8 @@ public class Tree implements Identifiable {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "ARB_CODIGO")
-  private long id;
+  @Column(name = "ARB_CODIGO", precision = 11)
+  private BigInteger id;
 
   @Column(name = "ARB_NOMBRE", length = 100)
   private String name;
@@ -41,14 +42,14 @@ public class Tree implements Identifiable {
   /**
    * @return the id
    */
-  public Long getId() {
+  public BigInteger getId() {
     return id;
   }
 
   /**
    * @param id the id to set
    */
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

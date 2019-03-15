@@ -1,16 +1,16 @@
 package org.sitmun.plugin.core.repository;
 
 import org.sitmun.plugin.core.domain.Connection;
-import org.sitmun.plugin.core.domain.Connection;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
+
 @RepositoryRestResource(collectionResourceRel = "connections", path = "connections")
-public interface ConnectionRepository extends CrudRepository<Connection, Long> {
+public interface ConnectionRepository extends CrudRepository<Connection, BigInteger> {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -23,7 +23,7 @@ public interface ConnectionRepository extends CrudRepository<Connection, Long> {
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Connection','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Connection', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(filterObject, 'administration') or hasPermission(filterObject, 'read')")
@@ -31,6 +31,6 @@ public interface ConnectionRepository extends CrudRepository<Connection, Long> {
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Connection','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Connection', 'read')")
-	Connection findOne(@P("entityId") Long entityId);
+	Connection findOne(@P("entityId") BigInteger entityId);
 
 }

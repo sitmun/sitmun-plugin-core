@@ -68,27 +68,27 @@
     create sequence STM_SEQ start with 1 increment by 50;
 
     create table STM_APPARB (
-        APA_CODAPP number(19,0) not null,
-        APA_CODARB number(19,0) not null,
+        APA_CODAPP number(11,0) not null,
+        APA_CODARB number(11,0) not null,
         primary key (APA_CODAPP, APA_CODARB)
     );
 
     create table STM_APPFON (
-        APF_CODIGO number(19,0) not null,
+        APF_CODIGO number(11,0) not null,
         APF_ORDEN number(10,0),
-        APF_CODAPP number(19,0),
-        APF_CODFON number(19,0),
+        APF_CODAPP number(11,0),
+        APF_CODFON number(11,0),
         primary key (APF_CODIGO)
     );
 
     create table STM_APPROL (
-        APR_CODAPP number(19,0) not null,
-        APR_CODROL number(19,0) not null,
+        APR_CODAPP number(11,0) not null,
+        APR_CODROL number(11,0) not null,
         primary key (APR_CODAPP, APR_CODROL)
     );
 
     create table STM_APPS (
-        APP_CODIGO number(19,0) not null,
+        APP_CODIGO number(11,0) not null,
         APP_F_ALTA date,
         APP_NOMBRE varchar2(80),
         APP_PROJECT varchar2(250),
@@ -97,48 +97,48 @@
         APP_TITULO varchar2(250),
         APP_AUTOREFR number(1,0),
         APP_TIPO varchar2(250),
-        APP_CODGCA number(19,0),
+        APP_CODGCA number(11,0),
         primary key (APP_CODIGO)
     );
 
     create table STM_ARBOL (
-        ARB_CODIGO number(19,0) not null,
+        ARB_CODIGO number(11,0) not null,
         ARB_NOMBRE varchar2(100),
         primary key (ARB_CODIGO)
     );
 
     create table STM_ARBOLNOD (
-        ANR_CODIGO number(19,0) not null,
+        ANR_CODIGO number(11,0) not null,
         ARN_ACTIVO number(1,0),
         ARN_NOMBRE varchar2(80),
         ARN_ORDEN number(10,0),
         ARN_TOOLTIP varchar2(100),
-        ARN_CODCAR number(19,0),
-        ARN_CODPADRE number(19,0),
-        ARN_CODARB number(19,0),
+        ARN_CODCAR number(11,0),
+        ARN_CODPADRE number(11,0),
+        ARN_CODARB number(11,0),
         primary key (ANR_CODIGO)
     );
 
     create table STM_ARBROL (
-        ARR_CODARB number(19,0) not null,
-        arr_codrol number(19,0) not null,
+        ARR_CODARB number(11,0) not null,
+        arr_codrol number(11,0) not null,
         primary key (ARR_CODARB, arr_codrol)
     );
 
     create table STM_CARGO (
-        CGO_CODIGO number(19,0) not null,
+        CGO_CODIGO number(11,0) not null,
         CGO_F_ALTA date,
         CGO_F_CADUC date,
         CGO_CORREO varchar2(250),
         CGO_CARGO varchar2(250),
         CGO_ORG varchar2(250),
-        CGO_CODTER number(19,0),
-        CGO_CODUSU number(19,0),
+        CGO_CODTER number(11,0),
+        CGO_CODUSU number(11,0),
         primary key (CGO_CODIGO)
     );
 
     create table STM_CARTO (
-        CAR_CODIGO number(19,0) not null,
+        CAR_CODIGO number(11,0) not null,
         CAR_F_ALTA date,
         CAR_EDITABLE number(1,0),
         CAR_TIPOGEOM varchar2(255),
@@ -159,14 +159,14 @@
         CAR_TRANSP number(10,0),
         CAR_TIPO varchar2(30),
         CAR_VISIBLE number(1,0),
-        CAR_CODCON number(19,0),
-        CAR_CODSERSEL number(19,0),
-        CAR_CODSER number(19,0),
+        CAR_CODCON number(11,0),
+        CAR_CODSERSEL number(11,0),
+        CAR_CODSER number(11,0),
         primary key (CAR_CODIGO)
     );
 
     create table STM_CONEXION (
-        CON_CODIGO number(19,0) not null,
+        CON_CODIGO number(11,0) not null,
         CON_CONSTRING varchar2(250),
         CON_NOMBRE varchar2(80),
         CON_PASSWORD varchar2(50),
@@ -176,23 +176,23 @@
     );
 
     create table STM_DISPCARTO (
-        DCA_CODIGO number(19,0) not null,
+        DCA_CODIGO number(11,0) not null,
         DCA_F_ALTA date,
-        DCA_CODCAR number(19,0),
-        DCA_CODTER number(19,0),
+        DCA_CODCAR number(11,0),
+        DCA_CODTER number(11,0),
         primary key (DCA_CODIGO)
     );
 
     create table STM_DISPTAREA (
-        DTA_CODIGO number(19,0) not null,
+        DTA_CODIGO number(11,0) not null,
         DTA_F_ALTA date,
-        DTA_CODTAR number(19,0),
-        DTA_CODTER number(19,0),
+        DTA_CODTAR number(11,0),
+        DTA_CODTER number(11,0),
         primary key (DTA_CODIGO)
     );
 
     create table STM_ETERRIT (
-        TER_CODIGO number(19,0) not null,
+        TER_CODIGO number(11,0) not null,
         TER_DIRECC varchar2(250),
         TER_BLOQ number(1,0),
         TER_OBSERV varchar2(250),
@@ -203,47 +203,47 @@
         TER_NOMBRE varchar2(250) not null,
         TER_NADMIN varchar2(250),
         TER_AMBITO varchar2(250),
-        TER_CODTGR number(19,0),
+        TER_CODTGR number(11,0),
         primary key (TER_CODIGO)
     );
 
     create table STM_FONDO (
-        FON_CODIGO number(19,0) not null,
+        FON_CODIGO number(11,0) not null,
         FON_ACTIVO number(1,0),
         FON_F_ALTA date,
         FON_DESC varchar2(250),
         FON_NOMBRE varchar2(30),
-        FON_CODGCA number(19,0),
+        FON_CODGCA number(11,0),
         primary key (FON_CODIGO)
     );
 
     create table STM_GCACAR (
-        GCC_CODGCA number(19,0) not null,
-        GCC_CODCAR number(19,0) not null,
+        GCC_CODGCA number(11,0) not null,
+        GCC_CODCAR number(11,0) not null,
         primary key (GCC_CODGCA, GCC_CODCAR)
     );
 
     create table STM_GRPCARTO (
-        GCA_CODIGO number(19,0) not null,
+        GCA_CODIGO number(11,0) not null,
         GCA_NOMBRE varchar2(80),
         GCA_TIPO varchar2(30),
         primary key (GCA_CODIGO)
     );
 
     create table STM_GRPTAR (
-        GTA_CODIGO number(19,0) not null,
+        GTA_CODIGO number(11,0) not null,
         GTA_NOMBRE varchar2(80),
         primary key (GTA_CODIGO)
     );
 
     create table STM_GRPTER (
-        GRT_CODTER number(19,0) not null,
-        GRT_CODTERM number(19,0) not null,
+        GRT_CODTER number(11,0) not null,
+        GRT_CODTERM number(11,0) not null,
         primary key (GRT_CODTERM, GRT_CODTER)
     );
 
     create table STM_LOG (
-        LOG_CODIGO number(19,0) not null,
+        LOG_CODIGO number(11,0) not null,
         LOG_CODAPP varchar2(255),
         LOG_CODTAR varchar2(255),
         LOG_CODTER varchar2(255),
@@ -255,54 +255,54 @@
     );
 
     create table STM_PARAMAPP (
-        PAP_CODIGO number(19,0) not null,
+        PAP_CODIGO number(11,0) not null,
         PAP_NOMBRE varchar2(30),
         PAP_TIPO varchar2(250),
         PAP_VALOR varchar2(250),
-        PAP_CODAPP number(19,0),
+        PAP_CODAPP number(11,0),
         primary key (PAP_CODIGO)
     );
 
     create table STM_PARAMSER (
-        PSE_CODIGO number(19,0) not null,
+        PSE_CODIGO number(11,0) not null,
         PSE_NOMBRE varchar2(30),
         PSE_TIPO varchar2(250),
         PSE_VALOR varchar2(250),
-        PSE_CODSER number(19,0),
+        PSE_CODSER number(11,0),
         primary key (PSE_CODIGO)
     );
 
     create table STM_PARAMTTA (
-        PTT_CODIGO number(19,0) not null,
+        PTT_CODIGO number(11,0) not null,
         PTT_NOMBRE varchar2(50),
         PTT_ORDEN number(10,0),
         PTT_TIPO varchar2(30),
         PTT_VALOR varchar2(512),
-        PTT_CODTAR number(19,0),
+        PTT_CODTAR number(11,0),
         primary key (PTT_CODIGO)
     );
 
     create table STM_ROLES (
-        ROL_CODIGO number(19,0) not null,
+        ROL_CODIGO number(11,0) not null,
         ROL_OBSERV varchar2(500),
         ROL_NOMBRE varchar2(250) not null,
         primary key (ROL_CODIGO)
     );
 
     create table STM_ROLGCA (
-        RGC_CODROL number(19,0) not null,
-        RGC_CODGCA number(19,0) not null,
+        RGC_CODROL number(11,0) not null,
+        RGC_CODGCA number(11,0) not null,
         primary key (RGC_CODROL, RGC_CODGCA)
     );
 
     create table STM_ROLTAR (
-        RTA_CODROL number(19,0) not null,
-        RTA_CODTAR number(19,0) not null,
+        RTA_CODROL number(11,0) not null,
+        RTA_CODTAR number(11,0) not null,
         primary key (RTA_CODROL, RTA_CODTAR)
     );
 
     create table STM_SERVICIO (
-        SER_CODIGO number(19,0) not null,
+        SER_CODIGO number(11,0) not null,
         SER_F_ALTA date,
         SER_INFOURL varchar2(250),
         SER_LEYENDA varchar2(250),
@@ -310,24 +310,24 @@
         SER_PROJECTS varchar2(1000),
         SER_TIPO varchar2(30),
         SER_URL varchar2(250),
-        SER_CODCON number(19,0),
+        SER_CODCON number(11,0),
         primary key (SER_CODIGO)
     );
 
     create table STM_TAREA (
-        TAR_CODIGO number(19,0) not null,
+        TAR_CODIGO number(11,0) not null,
         TAR_F_ALTA date,
         TAR_NOMBRE varchar2(50),
         TAR_ORDEN number(10,0),
-        TAR_CODCON number(19,0),
-        TAR_CODGTA number(19,0),
-        TAR_CODTTA number(19,0),
-        TAR_CODTUI number(19,0),
+        TAR_CODCON number(11,0),
+        TAR_CODGTA number(11,0),
+        TAR_CODTTA number(11,0),
+        TAR_CODTUI number(11,0),
         primary key (TAR_CODIGO)
     );
 
     create table STM_TAREA_UI (
-        TUI_CODIGO number(19,0) not null,
+        TUI_CODIGO number(11,0) not null,
         TUI_NOMBRE varchar2(30),
         TUI_ORDEN number(10,0),
         TUI_TOOLTIP varchar2(100),
@@ -336,19 +336,19 @@
     );
 
     create table STM_TIPOGRP (
-        TGR_CODIGO number(19,0) not null,
+        TGR_CODIGO number(11,0) not null,
         TGR_NOMBRE varchar2(250) not null,
         primary key (TGR_CODIGO)
     );
 
     create table STM_TIPOTAREA (
-        TTA_CODIGO number(19,0) not null,
+        TTA_CODIGO number(11,0) not null,
         TTA_NOMBRE varchar2(30),
         primary key (TTA_CODIGO)
     );
 
     create table STM_USUARIO (
-        USU_CODIGO number(19,0) not null,
+        USU_CODIGO number(11,0) not null,
         USU_ADM number(1,0),
         USU_BLOQ number(1,0),
         USU_NOMBRE varchar2(30),
@@ -359,10 +359,10 @@
     );
 
     create table STM_USUCONF (
-        UCF_CODIGO number(19,0) not null,
-        UCF_CODROL number(19,0),
-        UCF_CODTER number(19,0),
-        UCF_CODUSU number(19,0),
+        UCF_CODIGO number(11,0) not null,
+        UCF_CODROL number(11,0),
+        UCF_CODTER number(11,0),
+        UCF_CODUSU number(11,0),
         primary key (UCF_CODIGO)
     );
 

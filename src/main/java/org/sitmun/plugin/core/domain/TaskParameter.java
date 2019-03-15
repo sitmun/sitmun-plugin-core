@@ -2,6 +2,7 @@ package org.sitmun.plugin.core.domain;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 
 @Entity
 @Table(name = "STM_PARAMTTA")
@@ -10,8 +11,8 @@ public class TaskParameter {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "PTT_CODIGO")
-  private long id;
+  @Column(name = "PTT_CODIGO", precision = 11)
+  private BigInteger id;
 
   @Column(name = "PTT_NOMBRE", length = 50)
   private String name;
@@ -31,11 +32,11 @@ public class TaskParameter {
   @Column(name = "PTT_ORDEN")
   private Integer order;
 
-  public long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

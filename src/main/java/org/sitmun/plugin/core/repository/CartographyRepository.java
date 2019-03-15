@@ -8,8 +8,10 @@ import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
+
 @RepositoryRestResource(collectionResourceRel = "cartographies", path = "cartographies"/*, excerptProjection = CartographyProjection.class*/)
-public interface CartographyRepository extends CrudRepository<Cartography, Long> {
+public interface CartographyRepository extends CrudRepository<Cartography, BigInteger> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -22,7 +24,7 @@ public interface CartographyRepository extends CrudRepository<Cartography, Long>
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Cartography','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Cartography', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(filterObject, 'administration') or hasPermission(filterObject, 'read')")
@@ -30,9 +32,9 @@ public interface CartographyRepository extends CrudRepository<Cartography, Long>
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Cartography','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Cartography', 'read')")
-	Cartography findOne(@P("entityId") Long entityId);
+	Cartography findOne(@P("entityId") BigInteger entityId);
 
 	@Query("select cartography from Cartography cartography left join fetch cartography.service where cartography.id =:id")    
-	Cartography findOneWithEagerRelationships(long id);
+	Cartography findOneWithEagerRelationships(BigInteger id);
 
 }

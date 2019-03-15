@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -57,16 +56,16 @@ public class CartographyRepositoryTest {
 
   @Test
   public void saveCartography() {
-    assumeThat(cartographyRepository.findOne(cartography.getId())).isNull();
+    assertThat(cartography.getId()).isNull();
     cartographyRepository.save(cartography);
     assertThat(cartography.getId()).isNotZero();
   }
 
   @Test
   public void findOneCartographyById() {
-    assumeThat(cartographyRepository.findOne(cartography.getId())).isNull();
+    assertThat(cartography.getId()).isNull();
     cartographyRepository.save(cartography);
-    assumeThat(cartography.getId()).isNotZero();
+    assertThat(cartography.getId()).isNotZero();
 
     assertThat(cartographyRepository.findOne(cartography.getId())).isNotNull();
   }

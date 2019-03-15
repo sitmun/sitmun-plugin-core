@@ -2,16 +2,16 @@ package org.sitmun.plugin.core.repository;
 
 
 import org.sitmun.plugin.core.domain.CartographyAvailability;
-import org.sitmun.plugin.core.domain.CartographyAvailability;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
+
 @RepositoryRestResource(collectionResourceRel = "cartography-availabilities", path = "cartography-availabilities")
-public interface CartographyAvailabilityRepository extends CrudRepository<CartographyAvailability, Long> {
+public interface CartographyAvailabilityRepository extends CrudRepository<CartographyAvailability, BigInteger> {
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -24,7 +24,7 @@ public interface CartographyAvailabilityRepository extends CrudRepository<Cartog
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.CartographyAvailability','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.CartographyAvailability', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(returnObject, 'administration') or hasPermission(filterObject, 'read')")
@@ -32,7 +32,7 @@ public interface CartographyAvailabilityRepository extends CrudRepository<Cartog
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.CartographyAvailability','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.CartographyAvailability', 'read')")
-	CartographyAvailability findOne(@P("entityId") Long entityId);
+	CartographyAvailability findOne(@P("entityId") BigInteger entityId);
 
 	
 

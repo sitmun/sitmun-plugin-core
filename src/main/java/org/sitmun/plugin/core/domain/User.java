@@ -4,18 +4,19 @@ import org.springframework.hateoas.Identifiable;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "STM_USUARIO", uniqueConstraints = {@UniqueConstraint(name = "STM_USU_USU_UK", columnNames = {"USU_USUARIO"})})
-public class User implements Identifiable<Long> {
+public class User implements Identifiable<BigInteger> {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "USU_CODIGO")
-  private long id;
+  @Column(name = "USU_CODIGO", precision = 11)
+  private BigInteger id;
 
   @NotNull
   @Column(name = "USU_USUARIO", nullable = false, length = 30)
@@ -45,14 +46,14 @@ public class User implements Identifiable<Long> {
   /**
    * @return the id
    */
-  public Long getId() {
+  public BigInteger getId() {
     return id;
   }
 
   /**
    * @param id the id to set
    */
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

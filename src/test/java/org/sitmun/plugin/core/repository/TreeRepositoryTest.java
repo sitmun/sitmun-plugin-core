@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -29,16 +28,16 @@ public class TreeRepositoryTest {
 
   @Test
   public void saveTerritory() {
-    assumeThat(treeRepository.findOne(tree.getId())).isNull();
+    assertThat(tree.getId()).isNull();
     treeRepository.save(tree);
     assertThat(tree.getId()).isNotZero();
   }
 
   @Test
   public void findOneTerritoryById() {
-    assumeThat(treeRepository.findOne(tree.getId())).isNull();
+    assertThat(tree.getId()).isNull();
     treeRepository.save(tree);
-    assumeThat(tree.getId()).isNotZero();
+    assertThat(tree.getId()).isNotZero();
 
     assertThat(treeRepository.findOne(tree.getId())).isNotNull();
   }

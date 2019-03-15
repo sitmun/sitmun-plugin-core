@@ -1,6 +1,7 @@
 package org.sitmun.plugin.core.domain;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +13,8 @@ public class Service {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
   @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
-  @Column(name = "SER_CODIGO")
-  private long id;
+  @Column(name = "SER_CODIGO", precision = 11)
+  private BigInteger id;
 
 
   @Column(name = "SER_NOMBRE", length = 30)
@@ -49,11 +50,11 @@ public class Service {
   @OneToMany(mappedBy = "service", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<ServiceParameter> parameters = new HashSet<>();
 
-  public long getId() {
+  public BigInteger getId() {
     return id;
   }
 
-  public void setId(long id) {
+  public void setId(BigInteger id) {
     this.id = id;
   }
 

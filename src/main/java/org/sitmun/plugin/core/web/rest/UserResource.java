@@ -1,7 +1,6 @@
 package org.sitmun.plugin.core.web.rest;
 
 import org.sitmun.plugin.core.domain.User;
-import org.sitmun.plugin.core.repository.UserRepository;
 import org.sitmun.plugin.core.service.UserService;
 import org.sitmun.plugin.core.service.dto.UserDTO;
 import org.sitmun.plugin.core.web.rest.dto.PasswordDTO;
@@ -9,29 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.ResourceAssembler;
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.mvc.ResourceAssemblerSupport;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Optional;
-
 import javax.validation.Valid;
+import java.math.BigInteger;
+import java.net.URI;
+import java.util.Optional;
 
 @RepositoryRestController
 public class UserResource {
@@ -74,7 +60,7 @@ public class UserResource {
   }
 
   @PutMapping("/users/{id}")
-  public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
+  public ResponseEntity<User> updateUser(@PathVariable BigInteger id, @Valid @RequestBody UserDTO userDTO) {
     Optional<User> optUser = userService.findUser(id);
     if (optUser.isPresent()) {
       userDTO.setId(optUser.get().getId());
@@ -115,7 +101,7 @@ public class UserResource {
 
 
   @PostMapping(path = "/users/{id}/change-password")
-  public ResponseEntity<Void> changePassword(@PathVariable Long id, @RequestBody PasswordDTO password) {
+  public ResponseEntity<Void> changePassword(@PathVariable BigInteger id, @RequestBody PasswordDTO password) {
     Optional<User> optUser = userService.findUser(id);
     if (optUser.isPresent()) {
       userService.changeUserPassword(id, password.getPassword());
