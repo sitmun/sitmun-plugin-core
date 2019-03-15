@@ -22,7 +22,7 @@ public class Task implements Identifiable {
   @Column(name = "TAR_CODIGO", precision = 11)
   private BigInteger id;
 
-  @Column(name = "TAR_NOMBRE", length = 50)
+  @Column(name = "TAR_NOMBRE", length = 250)
   private String name;
 
   @Column(name = "TAR_ORDEN", precision = 6)
