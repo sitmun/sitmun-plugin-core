@@ -17,17 +17,17 @@ public class Log {
   @Column(name = "LOG_TIPO", length = 50)
   private String nombre;
 
-  @Column(name = "LOG_CODUSU")
-  private String codigoUsuario;
+  @Column(name = "LOG_CODUSU", precision = 11)
+  private BigInteger codigoUsuario;
 
-  @Column(name = "LOG_CODAPP")
-  private String codigoAplicacion;
+  @Column(name = "LOG_CODAPP", precision = 11)
+  private BigInteger codigoAplicacion;
 
-  @Column(name = "LOG_CODTER")
-  private String codigoTerritorio;
+  @Column(name = "LOG_CODTER", precision = 11)
+  private BigInteger codigoTerritorio;
 
-  @Column(name = "LOG_CODTAR")
-  private String codigoTarea;
+  @Column(name = "LOG_CODTAR", precision = 11)
+  private BigInteger codigoTarea;
 
   @Column(name = "LOG_FECHA")
   @Temporal(TemporalType.TIMESTAMP)
@@ -35,7 +35,7 @@ public class Log {
 
   //TODO log_cont es el identificador del log?
   @Column(name = "LOG_CONT", precision = 11)
-  private long cont;
+  private BigInteger cont;
 
 
   /**
@@ -69,56 +69,56 @@ public class Log {
   /**
    * @return the codigoUsuario
    */
-  public String getCodigoUsuario() {
+  public BigInteger getCodigoUsuario() {
     return codigoUsuario;
   }
 
   /**
    * @param codigoUsuario the codigoUsuario to set
    */
-  public void setCodigoUsuario(String codigoUsuario) {
+  public void setCodigoUsuario(BigInteger codigoUsuario) {
     this.codigoUsuario = codigoUsuario;
   }
 
   /**
    * @return the codigoAplicacion
    */
-  public String getCodigoAplicacion() {
+  public BigInteger getCodigoAplicacion() {
     return codigoAplicacion;
   }
 
   /**
    * @param codigoAplicacion the codigoAplicacion to set
    */
-  public void setCodigoAplicacion(String codigoAplicacion) {
+  public void setCodigoAplicacion(BigInteger codigoAplicacion) {
     this.codigoAplicacion = codigoAplicacion;
   }
 
   /**
    * @return the codigoTerritorio
    */
-  public String getCodigoTerritorio() {
+  public BigInteger getCodigoTerritorio() {
     return codigoTerritorio;
   }
 
   /**
    * @param codigoTerritorio the codigoTerritorio to set
    */
-  public void setCodigoTerritorio(String codigoTerritorio) {
+  public void setCodigoTerritorio(BigInteger codigoTerritorio) {
     this.codigoTerritorio = codigoTerritorio;
   }
 
   /**
    * @return the codigoTarea
    */
-  public String getCodigoTarea() {
+  public BigInteger getCodigoTarea() {
     return codigoTarea;
   }
 
   /**
    * @param codigoTarea the codigoTarea to set
    */
-  public void setCodigoTarea(String codigoTarea) {
+  public void setCodigoTarea(BigInteger codigoTarea) {
     this.codigoTarea = codigoTarea;
   }
 
@@ -136,11 +136,11 @@ public class Log {
     this.fecha = fecha;
   }
 
-  public long getCont() {
+  public BigInteger getCont() {
     return cont;
   }
 
-  public void setCont(long cont) {
+  public void setCont(BigInteger cont) {
     this.cont = cont;
   }
 
