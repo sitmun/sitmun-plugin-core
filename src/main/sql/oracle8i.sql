@@ -367,28 +367,28 @@
     );
 
     alter table STM_APPFON 
-        add constraint UKhhx6qumb08a4359bjf5f4xegk unique (APF_CODAPP, APF_CODFON);
+        add constraint STM_APF_UK unique (APF_CODAPP, APF_CODFON);
 
     alter table STM_DISPCARTO 
-        add constraint UK2pey2ycq7c2m366cioxfvx9ps unique (DCA_CODTER, DCA_CODCAR);
+        add constraint STM_DCA_UK unique (DCA_CODTER, DCA_CODCAR);
 
     alter table STM_DISPTAREA 
-        add constraint UKhellrgq9kppvqlpa1jfjq5x0q unique (DTA_CODTER, DTA_CODTAR);
+        add constraint STM_DTA_UK unique (DTA_CODTER, DTA_CODTAR);
 
     alter table STM_ETERRIT 
-        add constraint UK_aybq80n4mf7784mfvje1f0kaw unique (TER_NOMBRE);
+        add constraint STM_TER_NOM_UK unique (TER_NOMBRE);
 
     alter table STM_ROLES 
-        add constraint UK_9d2lyfn2i5mrahk8x07b49xbf unique (ROL_NOMBRE);
+        add constraint STM_ROL_NOM_UK unique (ROL_NOMBRE);
 
     alter table STM_TIPOGRP 
-        add constraint UK_3b7h1d69q6wxpbu2f1j6ldlbc unique (TGR_NOMBRE);
+        add constraint STM_TGR_NOM_UK unique (TGR_NOMBRE);
 
     alter table STM_USUARIO 
-        add constraint UK_s3k4fa9at32bdnxy4vf97ko3u unique (USU_USUARIO);
+        add constraint STM_USU_USU_UK unique (USU_USUARIO);
 
     alter table STM_USUCONF 
-        add constraint UK6xq8qwiqibb5pvawnpin9bg74 unique (UCF_CODUSU, UCF_CODTER, UCF_CODROL);
+        add constraint STM_UCF_UK unique (UCF_CODUSU, UCF_CODTER, UCF_CODROL);
 
     alter table STM_APPARB 
         add constraint STM_APA_FK_ARB 

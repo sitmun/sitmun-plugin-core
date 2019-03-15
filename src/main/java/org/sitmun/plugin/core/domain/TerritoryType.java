@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "STM_TIPOGRP")
+@Table(name = "STM_TIPOGRP", uniqueConstraints = {@UniqueConstraint(name = "STM_TGR_NOM_UK", columnNames = {"TGR_NOMBRE"})})
 public class TerritoryType {
 
   @Id
@@ -14,7 +14,7 @@ public class TerritoryType {
   private long id;
 
   @NotNull
-  @Column(name = "TGR_NOMBRE", unique = true, nullable = false, length = 250)
+  @Column(name = "TGR_NOMBRE", nullable = false, length = 250)
   private String name;
 
   public long getId() {

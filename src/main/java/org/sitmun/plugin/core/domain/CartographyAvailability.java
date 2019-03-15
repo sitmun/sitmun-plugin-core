@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name = "STM_DISPCARTO", uniqueConstraints = {@UniqueConstraint(columnNames = {"DCA_CODTER", "DCA_CODCAR"})})
+@Table(name = "STM_DISPCARTO", uniqueConstraints = {@UniqueConstraint(name = "STM_DCA_UK", columnNames = {"DCA_CODTER", "DCA_CODCAR"})})
 public class CartographyAvailability {
 
   @Id

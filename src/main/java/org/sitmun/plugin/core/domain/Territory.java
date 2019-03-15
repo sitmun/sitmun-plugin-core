@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "STM_ETERRIT")
+@Table(name = "STM_ETERRIT", uniqueConstraints = {@UniqueConstraint(name = "STM_TER_NOM_UK", columnNames = {"TER_NOMBRE"})})
 public class Territory {
 
   @Id
@@ -17,7 +17,7 @@ public class Territory {
   private long id;
 
   @NotNull
-  @Column(name = "TER_NOMBRE", unique = true, nullable = false, length = 250)
+  @Column(name = "TER_NOMBRE", nullable = false, length = 250)
   private String name;
 
   @Column(name = "TER_CORREO", length = 250)

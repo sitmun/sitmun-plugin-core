@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@Table(name = "STM_DISPTAREA", uniqueConstraints = {@UniqueConstraint(columnNames = {"DTA_CODTER", "DTA_CODTAR"})})
+@Table(name = "STM_DISPTAREA", uniqueConstraints = {@UniqueConstraint(name = "STM_DTA_UK", columnNames = {"DTA_CODTER", "DTA_CODTAR"})})
 public class TaskAvailability {
 
   @Id

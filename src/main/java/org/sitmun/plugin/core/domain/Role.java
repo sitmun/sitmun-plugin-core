@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "STM_ROLES")
+@Table(name = "STM_ROLES", uniqueConstraints = {@UniqueConstraint(name = "STM_ROL_NOM_UK", columnNames = {"ROL_NOMBRE"})})
 public class Role {
 
   @Id
@@ -14,7 +14,7 @@ public class Role {
   private long id;
 
   @NotNull
-  @Column(name = "ROL_NOMBRE", unique = true, nullable = false, length = 250)
+  @Column(name = "ROL_NOMBRE", nullable = false, length = 250)
   private String name;
 
   @Column(name = "ROL_OBSERV", length = 500)

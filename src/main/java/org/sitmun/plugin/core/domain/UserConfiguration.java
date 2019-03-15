@@ -6,8 +6,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "STM_USUCONF", uniqueConstraints = {
-  @UniqueConstraint(columnNames = {"UCF_CODUSU", "UCF_CODTER", "UCF_CODROL"})})
+@Table(name = "STM_USUCONF", uniqueConstraints = {@UniqueConstraint(name = "STM_UCF_UK", columnNames = {"UCF_CODUSU", "UCF_CODTER", "UCF_CODROL"})})
 public class UserConfiguration {
 
   @Id

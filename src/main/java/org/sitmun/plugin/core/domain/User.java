@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "STM_USUARIO")
+@Table(name = "STM_USUARIO", uniqueConstraints = {@UniqueConstraint(name = "STM_USU_USU_UK", columnNames = {"USU_USUARIO"})})
 public class User implements Identifiable<Long> {
 
   @Id
@@ -18,7 +18,7 @@ public class User implements Identifiable<Long> {
   private long id;
 
   @NotNull
-  @Column(name = "USU_USUARIO", unique = true, nullable = false, length = 30)
+  @Column(name = "USU_USUARIO", nullable = false, length = 30)
   private String username;
 
   @Column(name = "USU_PASSWORD", length = 128)

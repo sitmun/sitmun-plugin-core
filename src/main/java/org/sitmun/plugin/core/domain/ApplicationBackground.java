@@ -10,7 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "STM_APPFON", uniqueConstraints = {@UniqueConstraint(columnNames = {"APF_CODAPP", "APF_CODFON"})})
+@Table(name = "STM_APPFON", uniqueConstraints = {@UniqueConstraint(name = "STM_APF_UK", columnNames = {"APF_CODAPP", "APF_CODFON"})})
 public class ApplicationBackground implements Identifiable {
 
   @Id
