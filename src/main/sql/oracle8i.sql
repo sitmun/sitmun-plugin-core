@@ -93,7 +93,7 @@
         APP_NOMBRE varchar2(80),
         APP_PROJECT varchar2(250),
         APP_ESCALAS varchar2(250),
-        APP_TEMA varchar2(80),
+        APP_TEMA varchar2(30),
         APP_TITULO varchar2(250),
         APP_AUTOREFR number(1,0),
         APP_TIPO varchar2(250),

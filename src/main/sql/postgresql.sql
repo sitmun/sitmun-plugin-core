@@ -219,7 +219,7 @@
         APP_NOMBRE varchar(80),
         APP_PROJECT varchar(250),
         APP_ESCALAS varchar(250),
-        APP_TEMA varchar(80),
+        APP_TEMA varchar(30),
         APP_TITULO varchar(250),
         APP_AUTOREFR boolean,
         APP_TIPO varchar(250),

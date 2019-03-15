@@ -31,7 +31,7 @@ public class Application implements Identifiable {
   @Column(name = "APP_TITULO", length = 250)
   private String title;
 
-  @Column(name = "APP_TEMA", length = 80)
+  @Column(name = "APP_TEMA", length = 30)
   private String theme;
 
   @Column(name = "APP_F_ALTA")
