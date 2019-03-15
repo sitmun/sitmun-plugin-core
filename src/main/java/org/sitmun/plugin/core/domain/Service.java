@@ -35,8 +35,8 @@ public class Service {
   @Column(name = "SER_INFOURL", length = 250)
   private String infoUrl;
 
-
   @Column(name = "SER_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
 
   @OneToMany(mappedBy = "service", orphanRemoval = true)

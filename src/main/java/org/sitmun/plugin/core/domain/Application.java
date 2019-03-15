@@ -35,6 +35,7 @@ public class Application implements Identifiable {
   private String theme;
 
   @Column(name = "APP_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
 
   @ManyToMany

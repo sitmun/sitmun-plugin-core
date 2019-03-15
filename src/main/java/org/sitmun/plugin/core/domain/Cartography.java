@@ -44,6 +44,7 @@ public class Cartography implements Identifiable {
   private Boolean queryLay;
 
   @Column(name = "CAR_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
 
   @Column(name = "CAR_ORDEN", precision = 11)

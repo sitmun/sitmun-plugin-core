@@ -16,7 +16,9 @@ public class TaskAvailability {
   private BigInteger id;
 
   @Column(name = "DTA_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
+
   @ManyToOne
   @JoinColumn(name = "DTA_CODTER", foreignKey = @ForeignKey(name = "STM_DTA_FK_TER"))
   // @OnDelete(action = OnDeleteAction.CASCADE)

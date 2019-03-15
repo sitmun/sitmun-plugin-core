@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -181,6 +182,13 @@ public class ApplicationRestResourceIntTest {
 
     application = new Application();
     application.setName(NON_PUBLIC_APPLICATION_NAME);
+    SimpleDateFormat formatter = new SimpleDateFormat("EEEE, MMM dd, yyyy HH:mm:ss a");
+    String dateInString = "Friday, Jun 7, 2013 12:10:56 PM";
+    try {
+      application.setCreatedDate(formatter.parse(dateInString));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     appsToCreate.add(application);
 
     publicApplication = new Application();
@@ -188,6 +196,7 @@ public class ApplicationRestResourceIntTest {
     publicApplication.setAvailableRoles(availableRoles);
     publicApplication.setTrees(trees);
     publicApplication.setSituationMap(publicCartographyGroup);
+
     appsToCreate.add(publicApplication);
     applicationRepository.save(appsToCreate);
 
@@ -256,7 +265,8 @@ public class ApplicationRestResourceIntTest {
     mvc.perform(get(APP_URI + "/" + appId))
       .andDo(print())
       .andExpect(status().isOk())
-      .andExpect(jsonPath("$.name").value("Non-public Application"));
+      .andExpect(jsonPath("$.name").value("Non-public Application"))
+      .andExpect(jsonPath("$.createdDate").value("2013-06-07T10:10:56.000+0000"));
   }
 
   @Test
@@ -324,7 +334,10 @@ public class ApplicationRestResourceIntTest {
   @WithMockUser(username = ADMIN_USERNAME)
   public void getApplicationsAsSitumunAdmin() throws Exception {
     // ok is expected
-    mvc.perform(get(APP_URI)).andDo(print()).andExpect(status().isOk()).andExpect(jsonPath("$._embedded.applications", hasSize(2)));
+    mvc.perform(get(APP_URI))
+      .andDo(print())
+      .andExpect(status().isOk())
+      .andExpect(jsonPath("$._embedded.applications", hasSize(2)));
 
   }
 

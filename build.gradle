@@ -113,6 +113,14 @@ task oracle8iSchemaExport(type: JavaExec) {
   args '-d', 'org.hibernate.dialect.Oracle8iDialect', '-f', 'src/main/sql/oracle8i.sql'
 }
 
+task oracle9iSchemaExport(type: JavaExec) {
+  mkdir 'src/main/sql/'
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.sitmun.plugin.core.tools.SitmunSchemaExport'
+  args '-d', 'org.hibernate.dialect.Oracle9iDialect', '-f', 'src/main/sql/oracle9i.sql'
+}
+
+
 task postgreSQLSchemaExport(type: JavaExec) {
   mkdir 'src/main/sql/'
   classpath = sourceSets.main.runtimeClasspath
@@ -127,7 +135,7 @@ task h2SchemaExport(type: JavaExec) {
   args '-d', 'org.hibernate.dialect.H2Dialect', '-f', 'src/main/sql/h2.sql'
 }
 
-task exportSchemas(dependsOn: [oracle8iSchemaExport, postgreSQLSchemaExport, h2SchemaExport])
+task exportSchemas(dependsOn: [oracle8iSchemaExport, oracle9iSchemaExport, postgreSQLSchemaExport, h2SchemaExport])
 
 clean {
   delete "node_modules"

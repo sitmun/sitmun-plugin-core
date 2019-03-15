@@ -29,6 +29,7 @@ public class Task implements Identifiable {
   private BigInteger order;
 
   @Column(name = "TAR_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
 
   @ManyToOne

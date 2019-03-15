@@ -25,9 +25,11 @@ public class UserPosition {
   private String email;
 
   @Column(name = "CGO_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
 
   @Column(name = "CGO_F_CADUC")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date datedDate;
 
   @ManyToOne

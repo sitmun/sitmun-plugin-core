@@ -46,6 +46,7 @@ public class Territory {
   private String comments;
 
   @Column(name = "TER_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
 
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})

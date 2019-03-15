@@ -30,6 +30,7 @@ public class Log {
   private String codigoTarea;
 
   @Column(name = "LOG_FECHA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date fecha;
 
   //TODO log_cont es el identificador del log?

@@ -19,6 +19,7 @@ public class CartographyAvailability {
   private BigInteger id;
 
   @Column(name = "DCA_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
 
   @ManyToOne

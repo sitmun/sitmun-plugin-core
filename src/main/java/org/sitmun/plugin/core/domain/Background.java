@@ -31,6 +31,7 @@ public class Background implements Identifiable {
   private Boolean active;
 
   @Column(name = "FON_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdDate;
 
   @ManyToOne
