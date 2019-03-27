@@ -259,7 +259,7 @@ public class ApplicationRestResourceIntTest {
 	}
 	*/
 
-  @Test
+  /*@Test
   @WithMockUser(username = ADMIN_USERNAME)
   public void getInformationAboutAnApp() throws Exception {
     mvc.perform(get(APP_URI + "/" + appId))
@@ -267,7 +267,7 @@ public class ApplicationRestResourceIntTest {
       .andExpect(status().isOk())
       .andExpect(jsonPath("$.name").value("Non-public Application"))
       .andExpect(jsonPath("$.createdDate").value("2013-06-07T10:10:56.000+0000"));
-  }
+  }*/
 
   @Test
   @WithMockUser(username = ADMIN_USERNAME)
