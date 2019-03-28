@@ -5,7 +5,7 @@ export class TreeNode extends Resource {
 
   public name: string;
   public tooltip: string; 
-  public ordee : number;
+  public orden : number;
   public active: boolean;
   public parent: TreeNode;
 
