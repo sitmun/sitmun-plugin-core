@@ -101,7 +101,7 @@ task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
 task installModules(dependsOn: npmBuildSitmunPluginCore)
 
 
-// processResources.dependsOn installModules
+processResources.dependsOn installModules
 
 task install(dependsOn: 'publishToMavenLocal')
 
