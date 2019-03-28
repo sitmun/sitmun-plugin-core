@@ -21,7 +21,7 @@ export class TreeNodeListComponent implements OnInit {
     items: TreeNode[];
     _tree: Tree;
 
-    displayedColumns = ['name', 'ordee', 'parent', 'actions'];
+    displayedColumns = ['name', 'orden', 'parent', 'actions'];
     dataSource = null;
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
