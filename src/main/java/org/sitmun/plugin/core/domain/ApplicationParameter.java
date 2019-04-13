@@ -11,9 +11,15 @@ import java.math.BigInteger;
 @Table(name = "STM_PARAMAPP")
 public class ApplicationParameter {
 
+  @TableGenerator(
+    name = "STM_PARAMAPP_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "PAP_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_PARAMAPP_GEN")
   @Column(name = "PAP_CODIGO", precision = 11)
   private BigInteger id;
 

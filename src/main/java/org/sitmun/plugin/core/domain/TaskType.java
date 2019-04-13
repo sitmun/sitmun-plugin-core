@@ -7,9 +7,15 @@ import java.math.BigInteger;
 @Table(name = "STM_TIPOTAREA")
 public class TaskType {
 
+  @TableGenerator(
+    name = "STM_TIPOTAREA_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "TTA_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_TIPOTAREA_GEN")
   @Column(name = "TTA_CODIGO", precision = 11)
   private BigInteger id;
 

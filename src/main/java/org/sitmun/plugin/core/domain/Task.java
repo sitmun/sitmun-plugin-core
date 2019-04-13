@@ -16,9 +16,15 @@ import java.util.Set;
 @Table(name = "STM_TAREA")
 public class Task implements Identifiable {
 
+  @TableGenerator(
+    name = "STM_TAREA_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "TAR_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_TAREA_GEN")
   @Column(name = "TAR_CODIGO", precision = 11)
   private BigInteger id;
 

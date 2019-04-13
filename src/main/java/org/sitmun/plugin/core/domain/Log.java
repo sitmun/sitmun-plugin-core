@@ -8,9 +8,15 @@ import java.util.Date;
 @Table(name = "STM_LOG")
 public class Log {
 
+  @TableGenerator(
+    name = "STM_LOG_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "LOG_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_LOG_GEN")
   @Column(name = "LOG_CODIGO", precision = 11)
   private BigInteger id;
 

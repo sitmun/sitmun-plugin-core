@@ -15,9 +15,15 @@ import java.util.Set;
 @Table(name = "STM_ARBOL")
 public class Tree implements Identifiable {
 
+  @TableGenerator(
+    name = "STM_ARBOL_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "ARB_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_ARBOL_GEN")
   @Column(name = "ARB_CODIGO", precision = 11)
   private BigInteger id;
 
@@ -28,7 +34,7 @@ public class Tree implements Identifiable {
   private Set<TreeNode> nodes = new HashSet<>();
 
   @ManyToMany
-  @JoinTable(name = "STM_ARBROL", joinColumns = @JoinColumn(name = "ARR_CODARB", foreignKey = @ForeignKey(name = "STM_ARR_FK_ARB")), inverseJoinColumns = @JoinColumn(name = "arr_codrol", foreignKey = @ForeignKey(name = "STM_ARR_FK_ROL")))
+  @JoinTable(name = "STM_ARBROL", joinColumns = @JoinColumn(name = "ARR_CODARB", foreignKey = @ForeignKey(name = "STM_ARR_FK_ARB")), inverseJoinColumns = @JoinColumn(name = "ARR_CORROL", foreignKey = @ForeignKey(name = "STM_ARR_FK_ROL")))
   private Set<Role> availableRoles = new HashSet<>();
 
   public Set<Role> getAvailableRoles() {

@@ -9,10 +9,15 @@ import java.math.BigInteger;
 @Table(name = "STM_ARBOLNOD")
 public class TreeNode {
 
-  // Códigos numéricos
+  @TableGenerator(
+    name = "STM_ARBOLNOD_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "ANR_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_ARBOLNOD_GEN")
   @Column(name = "ANR_CODIGO", precision = 11)
   private BigInteger id;
 

@@ -14,9 +14,15 @@ import java.util.Set;
 @Table(name = "STM_GRPCARTO")
 public class CartographyGroup implements Identifiable {
 
+  @TableGenerator(
+    name = "STM_GRPCARTO_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "GCA_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_GRPCARTO_GEN")
   @Column(name = "GCA_CODIGO", precision = 11)
   private BigInteger id;
 

@@ -12,9 +12,15 @@ import java.util.Date;
 @Table(name = "STM_DISPCARTO", uniqueConstraints = {@UniqueConstraint(name = "STM_DCA_UK", columnNames = {"DCA_CODTER", "DCA_CODCAR"})})
 public class CartographyAvailability {
 
+  @TableGenerator(
+    name = "STM_DISPCARTO_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "DCA_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_DISPCARTO_GEN")
   @Column(name = "DCA_CODIGO", precision = 11)
   private BigInteger id;
 

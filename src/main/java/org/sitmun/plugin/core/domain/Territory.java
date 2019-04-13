@@ -11,9 +11,15 @@ import java.util.Set;
 @Table(name = "STM_ETERRIT", uniqueConstraints = {@UniqueConstraint(name = "STM_TER_NOM_UK", columnNames = {"TER_NOMBRE"})})
 public class Territory {
 
+  @TableGenerator(
+    name = "STM_ETERRIT_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "TER_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_ETERRIT_GEN")
   @Column(name = "TER_CODIGO", precision = 11)
   private BigInteger id;
 

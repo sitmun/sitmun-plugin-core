@@ -8,9 +8,15 @@ import java.math.BigInteger;
 @Table(name = "STM_PARAMSER")
 public class ServiceParameter {
 
+  @TableGenerator(
+    name = "STM_PARAMSER_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "PSE_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_PARAMSER_GEN")
   @Column(name = "PSE_CODIGO", precision = 11)
   private BigInteger id;
 

@@ -1,4 +1,6 @@
 
+    drop table GTA_CODIGO if exists;
+
     drop table STM_APPARB if exists;
 
     drop table STM_APPFON if exists;
@@ -17,6 +19,8 @@
 
     drop table STM_CARTO if exists;
 
+    drop table STM_CODIGOS if exists;
+
     drop table STM_CONEXION if exists;
 
     drop table STM_DISPCARTO if exists;
@@ -30,8 +34,6 @@
     drop table STM_GCACAR if exists;
 
     drop table STM_GRPCARTO if exists;
-
-    drop table STM_GRPTAR if exists;
 
     drop table STM_GRPTER if exists;
 
@@ -63,9 +65,11 @@
 
     drop table STM_USUCONF if exists;
 
-    drop sequence if exists STM_SEQ;
-
-    create sequence STM_SEQ start with 1 increment by 50;
+    create table GTA_CODIGO (
+        GTA_CODIGO decimal(11,0) not null,
+        GTA_NOMBRE varchar(80),
+        primary key (GTA_CODIGO)
+    );
 
     create table STM_APPARB (
         APA_CODAPP decimal(11,0) not null,
@@ -121,8 +125,8 @@
 
     create table STM_ARBROL (
         ARR_CODARB decimal(11,0) not null,
-        arr_codrol decimal(11,0) not null,
-        primary key (ARR_CODARB, arr_codrol)
+        ARR_CORROL decimal(11,0) not null,
+        primary key (ARR_CODARB, ARR_CORROL)
     );
 
     create table STM_CARGO (
@@ -163,6 +167,12 @@
         CAR_CODSERSEL decimal(11,0),
         CAR_CODSER decimal(11,0),
         primary key (CAR_CODIGO)
+    );
+
+    create table STM_CODIGOS (
+        GEN_CODIGO varchar(255) not null,
+        GEN_VALOR bigint,
+        primary key (GEN_CODIGO)
     );
 
     create table STM_CONEXION (
@@ -230,12 +240,6 @@
         primary key (GCA_CODIGO)
     );
 
-    create table STM_GRPTAR (
-        GTA_CODIGO decimal(11,0) not null,
-        GTA_NOMBRE varchar(80),
-        primary key (GTA_CODIGO)
-    );
-
     create table STM_GRPTER (
         GRT_CODTER decimal(11,0) not null,
         GRT_CODTERM decimal(11,0) not null,
@@ -244,11 +248,11 @@
 
     create table STM_LOG (
         LOG_CODIGO decimal(11,0) not null,
-        LOG_CODAPP varchar(255),
-        LOG_CODTAR varchar(255),
-        LOG_CODTER varchar(255),
-        LOG_CODUSU varchar(255),
-        LOG_CONT bigint,
+        LOG_CODAPP decimal(11,0),
+        LOG_CODTAR decimal(11,0),
+        LOG_CODTER decimal(11,0),
+        LOG_CODUSU decimal(11,0),
+        LOG_CONT decimal(11,0),
         LOG_FECHA timestamp,
         LOG_TIPO varchar(50),
         primary key (LOG_CODIGO)
@@ -317,7 +321,7 @@
     create table STM_TAREA (
         TAR_CODIGO decimal(11,0) not null,
         TAR_F_ALTA timestamp,
-        TAR_NOMBRE varchar(50),
+        TAR_NOMBRE varchar(250),
         TAR_ORDEN decimal(6,0),
         TAR_CODCON decimal(11,0),
         TAR_CODGTA decimal(11,0),
@@ -442,7 +446,7 @@
 
     alter table STM_ARBROL 
         add constraint STM_ARR_FK_ROL 
-        foreign key (arr_codrol) 
+        foreign key (ARR_CORROL) 
         references STM_ROLES;
 
     alter table STM_ARBROL 
@@ -574,7 +578,7 @@
     alter table STM_TAREA 
         add constraint STM_TAR_FK_GTA 
         foreign key (TAR_CODGTA) 
-        references STM_GRPTAR;
+        references GTA_CODIGO;
 
     alter table STM_TAREA 
         add constraint STM_TAR_FK_TTA 

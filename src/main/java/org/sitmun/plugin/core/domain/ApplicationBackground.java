@@ -14,9 +14,16 @@ import java.math.BigInteger;
 @Table(name = "STM_APPFON", uniqueConstraints = {@UniqueConstraint(name = "STM_APF_UK", columnNames = {"APF_CODAPP", "APF_CODFON"})})
 public class ApplicationBackground implements Identifiable {
 
+
+  @TableGenerator(
+    name = "STM_APPFON_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "APF_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_APPFON_GEN")
   @Column(name = "APF_CODIGO", precision = 11)
   private BigInteger id;
 

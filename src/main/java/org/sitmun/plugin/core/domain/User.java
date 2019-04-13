@@ -12,9 +12,15 @@ import java.util.Set;
 @Table(name = "STM_USUARIO", uniqueConstraints = {@UniqueConstraint(name = "STM_USU_USU_UK", columnNames = {"USU_USUARIO"})})
 public class User implements Identifiable<BigInteger> {
 
+  @TableGenerator(
+    name = "STM_USUARIO_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "USU_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_USUARIO_GEN")
   @Column(name = "USU_CODIGO", precision = 11)
   private BigInteger id;
 

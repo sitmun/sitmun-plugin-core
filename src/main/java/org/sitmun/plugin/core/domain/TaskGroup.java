@@ -4,12 +4,18 @@ import javax.persistence.*;
 import java.math.BigInteger;
 
 @Entity
-@Table(name = "STM_GRPTAR")
+@Table(name = "GTA_CODIGO")
 public class TaskGroup {
 
+  @TableGenerator(
+    name = "GTA_CODIGO_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "GTA_CODIGO",
+    allocationSize = 1)
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "STM_GENERATOR")
-  @SequenceGenerator(name = "STM_GENERATOR", sequenceName = "STM_SEQ")
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "GTA_CODIGO_GEN")
   @Column(name = "GTA_CODIGO", precision = 11)
   private BigInteger id;
 

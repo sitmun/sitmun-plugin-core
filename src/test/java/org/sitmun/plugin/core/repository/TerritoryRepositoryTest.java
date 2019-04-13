@@ -12,7 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -58,7 +57,7 @@ public class TerritoryRepositoryTest {
   public void findOneTerritoryById() {
     assertThat(territory.getId()).isNull();
     territoryRepository.save(territory);
-    assumeThat(territory.getId()).isNotZero();
+    assertThat(territory.getId()).isNotZero();
 
     assertThat(territoryRepository.findOne(territory.getId())).isNotNull();
   }
