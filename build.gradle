@@ -82,8 +82,10 @@ sonarqube {
   properties {
     property 'sonar.host.url', 'https://sonarcloud.io'
     property 'sonar.organization', 'sitmun'
+    properties["sonar.sources"] += 'src/main/angular-library'    
   }
 }
+
 
 def cacheDir = project.hasProperty("cacheDir")? project.properties.cacheDir : "${project.buildDir}" 
 
