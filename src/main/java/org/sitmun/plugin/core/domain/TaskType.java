@@ -1,40 +1,41 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.math.BigInteger;
 
 @Entity
-@Table(name = "stm_tipotarea")
+@Table(name = "STM_TIPOTAREA")
 public class TaskType {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
-	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
-	@Column(name = "tta_codigo")
-	private long id;
+  @TableGenerator(
+    name = "STM_TIPOTAREA_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "TTA_CODIGO",
+    allocationSize = 1)
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_TIPOTAREA_GEN")
+  @Column(name = "TTA_CODIGO", precision = 11)
+  private BigInteger id;
 
-	@Column(name = "tta_nombre", length = 30)
-	private String name;
+  @Column(name = "TTA_NOMBRE", length = 30)
+  private String name;
 
-	public long getId() {
-		return id;
-	}
+  public BigInteger getId() {
+    return id;
+  }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public void setId(BigInteger id) {
+    this.id = id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
 }

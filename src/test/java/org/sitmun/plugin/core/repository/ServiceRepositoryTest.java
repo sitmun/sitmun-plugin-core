@@ -9,7 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -28,16 +27,16 @@ public class ServiceRepositoryTest {
 
   @Test
   public void saveService() {
-    assumeThat(serviceRepository.findOne(service.getId())).isNull();
+    assertThat(service.getId()).isNull();
     serviceRepository.save(service);
     assertThat(service.getId()).isNotZero();
   }
 
   @Test
   public void findOneServiceById() {
-    assumeThat(serviceRepository.findOne(service.getId())).isNull();
+    assertThat(service.getId()).isNull();
     serviceRepository.save(service);
-    assumeThat(service.getId()).isNotZero();
+    assertThat(service.getId()).isNotZero();
 
     assertThat(serviceRepository.findOne(service.getId())).isNotNull();
   }

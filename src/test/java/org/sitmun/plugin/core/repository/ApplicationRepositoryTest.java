@@ -4,16 +4,12 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.sitmun.plugin.core.domain.Application;
-import org.sitmun.plugin.core.domain.ApplicationBackground;
-import org.sitmun.plugin.core.domain.ApplicationParameter;
-import org.sitmun.plugin.core.domain.Background;
-import org.sitmun.plugin.core.domain.CartographyGroup;
-import org.sitmun.plugin.core.domain.Role;
+import org.sitmun.plugin.core.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -74,7 +70,7 @@ public class ApplicationRepositoryTest {
     ApplicationBackground applicationBackground = new ApplicationBackground();
     applicationBackground.setApplication(application);
     applicationBackground.setBackground(background);
-    applicationBackground.setOrder(1);
+    applicationBackground.setOrder(BigInteger.ONE);
     application.getBackgrounds().add(applicationBackground);
 
     ApplicationParameter parameter = new ApplicationParameter();
@@ -87,16 +83,16 @@ public class ApplicationRepositoryTest {
 
   @Test
   public void saveApplication() {
-    assumeThat(applicationRepository.findOne(application.getId())).isNull();
+    assertThat(application.getId()).isNull();
     applicationRepository.save(application);
     assertThat(application.getId()).isNotZero();
   }
 
   @Test
   public void findOneApplicationById() {
-    assumeThat(applicationRepository.findOne(application.getId())).isNull();
+    assertThat(application.getId()).isNull();
     applicationRepository.save(application);
-    assumeThat(application.getId()).isNotZero();
+    assertThat(application.getId()).isNotZero();
 
     application = applicationRepository.findOne(application.getId());
     SoftAssertions softly = new SoftAssertions();
@@ -108,11 +104,11 @@ public class ApplicationRepositoryTest {
 
   @Test
   public void deleteApplicationById() {
-    assumeThat(applicationRepository.findOne(application.getId())).isNull();
+    assertThat(application.getId()).isNull();
     applicationRepository.save(application);
     assumeThat(application.getId()).isNotZero();
 
-    Long id = application.getId();
+    BigInteger id = application.getId();
     applicationRepository.delete(application);
     assertThat(applicationRepository.findOne(id)).isNull();
   }

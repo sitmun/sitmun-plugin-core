@@ -1,89 +1,85 @@
 package org.sitmun.plugin.core.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-import javax.persistence.ForeignKey;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Identifiable;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
+
 @Entity
-@Table(name = "stm_appfon", uniqueConstraints = { @UniqueConstraint(columnNames = { "apf_codapp", "apf_codfon" }) })
+@Table(name = "STM_APPFON", uniqueConstraints = {@UniqueConstraint(name = "STM_APF_UK", columnNames = {"APF_CODAPP", "APF_CODFON"})})
 public class ApplicationBackground implements Identifiable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
-	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
-	@Column(name = "apf_codigo")
-	private long id;
 
-	@Column(name = "apf_orden")
-	private Integer order;
+  @TableGenerator(
+    name = "STM_APPFON_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "APF_CODIGO",
+    allocationSize = 1)
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_APPFON_GEN")
+  @Column(name = "APF_CODIGO", precision = 11)
+  private BigInteger id;
 
-	@ManyToOne
-	@JoinColumn(name = "apf_codapp",foreignKey=@ForeignKey(name = "STM_APF_FK_APP"))
-	// @OnDelete(action = OnDeleteAction.CASCADE)
-	@NotNull
-	private Application application;
+  @Column(name = "APF_ORDEN", precision = 6)
+  private BigInteger order;
 
-	@ManyToOne
-	@JoinColumn(name = "apf_codfon",foreignKey=@ForeignKey(name = "STM_APF_FK_FON"))
-	// @OnDelete(action = OnDeleteAction.CASCADE)
-	@NotNull
-	private Background background;
+  @ManyToOne
+  @JoinColumn(name = "APF_CODAPP", foreignKey = @ForeignKey(name = "STM_APF_FK_APP"))
+  // @OnDelete(action = OnDeleteAction.CASCADE)
+  @NotNull
+  private Application application;
 
-	public Long getId() {
-		return id;
-	}
+  @ManyToOne
+  @JoinColumn(name = "APF_CODFON", foreignKey = @ForeignKey(name = "STM_APF_FK_FON"))
+  // @OnDelete(action = OnDeleteAction.CASCADE)
+  @NotNull
+  private Background background;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public BigInteger getId() {
+    return id;
+  }
 
-	public Integer getOrder() {
-		return order;
-	}
+  public void setId(BigInteger id) {
+    this.id = id;
+  }
 
-	public void setOrder(Integer order) {
-		this.order = order;
-	}
+  public BigInteger getOrder() {
+    return order;
+  }
 
-	public Application getApplication() {
-		return application;
-	}
+  public void setOrder(BigInteger order) {
+    this.order = order;
+  }
 
-	public void setApplication(Application application) {
-		this.application = application;
-	}
+  public Application getApplication() {
+    return application;
+  }
 
-	public Background getBackground() {
-		return background;
-	}
+  public void setApplication(Application application) {
+    this.application = application;
+  }
 
-	public void setBackground(Background background) {
-		this.background = background;
-	}
+  public Background getBackground() {
+    return background;
+  }
 
-	public ResourceSupport toResource(RepositoryEntityLinks links) {
-		Link selfLink = links.linkForSingleResource(this).withSelfRel();
-		ResourceSupport res = new Resource<>(this, selfLink);
-		res.add(links.linkForSingleResource(this).slash("application").withRel("application"));
-		res.add(links.linkForSingleResource(this).slash("background").withRel("background"));
-		return res;
-	}
+  public void setBackground(Background background) {
+    this.background = background;
+  }
+
+  public ResourceSupport toResource(RepositoryEntityLinks links) {
+    Link selfLink = links.linkForSingleResource(this).withSelfRel();
+    ResourceSupport res = new Resource<>(this, selfLink);
+    res.add(links.linkForSingleResource(this).slash("application").withRel("application"));
+    res.add(links.linkForSingleResource(this).slash("background").withRel("background"));
+    return res;
+  }
 
 }

@@ -1,42 +1,43 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigInteger;
 
 @Entity
-@Table(name = "stm_tipogrp")
+@Table(name = "STM_TIPOGRP", uniqueConstraints = {@UniqueConstraint(name = "STM_TGR_NOM_UK", columnNames = {"TGR_NOMBRE"})})
 public class TerritoryType {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
-	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
-	@Column(name = "tgr_codigo")
-	private long id;
+  @TableGenerator(
+    name = "STM_TIPOGRP_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "TGR_CODIGO",
+    allocationSize = 1)
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_TIPOGRP_GEN")
+  @Column(name = "TGR_CODIGO", precision = 11)
+  private BigInteger id;
 
-	@NotNull
-	@Column(name = "tgr_nombre", unique = true, nullable = false, length = 250)
-	private String name;
+  @NotNull
+  @Column(name = "TGR_NOMBRE", nullable = false, length = 250)
+  private String name;
 
-	public long getId() {
-		return id;
-	}
+  public BigInteger getId() {
+    return id;
+  }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public void setId(BigInteger id) {
+    this.id = id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
 }

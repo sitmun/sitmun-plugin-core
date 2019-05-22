@@ -1,18 +1,19 @@
 package org.sitmun.plugin.core.service.dto;
 
+import org.sitmun.plugin.core.domain.User;
+import org.springframework.hateoas.Identifiable;
+import org.springframework.hateoas.core.Relation;
+
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.sitmun.plugin.core.domain.User;
-import org.springframework.hateoas.Identifiable;
-import org.springframework.hateoas.core.Relation;
-
 @Relation(value = "user", collectionRelation = "users")
-public class UserDTO implements Identifiable<Long> {
+public class UserDTO implements Identifiable<BigInteger> {
 
-	private Long id;
+	private BigInteger id;
 	private String username;
 	private String firstName;
 	private String lastName;
@@ -69,11 +70,11 @@ public class UserDTO implements Identifiable<Long> {
 		return authoritiesPerTerritory;
 	}
 
-	public Long getId() {
+	public BigInteger getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(BigInteger id) {
 		this.id = id;
 	}
 

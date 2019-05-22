@@ -1,47 +1,47 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.math.BigInteger;
 
 @Entity
-@Table(name = "stm_grptar")
+@Table(name = "GTA_CODIGO")
 public class TaskGroup {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
-	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
-	@Column(name = "gta_codigo")
-	private long id;
+  @TableGenerator(
+    name = "GTA_CODIGO_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "GTA_CODIGO",
+    allocationSize = 1)
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "GTA_CODIGO_GEN")
+  @Column(name = "GTA_CODIGO", precision = 11)
+  private BigInteger id;
 
-	@Column(name = "gta_nombre", length = 80)
-	private String name;
+  @Column(name = "GTA_NOMBRE", length = 80)
+  private String name;
 
-	/**
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
+  /**
+   * @return the id
+   */
+  public BigInteger getId() {
+    return id;
+  }
 
-	/**
-	 * @param id
-	 *            the id to set
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
+  /**
+   * @param id the id to set
+   */
+  public void setId(BigInteger id) {
+    this.id = id;
+  }
 
-	public String getName() {
-		return name;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
 }

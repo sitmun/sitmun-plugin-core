@@ -1,13 +1,6 @@
 package org.sitmun.plugin.core.web.rest;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.sitmun.plugin.core.domain.ApplicationBackground;
-import org.sitmun.plugin.core.domain.Background;
 import org.sitmun.plugin.core.domain.CartographyGroup;
 import org.sitmun.plugin.core.domain.Tree;
 import org.sitmun.plugin.core.repository.ApplicationRepository;
@@ -25,6 +18,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @RepositoryRestController
 public class ApplicationResource {
 
@@ -39,7 +39,7 @@ public class ApplicationResource {
 	}
 
 	@GetMapping("/applications/{id}/trees")
-	public ResponseEntity<?> getApplicationTrees(@PathVariable Long id) {
+	public ResponseEntity<?> getApplicationTrees(@PathVariable BigInteger id) {
 		List<Tree> trees = applicationRepository.findApplicationTrees(id);
 
 		Resources<ResourceSupport> resources = new Resources<ResourceSupport>(
@@ -50,7 +50,7 @@ public class ApplicationResource {
 	}
 
 	@GetMapping("/applications/{id}/backgrounds")
-	public ResponseEntity<?> getBackgrounds(@PathVariable Long id) {
+	public ResponseEntity<?> getBackgrounds(@PathVariable BigInteger id) {
 		List<ApplicationBackground> backgrounds = applicationRepository.findApplicationBackgrounds(id);
 
 		Resources<ResourceSupport> resources = new Resources<ResourceSupport>(
@@ -61,7 +61,7 @@ public class ApplicationResource {
 	}
 
 	@GetMapping("/applications/{id}/situationMap")
-	public ResponseEntity<?> getApplicationSituationMap(@PathVariable Long id) {
+	public ResponseEntity<?> getApplicationSituationMap(@PathVariable BigInteger id) {
 		CartographyGroup situationMap = null;
 		List<CartographyGroup> situationMaps = applicationRepository.findSituationMap(id);
 		if (situationMaps.size() > 0) {

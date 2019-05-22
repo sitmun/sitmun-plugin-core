@@ -44,6 +44,7 @@ dependencies {
   implementation "org.webjars:webjars-locator"
   implementation "org.webjars:bootstrap:${bootstrap_version}"
   implementation "org.webjars:requirejs:${requirejs_version}"
+  implementation "info.picocli:picocli:${picocli_version}"
 
   implementation "io.jsonwebtoken:jjwt:${jjwt_version}"
 
@@ -105,6 +106,50 @@ task installModules(dependsOn: npmBuildSitmunPluginCore)
 processResources.dependsOn installModules
 
 task install(dependsOn: 'publishToMavenLocal')
+
+
+task oracle8iSchemaExport(type: JavaExec) {
+  mkdir 'src/main/sql/'
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.sitmun.plugin.core.tools.SitmunSchemaExport'
+  args '-d', 'org.hibernate.dialect.Oracle8iDialect', '-f', 'src/main/sql/oracle8i.sql'
+}
+
+task oracle9iSchemaExport(type: JavaExec) {
+  mkdir 'src/main/sql/'
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.sitmun.plugin.core.tools.SitmunSchemaExport'
+  args '-d', 'org.hibernate.dialect.Oracle9iDialect', '-f', 'src/main/sql/oracle9i.sql'
+}
+
+task oracle10gSchemaExport(type: JavaExec) {
+  mkdir 'src/main/sql/'
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.sitmun.plugin.core.tools.SitmunSchemaExport'
+  args '-d', 'org.hibernate.dialect.Oracle10gDialect', '-f', 'src/main/sql/oracle10g.sql'
+}
+
+
+task postgreSQLSchemaExport(type: JavaExec) {
+  mkdir 'src/main/sql/'
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.sitmun.plugin.core.tools.SitmunSchemaExport'
+  args '-d', 'org.hibernate.dialect.PostgreSQLDialect', '-f', 'src/main/sql/postgresql.sql'
+}
+
+task h2SchemaExport(type: JavaExec) {
+  mkdir 'src/main/sql/'
+  classpath = sourceSets.main.runtimeClasspath
+  main = 'org.sitmun.plugin.core.tools.SitmunSchemaExport'
+  args '-d', 'org.hibernate.dialect.H2Dialect', '-f', 'src/main/sql/h2.sql'
+}
+
+task exportSchemas(dependsOn: [
+  oracle8iSchemaExport, 
+  oracle9iSchemaExport,
+  oracle10gSchemaExport,
+  postgreSQLSchemaExport, 
+  h2SchemaExport])
 
 clean {
   delete "node_modules"

@@ -1,7 +1,5 @@
 package org.sitmun.plugin.core.repository;
 
-import java.util.Optional;
-
 import org.sitmun.plugin.core.domain.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
@@ -11,8 +9,11 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
+import java.util.Optional;
+
 @RepositoryRestResource(collectionResourceRel = "roles", path = "roles")
-public interface RoleRepository extends CrudRepository<Role, Long> {
+public interface RoleRepository extends CrudRepository<Role, BigInteger> {
 	
 	@RestResource(exported = false)
 	Optional<Role> findOneByName(String name);
@@ -28,7 +29,7 @@ public interface RoleRepository extends CrudRepository<Role, Long> {
 	
 	@Override
 	@PreAuthorize("hasPermission(#entity, 'administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.Role', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(#entity, 'administration') or hasPermission(filterObject, 'read')")
@@ -36,6 +37,6 @@ public interface RoleRepository extends CrudRepository<Role, Long> {
 	
 	@Override
 	@PostAuthorize("hasPermission(#entity, 'administration') or hasPermission(returnObject, 'read')")
-	Role findOne(Long id);
+	Role findOne(BigInteger id);
 
 }

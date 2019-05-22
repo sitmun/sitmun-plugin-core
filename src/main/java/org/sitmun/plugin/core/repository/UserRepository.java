@@ -1,12 +1,8 @@
 package org.sitmun.plugin.core.repository;
 
 import org.sitmun.plugin.core.domain.User;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.data.rest.core.annotation.RestResource;
 import org.springframework.security.access.method.P;
@@ -14,10 +10,11 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
 import java.util.Optional;
 
 @RepositoryRestResource(collectionResourceRel = "users", path = "users")
-public interface UserRepository extends CrudRepository<User, Long> {
+public interface UserRepository extends CrudRepository<User, BigInteger> {
 
 	@RestResource(exported = false)
 	Optional<User> findOneByUsername(String username);
@@ -33,7 +30,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	
 	@Override
 	@PreAuthorize("hasPermission(#entity, 'administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.User', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(#entity, 'administration') or hasPermission(filterObject, 'read')")
@@ -41,7 +38,7 @@ public interface UserRepository extends CrudRepository<User, Long> {
 	
 	@Override
 	@PostAuthorize("hasPermission(#entity, 'administration') or hasPermission(returnObject, 'read')")
-	User findOne(Long id);
+	User findOne(BigInteger id);
 
 	@RestResource(exported = false)
 	@EntityGraph(attributePaths = "permissions")

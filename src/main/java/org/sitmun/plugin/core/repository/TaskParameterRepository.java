@@ -1,16 +1,16 @@
 package org.sitmun.plugin.core.repository;
 
 import org.sitmun.plugin.core.domain.TaskParameter;
-import org.sitmun.plugin.core.domain.TaskParameter;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
+
 @RepositoryRestResource(collectionResourceRel = "task-parameters", path = "task-parameters")
-public interface TaskParameterRepository extends CrudRepository<TaskParameter, Long> {
+public interface TaskParameterRepository extends CrudRepository<TaskParameter, BigInteger> {
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -23,7 +23,7 @@ public interface TaskParameterRepository extends CrudRepository<TaskParameter, L
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.TaskParameter','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.TaskParameter', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(filterObject, 'administration') or hasPermission(filterObject, 'read')")
@@ -31,5 +31,5 @@ public interface TaskParameterRepository extends CrudRepository<TaskParameter, L
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.TaskParameter','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.TaskParameter', 'read')")
-	TaskParameter findOne(@P("entityId") Long entityId);
+	TaskParameter findOne(@P("entityId") BigInteger entityId);
 }

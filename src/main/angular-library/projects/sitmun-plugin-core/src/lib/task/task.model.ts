@@ -7,7 +7,7 @@ import { TaskGroup } from './task-group.model';
 import { TaskAvailability } from './task-availability.model';
 import { TaskParameter } from './task-parameter.model';
 
-//FIXME move to plugin-demo
+//FIXME ensure task creation in admin app upon initialization (as it is done with Roles and default Users)
 export const GEOADMIN_TREE_TASK_ID:string  = "geoadmin";
 
 import { TaskUI } from './task-ui.model';

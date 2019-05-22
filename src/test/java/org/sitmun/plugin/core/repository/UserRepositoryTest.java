@@ -3,11 +3,7 @@ package org.sitmun.plugin.core.repository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.sitmun.plugin.core.domain.Role;
-import org.sitmun.plugin.core.domain.Territory;
-import org.sitmun.plugin.core.domain.TerritoryType;
-import org.sitmun.plugin.core.domain.User;
-import org.sitmun.plugin.core.domain.UserConfiguration;
+import org.sitmun.plugin.core.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -15,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -67,16 +62,16 @@ public class UserRepositoryTest {
 
   @Test
   public void saveUser() {
-    assumeThat(userRepository.findOne(user.getId())).isNull();
+    assertThat(user.getId()).isNull();
     userRepository.save(user);
     assertThat(user.getId()).isNotZero();
   }
 
   @Test
   public void findOneUserById() {
-    assumeThat(userRepository.findOne(user.getId())).isNull();
+    assertThat(user.getId()).isNull();
     userRepository.save(user);
-    assumeThat(user.getId()).isNotZero();
+    assertThat(user.getId()).isNotZero();
 
     assertThat(userRepository.findOne(user.getId())).isNotNull();
   }

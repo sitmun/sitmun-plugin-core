@@ -7,8 +7,10 @@ import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PostFilter;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.math.BigInteger;
+
 @RepositoryRestResource(collectionResourceRel = "task-uis", path = "task-uis")
-public interface TaskUIRepository extends CrudRepository<TaskUI, Long> {
+public interface TaskUIRepository extends CrudRepository<TaskUI, BigInteger> {
 	@SuppressWarnings("unchecked")
 	@Override
 	@PreAuthorize("hasPermission(#entity, 'administration') or hasPermission(#entity, 'write')")
@@ -20,7 +22,7 @@ public interface TaskUIRepository extends CrudRepository<TaskUI, Long> {
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.TaskUI','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.TaskUI', 'delete')")
-	void delete(@P("entityId") Long entityId);
+	void delete(@P("entityId") BigInteger entityId);
 
 	@Override
 	@PostFilter("hasPermission(filterObject, 'administration') or hasPermission(filterObject, 'read')")
@@ -28,6 +30,6 @@ public interface TaskUIRepository extends CrudRepository<TaskUI, Long> {
 	
 	@Override
 	@PreAuthorize("hasPermission(#entityId, 'org.sitmun.plugin.core.domain.TaskUI','administration') or hasPermission(#entityId, 'org.sitmun.plugin.core.domain.TaskUI', 'read')")
-	TaskUI findOne(@P("entityId") Long entityId);
+	TaskUI findOne(@P("entityId") BigInteger entityId);
 
 }

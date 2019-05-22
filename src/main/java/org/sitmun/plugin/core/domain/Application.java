@@ -1,206 +1,199 @@
 package org.sitmun.plugin.core.domain;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Identifiable;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 
+import javax.persistence.*;
+import java.math.BigInteger;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "stm_apps")
+@Table(name = "STM_APPS")
 public class Application implements Identifiable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "stm_generator")
-	@SequenceGenerator(name = "stm_generator", sequenceName = "stm_seq")
-	@Column(name = "app_codigo")
-	private long id;
+  @TableGenerator(
+    name = "STM_APPS_GEN",
+    table = "STM_CODIGOS",
+    pkColumnName = "GEN_CODIGO",
+    valueColumnName = "GEN_VALOR",
+    pkColumnValue = "APP_CODIGO",
+    allocationSize = 1)
+  @Id
+  @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_APPS_GEN")
+  @Column(name = "APP_CODIGO", precision = 11)
+  private BigInteger id;
 
-	@Column(name = "app_nombre", length = 80)
-	private String name;
+  @Column(name = "APP_NOMBRE", length = 80)
+  private String name;
 
-	@Column(name = "app_tipo", length = 250)
-	private String type;
+  @Column(name = "APP_TIPO", length = 250)
+  private String type;
 
-	@Column(name = "app_titulo", length = 250)
-	private String title;
+  @Column(name = "APP_TITULO", length = 250)
+  private String title;
 
-	@Column(name = "app_tema", length = 80)
-	private String theme;
+  @Column(name = "APP_TEMA", length = 30)
+  private String theme;
 
-	@Column(name = "app_f_alta")
-	private Date createdDate;
+  @Column(name = "APP_F_ALTA")
+  @Temporal(TemporalType.TIMESTAMP)
+  private Date createdDate;
 
-	@ManyToMany
-	@JoinTable(name = "stm_approl", joinColumns = @JoinColumn(name = "apr_codapp",foreignKey=@ForeignKey(name = "STM_APR_FK_APP")), inverseJoinColumns = @JoinColumn(name = "apr_codrol",foreignKey=@ForeignKey(name = "STM_APR_FK_ROl")))
-	private Set<Role> availableRoles = new HashSet<>();
+  @ManyToMany
+  @JoinTable(name = "STM_APPROL", joinColumns = @JoinColumn(name = "APR_CODAPP", foreignKey = @ForeignKey(name = "STM_APR_FK_APP")), inverseJoinColumns = @JoinColumn(name = "APR_CODROL", foreignKey = @ForeignKey(name = "STM_APR_FK_ROL")))
+  private Set<Role> availableRoles = new HashSet<>();
 
-	@OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<ApplicationParameter> parameters = new HashSet<>();
+  @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<ApplicationParameter> parameters = new HashSet<>();
 
-	@ManyToMany
-	@JoinTable(name = "stm_apparb", joinColumns = @JoinColumn(name = "apa_codapp",foreignKey=@ForeignKey(name = "STM_APA_FK_APP")), inverseJoinColumns = @JoinColumn(name = "apa_codarb",foreignKey=@ForeignKey(name = "STM_APA_FK_ARB")))
-	private Set<Tree> trees;
-	
-	// comma-separated values
-	@Column(name = "app_escalas", length = 250)
-	private String scales;
-	
-	// comma-separated EPSG codes
-	@Column(name = "app_project", length = 250)
-	private String projections;
-	
-	@Column(name = "app_autorefr")
-	private Boolean treeAutoRefresh;
-	
-	@OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<ApplicationBackground> backgrounds = new HashSet<>();
-	
-	@ManyToOne
-	@JoinColumn(name = "app_codgca",foreignKey=@ForeignKey(name = "STM_APP_FK_GCA"))
-	private CartographyGroup situationMap;
+  @ManyToMany
+  @JoinTable(name = "STM_APPARB", joinColumns = @JoinColumn(name = "APA_CODAPP", foreignKey = @ForeignKey(name = "STM_APA_FK_APP")), inverseJoinColumns = @JoinColumn(name = "APA_CODARB", foreignKey = @ForeignKey(name = "STM_APA_FK_ARB")))
+  private Set<Tree> trees;
 
-	public Long getId() {
-		return id;
-	}
+  // comma-separated values
+  @Column(name = "APP_ESCALAS", length = 250)
+  private String scales;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  // comma-separated EPSG codes
+  @Column(name = "APP_PROJECT", length = 250)
+  private String projections;
 
-	public String getName() {
-		return name;
-	}
+  @Column(name = "APP_AUTOREFR")
+  private Boolean treeAutoRefresh;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<ApplicationBackground> backgrounds = new HashSet<>();
 
-	public String getType() {
-		return type;
-	}
+  @ManyToOne
+  @JoinColumn(name = "APP_CODGCA", foreignKey = @ForeignKey(name = "STM_APP_FK_GCA"))
+  private CartographyGroup situationMap;
 
-	public void setType(String type) {
-		this.type = type;
-	}
+  public BigInteger getId() {
+    return id;
+  }
 
-	public String getTitle() {
-		return title;
-	}
+  public void setId(BigInteger id) {
+    this.id = id;
+  }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+  public String getName() {
+    return name;
+  }
 
-	public String getTheme() {
-		return theme;
-	}
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public void setTheme(String theme) {
-		this.theme = theme;
-	}
+  public String getType() {
+    return type;
+  }
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
+  public void setType(String type) {
+    this.type = type;
+  }
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
+  public String getTitle() {
+    return title;
+  }
 
-	public Set<Role> getAvailableRoles() {
-		return availableRoles;
-	}
+  public void setTitle(String title) {
+    this.title = title;
+  }
 
-	public void setAvailableRoles(Set<Role> availableRoles) {
-		this.availableRoles = availableRoles;
-	}
+  public String getTheme() {
+    return theme;
+  }
 
-	public Set<ApplicationParameter> getParameters() {
-		return parameters;
-	}
+  public void setTheme(String theme) {
+    this.theme = theme;
+  }
 
-	public void setParameters(Set<ApplicationParameter> parameters) {
-		this.parameters = parameters;
-	}
+  public Date getCreatedDate() {
+    return createdDate;
+  }
 
-	public Set<Tree> getTrees() {
-		return trees;
-	}
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
 
-	public void setTrees(Set<Tree> trees) {
-		this.trees = trees;
-	}
+  public Set<Role> getAvailableRoles() {
+    return availableRoles;
+  }
 
-	public String getScales() {
-		return scales;
-	}
+  public void setAvailableRoles(Set<Role> availableRoles) {
+    this.availableRoles = availableRoles;
+  }
 
-	public void setScales(String scales) {
-		this.scales = scales;
-	}
+  public Set<ApplicationParameter> getParameters() {
+    return parameters;
+  }
 
-	public String getProjections() {
-		return projections;
-	}
+  public void setParameters(Set<ApplicationParameter> parameters) {
+    this.parameters = parameters;
+  }
 
-	public void setProjections(String projections) {
-		this.projections = projections;
-	}
+  public Set<Tree> getTrees() {
+    return trees;
+  }
 
-	public Boolean getTreeAutoRefresh() {
-		return treeAutoRefresh;
-	}
+  public void setTrees(Set<Tree> trees) {
+    this.trees = trees;
+  }
 
-	public void setTreeAutoRefresh(Boolean treeAutoRefresh) {
-		this.treeAutoRefresh = treeAutoRefresh;
-	}
+  public String getScales() {
+    return scales;
+  }
 
-	public Set<ApplicationBackground> getBackgrounds() {
-		return backgrounds;
-	}
+  public void setScales(String scales) {
+    this.scales = scales;
+  }
 
-	public void setBackgrounds(Set<ApplicationBackground> backgrounds) {
-		this.backgrounds = backgrounds;
-	}
+  public String getProjections() {
+    return projections;
+  }
 
-	public CartographyGroup getSituationMap() {
-		return situationMap;
-	}
+  public void setProjections(String projections) {
+    this.projections = projections;
+  }
 
-	public void setSituationMap(CartographyGroup situationMap) {
-		this.situationMap = situationMap;
-	}
+  public Boolean getTreeAutoRefresh() {
+    return treeAutoRefresh;
+  }
 
-	public ResourceSupport toResource(RepositoryEntityLinks links) {
-		Link selfLink = links.linkForSingleResource(this).withSelfRel();
-		ResourceSupport res = new Resource<>(this, selfLink);
-		res.add(links.linkForSingleResource(this).slash("availableRoles").withRel("availableRoles"));
-		res.add(links.linkForSingleResource(this).slash("parameters").withRel("parameters"));
-		res.add(links.linkForSingleResource(this).slash("trees").withRel("trees"));
-		res.add(links.linkForSingleResource(this).slash("backgrounds").withRel("backgrounds"));
-		res.add(links.linkForSingleResource(this).slash("situationMap").withRel("situationMap"));
-		return res;
-	}
+  public void setTreeAutoRefresh(Boolean treeAutoRefresh) {
+    this.treeAutoRefresh = treeAutoRefresh;
+  }
+
+  public Set<ApplicationBackground> getBackgrounds() {
+    return backgrounds;
+  }
+
+  public void setBackgrounds(Set<ApplicationBackground> backgrounds) {
+    this.backgrounds = backgrounds;
+  }
+
+  public CartographyGroup getSituationMap() {
+    return situationMap;
+  }
+
+  public void setSituationMap(CartographyGroup situationMap) {
+    this.situationMap = situationMap;
+  }
+
+  public ResourceSupport toResource(RepositoryEntityLinks links) {
+    Link selfLink = links.linkForSingleResource(this).withSelfRel();
+    ResourceSupport res = new Resource<>(this, selfLink);
+    res.add(links.linkForSingleResource(this).slash("availableRoles").withRel("availableRoles"));
+    res.add(links.linkForSingleResource(this).slash("parameters").withRel("parameters"));
+    res.add(links.linkForSingleResource(this).slash("trees").withRel("trees"));
+    res.add(links.linkForSingleResource(this).slash("backgrounds").withRel("backgrounds"));
+    res.add(links.linkForSingleResource(this).slash("situationMap").withRel("situationMap"));
+    return res;
+  }
 
 }

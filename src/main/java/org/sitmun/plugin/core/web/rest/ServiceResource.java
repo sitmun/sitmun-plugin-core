@@ -1,11 +1,5 @@
 package org.sitmun.plugin.core.web.rest;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.sitmun.plugin.core.domain.Cartography;
 import org.sitmun.plugin.core.repository.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @RepositoryRestController
 public class ServiceResource {
 
@@ -34,7 +35,7 @@ public class ServiceResource {
 		this.serviceRepository = serviceRepository;
 	}
 	@GetMapping("/services/{id}/layers")
-	public ResponseEntity<?> getServiceMembers(@PathVariable Long id) {
+	public ResponseEntity<?> getServiceMembers(@PathVariable BigInteger id) {
 		List<Cartography> cartographys = serviceRepository.findLayers(id);
 
 		Resources<ResourceSupport> resources = new Resources<ResourceSupport>(
