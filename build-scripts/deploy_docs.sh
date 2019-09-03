@@ -7,10 +7,10 @@ echo
 ./gradlew npmCreateCompodocs 
 
 if [ -n "$GITHUB_API_KEY" ]; then
-    cd "$TRAVIS_BUILD_DIR"/build        
+    cd "$TRAVIS_BUILD_DIR"/docs-build        
     git clone https://github.com/sitmun/sitmun.github.io.git
     cd sitmun.github.io
-    cp -r "$TRAVIS_BUILD_DIR"/build/doc-angular /doc-angular       
+    cp -r "$TRAVIS_BUILD_DIR"/docs-build/doc-angular /doc-angular       
     git add doc-angular/*
     git commit -m "Automatic update of the Angular docs"
     # Make sure to make the output quiet, or else the API token will leak!

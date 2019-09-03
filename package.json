@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng ei2e",
-    "compodoc": "npx compodoc -p tsconfig.json --output ./build/doc-angular"
+    "compodoc": "npx compodoc -p tsconfig.json --output ./docs-build/doc-angular"
   },
   "private": true,
   "dependencies": {
