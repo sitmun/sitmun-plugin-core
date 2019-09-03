@@ -102,6 +102,10 @@ task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
 
 task installModules(dependsOn: npmBuildSitmunPluginCore)
 
+task npmCreateCompodocs(type: NpmTask, dependsOn: npmBuildAngularHal) {
+  description = 'Create compodocs por sitmun-plugin-core.'
+  args = ['run-script', 'compodoc']
+}
 
 processResources.dependsOn installModules
 
