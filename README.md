@@ -11,6 +11,5 @@
 ## Dependencies
 This project has no dependencies on other plugins.
 
-## Domain model
-The domain model is defined in PlantUML language here: https://github.com/sitmun/community/wiki/Conceptual-Model
-
+## Developer documentation
+The documentation for developers is available at [the wiki of the SITMUN project](https://github.com/sitmun/community/wiki).
