@@ -4,7 +4,13 @@ echo "Deploying docs ..."
 echo
 
 # This creates the Angular docs in $TRAVIS_BUILD_DIR/docs-build/doc-angular with Compodoc
-./gradlew npmCreateCompodocs 
+./gradlew npmCreateCompodocs
+
+# This creates Javadocs docs in $TRAVIS_BUILD_DIR/build/docs/javadoc with Javadoc
+./gradlew javadoc
+
+# This creates WebAPI docs in $TRAVIS_BUILD_DIR/build/asciidoc/html5 with Asciidoc
+./gradlew asciidoc
 
 if [ -n "$GITHUB_API_KEY" ]; then
     cd "$TRAVIS_BUILD_DIR"/docs-build        
@@ -12,8 +18,12 @@ if [ -n "$GITHUB_API_KEY" ]; then
     git clone https://github.com/sitmun/sitmun.github.io.git
     cd sitmun.github.io
     cp -r "$TRAVIS_BUILD_DIR"/docs-build/doc-angular ./doc-angular       
+    cp -r "$TRAVIS_BUILD_DIR"/build/docs/javadoc  ./doc-java
+    cp -r "$TRAVIS_BUILD_DIR"/build/asciidoc/html5  ./doc-rest
     git add doc-angular/*
-    git commit -m "Automatic update of the Angular docs"
+    git add doc-java/*
+    git add doc-rest/*
+    git commit -m "Automatic update of the docs"
     # Make sure to make the output quiet, or else the API token will leak!
     # This works because the API key can replace your password.
     git push -q https://rbejar:$GITHUB_API_KEY@github.com/sitmun/sitmun.github.io master &>/dev/null    

@@ -1,3 +1,20 @@
+buildscript {
+  repositories {
+    jcenter()
+    mavenCentral()
+    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+    //mavenLocal()
+  }
+  dependencies {
+    classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
+    classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.10.1'
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.0.RELEASE'
+    classpath 'io.github.swagger2markup:swagger2markup-spring-restdocs-ext:1.3.3'
+    classpath 'io.github.swagger2markup:swagger2markup-gradle-plugin:1.3.3'
+    classpath "org.ajoberstar:gradle-git:1.5.1"
+  }
+}
+
 plugins {
   id "org.springframework.boot" version "1.5.8.RELEASE"
   id "org.sonarqube" version "2.6.2"
@@ -15,6 +32,17 @@ apply plugin: 'com.moowork.node'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'idea'
+apply plugin: 'org.asciidoctor.convert'
+apply plugin: 'io.github.swagger2markup'
+apply plugin: 'io.spring.dependency-management'
+apply plugin: 'org.ajoberstar.github-pages'
+
+ext {
+  asciiDocOutputDir = file("${buildDir}/asciidoc/generated")
+  swaggerOutputDir = file("${buildDir}/swagger")
+  snippetsOutputDir = file("${buildDir}/asciidoc/snippets")
+}
+
 
 group = 'org.sitmun'
 if (project.hasProperty("customVersion")) {
@@ -40,6 +68,7 @@ dependencies {
   implementation "org.springframework.security:spring-security-data"
 
   implementation "io.springfox:springfox-swagger2:${springfox_swagger_version}"
+  implementation "io.springfox:springfox-data-rest:${springfox_swagger_version}"
 
   implementation "org.webjars:webjars-locator"
   implementation "org.webjars:bootstrap:${bootstrap_version}"
@@ -92,11 +121,13 @@ def cacheDir = project.hasProperty("cacheDir")? project.properties.cacheDir : "$
 
 task npmBuildAngularHal(type: NpmTask, dependsOn: npmInstall) {
   description = 'Build module angular-hal.'
+  outputs.dir file("dist/angular-hal")
   args = ['run-script', 'build-angular-hal']
 }
 
 task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
   description = 'Build module sitmun-plugin-core.'
+  outputs.dir file("dist/sitmun-plugin-core")
   args = ['run-script', 'build-sitmun-plugin-core']
 }
 
@@ -159,4 +190,38 @@ clean {
   delete "node_modules"
   delete "dist"
   delete "${cacheDir}"
+}
+
+convertSwagger2markup {
+  dependsOn test
+  swaggerInput "${swaggerOutputDir}/swagger.json"
+  swaggerInput "swagger.json"
+  outputDir asciiDocOutputDir
+  config = [
+    'swagger2markup.pathsGroupedBy' : 'TAGS',
+    'swagger2markup.extensions.springRestDocs.snippetBaseUri': snippetsOutputDir.getAbsolutePath()]
+}
+
+asciidoctor {
+  dependsOn convertSwagger2markup
+  sourceDir = file('src/main/docs/asciidoc')
+  sources {
+    include 'index.adoc'
+  }
+  backends = ['html5']
+  attributes = [
+    doctype: 'book',
+    toc: 'left',
+    toclevels: '2',
+    numbered: '',
+    sectlinks: '',
+    sectanchors: '',
+    hardbreaks: '',
+    generated: asciiDocOutputDir
+  ]
+}
+
+javadoc {
+  source = sourceSets.main.allJava
+  classpath = configurations.compile
 }

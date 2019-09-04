@@ -28,3 +28,4 @@ package-lock.json
 /todo.txt
 /tsconfig.development.json
 /docs-build
+swagger.json
