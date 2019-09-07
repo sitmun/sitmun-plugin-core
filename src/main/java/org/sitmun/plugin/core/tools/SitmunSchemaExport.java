@@ -1,5 +1,9 @@
 package org.sitmun.plugin.core.tools;
 
+import java.io.File;
+import java.util.concurrent.Callable;
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.boot.registry.internal.StandardServiceRegistryImpl;
@@ -13,21 +17,14 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import java.io.File;
-import java.util.concurrent.Callable;
-
 @Command(name = "schema")
 public class SitmunSchemaExport implements Callable<Void> {
 
-  @Option(names = {"-d", "--dialect"}, description ="Hibernate Dialect", required = true)
-  private Class<Dialect> dialect ;
-
-  @Option(names = {"-f", "--file"}, description ="Schema file", required = true)
-  private File target ;
-
-  private final String[] ENTITY_PACKAGES = { "org.sitmun.plugin.core.domain" };
+  private final String[] ENTITY_PACKAGES = {"org.sitmun.plugin.core.domain"};
+  @Option(names = {"-d", "--dialect"}, description = "Hibernate Dialect", required = true)
+  private Class<Dialect> dialect;
+  @Option(names = {"-f", "--file"}, description = "Schema file", required = true)
+  private File target;
 
   public static void main(String[] args) {
     CommandLine.call(new SitmunSchemaExport(), args);
@@ -36,8 +33,8 @@ public class SitmunSchemaExport implements Callable<Void> {
   @Override
   public Void call() {
     ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-      .applySetting(AvailableSettings.DIALECT, dialect)
-      .build();
+                                          .applySetting(AvailableSettings.DIALECT, dialect)
+                                          .build();
 
     MetadataSources source = mapAnnotatedClasses(serviceRegistry);
 
@@ -55,7 +52,7 @@ public class SitmunSchemaExport implements Callable<Void> {
   private MetadataSources mapAnnotatedClasses(ServiceRegistry serviceRegistry) {
     MetadataSources sources = new MetadataSources(serviceRegistry);
 
-    final Reflections reflections = new Reflections((Object[]) ENTITY_PACKAGES);
+    final Reflections reflections = new Reflections(ENTITY_PACKAGES);
     for (final Class<?> mappedSuperClass : reflections.getTypesAnnotatedWith(MappedSuperclass.class)) {
       sources.addAnnotatedClass(mappedSuperClass);
       System.out.println("Mapped = " + mappedSuperClass.getName());

@@ -1,19 +1,25 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.*;
 import java.math.BigInteger;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
 
 @Entity
 @Table(name = "STM_TAREA_UI")
 public class TaskUI {
 
   @TableGenerator(
-    name = "STM_TAREA_UI_GEN",
-    table = "STM_CODIGOS",
-    pkColumnName = "GEN_CODIGO",
-    valueColumnName = "GEN_VALOR",
-    pkColumnValue = "TUI_CODIGO",
-    allocationSize = 1)
+      name = "STM_TAREA_UI_GEN",
+      table = "STM_CODIGOS",
+      pkColumnName = "GEN_CODIGO",
+      valueColumnName = "GEN_VALOR",
+      pkColumnValue = "TUI_CODIGO",
+      allocationSize = 1)
   @Id
   @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_TAREA_UI_GEN")
   @Column(name = "TUI_CODIGO", precision = 11)

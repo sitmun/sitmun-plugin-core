@@ -8,11 +8,11 @@ import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver
 @Configuration
 public class RestApiConfiguration extends RepositoryRestConfigurerAdapter {
 
-    @Bean
-    public HateoasPageableHandlerMethodArgumentResolver customResolver(
-        HateoasPageableHandlerMethodArgumentResolver pageableResolver) {
-        pageableResolver.setOneIndexedParameters(true);
-        pageableResolver.setFallbackPageable(null);
-        return pageableResolver;
-    }
+  @Bean
+  public HateoasPageableHandlerMethodArgumentResolver customResolver(
+      HateoasPageableHandlerMethodArgumentResolver pageableResolver) {
+    pageableResolver.setOneIndexedParameters(true);
+    pageableResolver.setFallbackPageable(null);
+    return pageableResolver;
+  }
 }

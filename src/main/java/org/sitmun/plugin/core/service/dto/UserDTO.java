@@ -1,127 +1,126 @@
 package org.sitmun.plugin.core.service.dto;
 
-import org.sitmun.plugin.core.domain.User;
-import org.springframework.hateoas.Identifiable;
-import org.springframework.hateoas.core.Relation;
-
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.sitmun.plugin.core.domain.User;
+import org.springframework.hateoas.Identifiable;
+import org.springframework.hateoas.core.Relation;
 
 @Relation(value = "user", collectionRelation = "users")
 public class UserDTO implements Identifiable<BigInteger> {
 
-	private BigInteger id;
-	private String username;
-	private String firstName;
-	private String lastName;
-	private Boolean administrator;
-	private Boolean blocked;
+  private BigInteger id;
+  private String username;
+  private String firstName;
+  private String lastName;
+  private Boolean administrator;
+  private Boolean blocked;
 
-	private Set<String> authorities;
-	
-	private Set<String> territories;
+  private Set<String> authorities;
 
-	private Map<String, Set<String>> authoritiesPerTerritory;
+  private Set<String> territories;
 
-	public UserDTO() {
-		super();
-	}
+  private Map<String, Set<String>> authoritiesPerTerritory;
 
-	public UserDTO(User user) {
-		this.id = user.getId();
+  public UserDTO() {
+    super();
+  }
 
-		this.username = user.getUsername();
+  public UserDTO(User user) {
+    this.id = user.getId();
 
-		this.firstName = user.getFirstName();
+    this.username = user.getUsername();
 
-		this.lastName = user.getLastName();
+    this.firstName = user.getFirstName();
 
-		this.administrator = user.getAdministrator();
+    this.lastName = user.getLastName();
 
-		this.blocked = user.getBlocked();
-		authorities = new HashSet<>();
-		territories = new HashSet<>();
-		authoritiesPerTerritory = new HashMap<>();
-		if (!user.getPermissions().isEmpty()) {
-			user.getPermissions().stream().forEach(p -> {
-				Set<String> territoryAuths = authoritiesPerTerritory.get(p.getTerritory().getName());
-				if (territoryAuths == null) {
-					authoritiesPerTerritory.put(p.getTerritory().getName(), new HashSet<>());
-				}
-				authoritiesPerTerritory.get(p.getTerritory().getName()).add( p.getRole().getName());
-				authorities.add(p.getRole().getName());
-				territories.add(p.getTerritory().getName());
-			});
-		}
-	}
+    this.administrator = user.getAdministrator();
 
-	public Set<String> getTerritories() {
-		return territories;
-	}
+    this.blocked = user.getBlocked();
+    authorities = new HashSet<>();
+    territories = new HashSet<>();
+    authoritiesPerTerritory = new HashMap<>();
+    if (!user.getPermissions().isEmpty()) {
+      user.getPermissions().stream().forEach(p -> {
+        Set<String> territoryAuths = authoritiesPerTerritory.get(p.getTerritory().getName());
+        if (territoryAuths == null) {
+          authoritiesPerTerritory.put(p.getTerritory().getName(), new HashSet<>());
+        }
+        authoritiesPerTerritory.get(p.getTerritory().getName()).add(p.getRole().getName());
+        authorities.add(p.getRole().getName());
+        territories.add(p.getTerritory().getName());
+      });
+    }
+  }
 
-	public Set<String> getAuthorities() {
-		return authorities;
-	}
+  public Set<String> getTerritories() {
+    return territories;
+  }
 
-	public Map<String, Set<String>> getAuthoritiesPerTerritory() {
-		return authoritiesPerTerritory;
-	}
+  public Set<String> getAuthorities() {
+    return authorities;
+  }
 
-	public BigInteger getId() {
-		return id;
-	}
+  public Map<String, Set<String>> getAuthoritiesPerTerritory() {
+    return authoritiesPerTerritory;
+  }
 
-	public void setId(BigInteger id) {
-		this.id = id;
-	}
+  public BigInteger getId() {
+    return id;
+  }
 
-	public String getUsername() {
-		return username;
-	}
+  public void setId(BigInteger id) {
+    this.id = id;
+  }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+  public String getUsername() {
+    return username;
+  }
 
-	public String getFirstName() {
-		return firstName;
-	}
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+  public String getFirstName() {
+    return firstName;
+  }
 
-	public String getLastName() {
-		return lastName;
-	}
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+  public String getLastName() {
+    return lastName;
+  }
 
-	public Boolean getAdministrator() {
-		return administrator;
-	}
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
 
-	public void setAdministrator(Boolean administrator) {
-		this.administrator = administrator;
-	}
+  public Boolean getAdministrator() {
+    return administrator;
+  }
 
-	public Boolean getBlocked() {
-		return blocked;
-	}
+  public void setAdministrator(Boolean administrator) {
+    this.administrator = administrator;
+  }
 
-	public void setBlocked(Boolean blocked) {
-		this.blocked = blocked;
-	}
-	/*
-	 * 
-	 * private Set<UserPosition> positions = new HashSet<>();
-	 * 
-	 * private Set<UserConfiguration> permissions = new HashSet<>();
-	 */
+  public Boolean getBlocked() {
+    return blocked;
+  }
+
+  public void setBlocked(Boolean blocked) {
+    this.blocked = blocked;
+  }
+  /*
+   *
+   * private Set<UserPosition> positions = new HashSet<>();
+   *
+   * private Set<UserConfiguration> permissions = new HashSet<>();
+   */
 
 }

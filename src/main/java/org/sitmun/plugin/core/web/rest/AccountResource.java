@@ -1,5 +1,7 @@
 package org.sitmun.plugin.core.web.rest;
 
+import java.util.Optional;
+import javax.validation.Valid;
 import org.sitmun.plugin.core.domain.User;
 import org.sitmun.plugin.core.repository.UserRepository;
 import org.sitmun.plugin.core.security.SecurityUtils;
@@ -18,10 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.Optional;
-
-import javax.validation.Valid;
 
 @RepositoryRestController
 @RequestMapping("/api/account")
@@ -66,7 +64,7 @@ public class AccountResource {
       Optional<User> user = userRepository.findOneWithPermissionsByUsername(optLogin.get());
       if (user.isPresent()) {
         return ResponseEntity.ok(
-        		toResource(user.get()));
+            toResource(user.get()));
       } else {
         return ResponseEntity.notFound().build();
       }

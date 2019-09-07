@@ -1,20 +1,25 @@
 package org.sitmun.plugin.core.repository;
 
-import org.assertj.core.api.SoftAssertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.sitmun.plugin.core.domain.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assumptions.assumeThat;
+
 
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.HashSet;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assumptions.assumeThat;
+import org.assertj.core.api.SoftAssertions;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.sitmun.plugin.core.domain.Application;
+import org.sitmun.plugin.core.domain.ApplicationBackground;
+import org.sitmun.plugin.core.domain.ApplicationParameter;
+import org.sitmun.plugin.core.domain.Background;
+import org.sitmun.plugin.core.domain.CartographyGroup;
+import org.sitmun.plugin.core.domain.Role;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 
 @RunWith(SpringRunner.class)

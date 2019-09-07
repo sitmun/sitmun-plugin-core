@@ -1,5 +1,10 @@
 package org.sitmun.plugin.core.security;
 
+import java.io.Serializable;
+import java.util.Optional;
+import java.util.Set;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.sitmun.plugin.core.domain.User;
 import org.sitmun.plugin.core.domain.UserConfiguration;
 import org.sitmun.plugin.core.service.UserService;
@@ -14,13 +19,6 @@ import org.springframework.core.ResolvableType;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-
-import java.io.Serializable;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 @Component("permissionEvaluator")
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -43,23 +41,23 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     if ((authentication == null) || (targetDomainObject == null) || !(permission instanceof String)) {
       return false;
     }
-    
+
     Optional<User> currentUser = null;
     if ((authentication.getPrincipal() instanceof org.springframework.security.core.userdetails.User)) {
-        currentUser = this.userService.getUserWithPermissionsByUsername(
-        	      ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername());
-    	
+      currentUser = this.userService.getUserWithPermissionsByUsername(
+          ((org.springframework.security.core.userdetails.User) authentication.getPrincipal()).getUsername());
+
     } else {
-        currentUser = this.userService.getUserWithPermissionsByUsername(authentication.getPrincipal().toString());
-    	
+      currentUser = this.userService.getUserWithPermissionsByUsername(authentication.getPrincipal().toString());
+
     }
-      
+
 
     if (currentUser.isPresent()) {
       User user = currentUser.get();
       try {
         String[] beanNamesForType = context.getBeanNamesForType(
-          ResolvableType.forClassWithGenerics(PermissionResolver.class, targetDomainObject.getClass()));
+            ResolvableType.forClassWithGenerics(PermissionResolver.class, targetDomainObject.getClass()));
         if (beanNamesForType.length > 0) {
           PermissionResolver rc;
           rc = (PermissionResolver) context.getBean(beanNamesForType[0]);
@@ -72,11 +70,12 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
       }
       //return true;
       Set<UserConfiguration> permissions = user.getPermissions();
-		boolean isAdminSitmun = permissions.stream()
-				.anyMatch(p -> p.getRole().getName().equalsIgnoreCase(AuthoritiesConstants.ADMIN_SITMUN));
-		if (isAdminSitmun)
-			return true;
-		return ( ((String) permission).equalsIgnoreCase(SecurityConstants.READ_PERMISSION));
+      boolean isAdminSitmun = permissions.stream()
+                                  .anyMatch(p -> p.getRole().getName().equalsIgnoreCase(AuthoritiesConstants.ADMIN_SITMUN));
+      if (isAdminSitmun) {
+        return true;
+      }
+      return (((String) permission).equalsIgnoreCase(SecurityConstants.READ_PERMISSION));
     } else {
       return false;
     }
@@ -99,7 +98,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
       try {
         String[] beanNamesForType = context.getBeanNamesForType(
-          ResolvableType.forClassWithGenerics(PermissionResolver.class, Class.forName(targetType)));
+            ResolvableType.forClassWithGenerics(PermissionResolver.class, Class.forName(targetType)));
         if (beanNamesForType.length > 0) {
           PermissionResolver rc;
           rc = (PermissionResolver) context.getBean(beanNamesForType[0]);

@@ -1,5 +1,12 @@
 package org.sitmun.plugin.core.web.rest;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
+
+import java.math.BigInteger;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.sitmun.plugin.core.domain.Cartography;
 import org.sitmun.plugin.core.repository.CartographyGroupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,42 +22,35 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.math.BigInteger;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
-
 @RepositoryRestController
 public class CartographyGroupResource {
 
-	private CartographyGroupRepository cartographyGroupRepository;
+  private CartographyGroupRepository cartographyGroupRepository;
 
-	@Autowired
-	private RepositoryEntityLinks links;
+  @Autowired
+  private RepositoryEntityLinks links;
 
-	public CartographyGroupResource(CartographyGroupRepository cartographyGroupRepository) {
-		super();
-		this.cartographyGroupRepository = cartographyGroupRepository;
-	}
+  public CartographyGroupResource(CartographyGroupRepository cartographyGroupRepository) {
+    super();
+    this.cartographyGroupRepository = cartographyGroupRepository;
+  }
 
-	@GetMapping("/cartography-groups/{id}/members")
-	public ResponseEntity<?> getCartographyGroupMembers(@PathVariable BigInteger id) {
-		List<Cartography> cartographys = cartographyGroupRepository.findCartographyMembers(id);
+  @GetMapping("/cartography-groups/{id}/members")
+  public ResponseEntity<?> getCartographyGroupMembers(@PathVariable BigInteger id) {
+    List<Cartography> cartographys = cartographyGroupRepository.findCartographyMembers(id);
 
-		Resources<ResourceSupport> resources = new Resources<ResourceSupport>(
-				cartographys.stream().map(cartography -> cartography.toResource(links)).collect(Collectors.toList()));
+    Resources<ResourceSupport> resources = new Resources<ResourceSupport>(
+        cartographys.stream().map(cartography -> cartography.toResource(links)).collect(Collectors.toList()));
 
-		resources.add(linkTo(methodOn(CartographyGroupResource.class).getCartographyGroupMembers(id)).withSelfRel());
-		return ResponseEntity.ok(resources);
-	}
+    resources.add(linkTo(methodOn(CartographyGroupResource.class).getCartographyGroupMembers(id)).withSelfRel());
+    return ResponseEntity.ok(resources);
+  }
 
 
-	@ResponseStatus(value = HttpStatus.CONFLICT, reason = "Data integrity violation") // 409
-	@ExceptionHandler(DataIntegrityViolationException.class)
-	public void conflict() {
-		// Nothing to do
-	}
+  @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Data integrity violation") // 409
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public void conflict() {
+    // Nothing to do
+  }
 
 }

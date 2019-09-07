@@ -36,6 +36,7 @@ apply plugin: 'org.asciidoctor.convert'
 apply plugin: 'io.github.swagger2markup'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.ajoberstar.github-pages'
+apply plugin: 'checkstyle'
 
 ext {
   asciiDocOutputDir = file("${buildDir}/asciidoc/generated")
@@ -84,7 +85,7 @@ dependencies {
 }
 
 task checkJavaVersion {
-    if (!JavaVersion.current().equals(targetJavaVersion)) {
+    if (JavaVersion.current() < targetJavaVersion) {
         String message = """
 ERROR: Java ${targetJavaVersion} JDK required but ${JavaVersion.current()} found. 
 SOLUTION: 
@@ -142,6 +143,62 @@ processResources.dependsOn installModules
 
 task install(dependsOn: 'publishToMavenLocal')
 
+clean {
+  delete "node_modules"
+  delete "dist"
+  delete "${cacheDir}"
+}
+
+//
+// Documentation
+//
+
+convertSwagger2markup {
+  dependsOn test
+  swaggerInput "${swaggerOutputDir}/swagger.json"
+  swaggerInput "swagger.json"
+  outputDir asciiDocOutputDir
+  config = [
+    'swagger2markup.pathsGroupedBy' : 'TAGS',
+    'swagger2markup.extensions.springRestDocs.snippetBaseUri': snippetsOutputDir.getAbsolutePath()]
+}
+
+asciidoctor {
+  dependsOn convertSwagger2markup
+  sourceDir = file('src/main/docs/asciidoc')
+  sources {
+    include 'index.adoc'
+  }
+  backends = ['html5']
+  attributes = [
+    doctype: 'book',
+    toc: 'left',
+    toclevels: '2',
+    numbered: '',
+    sectlinks: '',
+    sectanchors: '',
+    hardbreaks: '',
+    generated: asciiDocOutputDir
+  ]
+}
+
+javadoc {
+  source = sourceSets.main.allJava
+  classpath = configurations.compile
+}
+
+//
+// Code quality tasks
+//
+
+checkstyle {
+  toolVersion = "8.24"
+  configFile = file("${project.rootDir}/checkstyle.xml")
+}
+
+//
+// SQL tasks
+//
 
 task oracle8iSchemaExport(type: JavaExec) {
   mkdir 'src/main/sql/'
@@ -180,48 +237,8 @@ task h2SchemaExport(type: JavaExec) {
 }
 
 task exportSchemas(dependsOn: [
-  oracle8iSchemaExport, 
-  oracle9iSchemaExport,
-  oracle10gSchemaExport,
-  postgreSQLSchemaExport, 
-  h2SchemaExport])
-
-clean {
-  delete "node_modules"
-  delete "dist"
-  delete "${cacheDir}"
-}
-
-convertSwagger2markup {
-  dependsOn test
-  swaggerInput "${swaggerOutputDir}/swagger.json"
-  swaggerInput "swagger.json"
-  outputDir asciiDocOutputDir
-  config = [
-    'swagger2markup.pathsGroupedBy' : 'TAGS',
-    'swagger2markup.extensions.springRestDocs.snippetBaseUri': snippetsOutputDir.getAbsolutePath()]
-}
-
-asciidoctor {
-  dependsOn convertSwagger2markup
-  sourceDir = file('src/main/docs/asciidoc')
-  sources {
-    include 'index.adoc'
-  }
-  backends = ['html5']
-  attributes = [
-    doctype: 'book',
-    toc: 'left',
-    toclevels: '2',
-    numbered: '',
-    sectlinks: '',
-    sectanchors: '',
-    hardbreaks: '',
-    generated: asciiDocOutputDir
-  ]
-}
-
-javadoc {
-  source = sourceSets.main.allJava
-  classpath = configurations.compile
-}
+        oracle8iSchemaExport,
+        oracle9iSchemaExport,
+        oracle10gSchemaExport,
+        postgreSQLSchemaExport,
+        h2SchemaExport])

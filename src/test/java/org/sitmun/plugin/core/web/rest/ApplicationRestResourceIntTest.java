@@ -1,11 +1,45 @@
 package org.sitmun.plugin.core.web.rest;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.sitmun.plugin.core.domain.*;
-import org.sitmun.plugin.core.repository.*;
+import org.sitmun.plugin.core.domain.Application;
+import org.sitmun.plugin.core.domain.ApplicationBackground;
+import org.sitmun.plugin.core.domain.ApplicationParameter;
+import org.sitmun.plugin.core.domain.Background;
+import org.sitmun.plugin.core.domain.Cartography;
+import org.sitmun.plugin.core.domain.CartographyAvailability;
+import org.sitmun.plugin.core.domain.CartographyGroup;
+import org.sitmun.plugin.core.domain.Role;
+import org.sitmun.plugin.core.domain.Service;
+import org.sitmun.plugin.core.domain.Territory;
+import org.sitmun.plugin.core.domain.Tree;
+import org.sitmun.plugin.core.domain.TreeNode;
+import org.sitmun.plugin.core.repository.ApplicationBackgroundRepository;
+import org.sitmun.plugin.core.repository.ApplicationParameterRepository;
+import org.sitmun.plugin.core.repository.ApplicationRepository;
+import org.sitmun.plugin.core.repository.BackgroundRepository;
+import org.sitmun.plugin.core.repository.CartographyAvailabilityRepository;
+import org.sitmun.plugin.core.repository.CartographyGroupRepository;
+import org.sitmun.plugin.core.repository.CartographyRepository;
+import org.sitmun.plugin.core.repository.RoleRepository;
+import org.sitmun.plugin.core.repository.ServiceRepository;
+import org.sitmun.plugin.core.repository.TerritoryRepository;
+import org.sitmun.plugin.core.repository.TreeNodeRepository;
+import org.sitmun.plugin.core.repository.TreeRepository;
 import org.sitmun.plugin.core.security.AuthoritiesConstants;
 import org.sitmun.plugin.core.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +49,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.math.BigInteger;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @RunWith(SpringRunner.class)
@@ -51,47 +73,32 @@ public class ApplicationRestResourceIntTest {
   private static final String SERVICE_URI = "http://localhost/api/services";
   @Autowired
   ApplicationRepository applicationRepository;
-
-  @Value("${default.territory.name}")
-  private String defaultTerritoryName;
-
   @Autowired
   TreeRepository treeRepository;
-
   @Autowired
   TerritoryRepository territoryRepository;
-
   @Autowired
   TreeNodeRepository treeNodeRepository;
-
   @Autowired
   ApplicationBackgroundRepository applicationBackgroundRepository;
-
   @Autowired
   BackgroundRepository backgroundRepository;
-
   @Autowired
   CartographyGroupRepository cartographyGroupRepository;
-
   @Autowired
   CartographyRepository cartographyRepository;
-
   @Autowired
   ServiceRepository serviceRepository;
-
-
   @Autowired
   CartographyAvailabilityRepository cartographyAvailabilityRepository;
-
   @Autowired
   ApplicationParameterRepository applicationParameterRepository;
-
   @Autowired
   RoleRepository roleRepository;
-
   @Autowired
   TokenProvider tokenProvider;
-
+  @Value("${default.territory.name}")
+  private String defaultTerritoryName;
   @Autowired
   private MockMvc mvc;
   private Application application;
@@ -273,9 +280,9 @@ public class ApplicationRestResourceIntTest {
   @WithMockUser(username = ADMIN_USERNAME)
   public void getInformationAboutBackgrounds() throws Exception {
     mvc.perform(get(APP_BACKGROUNDS_URI + "/" + backAppId))
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(jsonPath("$.order").value(1));
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.order").value(1));
   }
 
 
@@ -335,9 +342,9 @@ public class ApplicationRestResourceIntTest {
   public void getApplicationsAsSitumunAdmin() throws Exception {
     // ok is expected
     mvc.perform(get(APP_URI))
-      .andDo(print())
-      .andExpect(status().isOk())
-      .andExpect(jsonPath("$._embedded.applications", hasSize(2)));
+        .andDo(print())
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$._embedded.applications", hasSize(2)));
 
   }
 

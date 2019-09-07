@@ -1,20 +1,28 @@
 package org.sitmun.plugin.core.domain;
 
-import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "STM_LOG")
 public class Log {
 
   @TableGenerator(
-    name = "STM_LOG_GEN",
-    table = "STM_CODIGOS",
-    pkColumnName = "GEN_CODIGO",
-    valueColumnName = "GEN_VALOR",
-    pkColumnValue = "LOG_CODIGO",
-    allocationSize = 1)
+      name = "STM_LOG_GEN",
+      table = "STM_CODIGOS",
+      pkColumnName = "GEN_CODIGO",
+      valueColumnName = "GEN_VALOR",
+      pkColumnValue = "LOG_CODIGO",
+      allocationSize = 1)
   @Id
   @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_LOG_GEN")
   @Column(name = "LOG_CODIGO", precision = 11)

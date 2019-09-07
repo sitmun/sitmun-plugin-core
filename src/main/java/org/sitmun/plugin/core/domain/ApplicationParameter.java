@@ -1,23 +1,31 @@
 package org.sitmun.plugin.core.domain;
 
+import java.math.BigInteger;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.math.BigInteger;
 
 @Entity
 @Table(name = "STM_PARAMAPP")
 public class ApplicationParameter {
 
   @TableGenerator(
-    name = "STM_PARAMAPP_GEN",
-    table = "STM_CODIGOS",
-    pkColumnName = "GEN_CODIGO",
-    valueColumnName = "GEN_VALOR",
-    pkColumnValue = "PAP_CODIGO",
-    allocationSize = 1)
+      name = "STM_PARAMAPP_GEN",
+      table = "STM_CODIGOS",
+      pkColumnName = "GEN_CODIGO",
+      valueColumnName = "GEN_VALOR",
+      pkColumnValue = "PAP_CODIGO",
+      allocationSize = 1)
   @Id
   @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_PARAMAPP_GEN")
   @Column(name = "PAP_CODIGO", precision = 11)

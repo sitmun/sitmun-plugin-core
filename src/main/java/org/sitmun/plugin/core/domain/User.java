@@ -1,24 +1,32 @@
 package org.sitmun.plugin.core.domain;
 
-import org.springframework.hateoas.Identifiable;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import org.springframework.hateoas.Identifiable;
 
 @Entity
 @Table(name = "STM_USUARIO", uniqueConstraints = {@UniqueConstraint(name = "STM_USU_USU_UK", columnNames = {"USU_USUARIO"})})
 public class User implements Identifiable<BigInteger> {
 
   @TableGenerator(
-    name = "STM_USUARIO_GEN",
-    table = "STM_CODIGOS",
-    pkColumnName = "GEN_CODIGO",
-    valueColumnName = "GEN_VALOR",
-    pkColumnValue = "USU_CODIGO",
-    allocationSize = 1)
+      name = "STM_USUARIO_GEN",
+      table = "STM_CODIGOS",
+      pkColumnName = "GEN_CODIGO",
+      valueColumnName = "GEN_VALOR",
+      pkColumnValue = "USU_CODIGO",
+      allocationSize = 1)
   @Id
   @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_USUARIO_GEN")
   @Column(name = "USU_CODIGO", precision = 11)

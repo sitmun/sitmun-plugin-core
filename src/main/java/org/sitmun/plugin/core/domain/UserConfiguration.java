@@ -1,22 +1,31 @@
 package org.sitmun.plugin.core.domain;
 
+import java.math.BigInteger;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.persistence.UniqueConstraint;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-
-import javax.persistence.*;
-import java.math.BigInteger;
 
 @Entity
 @Table(name = "STM_USUCONF", uniqueConstraints = {@UniqueConstraint(name = "STM_UCF_UK", columnNames = {"UCF_CODUSU", "UCF_CODTER", "UCF_CODROL"})})
 public class UserConfiguration {
 
   @TableGenerator(
-    name = "STM_USUCONF_GEN",
-    table = "STM_CODIGOS",
-    pkColumnName = "GEN_CODIGO",
-    valueColumnName = "GEN_VALOR",
-    pkColumnValue = "UCF_CODIGO",
-    allocationSize = 1)
+      name = "STM_USUCONF_GEN",
+      table = "STM_CODIGOS",
+      pkColumnName = "GEN_CODIGO",
+      valueColumnName = "GEN_VALOR",
+      pkColumnValue = "UCF_CODIGO",
+      allocationSize = 1)
   @Id
   @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_USUCONF_GEN")
   @Column(name = "UCF_CODIGO", precision = 11)

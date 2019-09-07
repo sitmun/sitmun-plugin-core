@@ -1,27 +1,37 @@
 package org.sitmun.plugin.core.domain;
 
+import java.math.BigInteger;
+import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.TableGenerator;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
 import org.springframework.hateoas.Identifiable;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceSupport;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.math.BigInteger;
-import java.util.Date;
-
 @Entity
 @Table(name = "STM_FONDO")
 public class Background implements Identifiable {
 
   @TableGenerator(
-    name = "STM_FONDO_GEN",
-    table = "STM_CODIGOS",
-    pkColumnName = "GEN_CODIGO",
-    valueColumnName = "GEN_VALOR",
-    pkColumnValue = "FON_CODIGO",
-    allocationSize = 1)
+      name = "STM_FONDO_GEN",
+      table = "STM_CODIGOS",
+      pkColumnName = "GEN_CODIGO",
+      valueColumnName = "GEN_VALOR",
+      pkColumnValue = "FON_CODIGO",
+      allocationSize = 1)
   @Id
   @GeneratedValue(strategy = GenerationType.TABLE, generator = "STM_FONDO_GEN")
   @Column(name = "FON_CODIGO", precision = 11)
