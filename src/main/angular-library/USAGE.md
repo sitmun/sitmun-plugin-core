@@ -184,7 +184,7 @@ The language change action is triggered using the ``changeLanguage`` function. T
 ... 
 ```
  
-##<a name="navigation">Customize Navigation</a>
+## <a name="navigation">Customize Navigation</a>
 - app.component.html
 - routes
 - login
@@ -192,10 +192,10 @@ The language change action is triggered using the ``changeLanguage`` function. T
 - account data editor
 - password change
 
-##<a name="home">Customize Home Component</a>
+## <a name="home">Customize Home Component</a>
 - home.component.html
 
-##<a name="map"> Adding and configuring a MapViewer</a>
+## <a name="map"> Adding and configuring a MapViewer</a>
 
 ``.src/main/angular/app/app.module.ts``
 
