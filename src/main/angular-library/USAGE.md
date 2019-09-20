@@ -43,7 +43,7 @@ In the next sections we will see how to develop a [SITMUN Application](https://g
 
 ### Init
 * Create a folder with the proper name for your application. 
-* Download the [SITMUN Demo application repository](https://github.com/sitmun/sitmun-demo-app/archive/master.zip) inside the created folder.
+* Download the [SITMUN Demo application repository](https://github.com/sitmun/sitmun-demo-app/archive/master.zip) (provided by us as an app template) inside the created folder.
 * From the command line, go to the created folder and execute: ``git init``.
 
 
