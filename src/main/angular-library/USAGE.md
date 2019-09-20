@@ -15,12 +15,11 @@
 
 ## Preface
 
-Spring Boot + Angular application.
-SITMUN Core Angular Library Components
-Angular Material Components
-Application with a toolbar, a sidebar navigation, login/logout, account data editor, password change and map view components.
+SITMUN applications are basically Angular applications on client side that communicates with Spring Boot on server side via REST API. 
 
-In order to develop an Angular Sitmun application, there are a handful of setup steps to go through that vary based on your app environment.
+In this document we'll focus on Angular client side development. SITMUN Angular application development is based on [SITMUN Core Angular Library](https://github.com/sitmun/sitmun-plugin-core/tree/master/src/main/angular-library) and [Angular Material](https://material.angular.io/) components.
+
+In order to develop an Angular SITMUN application, there are a handful of setup steps to go through that vary based on your app environment.
 Generally, the steps are:
 
 * Download the demo application repository
@@ -29,6 +28,10 @@ Generally, the steps are:
 * Customize Application Layout
 * Customize Application Navigation
 * Add Components to Application
+
+
+In the next sections we will see how to develop a [SITMUN Application](https://github.com/sitmun/sitmun-demo-app) consisting of a toolbar, a sidebar navigation, a login/logout component, an account data editor, a password change tool and a map component.
+
 
 ## Requirements
 * Git
@@ -46,7 +49,7 @@ Generally, the steps are:
 
 ### Configuring Spring 
 
-Configure your application artifact identifier at ``./build.gradle``  by changing `` sitmun-demo-app`` to your application artifact identifier:
+Configure your application artifact identifier at ``./build.gradle`` by changing the value of ``artifactId`` property (``sitmun-demo-app``):
 
 ```
 publishing {
@@ -62,10 +65,10 @@ publishing {
 } 
 ```
 
-Rename the java package name ``org.sitmun.app.demo`` to whatever package name you choose using a refactoring code tool (Eclipse, ...).
+Rename the java package ``org.sitmun.app.demo`` to whatever package name you choose using a code refactoring code tool like Eclipse.
 
 
-Create a Spring Boot configuration YML file by renaming ``./src/main/resources/application-h2.yml`` to ``./src/main/resources/application.yml`` and change application name property in this file:
+Create a Spring Boot configuration YML file by renaming ``./src/main/resources/application-h2.yml`` to ``./src/main/resources/application.yml`` and change application name property:
 
 
 ```yml
@@ -87,7 +90,7 @@ In order to change application version it's required to edit ``./gradle.properti
 	
 ### Configuring Angular
 
-In order to change Angular application name edit ``./angular.json`` file and change the ``projects.webapp.root`` property:
+Change Angular application name by editing ``./angular.json`` file and changing ``projects.webapp.root`` property:
 
 ```json	
 	...
@@ -97,7 +100,7 @@ In order to change Angular application name edit ``./angular.json`` file and cha
 	...	
 ```
 
-To change Angular application version it's required to edit ``./package.json`` file and change the ``version`` property value:
+Change Angular application version by editing ``./package.json`` file and changing the ``version`` property value:
 
 ```json	
 	...
@@ -137,11 +140,11 @@ The application general layout is located in ``./src/main/angular/app/app.compon
 </div>
 ```
 
-The layout is implemented using Angular Material Design components that are included in the ``.src/main/angular/app/app.module.ts`` as imports. Whatever module, component or service to be used in the application must be declared in this file. 
+The layout is implemented using [Angular Material Design](https://material.angular.io/) components that are included in the ``.src/main/angular/app/app.module.ts`` as imports. Whatever module, component or service to be used in the application must be declared in this file. 
  
 ## <a name="toolbar">Customize Toolbar</a> 
 
-The application toolbar consists of a toggle menu a home link with the application Logo an a text area with the name of the application:
+The application toolbar consists of a toggle menu a home link with the application logo and a text area with the name of the application:
 
 ```html
 	...
@@ -159,7 +162,7 @@ The application toolbar consists of a toggle menu a home link with the applicati
             ... 
 ```
 
-As we can see in the above code snippet the logo file is located at the relative path ``assets/logo.png``. We can change the logo replacing the logo file located in the ``src/main/angular/assets/`` or adding a new image file in the same folder and accordingly changing the ``src`` atributte value in the ``<img>`` tag.
+As we can see in the above code snippet the logo file is located at the relative path ``assets/logo.png``. We can change the logo by replacing the logo file located in the ``src/main/angular/assets/`` or by adding a new image file in the same folder and accordingly changing the ``src`` atributte value in the ``<img>`` tag.
 
 
 We can add new components to the toolbar, for instance, a language toolset:
@@ -184,7 +187,7 @@ The language change action is triggered using the ``changeLanguage`` function. T
 ```
  
 ## <a name="navigation">Customize Navigation</a>
-Application navigation is defined at the ``.src/main/angular/app/app.module.ts`` file. In the Demo Application we define 4 navigation nodes/pages that are implemented with 3 SITMUN Core Angular Library components  (``LoginComponent``, ``AccountEditComponent``, ``AccountChangePasswordComponent``) and the Demo Application home component (``HomeComponent``): 
+Application navigation is defined in the ``.src/main/angular/app/app.module.ts`` file. In the Demo Application we define 4 navigation nodes/pages that are implemented with 3 SITMUN Core Angular Library components  (``[LoginComponent](https://sitmun.github.io/doc-angular/components/LoginComponent.html)``, ``[AccountEditComponent](https://sitmun.github.io/doc-angular/components/AccountEditComponent.html)``, ``[AccountChangePasswordComponent](https://sitmun.github.io/doc-angular/components/AccountChangePasswordComponent.html)``) and the Demo Application home component (``HomeComponent``): 
 
 ```ts 
 const appRoutes: Routes = [
@@ -209,7 +212,7 @@ const appRoutes: Routes = [
     
 ];
 ```
-This pages can be accessed by the navigation links (see ``[routerLink]`` attributes in the ``a`` tags) defined in the sidebar menu defined at ``.src/main/angular/app/app.component.html``:
+This pages can be accessed by the navigation links (see ``[routerLink]`` attributes in the ``a`` tags) defined in the sidebar menu defined in ``.src/main/angular/app/app.component.html``:
 
 ```html
 		...
@@ -237,8 +240,8 @@ This component as any Angular component mainly consists  of 2 files: an html fil
 We can customize this component by modifying this files and adding/configring SITMUN Core Angular Library components, other external components or local components developed for our application. 
 In the next section we'ĺl add a map viewer component (``MapComponent``) from  SITMUN Core Angular Library to our ``HomeComponent``.
 
-## <a name="map"> Adding and configuring a Map Viewer</a>
-In order to add a map viewer component to our home component, first we haver to modify ``.src/main/angular/app/app.module.ts`` and import the map configuration service (``MapConfigurationManagerService``) and configuring this service as a provider inside our application:
+## <a name="map"> Adding and configuring a Map Component</a>
+In order to add a map viewer component to our home component, first we have to modify ``.src/main/angular/app/app.module.ts`` and import the map configuration service (``MapConfigurationManagerService``) configuring this service as a provider inside our application:
 
 ```ts
 ...
@@ -262,7 +265,7 @@ Now we can add the map component to our home component by placing the map compon
 	[initialProjection]="'EPSG:25831'"></sitmun-map-viewer-map>
 ```
 
-At the code above, we can see map component input parameters:
+In the code above, we can see some of the map component input parameters, which are the folloeing:
 - extent: array of numbers representing the extent of the initial view of the map component: [minx, miny, maxx, maxy].
 - initialProjection: code of the srs projection of the coordinates defined in extent, initialLon and initialLat
 - initialLon: x-coordinate of initial center of the map
@@ -290,7 +293,7 @@ In the next sections we'ĺl see how we can configure other aspects of the map us
  
 
 ### Configure Map Extent, Scales and Tiles
-If we want to configure  Map Extent, Scales and Tiles, then we´ll have to create a ``MapOptionsConfiguration`` object and set the proper values:
+If we want to configure map extent, scales and tiles, then we´ll have to create a ``MapOptionsConfiguration`` object and set the proper values:
 - scales: List of map scales
 - projections: List of available crs
 - minScale: Minimum scale
@@ -387,7 +390,7 @@ This class configure a Layer group by setting the following parameters:
 
 #### Configure Base layers
 
-To configure the base layers of the map we must use the ``loadBaseLayersConfiguration`` method of ``MapConfigurationManagerService``, to which we will pass as an parameter an array of objects of type ``LayerGroup`` each of them with the corresponding Layer objects defining the layers to load.
+To configure the base layers of the map we must use the ``loadBaseLayersConfiguration`` method of ``MapConfigurationManagerService``, to which we will pass as an parameter an array of objects of type ``LayerGroup`` each of them with the corresponding ``Layer`` objects defining the layers to load.
 
 In the code below we can see an example configuration of the map component base layers:
 
@@ -556,7 +559,7 @@ In the code below we can see an example configuration of the map component base 
 
 To configure the situation map of the map component we must use the ``loadSituationMapConfiguration`` method of ``MapConfigurationManagerService``, to which we will pass as an parameter an array of objects of type ``LayerGroup`` each of them with the corresponding Layer objects defining the layers to load as situation map.
 
-In the code below we can see an example configuration of the map component situation maps:
+In the code below we can see an example configuration of the map component situation map:
 
 ```ts
     let overlayLayersConfiguration = new Array<Layer>();
