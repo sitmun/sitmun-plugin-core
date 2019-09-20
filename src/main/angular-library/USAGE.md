@@ -555,11 +555,11 @@ In the code below we can see an example configuration of the map component base 
     this.mapConfigurationManagerService.loadBaseLayersConfiguration(baseLayersConfiguration);
 ```
 
-#### Configure Situation Map
+#### Configure Overlay layers
 
-To configure the situation map of the map component we must use the ``loadSituationMapConfiguration`` method of [``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/injectables/MapConfigurationManagerService.html). The [``Layer``](https://sitmun.github.io/doc-angular/classes/Layer.html), to which we will pass as an parameter an array of objects of type The [``LayerGroup``](https://sitmun.github.io/doc-angular/classes/LayerGroup.html)  each of them with the corresponding [``Layer``](https://sitmun.github.io/doc-angular/classes/Layer.html) objects defining the layers to load as situation map.
+To configure the overlay layers of the map we must use the ``loadLayersConfiguration`` method of [``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/injectables/MapConfigurationManagerService.html), to which we will pass as an parameter an array of objects of type [``Layer``](https://sitmun.github.io/doc-angular/classes/Layer.html) objects defining the layers to load.
 
-In the code below we can see an example configuration of the map component situation map:
+In the code below we can see an example configuration of the map component overlay layers:
 
 ```ts
     let overlayLayersConfiguration = new Array<Layer>();
@@ -604,7 +604,16 @@ In the code below we can see an example configuration of the map component situa
     overlayLayersConfiguration.push(layer);
 
     this.mapConfigurationManagerService.loadLayersConfiguration(overlayLayersConfiguration);
+```
 
+#### Configure Situation Map
+
+To configure the situation map of the map component we must use the ``loadSituationMapConfiguration`` method of [``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/injectables/MapConfigurationManagerService.html). The [``Layer``](https://sitmun.github.io/doc-angular/classes/Layer.html), to which we will pass as an parameter an array of objects of type The [``LayerGroup``](https://sitmun.github.io/doc-angular/classes/LayerGroup.html)  each of them with the corresponding [``Layer``](https://sitmun.github.io/doc-angular/classes/Layer.html) objects defining the layers to load as situation map.
+
+In the code below we can see an example configuration of the map component situation map:
+
+```ts
+ 
     // Set Overview Map (Situation map tool), if left undefined the currently displayed baselayer group configuration will be displayed in
     // the situation map tool
     let situationMapConfiguration = new Array<Layer>();
