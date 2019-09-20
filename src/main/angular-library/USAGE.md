@@ -256,7 +256,7 @@ providers: [
 ...
 ```
 
-[``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/injectables/MapConfigurationManagerService.html) enables [``MapComponent``](https://sitmun.github.io/doc-angular/components/MapConfigurationComponent`.html) layer customization.
+[``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/injectables/MapConfigurationManagerService.html) enables [``MapComponent``](https://sitmun.github.io/doc-angular/components/MapComponent.html) layer customization.
 Now we can add the map component to our home component by placing the map component tag (``sitmun-map-viewer-map``) inside the home component template placed at ``.src/main/angular/app/home/``:  
  
 ```html
