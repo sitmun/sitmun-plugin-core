@@ -6,7 +6,7 @@
 - [Requirements](#requirements)
 - [Setup](#setup)
 - [Application Layout](#layout)
-- [Toolbar customization](#toobar)
+- [Toolbar customization](#toolbar)
 - [Navigation customization](#navigation)
 - [Home page customization](#home)
 - [Adding a Map Viewer](#map)
@@ -187,7 +187,7 @@ The language change action is triggered using the ``changeLanguage`` function. T
 ```
  
 ## <a name="navigation">Customize Navigation</a>
-Application navigation is defined in the ``.src/main/angular/app/app.module.ts`` file. In the Demo Application we define 4 navigation nodes/pages that are implemented with 3 SITMUN Core Angular Library components  (``[LoginComponent](https://sitmun.github.io/doc-angular/components/LoginComponent.html)``, ``[AccountEditComponent](https://sitmun.github.io/doc-angular/components/AccountEditComponent.html)``, ``[AccountChangePasswordComponent](https://sitmun.github.io/doc-angular/components/AccountChangePasswordComponent.html)``) and the Demo Application home component (``HomeComponent``): 
+Application navigation is defined in the ``.src/main/angular/app/app.module.ts`` file. In the Demo Application we define 4 navigation nodes/pages that are implemented with 3 SITMUN Core Angular Library components  ([``LoginComponent``](https://sitmun.github.io/doc-angular/components/LoginComponent.html), [``AccountEditComponent``](https://sitmun.github.io/doc-angular/components/AccountEditComponent.html), [``AccountChangePasswordComponent``](https://sitmun.github.io/doc-angular/components/AccountChangePasswordComponent.html)) and the Demo Application home component (``HomeComponent``): 
 
 ```ts 
 const appRoutes: Routes = [
