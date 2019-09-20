@@ -238,10 +238,10 @@ This pages can be accessed by the navigation links (see ``[routerLink]`` attribu
 Home Component is the only local component provided by our application and is rendered when application is first loaded and root navigation.
 This component as any Angular component mainly consists  of 2 files: an html file with the component template (``home.component.html``) and a typescript file (``home.component.ts``) with the component class, both located at the ``.src/main/angular/app/home/`` folder.   
 We can customize this component by modifying this files and adding/configring SITMUN Core Angular Library components, other external components or local components developed for our application. 
-In the next section we'ĺl add a map viewer component (``MapComponent``) from  SITMUN Core Angular Library to our ``HomeComponent``.
+In the next section we'ĺl add a map viewer component ([``MapComponent``](https://sitmun.github.io/doc-angular/components/MapComponent.html)) from  SITMUN Core Angular Library to our ``HomeComponent``.
 
 ## <a name="map"> Adding and configuring a Map Component</a>
-In order to add a map viewer component to our home component, first we have to modify ``.src/main/angular/app/app.module.ts`` and import the map configuration service (``MapConfigurationManagerService``) configuring this service as a provider inside our application:
+In order to add a map viewer component to our home component, first we have to modify ``.src/main/angular/app/app.module.ts`` and import the map configuration service ([``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/components/MapConfigurationManagerService`.html)) configuring this service as a provider inside our application:
 
 ```ts
 ...
@@ -256,7 +256,7 @@ providers: [
 ...
 ```
 
-``MapConfigurationManagerService`` enables ``MapComponent`` layer customization.
+[``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/components/MapConfigurationManagerService`.html) enables [``MapComponent``](https://sitmun.github.io/doc-angular/components/MapConfigurationComponent`.html) layer customization.
 Now we can add the map component to our home component by placing the map component tag (``sitmun-map-viewer-map``) inside the home component template placed at ``.src/main/angular/app/home/``:  
  
 ```html
@@ -265,7 +265,7 @@ Now we can add the map component to our home component by placing the map compon
 	[initialProjection]="'EPSG:25831'"></sitmun-map-viewer-map>
 ```
 
-In the code above, we can see some of the map component input parameters, which are the folloeing:
+In the code above, we can see some of the map component input parameters, which are the following:
 - extent: array of numbers representing the extent of the initial view of the map component: [minx, miny, maxx, maxy].
 - initialProjection: code of the srs projection of the coordinates defined in extent, initialLon and initialLat
 - initialLon: x-coordinate of initial center of the map
@@ -279,7 +279,7 @@ import {Principal,LoginService,MapConfigurationManagerService, Layer, LayerGroup
         OptionalParameter, MapComponentStatus} from 'sitmun-plugin-core';
 ```
 
-Then we inject ``MapConfigurationManagerService`` in HomeComponent creation by adding to the constructor method:
+Then we inject [``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/components/MapConfigurationManagerService`.html) in HomeComponent creation by adding to the constructor method:
 
 ```ts
 constructor(
@@ -289,11 +289,11 @@ constructor(
 			)
 ```
  
-In the next sections we'ĺl see how we can configure other aspects of the map using ``MapConfigurationManagerService``.
+In the next sections we'ĺl see how we can configure other aspects of the map using [``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/components/MapConfigurationManagerService`.html).
  
 
 ### Configure Map Extent, Scales and Tiles
-If we want to configure map extent, scales and tiles, then we´ll have to create a ``MapOptionsConfiguration`` object and set the proper values:
+If we want to configure map extent, scales and tiles, then we´ll have to create a [``MapOptionsConfiguration``](https://sitmun.github.io/doc-angular/classes/MapOptionsConfiguration.html) object and set the proper values:
 - scales: List of map scales
 - projections: List of available crs
 - minScale: Minimum scale
@@ -304,7 +304,7 @@ If we want to configure map extent, scales and tiles, then we´ll have to create
 - tileHeight: tile height
 
 
-In the code below we can see an example configuration of ``MapOptionsConfiguration``:
+In the code below we can see an example configuration of [``MapOptionsConfiguration``](https://sitmun.github.io/doc-angular/classes/MapOptionsConfiguration.html):
 
 ```ts
  // Set map configuration
@@ -337,7 +337,7 @@ In the code below we can see an example configuration of ``MapOptionsConfigurati
 In order to add and configure layers y layer groups to the map component we'll have use the following classes by the SITMUN Core Angular Library.
 
 #### Layer
-This class configure Layer data and displaying configuration by setting the following parameters:
+The [``Layer``](https://sitmun.github.io/doc-angular/classes/Layer.html) class configure Layer data and displaying configuration by setting the following parameters:
 - visibility: Visibility
 - opacity: Transparency (Transparent) 0-1 (Opaque)
 - title: Title
@@ -368,13 +368,13 @@ This class configure Layer data and displaying configuration by setting the foll
 
 #### OptionalParameter 
 
-This class configure parameter-value pair to add to the request layer URL by setting the following parameters:
+The [``OptionalParameter``](https://sitmun.github.io/doc-angular/classes/OptionalParameter.html) class configure parameter-value pair to add to the request layer URL by setting the following parameters:
 - key: Parameter name
 - value: Parameter value
 
 #### LayerConfiguration 
 
-This class modify the configuration of a layer when interacting with the map (make visible, move the layer ...) by setting the following parameters:
+The [``LayerConfiguration``](https://sitmun.github.io/doc-angular/classes/LayerConfiguration.html)  lass modify the configuration of a layer when interacting with the map (make visible, move the layer ...) by setting the following parameters:
 - id: Identifier to index
 - visibility: Layer visibility
 - opacity: Layer transparency (Transparent) 0-1 (Opaque)
@@ -382,7 +382,7 @@ This class modify the configuration of a layer when interacting with the map (ma
 
 #### LayerGroup
 
-This class configure a Layer group by setting the following parameters:
+The [``LayerGroup``](https://sitmun.github.io/doc-angular/classes/LayerGroup.html) class configure a Layer group by setting the following parameters:
 - active: Initially activated (all visible layers)
 - name: Group Name
 - id: Group id
@@ -390,7 +390,7 @@ This class configure a Layer group by setting the following parameters:
 
 #### Configure Base layers
 
-To configure the base layers of the map we must use the ``loadBaseLayersConfiguration`` method of ``MapConfigurationManagerService``, to which we will pass as an parameter an array of objects of type ``LayerGroup`` each of them with the corresponding ``Layer`` objects defining the layers to load.
+To configure the base layers of the map we must use the ``loadBaseLayersConfiguration`` method of [``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/components/MapConfigurationManagerService`.html), to which we will pass as an parameter an array of objects of type [``LayerGroup``](https://sitmun.github.io/doc-angular/classes/LayerGroup.html) each of them with the corresponding [``Layer``](https://sitmun.github.io/doc-angular/classes/Layer.html) objects defining the layers to load.
 
 In the code below we can see an example configuration of the map component base layers:
 
@@ -557,7 +557,7 @@ In the code below we can see an example configuration of the map component base 
 
 #### Configure Situation Map
 
-To configure the situation map of the map component we must use the ``loadSituationMapConfiguration`` method of ``MapConfigurationManagerService``, to which we will pass as an parameter an array of objects of type ``LayerGroup`` each of them with the corresponding Layer objects defining the layers to load as situation map.
+To configure the situation map of the map component we must use the ``loadSituationMapConfiguration`` method of [``MapConfigurationManagerService``](https://sitmun.github.io/doc-angular/components/MapConfigurationManagerService`.html). The [``Layer``](https://sitmun.github.io/doc-angular/classes/Layer.html), to which we will pass as an parameter an array of objects of type The [``LayerGroup``](https://sitmun.github.io/doc-angular/classes/LayerGroup.html)  each of them with the corresponding [``Layer``](https://sitmun.github.io/doc-angular/classes/Layer.html) objects defining the layers to load as situation map.
 
 In the code below we can see an example configuration of the map component situation map:
 
