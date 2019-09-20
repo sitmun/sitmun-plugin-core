@@ -15,11 +15,11 @@
 
 ## Preface
 
-SITMUN applications are basically Angular applications on client side that communicates with Spring Boot on server side via REST API. 
+SITMUN applications are basically Angular applications on client side that communicates with Spring Boot on the server side via REST API. 
 
-In this document we'll focus on Angular client side development. SITMUN Angular application development is based on [SITMUN Core Angular Library](https://github.com/sitmun/sitmun-plugin-core/tree/master/src/main/angular-library) and [Angular Material](https://material.angular.io/) components.
+In this document we will focus on the Angular client side development. SITMUN Angular application development is based on [SITMUN Core Angular Library](https://github.com/sitmun/sitmun-plugin-core/tree/master/src/main/angular-library) and [Angular Material](https://material.angular.io/) components.
 
-In order to develop an Angular SITMUN application, there are a handful of setup steps to go through that vary based on your app environment.
+In order to develop an Angular SITMUN application, there are a handful of setup steps to go through that vary based on your app environment. In order to simplify the process, we provide a demo application, that you can take advantage of it.
 Generally, the steps are:
 
 * Download the demo application repository
@@ -43,13 +43,13 @@ In the next sections we will see how to develop a [SITMUN Application](https://g
 
 ### Init
 * Create a folder with the proper name for your application. 
-* Download [SITMUN Demo application repository](https://github.com/sitmun/sitmun-demo-app/archive/master.zip) inside the created folder.
-* From command line, go to the created folder and execute: ``git init``.
+* Download the [SITMUN Demo application repository](https://github.com/sitmun/sitmun-demo-app/archive/master.zip) (provided by us as an app template) inside the created folder.
+* From the command line, go to the created folder and execute: ``git init``.
 
 
 ### Configuring Spring 
 
-Configure your application artifact identifier at ``./build.gradle`` by changing the value of ``artifactId`` property (``sitmun-demo-app``):
+Configure your application artifact identifier in the ``./build.gradle`` file by changing the value of the ``artifactId`` property (``sitmun-demo-app``):
 
 ```
 publishing {
@@ -65,10 +65,10 @@ publishing {
 } 
 ```
 
-Rename the java package ``org.sitmun.app.demo`` to whatever package name you choose using a code refactoring code tool like Eclipse.
+Rename the java package ``org.sitmun.app.demo`` to whichever package name you choose using a code refactoring code tool like Eclipse.
 
 
-Create a Spring Boot configuration YML file by renaming ``./src/main/resources/application-h2.yml`` to ``./src/main/resources/application.yml`` and change application name property:
+Create a Spring Boot configuration YML file by renaming ``./src/main/resources/application-h2.yml`` to ``./src/main/resources/application.yml`` and change the ``application`` ``name`` property:
 
 
 ```yml
@@ -79,7 +79,7 @@ Create a Spring Boot configuration YML file by renaming ``./src/main/resources/a
 	...
 ```
 
-In order to change application version it's required to edit ``./gradle.properties`` file and change the ``sitmun_version`` property value: 
+In order to change the application version it is required to edit the ``./gradle.properties`` file and change the ``sitmun_version`` property value: 
 
 
 ```properties
@@ -90,7 +90,7 @@ In order to change application version it's required to edit ``./gradle.properti
 	
 ### Configuring Angular
 
-Change Angular application name by editing ``./angular.json`` file and changing ``projects.webapp.root`` property:
+Change the Angular application name by editing the ``./angular.json`` file and changing the ``projects.webapp.root`` property:
 
 ```json	
 	...
@@ -100,7 +100,7 @@ Change Angular application name by editing ``./angular.json`` file and changing 
 	...	
 ```
 
-Change Angular application version by editing ``./package.json`` file and changing the ``version`` property value:
+Change the Angular application version by editing the ``./package.json`` file and changing the ``version`` property value:
 
 ```json	
 	...
@@ -112,16 +112,16 @@ Change Angular application version by editing ``./package.json`` file and changi
 
 In order to set up an environment for developing the Angular application we have to follow these steps:
 
-- From command line, go to the created folder.
-- Build Spring application with `./gradlew assemble`.
-- Run Spring application with `./gradlew bootRun`.
-- Run Angular application with `ng serve --proxy-config proxy.conf.json` and open <http://localhost:4200>.
+- From the command line, go to the created folder.
+- Build the Spring application with `./gradlew assemble`.
+- Run the Spring application with `./gradlew bootRun`.
+- Run teh Angular application with `ng serve --proxy-config proxy.conf.json` and open the <http://localhost:4200> url from a browser.
 
 
       
 ## <a name="layout">Application Layout</a>      
 
-The application general layout is located in ``./src/main/angular/app/app.component.html`` file and consists of a toolbar with a content zone below with a left sidebar navigation:  
+The application general layout is located in the ``./src/main/angular/app/app.component.html`` file and consists of a toolbar with a content zone below with a left sidebar navigation:  
 
 ```html
 <div class="main-container">
@@ -140,7 +140,7 @@ The application general layout is located in ``./src/main/angular/app/app.compon
 </div>
 ```
 
-The layout is implemented using [Angular Material Design](https://material.angular.io/) components that are included in the ``.src/main/angular/app/app.module.ts`` as imports. Whatever module, component or service to be used in the application must be declared in this file. 
+The layout is implemented using [Angular Material Design](https://material.angular.io/) components that are included in the ``.src/main/angular/app/app.module.ts`` file as imports. Every module, component or service used in the application must be declared in this file. 
  
 ## <a name="toolbar">Customize Toolbar</a> 
 
