@@ -17,7 +17,7 @@ if [ -n "$GITHUB_API_KEY" ]; then
     rm -r -f sitmun.github.io
     git clone https://github.com/sitmun/sitmun.github.io.git
     cd sitmun.github.io
-    cp -r "$TRAVIS_BUILD_DIR"/docs-build/doc-angular ./doc-angular       
+    cp -r "$TRAVIS_BUILD_DIR"/docs-build/doc-angular .    
     cp -r "$TRAVIS_BUILD_DIR"/build/docs/javadoc  ./doc-java
     cp -r "$TRAVIS_BUILD_DIR"/build/asciidoc/html5  ./doc-rest
     git add doc-angular/*
