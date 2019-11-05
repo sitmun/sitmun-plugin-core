@@ -11,34 +11,49 @@ import {Subscription, Observable, forkJoin, merge, concat, pipe, from} from 'rxj
 import {MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 
-
+/**
+ * Territory edit component
+ */
 @Component({
     selector: 'app-territory-edit',
     templateUrl: './territory-edit.component.html',
     styleUrls: ['./territory-edit.component.css']
 })
 export class TerritoryEditComponent implements OnInit, OnDestroy {
-    territory: Territory = new Territory();
-    territories: Territory[];
-    territoryTypes: TerritoryType[] = new Array<TerritoryType>();
 
+    /** territory to edit*/
+    territory: Territory = new Territory();
+    
+    /** territories to select*/
+    territories: Territory[];
+
+    /** territory types*/
+    territoryTypes: TerritoryType[] = new Array<TerritoryType>();
+    
+    /** subscription*/
     sub: Subscription;
 
+    /** child territories table displayed columns*/
     displayedColumns = ['select', 'name', 'scope', 'blocked'];
+    
+    /** territory scope values*/
     territoryScopes = ['Municipal', 'Supramunicipal'];
-
+    
+    /** selection model for child territories table*/
     selection = new SelectionModel<Territory>(true, []);
 
+    /** MatTableDataSource for child territories */
     dataSource = new MatTableDataSource<Territory>([]);
 
-
+    /** constructor*/
     constructor(private route: ActivatedRoute,
         private router: Router,
         private territoryService: TerritoryService,
         private changeDetectorRefs: ChangeDetectorRef,
         private territoryTypeService: TerritoryTypeService) {
     }
-
+    
+    /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             const id = params['id'];
@@ -89,11 +104,13 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-
+    
+    /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
-
+    
+    /** load all territories*/
     getAllTerritories() {
         this.territoryService.getAll()
             .subscribe((territories: Territory[]) => {
@@ -101,7 +118,8 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
                 this.dataSource = new MatTableDataSource<Territory>(this.territories);
             });
     }
-
+    
+    /** load all territory types*/
     getAllTerritoryTypes() {
         this.territoryTypeService.getAll()
             .subscribe((territoryTypes: TerritoryType[]) => {
@@ -109,11 +127,12 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
             });
     }
 
-
+    /** navigate to territory list page*/
     gotoList() {
         this.router.navigate(['/territory-list']);
     }
-
+    
+    /** save territory*/
     save() {
         if (this.territory.createdDate != null && (typeof this.territory.createdDate != 'string')) {
             this.territory.createdDate = this.territory.createdDate.toISOString();
@@ -174,18 +193,17 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
 
         }
 
-
-
-
     }
-
+    
+    /** remove territory*/
     remove(territory: Territory) {
         this.territoryService.delete(territory).subscribe(result => {
             this.gotoList();
         }, error => console.error(error));
 
     }
-
+    
+    /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
     }

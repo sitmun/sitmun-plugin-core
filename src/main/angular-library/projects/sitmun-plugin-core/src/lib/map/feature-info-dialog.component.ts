@@ -7,43 +7,60 @@ import {TranslateService} from '@ngx-translate/core';
 
 import * as ol from 'openlayers';
 
+/** GetFeatureInfo request data model*/ 
 export class FeatureInfoRequestData {
-    title?:string;
-    request:string;
-    type?:"text/xml";
+    /** title parameter*/ title?:string;
+    /** request parameter*/ request:string;
+    /** type parameter*/ type?:"text/xml";
 }
 
+/** FeatureInfo request array data model*/
 export class FeatureInfoDialogData {
-  requests: Array<FeatureInfoRequestData>;
+  /**requests*/requests: Array<FeatureInfoRequestData>;
 }
 
+/** FeatureInfo dialog component*/
 @Component({
     selector: 'feature-info-dialog',
     templateUrl: './feature-info-dialog.component.html',
     styleUrls: ['./feature-info-dialog.component.css']
 })
-
 export class FeatureInfoDialogComponent implements OnInit {
-
+    
+    /** list of features */
     itemList: string[];
+    
+    /** load status of features */
     itemsLoaded: boolean[];
+
+    /** content of features */
     itemsContent: string[];
+
+    /** expanded status of features */
     itemsExpanded: boolean[];
+
+    /** types of features */
     itemsType: string[];
 
+    /** selected feature  id*/
     selected: number = 0;
 
+    /** messages */    
     messages = {
         noFeatureInfoData: "No data available",
         featureInfoViewMore: "View more"
     };
 
+    /** translate labels */
     translateLabels() {
       this.messages["noFeatureInfoData"] = this.translate.instant("FEATURE_INFO_NO_DATA");
       this.messages["featureInfoViewMore"] = this.translate.instant("FEATURE_INFO_VIEW_MORE");
     }
 
+    /** translate service */
     translate: TranslateService;
+    
+    /** constructor*/
     constructor(
         private dialog: MatDialog,
         private dialogRef: MatDialogRef<FeatureInfoDialogComponent>,
@@ -57,11 +74,14 @@ export class FeatureInfoDialogComponent implements OnInit {
         this.translateLabels();
     }
 
+    /** response supported mime types */
     supportedTypes = [
         "text/plain",
         "text/html",
         "text/xml"
     ];
+    
+    /** get response supported mime type by its name */
     getSupportedResponseType(type:string) {
         var supportedType = "text/plain";
         if (type && this.supportedTypes.indexOf(type.toLowerCase())!=-1) {
@@ -70,7 +90,7 @@ export class FeatureInfoDialogComponent implements OnInit {
         return supportedType;
 
     }
-
+    
     getElementsByTagNameNS(node, uri, name) {
         var elements = [];
         if(node.getElementsByTagNameNS) {
@@ -92,7 +112,8 @@ export class FeatureInfoDialogComponent implements OnInit {
         }
         return elements;
     }
-
+    
+    /** parse feature info reponse of given data */        
     parseFeatureInfoResponse(data) {
         var response = [];
         var featureNodes = this.getElementsByTagNameNS(data, '*',
@@ -130,11 +151,13 @@ export class FeatureInfoDialogComponent implements OnInit {
         }
         return response;
     }
-
+    
+    /** show info dialog with given message */
     showObjectInfo(msg) {
         this.openInfoDialog(msg);
     }
 
+    /** check event supported info */
     isEventSupported = (function(){
         var TAGNAMES = {
           'select':'input','change':'input',
@@ -155,7 +178,8 @@ export class FeatureInfoDialogComponent implements OnInit {
         return isEventSupported;
       })();
 
-    generateContent(type, response) {
+     /** generate content for a given response depending on the given type */           
+     generateContent(type, response) {
         var result = response;
         if (type == "text/xml") {
             try {
@@ -267,16 +291,19 @@ export class FeatureInfoDialogComponent implements OnInit {
         return result;
     }
 
+    /** generate error content message*/
     generateErrorContent():string {
         return this.messages["noFeatureInfoData"];
     }
 
+    /** change load status of feature corresponding to given index to given value*/
     setItemLoaded(index, value) {
         if (index < this.itemsLoaded.length) {
             this.itemsLoaded[index] = value;
         }
     }
 
+    /** get load status of feature corresponding to given index*/
     getItemLoaded(index):boolean {
         if (index < this.itemsLoaded.length) {
             return this.itemsLoaded[index];
@@ -284,29 +311,34 @@ export class FeatureInfoDialogComponent implements OnInit {
         return false;
     }
 
+    /** get type of feature corresponding to given index*/
     getItemType(index):string {
         if (index < this.itemsType.length) {
             return this.itemsType[index];
         }
         return "text/plain";
     }
-
+    
+    /** set type of feature corresponding to given index to given value*/
     setItemType(index, type) {
         if (index < this.itemsType.length) {
             this.itemsType[index] = this.getSupportedResponseType(type);
         }
     }
-
+    
+    /** get html content of feature corresponding to given index*/
     getItemHTMLLoaded(index):boolean {
         return this.getItemLoaded(index) && 
                 (this.getItemType(index) != "text/plain");
     }
 
+    /** check whether feature corresponding to given index is loaded and its type is text*/
     getItemTextLoaded(index):boolean {
         return this.getItemLoaded(index) && 
                 (this.getItemType(index) == "text/plain");
     }
-
+    
+    /** set content of feature corresponding to given index to given value*/
     setItemContent(index, value) {
         if (index < this.itemsContent.length) {
             if (value == null) {
@@ -318,6 +350,7 @@ export class FeatureInfoDialogComponent implements OnInit {
         }
     }
 
+    /** get content of feature corresponding to given index*/
     getItemContent(index):string {
         if (index < this.itemsContent.length) {
             return this.itemsContent[index];
@@ -325,32 +358,37 @@ export class FeatureInfoDialogComponent implements OnInit {
         return "";
     }
 
+    /** check whether feature corresponding to given index is expanded*/
     getItemExpanded(index):boolean {
         if (index < this.itemsLoaded.length) {
             return this.itemsLoaded[index] && this.itemsExpanded[index];
         }
         return false;
     }
-
+    
+    /** expand content of feature corresponding to given index*/
     expandContent(index) {
         if (index < this.itemsLoaded.length) {
             this.itemsExpanded[index] = true;
         }
     }
-
+    
+    /** check whether feature corresponding to given index is collapsed*/
     getItemCollapsed(index):boolean {
         if (index < this.itemsLoaded.length) {
             return this.itemsLoaded[index] && !this.itemsExpanded[index];
         }
         return false;
     }
-
+    
+    /** collapse content of feature corresponding to given index*/
     collapseContent(index) {
         if (index < this.itemsLoaded.length) {
             this.itemsExpanded[index] = false;
         }
     }
-
+    
+    /** get data with given index from given request */
     getRequestData(request:string, index:number) {
         var options = {};
         options["responseType"] = "text";
@@ -367,7 +405,8 @@ export class FeatureInfoDialogComponent implements OnInit {
             this.expandContent(index);
         });
     }
-
+    
+    /** component init handler*/
     ngOnInit() {
         this.itemList = [];
         this.itemsLoaded = [];
@@ -390,15 +429,19 @@ export class FeatureInfoDialogComponent implements OnInit {
         }
     }
 
+    /** save action */
     save() {
         this.dialogRef.close();
     }
 
+    /** close action */
     close() {
         this.dialogRef.close();
     }
 
     infoDialog:MatDialogRef<MessageDialogComponent>;
+    
+    /** open info dialog */
     openInfoDialog(title, message?) {
         if (title || message) {
             var data = {
@@ -414,16 +457,18 @@ export class FeatureInfoDialogComponent implements OnInit {
         }
     }
 }
-
+/** Info dialog data interface*/ 
 export interface InfoDialogData {
-    title: "";
-    message: "";
+    /** title*/title: "";
+   /** message*/message: "";
   }
 
+/** Message dialog component */
 @Component({
     selector: 'feature-info-message-dialog',
     templateUrl: 'feature-info-message-dialog.html',
 })
 export class MessageDialogComponent {
-    constructor(@Inject(MAT_DIALOG_DATA) public data: InfoDialogData) {}
+    /** constructor*/
+    constructor(/** info dialog data*/ @Inject(MAT_DIALOG_DATA) public data: InfoDialogData) {}
 }

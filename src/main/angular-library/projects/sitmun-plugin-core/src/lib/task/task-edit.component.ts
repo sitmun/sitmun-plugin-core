@@ -26,30 +26,47 @@ import {Subscription, Observable, forkJoin, merge, concat, pipe, from} from 'rxj
 import {MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 
-
+/**
+ * Territory edit component
+ */
 @Component({
     selector: 'sitmun-task-edit',
     templateUrl: './task-edit.component.html',
     styleUrls: ['./task-edit.component.css']
 })
 export class TaskEditComponent implements OnInit, OnDestroy {
+    
+    /** task to edit*/
     task: Task = new Task();
+
+    /** task types to select*/
     taskTypes: TaskType[] = new Array<TaskType>();
+
+    /** task UIs to select*/
     taskUIs: TaskUI[] = new Array<TaskUI>();
+
+    /** task groups to select*/
     taskGroups: TaskGroup[] = new Array<TaskGroup>();
+
+    /** task connections to select*/    
     connections: Connection[] = new Array<Connection>();
+    
+    /** task roles to select*/    
     roles: Role[] = new Array<Role>();
 
-
+    /** subscription*/
     sub: Subscription;
-
+    
+    /** roles table displayed columns*/
     displayedColumns = ['select', 'name'];
-
+    
+    /** selection model for roles table*/
     selection = new SelectionModel<Role>(true, []);
-
+    
+    /** MatTableDataSource for roles */
     dataSource = new MatTableDataSource<Role>([]);
 
-
+    /** constructor*/
     constructor(private route: ActivatedRoute,
         private router: Router,
         private connectionService: ConnectionService,
@@ -63,6 +80,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
         private taskAvailabilityService: TaskAvailabilityService) {
     }
 
+    /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             const id = params['id'];
@@ -108,30 +126,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
 
                             },
                             error => this.task.roles = new Array<Role>());
-                        /*
 
-                        forkJoin(
-                            this.task.getRelation(TaskType, 'type').catch(error => this.task.type = new TaskType()),
-                            this.task.getRelation(TaskUI, 'ui').catch(error => this.task.ui = new TaskUI()),
-                            this.task.getRelation(TaskGroup, 'group').catch(error => this.task.group = new TaskGroup()),
-                            this.task.getRelation(Connection, 'connection').catch(error => this.task.connection = new Connection()),
-                            this.task.getRelationArray(Role, 'roles')).subscribe(
-                            ([tpe, ui, group, connection, roles]) => {
-                                this.task.type = tpe;
-                                this.task.connection = connection;
-                                this.task.ui = ui;
-                                this.task.group = group;
-                                //this.selection = new SelectionModel<Territory>(true, this.territory.members);
-                                this.task.roles = roles;
-                                this.dataSource.data.forEach(row => {
-                                    for (let member of this.task.roles) {
-                                        if (row._links.self.href == member._links.self.href)
-                                            this.selection.select(row)
-                                    }
-                                });
-
-                            }, error => this.task.roles = new Array<Role>());
-*/
 
                     } else {
                         console.log(`task with id '${id}' not found, returning to list`);
@@ -142,12 +137,13 @@ export class TaskEditComponent implements OnInit, OnDestroy {
         });
     }
 
+    /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
 
 
-
+    /** load all task types*/
     getAllTaskTypes() {
         this.taskTypeService.getAll()
             .subscribe((taskTypes: TaskType[]) => {
@@ -161,6 +157,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
             });
     }
 
+    /** load all task UIs*/
     getAllTaskUIs() {
         this.taskUIService.getAll()
             .subscribe((taskUIs: TaskUI[]) => {
@@ -174,6 +171,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
             });
     }
 
+    /** load all task groups*/
     getAllTaskGroups() {
         this.taskGroupService.getAll()
             .subscribe((taskGroups: TaskGroup[]) => {
@@ -188,7 +186,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
             });
     }
 
-
+    /** load all connections*/
     getAllConnections() {
         this.connectionService.getAll()
             .subscribe((connections: Connection[]) => {
@@ -203,7 +201,8 @@ export class TaskEditComponent implements OnInit, OnDestroy {
 
             });
     }
-
+    
+    /** load all roles*/
     getAllRoles() {
         this.roleService.getAll()
             .subscribe((roles: Role[]) => {
@@ -214,11 +213,12 @@ export class TaskEditComponent implements OnInit, OnDestroy {
             });
     }
 
-
+    /** navigate to task list page*/
     gotoList() {
         this.router.navigate(['/task-list']);
     }
-
+    
+    /** save task*/
     save() {
         if (this.task.createdDate != null && (typeof this.task.createdDate != 'string')) {
             this.task.createdDate = this.task.createdDate.toISOString();
@@ -300,14 +300,16 @@ export class TaskEditComponent implements OnInit, OnDestroy {
         }
 
     }
-
+    
+    /** remove task*/
     remove(task: Task) {
         this.taskService.delete(task).subscribe(result => {
             this.gotoList();
         }, error => console.error(error));
 
     }
-
+    
+    /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
     }

@@ -1,21 +1,18 @@
 import { Observable } from 'rxjs';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 
+/** Interceptor for authentication token in API requests */
 export class AuthInterceptor implements HttpInterceptor {
+    /** API base path*/
     public SERVER_API_URL = '/api';
     public TEST_SERVER_API_URL = 'http://localhost:8080/api';
+    /** constructor*/
     constructor(
     ) {
     }
-
+    
+    /** request handler */
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        /*
-        if (!request || !request.url || (/^http/.test(request.url) && !(this.SERVER_API_URL && request.url.startsWith(this.SERVER_API_URL))
-            && !(this.TEST_SERVER_API_URL && request.url.startsWith(this.TEST_SERVER_API_URL)))) {
-            return next.handle(request);
-        }
-*/
-        //request.url = request.url.replace('localhost:8080','localhost:4200');
         if (!request || !request.url || !(request.url.includes("api")) ) {
             return next.handle(request);
         }

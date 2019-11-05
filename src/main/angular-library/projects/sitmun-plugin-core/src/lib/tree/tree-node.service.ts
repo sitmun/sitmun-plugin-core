@@ -4,22 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import {RestService} from 'angular-hal';  
 
+/** Tree node manager service */
 @Injectable() 
 export class TreeNodeService extends RestService<TreeNode> {
   
+  /** API base path */
   public API = '/api';
+  /** API resource path */
   public TREE_NODE_API = this.API + '/tree-nodes';
 
-
+  /** constructor */
   constructor(injector: Injector,private http: HttpClient) {
     super(TreeNode, "tree-nodes", injector);
   }
   
+  /** remove tree node*/
   remove(item: TreeNode) {
     return this.http.delete(item._links.self.href);
    
   }
   
+  /** save tree node*/
   save(item: TreeNode): Observable<any> {
     let result: Observable<Object>;
     if (item._links!=null) {

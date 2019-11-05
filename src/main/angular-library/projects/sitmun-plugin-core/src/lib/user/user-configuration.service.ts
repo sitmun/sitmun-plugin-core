@@ -4,22 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 
+/** User configuration manager service */
 @Injectable()
 export class UserConfigurationService  extends RestService<UserConfiguration> {
   
+  /** API base path */
   public API = '/api';
+  /** API resource path */
   public USER_CONFIGURATION_API = this.API + '/user-configurations';
 
-
+  /** constructor */
   constructor(injector: Injector,private http: HttpClient) {
     super(UserConfiguration, "user-configurations", injector);
   }
   
+  /** remove user configuration*/
   remove(item: UserConfiguration) {
     return this.http.delete(item._links.self.href);
    
   }
   
+  /** save user configuration*/
   save(item: any): Observable<any> {
     let result: Observable<Object>;
     if (item._links!=null) {

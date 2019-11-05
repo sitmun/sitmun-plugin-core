@@ -13,30 +13,34 @@ import {Subscription, Observable, forkJoin, merge, concat, pipe, from} from 'rxj
 import {MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 
-
+/**
+ * Service edit component
+ */
 @Component({
     selector: 'sitmun-service-edit',
     templateUrl: './service-edit.component.html',
     styleUrls: ['./service-edit.component.css']
 })
 export class ServiceEditComponent implements OnInit, OnDestroy {
+    
+    /** service to edit*/
     service: Service = new Service();
+    
+    /** connections to select*/
     connections: Connection[] = new Array<Connection>();
 
-
+    /** subscription*/
     sub: Subscription;
-
-    displayedColumns = ['select', 'name'];
-
-
-
+    
+    /** constructor */
     constructor(private route: ActivatedRoute,
         private router: Router,
         private connectionService: ConnectionService,
         private serviceService: ServiceService,
         private serviceParameterService: ServiceParameterService) {
     }
-
+    
+    /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             const id = params['id'];
@@ -66,11 +70,13 @@ export class ServiceEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-
+    
+    /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
-
+    
+    /** load all connections*/
     getAllConnections() {
         this.connectionService.getAll()
             .subscribe((connections: Connection[]) => {
@@ -86,12 +92,12 @@ export class ServiceEditComponent implements OnInit, OnDestroy {
             });
     }
 
-
-
+    /** navigate to service list page*/
     gotoList() {
         this.router.navigate(['/service-list']);
     }
-
+    
+    /** save service*/
     save() {
         if (this.service.createdDate != null && (typeof this.service.createdDate != 'string')) {
             this.service.createdDate = this.service.createdDate.toISOString();
@@ -133,14 +139,16 @@ export class ServiceEditComponent implements OnInit, OnDestroy {
 
 
     }
-
+    
+    /** remove service*/
     remove(service: Service) {
         this.serviceService.delete(service).subscribe(result => {
             this.gotoList();
         }, error => console.error(error));
 
     }
-
+    
+    /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
     }

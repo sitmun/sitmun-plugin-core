@@ -17,17 +17,17 @@ import { Principal } from './principal.service';
 })
 export class HasAnyAuthorityOnTerritoryDirective {
 
+    /** authorities to check */
     public authorities: string[]; 
 
+    /** territory to check authorities*/
     public territory: string; 
 
+    /** constructor */
     constructor(private principal: Principal, private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {
     }
-
     
-
-
-
+    /** Set whether current user has any of the given authorities on territory */
     @Input()
     set sitmunHasAnyAuthorityOnTerritory(opts: any) {
 
@@ -37,7 +37,8 @@ export class HasAnyAuthorityOnTerritoryDirective {
         // Get notified each time authentication state changes.
         this.principal.getAuthenticationState().subscribe((identity) => this.updateView());
     }
-
+    
+    /** update view */
     private updateView(): void {
         if (this.territory){
         this.principal.hasAnyAuthorityOnTerritory(this.authorities,this.territory).then((result) => {

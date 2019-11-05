@@ -4,22 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import {RestService} from 'angular-hal';  
 
+/** Cartography manager service */
 @Injectable()
 export class CartographyService extends RestService<Cartography> {
   
+  /** API base path */
   public API = '/api';
+  /** API resource path */
   public CARTOGRAPHY_API = this.API + '/cartographies';
 
-
+  /** constructor */
   constructor(injector: Injector,private http: HttpClient) {
     super(Cartography, "cartographies", injector);
   }
   
- remove(item: Cartography) {
+  /** remove cartography*/
+  remove(item: Cartography) {
     return this.http.delete(item._links.self.href);
    
   }
   
+  /** save cartography*/
   save(item: Cartography): Observable<any> {
     let result: Observable<Object>;
     let cartographyConnection = item.connection;

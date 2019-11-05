@@ -11,43 +11,49 @@ import {LoginService} from '../auth/login.service';
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-
-
-
+/** Component for managing task availabilities*/
 @Component({
   selector: 'sitmun-task-availability-list',
   templateUrl: './task-availability-list.component.html',
   styleUrls: ['./task-availability-list.component.css']
 })
 export class TaskAvailabilityListComponent implements OnInit {
-
+  /** task availabilities to manage */
   items: TaskAvailability[];
+
+  /** task to manage */
   _task: Task;
-
+  
+  /** Table displayed columns */
   displayedColumns = ['territory','actions'];
+  
+  /** MatTableDataSource for table display */
   dataSource = null;
-
+  
+  /** Paginator for table display */ 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
+  /** Component constructor */
   constructor(
-    private taskAvailabilityService: TaskAvailabilityService,    
-    
-    public dialog: MatDialog) { 
+          /**task availability service*/private taskAvailabilityService: TaskAvailabilityService,      
+          /**dialog*/public dialog: MatDialog) { 
   
   }
-
+  
+  /** On component init, get all data dependencies */
   ngOnInit() {
     this.items = new Array<TaskAvailability>();
     
   }
-
+  
+  /** Set task to manage its availabilities*/
   @Input()
   set task(task: Task) {    
     this._task = task;
     this.loadTaskAvailabilities();
   }
 
-
+  /** load all task availabilities*/
   loadTaskAvailabilities(){
     if (this._task!=null){
      this._task.getRelationArray(TaskAvailability, 'availabilities').subscribe(
@@ -70,7 +76,8 @@ export class TaskAvailabilityListComponent implements OnInit {
       
     }
   }
-
+  
+  /** open dialog to edit task availability data*/
   edit(taskAvailability: TaskAvailability): void {
     let dialogRef = this.dialog.open(TaskAvailabilityEditDialog, {
       width: '250px',
@@ -83,13 +90,14 @@ export class TaskAvailabilityListComponent implements OnInit {
        
     });
   }
-
+  
+  /** add task availability*/
   add(): void {
-    let taskPermission = new TaskAvailability();
-    taskPermission.task = this._task;
+    let taskavailability = new TaskAvailability();
+    taskavailability.task = this._task;
     let dialogRef = this.dialog.open(TaskAvailabilityEditDialog, {
       width: '250px',
-      data: taskPermission
+      data: taskavailability
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -97,37 +105,42 @@ export class TaskAvailabilityListComponent implements OnInit {
       this.loadTaskAvailabilities();
     });
   }
-
+  
+  /** remove task availability*/
   remove(item: TaskAvailability) {
     this.taskAvailabilityService.delete(item).subscribe(result => {
       this.loadTaskAvailabilities();
     }, error => console.error(error));
      
   }
-  
-  
 
 }
+
+/** Component for edit task availability data*/
 @Component({
   selector: 'sitmun-task-availability-dialog',
   templateUrl: './task-availability-edit.dialog.html',
   styleUrls: ['./task-availability-edit.dialog.css']
 })
 export class TaskAvailabilityEditDialog implements OnInit {
-
+  
+  /** territories to select*/
   territories: Territory[] = new Array<Territory>();
+
+  /** current account*/
   currentAccount: any;
   
+  /** constructor*/
   constructor(
-    private taskService: TaskService,
-    private taskAvailabilityService: TaskAvailabilityService,
-    private territoryService: TerritoryService,
-    public principal:Principal, public loginService:LoginService,
-    public dialogRef: MatDialogRef<TaskAvailabilityEditDialog>,
-    @Inject(MAT_DIALOG_DATA) public taskAvailability: TaskAvailability ) {
+    /** task service*/private taskService: TaskService,
+    /** task availability service*/private taskAvailabilityService: TaskAvailabilityService,
+    /** territory service*/private territoryService: TerritoryService,
+    /** principal*/public principal:Principal, /** login service*/public loginService:LoginService,
+    /** dialog reference*/public dialogRef: MatDialogRef<TaskAvailabilityEditDialog>,
+    /** task availability to edit*/@Inject(MAT_DIALOG_DATA) public taskAvailability: TaskAvailability ) {
   }
 
-
+  /** On component init load all required data dependencies*/
   ngOnInit() {
      this.principal.identity().then((account) => {
                  this.currentAccount = account;
@@ -149,7 +162,7 @@ export class TaskAvailabilityEditDialog implements OnInit {
 
 
 
-  
+  /** load all territories*/
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
@@ -168,13 +181,14 @@ export class TaskAvailabilityEditDialog implements OnInit {
   
   
 
+  /** save task availability*/
   save() {
       this.taskAvailabilityService.save(this.taskAvailability).subscribe(result => {      
       this.dialogRef.close();
       }, error => console.error(error));
   }
 
-  
+  /** compare two resource*/
   compareResource(c1: Resource, c2: Resource): boolean {
     if (c2 && c1)
       return c2._links && c1._links ? c1._links.self.href === c2._links.self.href : c1 === c2;

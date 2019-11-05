@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-//import { MatToolbarModule, MatButtonModule, MatIconModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
@@ -18,12 +17,12 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 registerLocaleData(localeCa, 'ca');
 registerLocaleData(localeEs, 'es');
 
-
+/** Load translation assets */
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-
+/** Demo app routes configuration*/
 const appRoutes: Routes = [
     {
         path: '',
@@ -225,26 +224,7 @@ const appRoutes: Routes = [
 @NgModule({
     declarations: [
         AppComponent,
-        HomeComponent/*,
-    
-    TerritoryListComponent,
-    
-    TerritoryEditComponent,
-    TerritoryTypeListComponent,
-    TerritoryTypeEditComponent,
-    RoleListComponent,
-    RoleEditComponent,
-    RoleListComponent,
-    RoleEditComponent,
-    UserListComponent,
-    UserEditComponent,
-    UserPositionListComponent,
-    UserPositionEditDialog,
-    UserPositionEditComponent,
-    UserConfigurationEditComponent,
-    UserConfigurationEditDialog,
-    UserConfigurationListComponent
-    */
+        HomeComponent
     ],
     imports: [
         BrowserModule,
@@ -257,38 +237,12 @@ const appRoutes: Routes = [
             }
         }),
 
-        /*,
-    
-        MatToolbarModule,  
-        MatButtonModule,
-        MatIconModule,
-        HttpClientModule,
         
-        MatCardModule,
-        MatInputModule,
-        MatListModule,
-        
-        MatDatepickerModule,
-        MatNativeDateModule,
-        MatCheckboxModule,
-        MatTabsModule,
-        MatTableModule,
-        FormsModule,
-        MatSelectModule,
-        MatPaginatorModule,
-        MatSortModule,
-        
-        NoopAnimationsModule,
-        MatDialogModule,
-        */
         AngularHalModule.forRoot(),
         RouterModule.forRoot(appRoutes)
     ],
     entryComponents: [
-        /*
-          UserPositionEditDialog,
-          UserConfigurationEditDialog
-          */
+        
     ],
     providers: [
         { provide: 'ExternalConfigurationService', useClass: ExternalConfigurationService },
@@ -307,4 +261,5 @@ const appRoutes: Routes = [
     ],
     bootstrap: [AppComponent]
 })
+/** Demo app module*/
 export class AppModule { }

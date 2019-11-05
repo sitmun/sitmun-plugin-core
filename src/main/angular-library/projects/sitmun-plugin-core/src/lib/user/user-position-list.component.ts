@@ -10,31 +10,42 @@ import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_D
 import { Subscription } from 'rxjs-compat';
 //import { ActivatedRoute, Router } from '@angular/router';
 
+/** Component for managing user positions*/
 @Component({
   selector: 'sitmun-user-position-list',
   templateUrl: './user-position-list.component.html',
   styleUrls: ['./user-position-list.component.css']
 })
 export class UserPositionListComponent implements OnInit {
+  /** User positions to manage */
   items: UserPosition[];
+
+  /** User to manage its positions*/
   _user: User;
-
+  
+  /** Table displayed columns */
   displayedColumns = ['name','email','organization','territory','actions'];
+  
+  /** MatTableDataSource for table display */
   dataSource = null;
-
+  
+  /** Paginator for table display */ 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
+  /** Component constructor */
   constructor(
-    private userPositionService: UserPositionService,    
-    public dialog: MatDialog) { 
+          /**user position service*/ private userPositionService: UserPositionService,    
+          /**dialog*/public dialog: MatDialog) { 
   
   }
-
+  
+  /** On component init, get all data dependencies */
   ngOnInit() {
     this.items = new Array<UserPosition>();
     
   }
-
+  
+  /** load all user positions*/
   loadUserPositions(){
     if (this._user!=null){
      this._user.getRelationArray(UserPosition, 'positions').subscribe(
@@ -58,7 +69,8 @@ export class UserPositionListComponent implements OnInit {
       
     }
   }
-
+  
+  /** open dialog to edit user position data*/
   edit(userPosition: UserPosition): void {
     let dialogRef = this.dialog.open(UserPositionEditDialog, {
       width: '250px',
@@ -71,7 +83,8 @@ export class UserPositionListComponent implements OnInit {
        
     });
   }
-
+  
+  /** add user position*/
   add(): void {
     let userPosition = new UserPosition();
     userPosition.user = this._user;
@@ -85,7 +98,8 @@ export class UserPositionListComponent implements OnInit {
       this.loadUserPositions();
     });
   }
-
+  
+  /** remove user position*/
   remove(item: UserPosition) {
     this.userPositionService.delete(item).subscribe(result => {
    //    this.gotoUser();
@@ -94,6 +108,7 @@ export class UserPositionListComponent implements OnInit {
      
   }
 
+  /** set user to manage*/
   @Input()
   set user(user: User) {    
     this._user = user;
@@ -109,26 +124,30 @@ export class UserPositionListComponent implements OnInit {
 
 }
 
+/** Component for edit user position data*/
 @Component({
   selector: 'sitmun-user-position-dialog',
   templateUrl: './user-position-edit.dialog.html',
   styleUrls: ['./user-position-edit.dialog.css']
 })
 export class UserPositionEditDialog implements OnInit {
-
+  
+  /** territories to select*/
   territories: Territory[] = new Array<Territory>();
   
+  /** subscription*/
   sub: Subscription;
   
+  /** constructor*/
   constructor(
-    private userService: UserService,
-    private userPositionService: UserPositionService,
-    private territoryService: TerritoryService,
-    public dialogRef: MatDialogRef<UserPositionEditDialog>,
-    @Inject(MAT_DIALOG_DATA) public userPosition: UserPosition ) {
+          /** user service*/private userService: UserService,
+          /** user position service*/private userPositionService: UserPositionService,
+          /** territory service*/private territoryService: TerritoryService,
+          /** dialog reference*/public dialogRef: MatDialogRef<UserPositionEditDialog>,
+          /** user position to edit*/@Inject(MAT_DIALOG_DATA) public userPosition: UserPosition ) {
   }
 
-
+  /** On component init load all required data dependencies*/
   ngOnInit() {
     this.getAllTerritories();
       if (this.userPosition._links) {
@@ -143,23 +162,22 @@ export class UserPositionEditDialog implements OnInit {
     
   }
 
-
-
-  
+  /** load all territories*/
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
         this.territories = territories;        
     });
   }
-
+  
+  /** save user position*/
   save() {
       this.userPositionService.save(this.userPosition).subscribe(result => {      
       this.dialogRef.close();
       }, error => console.error(error));
   }
 
-  
+  /** compare two resource*/
   compareResource(c1: Resource, c2: Resource): boolean {
     if (c2 && c1)
       return c2._links && c1._links ? c1._links.self.href === c2._links.self.href : c1 === c2;

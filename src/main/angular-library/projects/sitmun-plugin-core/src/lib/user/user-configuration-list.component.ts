@@ -13,39 +13,49 @@ import {LoginService} from '../auth/login.service';
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
+/** Component for managing user permissions*/
 @Component({
   selector: 'sitmun-user-configuration-list',
   templateUrl: './user-configuration-list.component.html',
   styleUrls: ['./user-configuration-list.component.css']
 })
 export class UserConfigurationListComponent implements OnInit {
+  /** User permissions to manage */
   items: UserConfiguration[];
+  
+  /** User to manage its permissions*/
   _user: User;
-
+  
+  /** Table displayed columns */
   displayedColumns = ['territory','role','actions'];
+  
+  /** MatTableDataSource for table display */
   dataSource = null;
-
+  
+  /** Paginator for table display */  
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
+  /** Component constructor */
   constructor(
-    private userConfigurationService: UserConfigurationService,    
-    
-    public dialog: MatDialog) { 
+          /**user permissions service*/private userConfigurationService: UserConfigurationService,    
+          /**dialog*/public dialog: MatDialog) { 
   
   }
-
+  
+  /** On component init, get all data dependencies */
   ngOnInit() {
     this.items = new Array<UserConfiguration>();
     
   }
-
+  
+  /** Set User to manage its permissions*/
   @Input()
   set user(user: User) {    
     this._user = user;
     this.loadUserPermissions();
   }
 
-
+  /** load all user permissions*/
   loadUserPermissions(){
     if (this._user!=null){
      this._user.getRelationArray(UserConfiguration, 'permissions').subscribe(
@@ -70,7 +80,8 @@ export class UserConfigurationListComponent implements OnInit {
       
     }
   }
-
+  
+  /** open dialog to edit user permission data*/
   edit(userConfiguration: UserConfiguration): void {
     let dialogRef = this.dialog.open(UserConfigurationEditDialog, {
       width: '250px',
@@ -83,7 +94,8 @@ export class UserConfigurationListComponent implements OnInit {
        
     });
   }
-
+  
+  /** add user permission*/
   add(): void {
     let userPermission = new UserConfiguration();
     userPermission.user = this._user;
@@ -97,39 +109,46 @@ export class UserConfigurationListComponent implements OnInit {
       this.loadUserPermissions();
     });
   }
-
+  
+  /** remove user permission*/
   remove(item: UserConfiguration) {
     this.userConfigurationService.delete(item).subscribe(result => {
       this.loadUserPermissions();
     }, error => console.error(error));
      
   }
-  
-  
 
 }
+
+/** Component for edit user permission data*/
 @Component({
   selector: 'app-user-configuration-dialog',
   templateUrl: './user-configuration-edit.dialog.html',
   styleUrls: ['./user-configuration-edit.dialog.css']
 })
 export class UserConfigurationEditDialog implements OnInit {
-
+  
+  /** territories to select*/
   territories: Territory[] = new Array<Territory>();
+  
+  /** roles to select*/
   roles: Role[] = new Array<Role>();
+
+  /** current account*/
   currentAccount: any;
   
+ /** constructor*/
   constructor(
-    private userService: UserService,
-    private userconfigurationService: UserConfigurationService,
-    private territoryService: TerritoryService,
-    private roleService: RoleService,
-    public principal:Principal, public loginService:LoginService,
-    public dialogRef: MatDialogRef<UserConfigurationEditDialog>,
-    @Inject(MAT_DIALOG_DATA) public userConfiguration: UserConfiguration ) {
+    /** user service*/private userService: UserService,
+    /** user permission service*/private userconfigurationService: UserConfigurationService,
+    /** territory service*/private territoryService: TerritoryService,
+    /** role service*/private roleService: RoleService,
+    /** principal*/public principal:Principal, /** login service*/public loginService:LoginService,
+    /** dialog reference*/public dialogRef: MatDialogRef<UserConfigurationEditDialog>,
+    /** user permission to edit*/@Inject(MAT_DIALOG_DATA) public userConfiguration: UserConfiguration ) {
   }
 
-
+  /** On component init load all required data dependencies*/
   ngOnInit() {
      this.principal.identity().then((account) => {
                  this.currentAccount = account;
@@ -152,9 +171,7 @@ export class UserConfigurationEditDialog implements OnInit {
     
   }
 
-
-
-  
+  /** load all territories*/
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
@@ -171,20 +188,22 @@ export class UserConfigurationEditDialog implements OnInit {
     });
   }
   
+  /** load all roles*/
   getAllRoles() {
     this.roleService.getAll()
     .subscribe((roles: Role[]) => {
         this.roles = roles;        
     });
   }
-
+  
+  /** save user permission*/
   save() {
       this.userconfigurationService.save(this.userConfiguration).subscribe(result => {      
       this.dialogRef.close();
       }, error => console.error(error));
   }
 
-  
+  /** compare two resources*/
   compareResource(c1: Resource, c2: Resource): boolean {
     if (c2 && c1)
       return c2._links && c1._links ? c1._links.self.href === c2._links.self.href : c1 === c2;

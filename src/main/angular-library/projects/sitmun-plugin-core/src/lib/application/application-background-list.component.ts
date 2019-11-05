@@ -11,41 +11,50 @@ import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_D
 
 
 
-
+/** Component for managing application backgrounds*/
 @Component({
     selector: 'sitmun-application-background-list',
     templateUrl: './application-background-list.component.html',
     styleUrls: ['./application-background-list.component.css']
 })
 export class ApplicationBackgroundListComponent implements OnInit {
-
+    
+    /** application backgrounds to manage */
     items: ApplicationBackground[];
+    
+    /** Task to manage */
     _application: Application;
-
+    
+    /** Table displayed columns */ 
     displayedColumns = ['name', 'value', 'actions'];
+    
+    /** MatTableDataSource for table display */
     dataSource = null;
-
+    
+    /** Paginator for table display */
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    /** constructor*/
     constructor(
-        private applicationBackgroundService: ApplicationBackgroundService,
-
-        public dialog: MatDialog) {
+            /** application background service*/ private applicationBackgroundService: ApplicationBackgroundService,
+            /** dialog*/public dialog: MatDialog) {
 
     }
-
+    
+    /** On component init, get all data dependencies */
     ngOnInit() {
         this.items = new Array<ApplicationBackground>();
 
     }
-
+    
+    /** Set task to manage */
     @Input()
     set application(application: Application) {
         this._application = application;
         this.loadApplicationBackgrounds();
     }
 
-
+    /** load all application backgrounds*/
     loadApplicationBackgrounds() {
         if (this._application != null) {
             this._application.getRelationArray(ApplicationBackground, 'backgrounds').subscribe(
@@ -66,7 +75,8 @@ export class ApplicationBackgroundListComponent implements OnInit {
 
         }
     }
-
+    
+    /** open dialog to edit application background*/
     edit(applicationBackground: ApplicationBackground): void {
         let dialogRef = this.dialog.open(ApplicationBackgroundEditDialog, {
             width: '250px',
@@ -79,7 +89,8 @@ export class ApplicationBackgroundListComponent implements OnInit {
 
         });
     }
-
+    
+    /** add application background*/
     add(): void {
         let applicationBackground = new ApplicationBackground();
         applicationBackground.application = this._application;
@@ -93,7 +104,8 @@ export class ApplicationBackgroundListComponent implements OnInit {
             this.loadApplicationBackgrounds();
         });
     }
-
+    
+    /** remove application background*/
     remove(item: ApplicationBackground) {
         this.applicationBackgroundService.delete(item).subscribe(result => {
             this.loadApplicationBackgrounds();
@@ -104,6 +116,8 @@ export class ApplicationBackgroundListComponent implements OnInit {
 
 
 }
+
+/** Component for edit application background data*/
 @Component({
     selector: 'sitmun-application-background-dialog',
     templateUrl: './application-background-edit.dialog.html',
@@ -111,17 +125,19 @@ export class ApplicationBackgroundListComponent implements OnInit {
 })
 export class ApplicationBackgroundEditDialog implements OnInit {
 
+    /** backgrounds to select*/
     backgrounds: Background[];
-
+    
+    /** constructor*/
     constructor(
-        private applicationService: ApplicationService,
-        private backgroundService: BackgroundService,
-        private applicationBackgroundService: ApplicationBackgroundService,
-        public dialogRef: MatDialogRef<ApplicationBackgroundEditDialog>,
-        @Inject(MAT_DIALOG_DATA) public applicationBackground: ApplicationBackground) {
+            /**task service*/private applicationService: ApplicationService,
+            /**background service*/private backgroundService: BackgroundService,
+            /**application background service*/private applicationBackgroundService: ApplicationBackgroundService,
+            /**dialog reference*/public dialogRef: MatDialogRef<ApplicationBackgroundEditDialog>,
+            /**application background to edit*/ @Inject(MAT_DIALOG_DATA) public applicationBackground: ApplicationBackground) {
     }
 
-
+    /** On component init load all required data dependencies*/
     ngOnInit() {
         this.getAllBackgrounds();
 
@@ -138,21 +154,23 @@ export class ApplicationBackgroundEditDialog implements OnInit {
         }
 
     }
-
+    
+    /** save application background*/
     save() {
         this.applicationBackgroundService.save(this.applicationBackground).subscribe(result => {
             this.dialogRef.close();
         }, error => console.error(error));
     }
 
-
+    /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         if (c2 && c1)
             return c2._links && c1._links ? c1._links.self.href === c2._links.self.href : c1 === c2;
         else
             return false;
     }
-
+    
+    /** load all backgrounds*/
     getAllBackgrounds() {
         this.backgroundService.getAll()
             .subscribe((items: Background[]) => {

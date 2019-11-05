@@ -12,20 +12,33 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat';
 
+
+/**
+ * User permission edit component
+ */
 @Component({
   selector: 'app-user-configuration-edit',
   templateUrl: './user-configuration-edit.component.html',
   styleUrls: ['./user-configuration-edit.component.css']
 })
 export class UserConfigurationEditComponent implements OnInit {
-
-  userConfiguration: UserConfiguration = new UserConfiguration();
-  user: User = new User();
-  territories: Territory[] = new Array<Territory>();
-  roles: Role[] = new Array<Role();
   
+  /** user permission data to edit*/
+  userConfiguration: UserConfiguration = new UserConfiguration();
+  
+  /** user*/
+  user: User = new User();
+  
+  /** territories to select*/
+  territories: Territory[] = new Array<Territory>();
+
+  /** roles to select*/
+  roles: Role[] = new Array<Role>();
+  
+  /** subscription*/
   sub: Subscription;
   
+  /** constructor*/
   constructor(private route: ActivatedRoute,
     private router: Router,    
     private userService: UserService,
@@ -34,11 +47,13 @@ export class UserConfigurationEditComponent implements OnInit {
     private roleService: RoleService,
     private location: Location) {
   }
-
+  
+  /** navigate backwards*/
   goBack() {
     this.location.back();
   }
 
+  /** On component init load all required data dependencies*/
   ngOnInit() {
     this.getAllTerritories();
     this.getAllRoles();
@@ -84,11 +99,13 @@ export class UserConfigurationEditComponent implements OnInit {
       }
     });
   }
-
+  
+  /** On component destroy remove subscription */
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
   
+  /** load all territories*/
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
@@ -96,13 +113,15 @@ export class UserConfigurationEditComponent implements OnInit {
     });
   }
 
-    getAllRoles() {
+  /** load all roles*/
+  getAllRoles() {
     this.roleService.getAll()
     .subscribe((roles: Role[]) => {
         this.roles = roles;        
     });
   }
 
+  /** navigate to user edit page*/
   gotoUser() {
     if (this.userConfiguration._links != null){
       this.router.navigate(['/user-edit',this.userConfiguration.user._links.self.href.split('/')[5]]);
@@ -110,13 +129,15 @@ export class UserConfigurationEditComponent implements OnInit {
       this.router.navigate(['/user-edit',this.user._links.self.href.split('/')[5]]);
     }
   }
-
+  
+  /** save user permission*/
   save() {
       this.userConfigurationService.save(this.userConfiguration).subscribe(result => {      
         this.gotoUser();
       }, error => console.error(error));
   }
-
+  
+  /** remove user permission*/
   remove(userConfiguration: UserConfiguration) {
     this.userConfigurationService.delete(userConfiguration).subscribe(result => {
       this.gotoUser();
@@ -124,6 +145,7 @@ export class UserConfigurationEditComponent implements OnInit {
 
   }
   
+  /** compare two resources*/
   compareResource(c1: Resource, c2: Resource): boolean {
     return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
   }

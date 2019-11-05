@@ -14,31 +14,47 @@ import {Subscription, Observable, forkJoin, merge, concat, pipe, from} from 'rxj
 import {MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 
-
+/**
+ * Cartography group edit component
+ */
 @Component({
     selector: 'sitmun-cartography-group-edit',
     templateUrl: './cartography-group-edit.component.html',
     styleUrls: ['./cartography-group-edit.component.css']
 })
 export class CartographyGroupEditComponent implements OnInit, OnDestroy {
+    
+    /** cartography group to edit*/
     cartographyGroup: CartographyGroup = new CartographyGroup();
+    
+    /** cartographies to select*/
     cartographies: Cartography[] = new Array<Cartography>();
-    roles: Role[] = new Array<Role>();
 
+    /** roles to select*/
+    roles: Role[] = new Array<Role>();
+    
+    /** subscription*/
     sub: Subscription;
 
+    /** cartographies table displayed columns*/
     cartographyDisplayedColumns = ['select', 'name', 'service'];
 
+    /** selection model for cartographies table*/
     cartographySelection = new SelectionModel<Cartography>(true, []);
-
+    
+    /** MatTableDataSource for cartographies*/
     cartographyDataSource = new MatTableDataSource<Cartography>([]);
 
+    /** roles table displayed columns*/
     roleDisplayedColumns = ['select', 'name'];
 
+    /** selection model for roles table*/
     roleSelection = new SelectionModel<Role>(true, []);
 
+    /** MatTableDataSource for roles*/
     roleDataSource = new MatTableDataSource<Role>([]);
-
+    
+    /** constructor*/
     constructor(private route: ActivatedRoute,
         private router: Router,
         private roleService: RoleService,
@@ -48,6 +64,7 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
 
     }
 
+    /** On component init load all required data dependencies*/
     ngOnInit() {
 
         this.sub = this.route.params.subscribe(params => {
@@ -107,11 +124,13 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-
+    
+    /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
 
+    /** load all roles*/
     getAllRoles() {
         this.roleService.getAll()
             .subscribe((roles: Role[]) => {
@@ -122,6 +141,7 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
             });
     }
 
+    /** load all cartographies*/
     getAllCartographies() {
         this.cartographyService.getAll()
             .subscribe((cartographies: Cartography[]) => {
@@ -131,11 +151,12 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
             });
     }
 
-
+    /** navigate to cartography group list page*/
     gotoList() {
         this.router.navigate(['/cartography-group-list']);
     }
 
+    /** save cartography group*/
     save() {
         const isNew = this.cartographyGroup._links == null;
 
@@ -214,7 +235,8 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
 
 
     }
-
+    
+    /** remove cartography group*/
     remove(cartographyGroup: CartographyGroup) {
         this.cartographyGroupService.delete(cartographyGroup).subscribe(result => {
             this.gotoList();
@@ -222,32 +244,34 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
 
     }
 
+    /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
     }
 
 
-    /** Whether the number of selected elements matches the total number of rows. */
+    /** Whether the number of selected cartographies matches the total number of rows. */
     isAllCartographySelected() {
         const numSelected = this.cartographySelection.selected.length;
         const numRows = this.cartographyDataSource.data.length;
         return numSelected === numRows;
     }
 
-    /** Selects all rows if they are not all selected; otherwise clear cartographySelection. */
+    /** Selects all cartographies if they are not all selected; otherwise clear cartographySelection. */
     masterToggleCartography() {
         this.isAllCartographySelected() ?
             this.cartographySelection.clear() :
             this.cartographyDataSource.data.forEach(row => this.cartographySelection.select(row));
     }
 
+    /** Whether the number of selected roles matches the total number of rows. */
     isAllRoleSelected() {
         const numSelected = this.roleSelection.selected.length;
         const numRows = this.roleDataSource.data.length;
         return numSelected === numRows;
     }
 
-    /** Selects all rows if they are not all selected; otherwise clear cartographySelection. */
+    /** Selects all rows if they are not all selected; otherwise clear rolesSelection. */
     masterToggleRole() {
         this.isAllRoleSelected() ?
             this.roleSelection.clear() :

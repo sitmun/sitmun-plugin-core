@@ -3,21 +3,24 @@ import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs-compat';
 //import * as moment from 'moment';
 
+/** Authentication service*/
 @Injectable()
 export class AuthService {
     
-    
+    /** API base URL */
     public SERVER_API_URL = '/api';
     
+    /** constructor*/
     constructor(
         private http: HttpClient
     ) {}
-
+    
+    /** get current user jwt token from session storage*/
     getToken() {
-
         return  sessionStorage.getItem('authenticationToken');
     }
 
+    /** login operation */
     login(credentials): Observable<any> {
 
         const data = {
@@ -41,7 +44,8 @@ export class AuthService {
             
         }
     }
-
+    
+    /** login operation with jwt token */
     loginWithToken(jwt) {
         if (jwt) {
             this.storeAuthenticationToken(jwt);
@@ -51,26 +55,24 @@ export class AuthService {
         }
     }
 
+    /** store jwt token in session storage*/
     storeAuthenticationToken(jwt) {
        sessionStorage.setItem('authenticationToken', jwt);
         
     }
-    /*
-    getExpiration() {
-        const expiration = sessionStorage.getItem("expires_at");
-        const expiresAt = JSON.parse(expiration);
-        return expiresAt;
-    } 
-    */
+    
+    /** check whether current user is logged in*/
     public isLoggedIn() {
         //return moment().isBefore(this.getExpiration());
         return this.getToken();
     }
-
+    
+    /** check whether current user is logged out*/
     isLoggedOut() {
         return !this.isLoggedIn();
     }
 
+    /** logout operation */
     logout(): Observable<any> {
 
         return new Observable((observer) => {

@@ -4,24 +4,32 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat'; 
 
+/**
+ * Connection edit component
+ */
 @Component({
   selector: 'sitmun-connection-edit',
   templateUrl: './connection-edit.component.html',
   styleUrls: ['./connection-edit.component.css']
 })
 export class ConnectionEditComponent implements OnInit {
-
+  
+  /** connection to edit*/
   item: Connection = new Connection();
+
+  /** all connections*/
   items: Connection[] = new Array<Connection>();
   
+  /** subscription*/
   sub: Subscription;
   
-
+  /** constructor*/
   constructor(private route: ActivatedRoute,
     private router: Router,    
     private connectionService: ConnectionService) {
   }
-
+  
+  /** On component init load all required data dependencies*/
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       const id = params['id'];
@@ -41,11 +49,13 @@ export class ConnectionEditComponent implements OnInit {
       }
     });
   }
-
+  
+  /** On component destroy remove subscription */
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
   
+  /** load all connections*/
   getAllConnections() {
     this.connectionService.getAll()
     .subscribe((items: Connection[]) => {
@@ -53,17 +63,19 @@ export class ConnectionEditComponent implements OnInit {
     });
   }
   
-
+  /** navigate to territory list page*/
   gotoList() {
     this.router.navigate(['/connection-list']);
   }
-
+  
+  /** save connection*/
   save() {
       this.connectionService.save(this.item).subscribe(result => {      
         this.gotoList();
       }, error => console.error(error));
   }
-
+  
+  /** remove connection*/
   remove(item: Connection) {
     this.connectionService.delete(item).subscribe(result => {
       this.gotoList();

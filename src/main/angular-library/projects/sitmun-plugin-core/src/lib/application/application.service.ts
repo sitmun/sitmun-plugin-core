@@ -4,22 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import {RestService, ResourceHelper} from 'angular-hal';  
 
+/** Application manager service */
 @Injectable()
 export class ApplicationService extends RestService<Application> {
   
+  /** API base path */
   public API = '/api';
+  /** API resource path */
   public APPLICATION_API = this.API + '/applications';
 
-
+  /** constructor */
   constructor(injector: Injector,private http: HttpClient) {
     super(Application, "applications", injector);
   }
-
+  
+  /** remove application*/
   remove(item: Application) {
     return this.http.delete(item._links.self.href);
    
   }
   
+  /** save application*/
   save(item: Application): Observable<any> {
     let result: Observable<Object>;
     let applicationSituationMap = item.situationMap;

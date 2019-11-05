@@ -5,6 +5,7 @@ import {MatPaginator,MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 
 
+/** Component for managing territories */
 @Component({
   selector: 'app-territory-list',
   templateUrl: './territory-list.component.html',
@@ -12,24 +13,31 @@ import {SelectionModel} from '@angular/cdk/collections';
 })
 export class TerritoryListComponent implements OnInit {
 
+  /** Territories to manage */
   territories: Territory[];
   
+  /** Table displayed columns */
   displayedColumns = ['name', 'scope','blocked','actions'];
+
+  /** MatTableDataSource for table display */
   dataSource = new MatTableDataSource<Territory>(this.territories);
 
+  /** SelectionModel for table display */
   selection = new SelectionModel<Territory>(true, []);
-  
 
-  
+  /** Paginator for table display */  
   @ViewChild(MatPaginator) paginator: MatPaginator;
     
+  /** Component constructor */
   constructor( private territoryService: TerritoryService ) { }
   
+  /** On component init, get all the territories from the system */
   ngOnInit() {
     this.getAllTerritories();
     
   }
 
+  /** Get all the territories from the system */
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
@@ -40,6 +48,7 @@ export class TerritoryListComponent implements OnInit {
     });
   }
   
+  /** Remove the territory from the system */
   remove(territory: Territory) {
     this.territoryService.delete(territory).subscribe(result => {
       this.getAllTerritories();

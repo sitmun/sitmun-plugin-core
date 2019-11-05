@@ -4,22 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import {RestService} from 'angular-hal';  
 
+/** Application background manager service */
 @Injectable() 
 export class ApplicationBackgroundService extends RestService<ApplicationBackground> {
   
+  /** API base path */
   public API = '/api';
+  /** API resource path */
   public APPLICATION_BACKGROUND_API = this.API + '/application-backgrounds';
 
-
+  /** constructor */
   constructor(injector: Injector,private http: HttpClient) {
     super(ApplicationBackground, "application-backgrounds", injector);
   }
   
+  /** remove application background*/
   remove(item: ApplicationBackground) {
     return this.http.delete(item._links.self.href);
    
   }
   
+  /** save application background*/
   save(item: ApplicationBackground): Observable<any> {
     let result: Observable<Object>;
     if (item._links!=null) {

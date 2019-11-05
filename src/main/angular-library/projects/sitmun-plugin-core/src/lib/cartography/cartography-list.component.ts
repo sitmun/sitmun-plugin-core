@@ -4,27 +4,36 @@ import {CartographyService } from './cartography.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatPaginator } from '@angular/material'; 
 
+/** Component for managing cartographys*/
 @Component({
   selector: 'sitmun-cartography-list',
   templateUrl: './cartography-list.component.html',
   styleUrls: ['./cartography-list.component.css']
 })
 export class CartographyListComponent implements OnInit {
-
+  
+  /** cartographys to manage */
   items:Cartography[];
   
+  /** Table displayed columns */
   displayedColumns = ['name','service','actions'];
+  
+  /** MatTableDataSource for table display */
   dataSource = new MatTableDataSource<Cartography>(this.items);
-
+  
+  /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
-    
+  
+  /** Component constructor */  
   constructor( private cartographyService:CartographyService ) { }
   
+  /** On component init, get all data dependencies */
   ngOnInit() {
     this.getAllCartographys();
     
   }
-
+  
+  /** load all cartographys*/
   getAllCartographys() {
     this.cartographyService.getAll()
     .subscribe((items:Cartography[]) => {
@@ -41,6 +50,7 @@ export class CartographyListComponent implements OnInit {
     });
   }
   
+  /** remove cartography*/
   remove(item:Cartography) {
     this.cartographyService.delete(item).subscribe(result => {
       this.getAllCartographys();

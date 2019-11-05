@@ -4,22 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import {RestService} from 'angular-hal';  
 
+/** Task UI manager service */
 @Injectable()
 export class TaskUIService extends RestService<TaskUI> {
   
+  /** API base path */
   public API = '/api';
+  /** API resource path */
   public CONNECTION_API = this.API + '/task-uis';
 
-
+  /** constructor */
   constructor(injector: Injector,private http: HttpClient) {
     super(TaskUI, "task-uis", injector);
   }
   
- remove(item: TaskUI) {
+  /** remove task UI*/
+  remove(item: TaskUI) {
     return this.http.delete(item._links.self.href);
    
   }
   
+  /** save task UI*/
   save(item: TaskUI): Observable<any> {
     let result: Observable<Object>;
     if (item._links!=null) {      

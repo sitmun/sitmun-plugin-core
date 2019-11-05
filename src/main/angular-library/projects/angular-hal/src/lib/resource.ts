@@ -14,27 +14,36 @@ import {SubTypeBuilder} from './subtype-builder';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/internal/Observable';
 
+/** Abstract resource class*/
 @Injectable()
 export abstract class Resource {
 
+    /** proxy URL */
     public proxyUrl: string;
+    /** root URL */
     public rootUrl: string;
 
+    /** links */
     public _links: any;
+    /** subtypes */
     public _subtypes: Map<string, any>;
 
+    
+    /** get subtypes */    
     public get subtypes(): Map<string, any> {
         return this._subtypes;
     }
 
+    /** set subtypes */
     public set subtypes(_subtypes: Map<string, any>) {
         this._subtypes = _subtypes;
     }
 
+    /** constructor*/
     constructor() {
     }
 
-    // Get collection of related resources
+    /** Get collection of related resources */
     public getRelationArray<T extends Resource>(type: { new(): T }, relation: string, _embedded?: string, options?: HalOptions, builder?: SubTypeBuilder): Observable<T[]> {
 
         const params = ResourceHelper.optionParams(new HttpParams(), options);
@@ -51,7 +60,7 @@ export abstract class Resource {
         }
     }
 
-    // Get related resource
+    /** Get related resource */
     public getRelation<T extends Resource>(type: { new(): T }, relation: string, builder?: SubTypeBuilder): Observable<T> {
         let result: T = new type();
         if (!isNullOrUndefined(this._links) && !isNullOrUndefined(this._links[relation])) {
@@ -75,7 +84,7 @@ export abstract class Resource {
         }
     }
 
-    // Adds the given resource to the bound collection by the relation
+    /** Adds the given resource to the bound collection by the relation */
     public addRelation<T extends Resource>(relation: string, resource: T): Observable<any> {
         if (!isNullOrUndefined(this._links) && !isNullOrUndefined(this._links[relation])) {
             let header = ResourceHelper.headers.append('Content-Type', 'text/uri-list');
@@ -85,7 +94,7 @@ export abstract class Resource {
         }
     }
 
-    // Bind the given resource to this resource by the given relation
+    /** Bind the given resource to this resource by the given relation*/
     public updateRelation<T extends Resource>(relation: string, resource: T): Observable<any> {
         if (!isNullOrUndefined(this._links) && !isNullOrUndefined(this._links[relation])) {
             let header = ResourceHelper.headers.append('Content-Type', 'text/uri-list');
@@ -95,7 +104,7 @@ export abstract class Resource {
         }
     }
 
-    // Bind the given resource to this resource by the given relation
+    /** Bind the given resource to this resource by the given relation*/
     public substituteRelation<T extends Resource>(relation: string, resource: T): Observable<any> {
         if (!isNullOrUndefined(this._links) && !isNullOrUndefined(this._links[relation])) {
             let header = ResourceHelper.headers.append('Content-Type', 'text/uri-list');
@@ -106,7 +115,7 @@ export abstract class Resource {
     }
     
     
-        // Bind the given resource to this resource by the given relation
+    /** Bind the given resource to this resource by the given relation*/
     public substituteAllRelation<T extends Resource>(relation: string, resources: Resource[]): Observable<any> {
         if (!isNullOrUndefined(this._links) && !isNullOrUndefined(this._links[relation])) {
             let header = ResourceHelper.headers.append('Content-Type', 'text/uri-list');
@@ -118,7 +127,7 @@ export abstract class Resource {
 
 
 
-    // Unbind the resource with the given relation from this resource
+    /** Unbind the resource with the given relation from this resource*/
     public deleteRelation<T extends Resource>(relation: string, resource: T): Observable<any> {
         if (!isNullOrUndefined(this._links) && !isNullOrUndefined(resource._links)) {
             let link: string = resource._links['self'].href;
@@ -134,7 +143,7 @@ export abstract class Resource {
         }
     }
     
-        // Unbind the resource with the given relation from this resource
+    /** Unbind the resource with the given relation from this resource*/
     public deleteAllRelation<T extends Resource>(relation: string): Observable<any> {
         return ResourceHelper.getHttp().delete(ResourceHelper.getProxy(this._links[relation].href ), {headers: ResourceHelper.headers});
         

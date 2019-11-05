@@ -11,43 +11,50 @@ import {LoginService} from '../auth/login.service';
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
-
-
-
+/** Component for managing cartography availabilitys*/
 @Component({
   selector: 'sitmun-cartography-availability-list',
   templateUrl: './cartography-availability-list.component.html',
   styleUrls: ['./cartography-availability-list.component.css']
 })
 export class CartographyAvailabilityListComponent implements OnInit {
-
+  
+  /** cartography availabilitys to manage */
   items: CartographyAvailability[];
+
+  /** cartography to manage */
   _cartography: Cartography;
 
+  /** Table displayed columns */   
   displayedColumns = ['territory','actions'];
+  
+  /** MatTableDataSource for table display */
   dataSource = null;
 
+  /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
+  /** constructor*/
   constructor(
-    private cartographyAvailabilityService: CartographyAvailabilityService,    
-    
-    public dialog: MatDialog) { 
+          /** cartography availability service*/private cartographyAvailabilityService: CartographyAvailabilityService,        
+          /** dialog*/public dialog: MatDialog) { 
   
   }
-
+  
+  /** On component init, get all data dependencies */
   ngOnInit() {
     this.items = new Array<CartographyAvailability>();
     
   }
-
+  
+  /** Set cartography to manage */
   @Input()
   set cartography(cartography: Cartography) {    
     this._cartography = cartography;
     this.loadCartographyAvailabilities();
   }
 
-
+  /** load all cartography availabilitys*/
   loadCartographyAvailabilities(){
     if (this._cartography!=null){
      this._cartography.getRelationArray(CartographyAvailability, 'availabilities').subscribe(
@@ -70,7 +77,8 @@ export class CartographyAvailabilityListComponent implements OnInit {
       
     }
   }
-
+  
+  /** open dialog to edit cartography availability*/
   edit(cartographyAvailability: CartographyAvailability): void {
     let dialogRef = this.dialog.open(CartographyAvailabilityEditDialog, {
       width: '250px',
@@ -83,7 +91,8 @@ export class CartographyAvailabilityListComponent implements OnInit {
        
     });
   }
-
+  
+  /** add cartography availability*/
   add(): void {
     let cartographyPermission = new CartographyAvailability();
     cartographyPermission.cartography = this._cartography;
@@ -97,7 +106,8 @@ export class CartographyAvailabilityListComponent implements OnInit {
       this.loadCartographyAvailabilities();
     });
   }
-
+  
+  /** remove cartography availability*/
   remove(item: CartographyAvailability) {
     this.cartographyAvailabilityService.delete(item).subscribe(result => {
       this.loadCartographyAvailabilities();
@@ -108,6 +118,8 @@ export class CartographyAvailabilityListComponent implements OnInit {
   
 
 }
+
+/** Component for edit cartography availability data*/
 @Component({
   selector: 'sitmun-cartography-availability-dialog',
   templateUrl: './cartography-availability-edit.dialog.html',
@@ -115,19 +127,23 @@ export class CartographyAvailabilityListComponent implements OnInit {
 })
 export class CartographyAvailabilityEditDialog implements OnInit {
 
+  /** all territories*/
   territories: Territory[] = new Array<Territory>();
+
+  /** current account */  
   currentAccount: any;
   
+  /** constructor*/
   constructor(
-    private cartographyService: CartographyService,
-    private cartographyAvailabilityService: CartographyAvailabilityService,
-    private territoryService: TerritoryService,
-    public principal:Principal, public loginService:LoginService,
-    public dialogRef: MatDialogRef<CartographyAvailabilityEditDialog>,
-    @Inject(MAT_DIALOG_DATA) public cartographyAvailability: CartographyAvailability ) {
+          /**cartography service*/private cartographyService: CartographyService,
+          /**cartography availability service*/private cartographyAvailabilityService: CartographyAvailabilityService,
+          /**territory service*/private territoryService: TerritoryService,
+          /**principal*/ public principal:Principal, /**login service*/ public loginService:LoginService,
+    /**dialog reference*/public dialogRef: MatDialogRef<CartographyAvailabilityEditDialog>,
+    /**cartography availability to edit*/ @Inject(MAT_DIALOG_DATA) public cartographyAvailability: CartographyAvailability ) {
   }
 
-
+  /** On component init load all required data dependencies*/
   ngOnInit() {
      this.principal.identity().then((account) => {
                  this.currentAccount = account;
@@ -149,7 +165,7 @@ export class CartographyAvailabilityEditDialog implements OnInit {
 
 
 
-  
+  /** load all territories*/
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
@@ -167,14 +183,14 @@ export class CartographyAvailabilityEditDialog implements OnInit {
   }
   
   
-
+  /** save cartography availability*/
   save() {
       this.cartographyAvailabilityService.save(this.cartographyAvailability).subscribe(result => {      
       this.dialogRef.close();
       }, error => console.error(error));
   }
 
-  
+  /** compare two resources*/
   compareResource(c1: Resource, c2: Resource): boolean {
     if (c2 && c1)
       return c2._links && c1._links ? c1._links.self.href === c2._links.self.href : c1 === c2;

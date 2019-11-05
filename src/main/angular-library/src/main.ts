@@ -7,9 +7,9 @@ import { environment } from './environments/environment';
 if (environment.production) {
   enableProdMode();
 }
-
+/** require const*/
 declare const require;
-// we use the webpack raw-loader to return the content as a string
+/** we use the webpack raw-loader to return the content as a string */
 const translations = require(`raw-loader!./locale/messages.ca.xlf`);
 
 platformBrowserDynamic().bootstrapModule(AppModule, {

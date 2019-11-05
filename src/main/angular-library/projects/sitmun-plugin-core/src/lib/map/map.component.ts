@@ -4,6 +4,7 @@ import {TranslateService} from '@ngx-translate/core';
 //Openlayers imports
 import * as ol from 'openlayers';
 import * as proj4x from 'proj4';
+/** proj4 object */
 const proj4 = (proj4x as any).default;
 
 import {LayerSelectionDialogComponent, LayerSelectionDialogData} from './layer-selection-dialog.component';
@@ -27,44 +28,52 @@ try {
   }
 }
 
+/** base 64 coded location image*/
 const locationImg = "data:image/png;base64,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";
 
+/** measurement stroke finished color style*/
 const measurementStrokeFinishedColorStyle:string = "rgba(158,17,57,1)";
+/** measurement stroke measuring color style*/
 const measurementStrokeMeasuringColorStyle:string = "rgba(0, 0, 0, 0.5)";
+/** measurement stroke image measuring color style*/
 const measurementStrokeImageMeasuringColorStyle:string = "rgba(0, 0, 0, 0.7)";
+/** measurement background color style*/
 const measurementBackgroundColorStyle:string = "rgba(255, 255, 255, 0.2)";
 
+/** Map option model*/
 export class MapOptions {
-  lon: number;
-  lat: number;
-  projection: string;
-  zoom: number;
-  extent: ol.Extent;
+  /** x-coordinate of center of the map*/lon: number;
+  /** y-coordinate of center of the map*/lat: number;
+  /** code of the srs projection of the coordinates defined in extent, lon and lat*/projection: string;
+  /** zoom of the map*/zoom: number;
+  /** array of numbers representing the extent of the initial view of the map component: [minx, miny, maxx, maxy].*/extent: ol.Extent;
 };
 
+/** Map configuration model*/
 export class MapConfiguration {
-  initialZoom: number;
-  initialLon: number;
-  initialLat: number;
-  initialProjection: string;
-  tileHeight: number;
-  tileWidth: number;
-  mapUnits: string;
-  mapProjection: string;
-  mapMaxScale: number;
-  mapMinScale: number;
-  mapMaxExtent: ol.Extent;
-  mapResolutions: Array<number>;
+  /** initial zoom of the map*/initialZoom: number;
+  /** x-coordinate of initial center of the map*/initialLon: number;
+  /** y-coordinate of initial center of the map*/initialLat: number;
+  /** code of the srs projection of the coordinates defined in extent, initialLon and initialLat*/initialProjection: string;
+  /** tile height*/tileHeight: number;
+  /** tile width*/tileWidth: number;
+  /** map projection units*/mapUnits: string;
+  /** code of the srs projection of the map*/mapProjection: string;
+  /** map maximum scale*/mapMaxScale: number;
+  /** map minimum scale*/mapMinScale: number;
+  /** map maximum extent*/mapMaxExtent: ol.Extent;
+  /** map resolutions*/mapResolutions: Array<number>;
 };
 
+/** Base layer group*/
 export class BaseLayerGroup {
-  // BaseLayer Group Id
+  /** BaseLayer Group Id*/
   id: string;
-  // BaseLayer Group Name (to be shown in the selection list)
+  /** BaseLayer Group Name (to be shown in the selection list)*/
   name: string;
-  // Member layer positions relative to the base layers array
+  /** Member layer positions relative to the base layers array*/
   memberPositions: number[];
-  // Member layer ids
+  /** Member layer ids*/
   memberIds: number[];
 }
 
@@ -75,33 +84,45 @@ export class BaseLayerGroup {
   styleUrls: ['./map.component.css']
 })
 
+/** Map Component*/
 export class MapComponent implements OnInit {
 
   // Default values
-  defaultMapUnits:string = "m";
-  defaultProjection:string = "EPSG:25831";
-  projections;
-  scales;
-  tileHeight: number = 500;
-  tileWidth: number = 500;
-  units = "m";
-  projection = "EPSG:25831";
+  /** default map projection units*/ defaultMapUnits:string = "m";
+  /** default map projection*/ defaultProjection:string = "EPSG:25831";
+  /** map projections*/ projections;
+  /** map scales*/ scales;
+  /** tile height*/ tileHeight: number = 500;
+  /** tile width*/tileWidth: number = 500;
+  /** map projection units*/ units = "m";
+  /** map projection*/projection = "EPSG:25831";
 
-  maxScale: number;
-  minScale: number;
+  /** map maximum scale*/maxScale: number;
+  /** map minimum scale*/ minScale: number;
 
-  maxExtent: ol.Extent;
+  /** map maximum extent*/maxExtent: ol.Extent;
 
-  resolutions: Array<number>;
+  /** resolutions*/ resolutions: Array<number>;
 
+  /** x-coordinate of initial center of the map*/
   @Input() initialLon;
+  
+  /** y-coordinate of initial center of the map*/
   @Input() initialLat;
+  
+  /** code of the srs projection of the coordinates defined in extent, initialLon and initialLat*/
   @Input() initialProjection;
+  
+  /** inital zoom of the map*/
   @Input() initialZoom;
 
+  /** reference to view mapContainer element*/
   @ViewChild('mapContainer') mapContainer:ElementRef;
   
+  /** map extent*/
   _extent: ol.Extent;
+  
+  /** set map extent*/
   @Input()
   set extent(extent: ol.Extent) {  
     this._extent = extent;
@@ -109,8 +130,11 @@ export class MapComponent implements OnInit {
       this.setExtent(extent);
     }
   };
-
+  
+  /** load defaults value, default false*/
   _loadDefaults:boolean = false;
+  
+  /** set load defaults value*/
   @Input() 
   set loadDefaults(value:boolean) {
     if (this._loadDefaults != value) {
@@ -121,12 +145,16 @@ export class MapComponent implements OnInit {
     }
     this._loadDefaults = value;
   }
+  
+  /** get load defaults value*/  
   get loadDefaults():boolean {
     return this._loadDefaults;
   }
 
+  /** map options*/  
   mapOptions: MapOptions;
   
+  /** map controls labels*/
   messages = {
     zoomInTooltip: "Zoom in",
     zoomOutTooltip: "Zoom out",
@@ -142,6 +170,7 @@ export class MapComponent implements OnInit {
     continuePolygonMsg: "Click to continue drawing the polygon"
   };
 
+  /** translate map controls labels*/
   translateLabels() {
     this.messages["zoomInTooltip"] = this.translate.instant("ZOOM_IN_TOOLTIP");
     this.messages["zoomOutTooltip"] = this.translate.instant("ZOOM_OUT_TOOLTIP");
@@ -158,6 +187,7 @@ export class MapComponent implements OnInit {
     this.updateTranslations();
   }
 
+  /** update map controls labels translations */
   updateTranslations() {
     //zoom
     if (this.zoomToolControl) {
@@ -218,7 +248,10 @@ export class MapComponent implements OnInit {
     }
   }
 
+  /** translate service*/ 
   translate: TranslateService;
+  
+  /** constructor*/
   constructor(private dialog: MatDialog, 
     private featureInfoDialog: MatDialog,
     private mapConfigurationManagerService: MapConfigurationManagerService,
@@ -229,7 +262,8 @@ export class MapComponent implements OnInit {
     });
     this.translateLabels();
   }
-
+  
+  /** OpenLayers map */
   map: ol.Map = null;
 
   setExtent(extent: ol.Extent) {
@@ -240,26 +274,42 @@ export class MapComponent implements OnInit {
           this.getMap().getView().getResolutionForExtent(extent)));
     }
   }
-
+  
+  /** get OpenLayers map */
   getMap(){
     return this.map;
   }
 
   // MapConfigurationManagerService event subscriptors
+  /** layers events subscription*/
   layerSubscription;
+  
+  /** base layers events subscription*/
   baseLayersSubscription;
+  
+  /** layer configuration events subscription*/
   layerConfigurationSubscription;
+  
+  /** add layer events subscription*/
   addLayersSubscription;
+  
+  /** remove layer events subscription*/
   removeLayersSubscription;
+  
+  /** situation map events subscription*/
   situationMapConfigurationSubscription;
+  
+  /** map options events subscription*/
   mapOptionsConfigurationSubscription;
 
+  /** show message on console*/ 
   showMessage(msg:string) {
     if (console && (typeof console.log == "function")) {
       console.log(msg);
     }
   }
 
+  /** initialize MapConfigurationManager*/
   initializeMapConfigurationManager(): void {
     this.layerSubscription = this.mapConfigurationManagerService.getLayers().subscribe(
       layers => {
@@ -317,25 +367,32 @@ export class MapComponent implements OnInit {
       () => this.showMessage("on complete configuration")
     );
   }
-
+  
+  /** set default map projection units*/
   setDefaultMapUnits(units) {
     if (units) {
       this.defaultMapUnits = units;
     }
   }
+  
+  /** get default map projection units*/
   getDefaultMapUnits():string {
     return this.defaultMapUnits;
   }
 
+  /** set default map projection*/
   setDefaultProjection(projection) {
     if (projection) {
       this.defaultProjection = projection;
     }
   }
+  
+  /** get default map projection*/
   getDefaultProjection():string {
     return this.defaultProjection.slice();//Return the value cloned
   }
 
+  /** get projection units*/
   getProjectionUnits(projection) {
     try {
       var prj = ol.proj.get(projection);
@@ -349,6 +406,7 @@ export class MapComponent implements OnInit {
     }
   }
 
+  /** set map projection*/
   setProjection(projectionList:any) {
     var projection:ol.proj.Projection = null;
     
@@ -363,6 +421,7 @@ export class MapComponent implements OnInit {
     }
   }
 
+  /** transform projection of given coordinates (lonlat) from given source projection to given destination projection*/
   transformLonLat(lonlat, projectionFrom:string, projectionTo:string) {
     if (lonlat) {
       return ol.proj.transform(lonlat, new ol.proj.Projection({
@@ -374,6 +433,7 @@ export class MapComponent implements OnInit {
     return null;
   }
 
+  /** transform projection of given extentfrom given source projection to given destination projection*/
   transformExtent(extent, projectionFrom:string, projectionTo:string) {
     if (extent) {
       return ol.extent.applyTransform(
@@ -387,6 +447,7 @@ export class MapComponent implements OnInit {
     return null;
   }
 
+  /** update map options with given data*/
   updateMapOptions(options:MapOptionsConfiguration) {
     if (!options) {
       //If no options defined load default values
@@ -557,6 +618,7 @@ export class MapComponent implements OnInit {
     }
   }
 
+  /** get resolutions from given scales*/ 
   getResolutionsFromScales(scales:number[], units?):number[] {
     var resolutions = [];
     for (var i = 0, iLen = scales.length; i < iLen; i++) {
@@ -565,6 +627,7 @@ export class MapComponent implements OnInit {
     return resolutions;
   }
 
+  /** get scales from given resolutions*/ 
   getScalesFromResolutions(resolutions:number[], units?):number[] {
     var scales = [];
     for (var i = 0, iLen = resolutions.length; i < iLen; i++) {
@@ -572,7 +635,8 @@ export class MapComponent implements OnInit {
     }
     return scales;
   }
-
+  
+  /** parse layers from array of layers*/ 
   parseLayers(layers, layerDataConfig:Array<Layer>) {
     if (!layerDataConfig || !layerDataConfig.length) {
       return;
@@ -717,6 +781,7 @@ export class MapComponent implements OnInit {
     }
   }
 
+  /** get map layer by given id*/
   getMapLayerById(id:string):ol.layer.Base {
     var layer = null;
     if (this.map) {
@@ -732,6 +797,7 @@ export class MapComponent implements OnInit {
     return layer;
   }
 
+  /** get map layer index by given id*/
   getMapLayerIndexById(id:string):number {
     var index = -1;
     if (this.map) {
@@ -747,7 +813,10 @@ export class MapComponent implements OnInit {
     return index;
   }
 
+  /** layers*/
   layers;
+  
+  /** configure given array of layers*/
   configureLayers(layerDataConfig:Array<Layer>) {
     if (layerDataConfig) {
       if (this.layers && (this.layers.length)) {
@@ -779,7 +848,10 @@ export class MapComponent implements OnInit {
     }
   }
 
+  /** loadingControl*/
   loadingControl;
+  
+  /** add given array of layers to map*/
   addLayers(layerDataConfig:Array<Layer>) {
     if (layerDataConfig) {
       var newLayers = [];
@@ -864,7 +936,8 @@ export class MapComponent implements OnInit {
       }
     }
   }
-
+  
+  /** remove given array of layers to map*/
   removeLayers(layerDataConfig:Array<Layer>) {
 
     if (layerDataConfig && this.map) {
@@ -906,7 +979,8 @@ export class MapComponent implements OnInit {
       }
     }
   }
-
+  
+  /** apply given layer configuration*/
   applyLayerConfiguration(configuration: LayerConfiguration) {
     if (configuration && this.map) {
       var layer = this.getMapLayerById(configuration.id);
@@ -933,18 +1007,30 @@ export class MapComponent implements OnInit {
       }
     }
   }
-
+  
+  /** update vector added layers*/
   updateVectorDataLayers() {
     if (this.map != null) {
       this.map.dispatchEvent("layersadded");  
     }
   }
 
+  /** base layers*/
   baseLayers;
+  
+  /** base layers gorups*/
   baseLayerGroups;
+  
+  /** select base layer control*/
   selectBaseLayerControl;
+  
+  /** situation layers*/
   situationMapLayers;
+  
+  /** GetFeatureInfo control*/
   getFeatureInfoControl;
+  
+  /** configure given array of group of layers as base layers*/
   configureBaseLayers(groups:Array<LayerGroup>) {
     var groupNames;
     if ((groups != null) && (groups != undefined)) {
@@ -1069,6 +1155,7 @@ export class MapComponent implements OnInit {
     }
   }
 
+  /** get queryable layers*/
   getQueryableLayers() {
     var queryableLayers = null;
     if (this.getMap() && this.getMap().getLayers() != null) {
@@ -1084,6 +1171,7 @@ export class MapComponent implements OnInit {
     return queryableLayers;
   }
 
+  /** update overview map*/
   updateOverviewMap() {
     if (this.overViewMapControl) {
       var layers;
@@ -1109,7 +1197,8 @@ export class MapComponent implements OnInit {
       }
     }
   }
-
+  
+  /** unsubscribe to component events*/
   unsubscribeMapConfigurationManager() {
     this.layerSubscription.unsubscribe();
     this.layerConfigurationSubscription.unsubscribe();
@@ -1120,10 +1209,12 @@ export class MapComponent implements OnInit {
     this.mapOptionsConfigurationSubscription.unsubscribe();
   }
 
+  /** component destroy handler*/
   ngOnDestroy(): void {
     this.unsubscribeMapConfigurationManager();
   }
-
+  
+  /** init proj4 for coordinate transformation*/
   initProj4js() {
     // mercator
     proj4.defs("EPSG:54004", "+title=world mercator EPSG:54004 +proj=merc +lat_ts=0 +lon_0=0 +k=1 +x_0=0 +y_0=0 +ellps=WGS84 +datum=WGS84 +units=m +no_defs");
@@ -1260,13 +1351,26 @@ export class MapComponent implements OnInit {
     ol.proj.addProjection(projection);
     */
   }
-
+  
+  /** overview map control*/
   overViewMapControl:ol.control.OverviewMap;
+    
+  /** measurement control*/
   measurementToolControl;
+    
+  /** scale line tool control*/
   scaleLineToolControl;
-  attributionToolControl;
+    
+  /** attribution tool control*/
+  attributionToolControl;  
+  
+  /** zoom control*/
   zoomToolControl;
+  
+  /** location tool control*/
   locationToolControl;
+  
+  /** component init handler*/
   ngOnInit() {
 
     if (this.getMap() != null) {
@@ -1397,6 +1501,7 @@ export class MapComponent implements OnInit {
     // Custom control declaration //
     ////////////////////////////////
 
+    /** check supported events */
     var isEventSupported = (function(){
       var TAGNAMES = {
         'select':'input','change':'input',
@@ -1417,7 +1522,7 @@ export class MapComponent implements OnInit {
       return isEventSupported;
     })();
 
-    //Custom Loading control
+    /** Custom Loading control*/
     class LoadingControl extends ol.control.Control{
       element;
       loading;
@@ -1535,7 +1640,7 @@ export class MapComponent implements OnInit {
       }
     }
     
-    //Custom base layer selector control
+    /** Custom base layer selector control*/
     class SelectBaseLayerControl extends ol.control.Control{
 
       groupNames;
@@ -1550,10 +1655,12 @@ export class MapComponent implements OnInit {
 
       button;
 
+      /** set dialog*/
       setDialog(dialog: MatDialog) {
         this.dialog = dialog;
       }
 
+      /** on data chenged handler*/
       onDataChanged(data) {
         if (data.layerGroups) {
           this.layerGroups = data.layerGroups;
@@ -1723,7 +1830,7 @@ export class MapComponent implements OnInit {
       }
     }
 
-    //Custom geolocation control
+    /** Custom geolocation control*/
     class GeolocationControl extends ol.control.Control{
       geolocation: ol.Geolocation;
 
@@ -1847,7 +1954,7 @@ export class MapComponent implements OnInit {
       }
     };
 
-    //Custom measurement control
+    /** Custom measurement control*/
     class MeasurementControl extends ol.control.Control{
 
       /**
@@ -2783,7 +2890,7 @@ export class MapComponent implements OnInit {
       'yd': 36
     };
 
-    //Custom GetFeatureInfo control
+    /**Custom GetFeatureInfo control*/
     class GetFeatureInfoControl extends ol.control.Control{
 
       dialog: MatDialog;
@@ -3252,11 +3359,13 @@ export class MapComponent implements OnInit {
     this.mapConfigurationManagerService.setMapComponentStatus(mapStatus);
   }
 
+  /** normalize to given scale*/
   public static normalizeScale(scale) {
     var normScale=(scale>1.0)?(1.0/scale):scale;
     return normScale;
   }
-
+  
+  /** get scale from given resolution*/
   public static getScaleFromResolution(resolution, units?) {
     units = units?units:"m";
     var dpi = 25.4 / 0.28;
@@ -3264,7 +3373,8 @@ export class MapComponent implements OnInit {
     var inchesPerMeter = 39.37;
     return (resolution * (mpu * inchesPerMeter * dpi));
   }
-
+  
+  /** get resolution from given scale*/
   public static getResolutionFromScale(scale, units?) {
     units = units?units:"m";
     var normScale = MapComponent.normalizeScale(scale);
@@ -3274,7 +3384,10 @@ export class MapComponent implements OnInit {
     return (1 /(normScale * (mpu * inchesPerMeter * dpi)));
   }
 
+  /** defaults loaded?*/
   defaultsLoaded:boolean = false;
+  
+  /** load default map configuration*/
   loadDefaultMapConfiguration() {
     //Load default configuration
     //Projection, escales, extent
@@ -3287,75 +3400,116 @@ export class MapComponent implements OnInit {
     }
   }
 
+  /** default initial zoom*/
   defaultInitialZoom = 0;
+  
+  /** setdefault initial zoom*/
   setDefaultInitialZoom(zoom) {
     this.defaultInitialZoom = zoom;
   }
+  
+  /** get default initial zoom*/
   getDefaultInitialZoom():number {
     return this.defaultInitialZoom;
   }
 
+  /** default initial lon*/
   defaultInitialLon = 405808.5;
+  
+  /** set default initial lon*/
   setDefaultInitialLon(lon) {
     this.defaultInitialLon = lon;
   }
+  
+  /** get default initial lon*/
   getDefaultInitialLon():number {
     return this.defaultInitialLon;
   }
   
+  /** default initial lat*/
   defaultInitialLat = 4623846.5;
+  
+  /** set default initial lat*/
   setDefaultInitialLat(lat) {
     this.defaultInitialLat = lat;
   }
+  
+  /** get default initial lat*/
   getDefaultInitialLat():number {
     return this.defaultInitialLat;
   }
   
+  /** default tile height*/
   defaultTileHeight = 500;
+  
+  /** set default tile height*/
   setDefaultTileHeight(height) {
     this.defaultTileHeight = height;
   }
+  
+  /** get default tile height*/
   getDefaultTileHeight():number {
     return this.defaultTileHeight;
   }
   
+  /** set default tile width*/
   defaultTileWidth = 500;
+  
+  /** set default tile width*/
   setDefaultTileWidth(width) {
     this.defaultTileWidth = width;
   }
+  
+  /** get default tile width*/
   getDefaultTileWidth():number {
     return this.defaultTileWidth;
   }
   
+  /** default map max scale*/
   defaultMapMaxScale = 3000000;
+  
+  /** set default map max scale*/
   setDefaultMapMaxScale(scale) {
     this.defaultMapMaxScale = scale;
   }
+  
+  /** get default map max scale*/
   getDefaultMapMaxScale():number {
     return this.defaultMapMaxScale;
   }
   
+  /** default map min scale*/
   defaultMapMinScale = 3000;
+  
+  /** set default map min scale*/
   setDefaultMapMinScale(scale) {
     this.defaultMapMinScale = scale;
   }
+  
+  /** get default map min scale*/
   getDefaultMapMinScale():number {
     return this.defaultMapMinScale;
   }
   
+  /** default map maximum extent*/
   defaultMapMaxExtent:[number, number, number, number] = [
     320000, //xMin
     4561229,//yMin
     491617, //xMax
     4686464 //yMax
   ];
+  
+  /** set default map maximum extent*/
   setDefaultMapMaxExtent(extent) {
     this.defaultMapMaxExtent = extent;
   }
+  
+  /** get default map maximum extent*/
   getDefaultMapMaxExtent():[number, number, number, number] {
     return this.defaultMapMaxExtent;
   }
 
+  /** default map resolutions*/
   defaultMapResolutions = [
     264.5831904584105,
     ​185.20823332088733,
@@ -3373,13 +3527,18 @@ export class MapComponent implements OnInit {
     ​0.2645831904584105,
     ​0.1322915952292052
   ];
+  
+  /** set default map resolutions*/
   setDefaultMapResolutions(resolutions) {
     this.defaultMapResolutions = resolutions;
   }
+  
+  /** get default map resolutions*/
   getDefaultMapResolutions() {
     return this.defaultMapResolutions;
   }
 
+  /** default map scales*/
   defaultMapScales = [
     1000000,
     700000,
@@ -3397,21 +3556,30 @@ export class MapComponent implements OnInit {
     1000,
     500
   ];
+  
+  /** set default map scales*/
   setDefaultMapScales(scales) {
     this.defaultMapScales = scales;
   }
+  
+  /** get default map scales*/
   getDefaultMapScales() {
     return this.defaultMapScales;
   }
-
+  
+  /** default map info format*/
   defaultMapInfoFormat:string = "text/xml";
   setDefaultMapInfoFormat(format:string) {
     this.defaultMapInfoFormat = format;
   }
+  
+  /** get default map info format*/
   getDefaultMapInfoFormat():string {
     return this.defaultMapInfoFormat;
   }
 
+  
+  /** get default map configuration*/
   getDefaultMapConfiguration() {
     var configuration = new MapConfiguration();
     configuration.initialZoom = this.getDefaultInitialZoom();
@@ -3430,7 +3598,8 @@ export class MapComponent implements OnInit {
     */
     return configuration;   
   }
-
+  
+  /** get default map options configuration*/
   getDefaultMapOptionsConfiguration() {
     var configuration = new MapOptionsConfiguration();
     //configuration.extent = [this.getDefaultInitialLon(), this.getDefaultInitialLat()];
@@ -3443,7 +3612,8 @@ export class MapComponent implements OnInit {
     configuration.scales = this.getDefaultMapScales().join(",");
     return configuration;   
   }
-
+  
+  /** get default base layers configuration*/
   getDefaultBaseLayersConfiguration() {
     var baseLayers = new Array<LayerGroup>();
 
@@ -3674,7 +3844,8 @@ export class MapComponent implements OnInit {
     
     return baseLayers;
   }
-
+  
+  /** parse given format*/
   parseFormat(format:String) {
     return ((format.indexOf("image") == -1)?
                 "image/":"") + 

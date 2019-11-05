@@ -14,26 +14,37 @@ import {Subscription, Observable, forkJoin, merge, concat, pipe, from} from 'rxj
 import {MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 
-
+/**
+ * Cartography edit component
+ */
 @Component({
     selector: 'sitmun-cartography-edit',
     templateUrl: './cartography-edit.component.html',
     styleUrls: ['./cartography-edit.component.css']
 })
 export class CartographyEditComponent implements OnInit, OnDestroy {
+    
+    /** cartography to edit*/
     cartography: Cartography = new Cartography();
+
+    /** connections to select*/
     connections: Connection[] = new Array<Connection>();
+
+    /** services to select*/
     services: Service[] = new Array<Service>();
-
+    
+    /** subscription*/
     sub: Subscription;
-
+    
+    /** constructor*/
     constructor(private route: ActivatedRoute,
         private router: Router,
         private connectionService: ConnectionService,
         private serviceService: ServiceService,
         private cartographyService: CartographyService) {
     }
-
+    
+    /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             const id = params['id'];
@@ -69,14 +80,13 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-
+    
+    /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
 
-
-
-
+    /** load all connections*/
     getAllConnections() {
         this.connectionService.getAll()
             .subscribe((connections: Connection[]) => {
@@ -91,7 +101,8 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
 
             });
     }
-
+    
+    /** load all services*/
     getAllServices() {
         this.serviceService.getAll()
             .subscribe((services: Service[]) => {
@@ -106,11 +117,12 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
             });
     }
 
-
+    /** navigate to cartography list page*/
     gotoList() {
         this.router.navigate(['/cartography-list']);
     }
-
+    
+    /** save cartography*/
     save() {
         if (this.cartography.createdDate != null && (typeof this.cartography.createdDate != 'string')) {
             this.cartography.createdDate = this.cartography.createdDate.toISOString();
@@ -156,11 +168,9 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
                 , error => console.error(error));
         }
 
-
-
-
     }
-
+    
+    /** remove cartography*/
     remove(cartography: Cartography) {
         this.cartographyService.delete(cartography).subscribe(result => {
             this.gotoList();
@@ -168,6 +178,7 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
 
     }
 
+    /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
     }

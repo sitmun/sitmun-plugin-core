@@ -2,14 +2,17 @@ import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
 import { Principal } from './principal.service';
 
+/** Login service*/
 @Injectable()
 export class LoginService {
-
+    
+    /** constructor */
     constructor(
         private authServerProvider: AuthService, 
         private principal: Principal
     ) {}
 
+    /**Login operation*/
     login(credentials, callback?) {
         const cb = callback || function() {};
 
@@ -30,11 +33,12 @@ export class LoginService {
             });
         });
     }
-
+    /**login with jwt token */
     loginWithToken(jwt) {
         return this.authServerProvider.loginWithToken(jwt);
     }
 
+    /** logout operation */
     logout() {
        this.authServerProvider.logout().subscribe();
        this.principal.authenticate(null);

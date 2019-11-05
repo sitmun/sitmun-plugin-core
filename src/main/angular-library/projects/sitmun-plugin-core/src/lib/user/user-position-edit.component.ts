@@ -10,19 +10,29 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat';
 
+/**
+ * User position edit component
+ */
 @Component({
   selector: 'sitmun-user-position-edit',
   templateUrl: './user-position-edit.component.html',
   styleUrls: ['./user-position-edit.component.css']
 })
 export class UserPositionEditComponent implements OnInit {
-
+  
+  /** user position to edit*/
   userPosition: UserPosition = new UserPosition();
+
+  /** user*/
   user: User = new User();
+
+  /** territories to select*/
   territories: Territory[] = new Array<Territory>();
-  
+
+  /** subscription*/
   sub: Subscription;
-  
+
+  /** constructor*/
   constructor(private route: ActivatedRoute,
     private router: Router,    
     private userService: UserService,
@@ -30,11 +40,13 @@ export class UserPositionEditComponent implements OnInit {
     private territoryService: TerritoryService,
      private location: Location) {
   }
-
+  
+  /** navigate backwards*/
   goBack() {
     this.location.back();
   }
-
+  
+  /** On component init load all required data dependencies*/
   ngOnInit() {
     this.getAllTerritories();
     this.sub = this.route.params.subscribe(params => {
@@ -73,18 +85,20 @@ export class UserPositionEditComponent implements OnInit {
   }
 
 
-
+  /** On component destroy remove subscription */
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
   
+  /** load all territories*/
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
         this.territories = territories;        
     });
   }
-
+  
+  /** navigate to user edit page*/
   gotoUser() {
     if (this.userPosition._links != null){
       this.router.navigate(['/user-edit',this.userPosition.user._links.self.href.split('/')[5]]);
@@ -92,14 +106,16 @@ export class UserPositionEditComponent implements OnInit {
       this.router.navigate(['/user-edit',this.user._links.self.href.split('/')[5]]);
     }
   }
-
+  
+  /** save user position*/
   save() {
       this.userPositionService.save(this.userPosition).subscribe(result => {      
 
         this.gotoUser();
       }, error => console.error(error));
   }
-
+  
+  /** remove user position*/
   remove(userPosition: UserPosition) {
     this.userPositionService.delete(userPosition).subscribe(result => {
       this.gotoUser();
@@ -107,6 +123,7 @@ export class UserPositionEditComponent implements OnInit {
 
   }
   
+  /** compare two resources*/
   compareResource(c1: Resource, c2: Resource): boolean {
     return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
   }

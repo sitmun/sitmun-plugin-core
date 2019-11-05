@@ -102,18 +102,18 @@ import { ApplicationBackgroundListComponent,ApplicationBackgroundEditDialog } fr
 import { TaskUIEditComponent } from './task/task-ui-edit.component';
 import { TaskUIListComponent } from './task/task-ui-list.component';
 
-
+/** load i18n assets*/
 export function createTranslateLoader(http: HttpClient) {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-
+/** create Material Design pagination service*/
 export function createMatPaginationService(translate: TranslateService){
                 const service = new MatPaginationIntlService();
                 service.injectTranslateService(translate);
             return service;
 }
-
+/** SITMUN plugin core module */
 @NgModule({
   imports: [
   RouterModule,

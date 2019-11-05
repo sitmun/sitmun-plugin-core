@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {AccountService } from './account.service';
 import {User } from '../user/user.model';
+
+/**
+ * Account data edit component
+ */
 @Component({
   selector: 'app-account-edit',
   templateUrl: './account-edit.component.html',
@@ -8,13 +12,18 @@ import {User } from '../user/user.model';
 })
 export class AccountEditComponent implements OnInit {
 
+  /** user data to edit*/
   item: User = new User();
+
+  /** success status variable*/
   success: string;
   
+  /** constructor*/
   constructor(
   	private accountService: AccountService) {
   }
-
+  
+  /** On component init load all required data dependencies*/
   ngOnInit() {
     
         this.accountService.get().subscribe((item: any) => {
@@ -29,7 +38,7 @@ export class AccountEditComponent implements OnInit {
   }
 
  
- 
+  /** save account data*/
   save() {
       this.accountService.save(this.item).subscribe(result => {      
         //Todo display message?

@@ -43,6 +43,8 @@ export {ExternalConfigurationHandlerInterface} from './external-configuration.ha
 export {HalOptions, HalParam} from './rest.service';
 export {SubTypeBuilder} from './subtype-builder';
 
+
+/** Angular HAL module */
 @NgModule({
     imports: [HttpClientModule],
     declarations: [],

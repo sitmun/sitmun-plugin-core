@@ -16,17 +16,18 @@ import { Principal } from './principal.service';
     selector: '[sitmunHasAnyAuthority]'
 })
 export class HasAnyAuthorityDirective {
-
+    
+    /** authorities to check */
     public authorities: string[]; 
-
+    
+    /** constructor */
     constructor(private principal: Principal, private templateRef: TemplateRef<any>, private viewContainerRef: ViewContainerRef) {
     }
-
     
-
-
+    /** territory to check authorities*/
     @Input() territory: string;
-
+    
+    /** Set whether current user has any of the given authorities */
     @Input()
     set sitmunHasAnyAuthority(value: string|string[]) {
         this.authorities = typeof value === 'string' ? [ <string> value ] : <string[]> value;
@@ -34,7 +35,8 @@ export class HasAnyAuthorityDirective {
         // Get notified each time authentication state changes.
         this.principal.getAuthenticationState().subscribe((identity) => this.updateView());
     }
-
+    
+    /** update view */
     private updateView(): void {
         if (this.territory){
         this.principal.hasAnyAuthorityOnTerritory(this.authorities,this.territory).then((result) => {

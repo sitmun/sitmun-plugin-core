@@ -4,22 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import {RestService} from 'angular-hal';  
 
+/** Service manager service */
 @Injectable()
 export class ServiceService extends RestService<Service> {
   
+  /** API base path */
   public API = '/api';
+  /** API resource path */
   public SERVICE_API = this.API + '/services';
 
-
+  /** constructor */
   constructor(injector: Injector,private http: HttpClient) {
     super(Service, "services", injector);
   }
   
- remove(item: Service) {
+  /** remove service*/
+  remove(item: Service) {
     return this.http.delete(item._links.self.href);
    
   }
   
+  /** save service*/
   save(item: Service): Observable<any> {
     let result: Observable<Object>;
     let serviceConnection = item.connection;

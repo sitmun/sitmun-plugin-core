@@ -21,32 +21,50 @@ import {Subscription, Observable, forkJoin, merge, concat, pipe, from} from 'rxj
 import {MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 
-
+/**
+ * Application edit component
+ */
 @Component({
     selector: 'sitmun-application-edit',
     templateUrl: './application-edit.component.html',
     styleUrls: ['./application-edit.component.css']
 })
 export class ApplicationEditComponent implements OnInit, OnDestroy {
+
+    /** application to edit*/
     application: Application = new Application();
+
+    /** all cartography groups*/
     cartographyGroups: CartographyGroup[] = new Array<CartographyGroup>();
+    
+    /** all connections*/
     connections: Connection[] = new Array<Connection>();
+    
+    /** all roles*/
     roles: Role[] = new Array<Role>();
+
+    /** all trees*/
     trees: Tree[] = new Array<Tree>();
 
-
+    /** subscription*/
     sub: Subscription;
 
+    /** displayed columns in table*/    
     displayedColumns = ['select', 'name'];
 
+    /** selection model for role table*/
     roleSelection = new SelectionModel<Role>(true, []);
-
+    
+    /** MatTableDataSource for role table*/
     roleDataSource = new MatTableDataSource<Role>([]);
 
+    /** selection model for tree table*/
     treeSelection = new SelectionModel<Tree>(true, []);
 
+    /** MatTableDataSource for tree table*/
     treeDataSource = new MatTableDataSource<Tree>([]);
 
+    /** constructor */
     constructor(private route: ActivatedRoute,
         private router: Router,
         private roleService: RoleService,
@@ -57,11 +75,11 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
         private changeDetectorRefs: ChangeDetectorRef,
         private applicationBackgroundService: ApplicationBackgroundService) {
 
-
         this.getAllCartographyGroups();
 
     }
-
+    
+    /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             const id = params['id'];
@@ -127,12 +145,13 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-
+    
+    /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
 
-
+    /** load all cartography groups*/
     getAllCartographyGroups() {
         this.cartographyGroupService.getAll()
             .subscribe((cartographyGroups: CartographyGroup[]) => {
@@ -142,7 +161,7 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
 
 
 
-
+    /** load all roles*/
     getAllRoles() {
         this.roleService.getAll()
             .subscribe((roles: Role[]) => {
@@ -152,6 +171,8 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
 
             });
     }
+    
+    /** load all trees*/
     getAllTrees() {
         this.treeService.getAll()
             .subscribe((trees: Tree[]) => {
@@ -161,11 +182,13 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
 
             });
     }
-
+    
+    /** navigate to application list page*/
     gotoList() {
         this.router.navigate(['/application-list']);
     }
-
+    
+    /** save application*/
     save() {
         if (this.application.createdDate != null && (typeof this.application.createdDate != 'string')) {
             this.application.createdDate = this.application.createdDate.toISOString();
@@ -267,42 +290,45 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
             }
                 , error => console.error(error));
 
-
         }
 
-
-
-
     }
-
+    
+    /** remove application*/
     remove(application: Application) {
         this.applicationService.delete(application).subscribe(result => {
             this.gotoList();
         }, error => console.error(error));
 
     }
-
+    
+    /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
     }
-
+    
+    /** Whether the number of selected roles matches the total number of roles. */
     isAllRoleSelected() {
         const numSelected = this.roleSelection.selected.length;
         const numRows = this.roleDataSource.data.length;
         return numSelected === numRows;
     }
-
+    
+    /** Selects all roles if they are not all selected; otherwise clear selection. */
     masterToggleRole() {
         this.isAllRoleSelected() ?
             this.roleSelection.clear() :
             this.roleDataSource.data.forEach(row => this.roleSelection.select(row));
     }
+    
+    /** Whether the number of selected trees matches the total number of trees. */
     isAllTreeSelected() {
         const numSelected = this.treeSelection.selected.length;
         const numRows = this.treeDataSource.data.length;
         return numSelected === numRows;
     }
-
+    
+    /** Selects all trees if they are not all selected; otherwise clear selection. */
     masterToggleTree() {
         this.isAllTreeSelected() ?
             this.treeSelection.clear() :
