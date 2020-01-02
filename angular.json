@@ -120,6 +120,47 @@
         }
       }
     },
+    
+    "angular-hal": {
+      "root": "src/main/angular-library/projects/angular-hal",
+      "sourceRoot": "src/main/angular-library/projects/angular-hal/src",
+      "projectType": "library",
+      "prefix": "angular-hal",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "src/main/angular-library/projects/angular-hal/tsconfig.lib.json",
+            "project": "src/main/angular-library/projects/angular-hal/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "src/main/angular-library/projects/angular-hal/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/main/angular-library/projects/angular-hal/src/test.ts",
+            "tsConfig": "src/main/angular-library/projects/angular-hal/tsconfig.spec.json",
+            "karmaConfig": "src/main/angular-library/projects/angular-hal/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "src/main/angular-library/projects/angular-hal/tsconfig.lib.json",
+              "src/main/angular-library/projects/angular-hal/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
     "sitmun-plugin-core": {
       "root": "src/main/angular-library/projects/sitmun-plugin-core",
       "sourceRoot": "src/main/angular-library/projects/sitmun-plugin-core/src",

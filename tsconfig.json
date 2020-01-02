@@ -18,7 +18,9 @@
     ],
 
     "paths": {
-      "sitmun-plugin-core": [
+      "angular-hal": [
+        "dist/angular-hal"
+      ],"sitmun-plugin-core": [
         "src/main/angular-library/projects/sitmun-plugin-core/src/lib/public_api"
       ]
     }
