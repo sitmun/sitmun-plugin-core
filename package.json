@@ -5,7 +5,6 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "build-angular-hal": "ng build angular-hal",
     "build-sitmun-plugin-core": "ng build sitmun-plugin-core",
     "test": "ng test",
     "lint": "ng lint",
@@ -36,7 +35,8 @@
     "proj4": "~2.4.4",
     "rxjs": "~6.2.0",
     "rxjs-compat": "~6.2.0",
-    "zone.js": "~0.8.26"
+    "zone.js": "~0.8.26",
+    "angular-hal": "~2.3.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.3",

@@ -120,13 +120,7 @@ sonarqube {
 
 def cacheDir = project.hasProperty("cacheDir")? project.properties.cacheDir : "${project.buildDir}" 
 
-task npmBuildAngularHal(type: NpmTask, dependsOn: npmInstall) {
-  description = 'Build module angular-hal.'
-  outputs.dir file("dist/angular-hal")
-  args = ['run-script', 'build-angular-hal']
-}
-
-task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
+task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmInstall) {
   description = 'Build module sitmun-plugin-core.'
   outputs.dir file("dist/sitmun-plugin-core")
   args = ['run-script', 'build-sitmun-plugin-core']
@@ -134,7 +128,7 @@ task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
 
 task installModules(dependsOn: npmBuildSitmunPluginCore)
 
-task npmCreateCompodocs(type: NpmTask, dependsOn: npmBuildAngularHal) {
+task npmCreateCompodocs(type: NpmTask, dependsOn: npmBuildSitmunPluginCore) {
   description = 'Create compodocs por sitmun-plugin-core.'
   args = ['run-script', 'compodoc']
 }
