@@ -173,7 +173,8 @@ export function createMatPaginationService(translate: TranslateService){
     ApplicationBackgroundEditDialog,
     ApplicationBackgroundListComponent,
     TaskUIEditComponent,
-    TaskUIListComponent],
+    TaskUIListComponent
+  ],
   entryComponents: [
     UserPositionEditDialog,
     UserConfigurationEditDialog,
@@ -227,7 +228,8 @@ export function createMatPaginationService(translate: TranslateService){
     MapComponent,
     ReactiveFormsModule,
     MatFormFieldModule,
-    SitmunFrontendCoreModule]
+    SitmunFrontendCoreModule
+  ]
 })
 export class SitmunPluginCoreModule {
 }

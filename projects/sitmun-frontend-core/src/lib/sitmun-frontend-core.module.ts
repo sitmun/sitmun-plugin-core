@@ -52,9 +52,6 @@ import {UserPosition} from './user/user-position.model';
     HasAnyAuthorityDirective,
     HasAnyAuthorityOnTerritoryDirective
   ],
-  providers: [
-    Principal
-  ],
   exports: [
     HasAnyAuthorityDirective,
     HasAnyAuthorityOnTerritoryDirective
