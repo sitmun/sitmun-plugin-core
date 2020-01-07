@@ -61,5 +61,11 @@ import {UserPosition} from './user/user-position.model';
   ]
 })
 export class SitmunFrontendCoreModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SitmunFrontendCoreModule,
+      providers: [ Principal ]
+    };
+  }
 }
 

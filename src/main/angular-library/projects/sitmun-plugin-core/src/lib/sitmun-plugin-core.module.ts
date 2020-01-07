@@ -115,7 +115,7 @@ export function createMatPaginationService(translate: TranslateService){
                 deps: [HttpClient]
             }
         }),
-        SitmunFrontendCoreModule
+        SitmunFrontendCoreModule.forRoot()
   ],
   declarations: [
     TerritoryListComponent,
@@ -227,7 +227,7 @@ export function createMatPaginationService(translate: TranslateService){
         MapComponent,
         ReactiveFormsModule,
         MatFormFieldModule,
-        SitmunFrontendCoreModule]
+        SitmunFrontendCoreModule.forRoot()]
 })
 export class SitmunPluginCoreModule {
   static forRoot(): ModuleWithProviders {
