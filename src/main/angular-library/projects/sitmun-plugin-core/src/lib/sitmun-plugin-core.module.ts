@@ -225,7 +225,8 @@ export function createMatPaginationService(translate: TranslateService){
         AccountChangePasswordComponent,
         MapComponent,
         ReactiveFormsModule,
-        MatFormFieldModule]
+        MatFormFieldModule,
+        SitmunFrontendCoreModule]
 })
 export class SitmunPluginCoreModule {
 }
