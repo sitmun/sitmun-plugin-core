@@ -6,7 +6,8 @@ import { environment } from '../environments/environment';
 import { ExternalConfigurationService } from './ExternalConfigurationService';
 import { AngularHalModule } from 'angular-hal';
 import { HomeComponent } from './home/home.component';
-import { SitmunPluginCoreModule, AuthInterceptor,AuthExpiredInterceptor, TerritoryListComponent, TerritoryEditComponent, TerritoryTypeListComponent, TerritoryTypeEditComponent, RoleListComponent, RoleEditComponent, UserListComponent, UserEditComponent, UserChangePasswordComponent,LoginComponent,LoginService,AccountEditComponent,AccountChangePasswordComponent,HasAnyAuthorityDirective,HasAnyAuthorityOnTerritoryDirective,ConnectionListComponent,ConnectionEditComponent,TaskListComponent,TaskEditComponent,TaskTypeListComponent,TaskTypeEditComponent,TaskGroupListComponent,TaskGroupEditComponent,ServiceListComponent,ServiceEditComponent,CartographyEditComponent,CartographyListComponent,CartographyGroupEditComponent,CartographyGroupListComponent,BackgroundListComponent, BackgroundEditComponent,TreeListComponent,TreeEditComponent,ApplicationListComponent,ApplicationEditComponent,TaskUIListComponent,TaskUIEditComponent } from 'sitmun-plugin-core';
+//import { AuthInterceptor, AuthExpiredInterceptor, LoginService, HasAnyAuthorityDirective, HasAnyAuthorityOnTerritoryDirective} from 'sitmun-frontend-core';
+import { SitmunPluginCoreModule, TerritoryListComponent, TerritoryEditComponent, TerritoryTypeListComponent, TerritoryTypeEditComponent, RoleListComponent, RoleEditComponent, UserListComponent, UserEditComponent, UserChangePasswordComponent,LoginComponent, AccountEditComponent,AccountChangePasswordComponent,ConnectionListComponent,ConnectionEditComponent,TaskListComponent,TaskEditComponent,TaskTypeListComponent,TaskTypeEditComponent,TaskGroupListComponent,TaskGroupEditComponent,ServiceListComponent,ServiceEditComponent,CartographyEditComponent,CartographyListComponent,CartographyGroupEditComponent,CartographyGroupListComponent,BackgroundListComponent, BackgroundEditComponent,TreeListComponent,TreeEditComponent,ApplicationListComponent,ApplicationEditComponent,TaskUIListComponent,TaskUIEditComponent } from 'sitmun-plugin-core';
 import { registerLocaleData } from '@angular/common';
 import localeCa from '@angular/common/locales/ca';
 import localeEs from '@angular/common/locales/es';
@@ -185,7 +186,7 @@ const appRoutes: Routes = [
         path: 'cartography-group-edit/:id',
         component: CartographyGroupEditComponent
     },  {
-        path: 'background-list', 
+        path: 'background-list',
         component: BackgroundListComponent
     },
     {
@@ -196,7 +197,7 @@ const appRoutes: Routes = [
         path: 'background-edit/:id',
         component: BackgroundEditComponent
     },  {
-        path: 'tree-list', 
+        path: 'tree-list',
         component: TreeListComponent
     },
     {
@@ -207,7 +208,7 @@ const appRoutes: Routes = [
         path: 'tree-edit/:id',
         component: TreeEditComponent
     },  {
-        path: 'application-list', 
+        path: 'application-list',
         component: ApplicationListComponent
     },
     {
@@ -237,12 +238,12 @@ const appRoutes: Routes = [
             }
         }),
 
-        
+
         AngularHalModule.forRoot(),
         RouterModule.forRoot(appRoutes)
     ],
     entryComponents: [
-        
+
     ],
     providers: [
         { provide: 'ExternalConfigurationService', useClass: ExternalConfigurationService },
@@ -256,7 +257,7 @@ const appRoutes: Routes = [
             useClass: AuthExpiredInterceptor,
             multi: true
         }
-        
+
 
     ],
     bootstrap: [AppComponent]

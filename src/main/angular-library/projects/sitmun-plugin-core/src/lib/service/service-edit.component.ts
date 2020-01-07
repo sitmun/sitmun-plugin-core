@@ -1,11 +1,11 @@
 import { Resource } from 'angular-hal';
 import { ResourceHelper } from 'angular-hal';
-import { Connection } from '../connection/connection.model';
-import { ConnectionService } from '../connection/connection.service';
-import { ServiceParameter } from './service-parameter.model';
-import { ServiceParameterService } from './service-parameter.service';
-import { Service } from './service.model';
-import {ServiceService} from './service.service';
+import { Connection } from 'sitmun-frontend-core';
+import { ConnectionService } from 'sitmun-frontend-core';
+import { ServiceParameter } from 'sitmun-frontend-core';
+import { ServiceParameterService } from 'sitmun-frontend-core';
+import { Service } from 'sitmun-frontend-core';
+import {ServiceService} from 'sitmun-frontend-core';
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -22,16 +22,16 @@ import {SelectionModel} from '@angular/cdk/collections';
     styleUrls: ['./service-edit.component.css']
 })
 export class ServiceEditComponent implements OnInit, OnDestroy {
-    
+
     /** service to edit*/
     service: Service = new Service();
-    
+
     /** connections to select*/
     connections: Connection[] = new Array<Connection>();
 
     /** subscription*/
     sub: Subscription;
-    
+
     /** constructor */
     constructor(private route: ActivatedRoute,
         private router: Router,
@@ -39,7 +39,7 @@ export class ServiceEditComponent implements OnInit, OnDestroy {
         private serviceService: ServiceService,
         private serviceParameterService: ServiceParameterService) {
     }
-    
+
     /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
@@ -70,12 +70,12 @@ export class ServiceEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-    
+
     /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
-    
+
     /** load all connections*/
     getAllConnections() {
         this.connectionService.getAll()
@@ -96,7 +96,7 @@ export class ServiceEditComponent implements OnInit, OnDestroy {
     gotoList() {
         this.router.navigate(['/service-list']);
     }
-    
+
     /** save service*/
     save() {
         if (this.service.createdDate != null && (typeof this.service.createdDate != 'string')) {
@@ -139,7 +139,7 @@ export class ServiceEditComponent implements OnInit, OnDestroy {
 
 
     }
-    
+
     /** remove service*/
     remove(service: Service) {
         this.serviceService.delete(service).subscribe(result => {
@@ -147,7 +147,7 @@ export class ServiceEditComponent implements OnInit, OnDestroy {
         }, error => console.error(error));
 
     }
-    
+
     /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;

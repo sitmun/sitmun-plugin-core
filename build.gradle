@@ -126,7 +126,13 @@ task npmBuildAngularHal(type: NpmTask, dependsOn: npmInstall) {
   args = ['run-script', 'build-angular-hal']
 }
 
-task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
+task npmBuildSitmunFrontendCore(type: NpmTask, dependsOn: npmBuildAngularHal) {
+  description = 'Build module sitmun-frontend-core.'
+  outputs.dir file("dist/sitmun-frontend-core")
+  args = ['run-script', 'build-sitmun-frontend-core']
+}
+
+task npmBuildSitmunPluginCore(type: NpmTask, dependsOn: npmBuildSitmunFrontendCore) {
   description = 'Build module sitmun-plugin-core.'
   outputs.dir file("dist/sitmun-plugin-core")
   args = ['run-script', 'build-sitmun-plugin-core']

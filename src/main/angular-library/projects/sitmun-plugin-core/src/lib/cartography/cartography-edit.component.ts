@@ -1,11 +1,11 @@
 import { Resource } from 'angular-hal';
 import { ResourceHelper } from 'angular-hal';
-import { Connection } from '../connection/connection.model';
-import { ConnectionService } from '../connection/connection.service';
-import { Service } from '../service/service.model';
-import { ServiceService } from '../service/service.service';
-import { Cartography } from './cartography.model';
-import {CartographyService} from './cartography.service';
+import { Connection } from 'sitmun-frontend-core';
+import { ConnectionService } from 'sitmun-frontend-core';
+import { Service } from 'sitmun-frontend-core';
+import { ServiceService } from 'sitmun-frontend-core';
+import { Cartography } from 'sitmun-frontend-core';
+import {CartographyService} from 'sitmun-frontend-core';
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -23,7 +23,7 @@ import {SelectionModel} from '@angular/cdk/collections';
     styleUrls: ['./cartography-edit.component.css']
 })
 export class CartographyEditComponent implements OnInit, OnDestroy {
-    
+
     /** cartography to edit*/
     cartography: Cartography = new Cartography();
 
@@ -32,10 +32,10 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
 
     /** services to select*/
     services: Service[] = new Array<Service>();
-    
+
     /** subscription*/
     sub: Subscription;
-    
+
     /** constructor*/
     constructor(private route: ActivatedRoute,
         private router: Router,
@@ -43,7 +43,7 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
         private serviceService: ServiceService,
         private cartographyService: CartographyService) {
     }
-    
+
     /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
@@ -80,7 +80,7 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-    
+
     /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
@@ -101,7 +101,7 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
 
             });
     }
-    
+
     /** load all services*/
     getAllServices() {
         this.serviceService.getAll()
@@ -121,7 +121,7 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
     gotoList() {
         this.router.navigate(['/cartography-list']);
     }
-    
+
     /** save cartography*/
     save() {
         if (this.cartography.createdDate != null && (typeof this.cartography.createdDate != 'string')) {
@@ -169,7 +169,7 @@ export class CartographyEditComponent implements OnInit, OnDestroy {
         }
 
     }
-    
+
     /** remove cartography*/
     remove(cartography: Cartography) {
         this.cartographyService.delete(cartography).subscribe(result => {

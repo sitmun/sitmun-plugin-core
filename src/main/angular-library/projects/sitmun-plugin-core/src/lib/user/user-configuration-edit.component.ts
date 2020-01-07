@@ -1,12 +1,12 @@
-import { Resource } from 'angular-hal'; 
-import { Territory } from '../territory/territory.model';
-import { TerritoryService } from '../territory/territory.service';
-import { Role } from '../role/role.model';
-import { RoleService } from '../role/role.service';
-import { UserConfiguration } from './user-configuration.model';
-import { UserConfigurationService } from './user-configuration.service';
-import { UserService } from './user.service';
-import { User } from './user.model';
+import { Resource } from 'angular-hal';
+import { Territory } from 'sitmun-frontend-core';
+import { TerritoryService } from 'sitmun-frontend-core';
+import { Role } from 'sitmun-frontend-core';
+import { RoleService } from 'sitmun-frontend-core';
+import { UserConfiguration } from 'sitmun-frontend-core';
+import { UserConfigurationService } from 'sitmun-frontend-core';
+import { UserService } from 'sitmun-frontend-core';
+import { User } from 'sitmun-frontend-core'';
 import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -22,32 +22,32 @@ import { Subscription } from 'rxjs-compat';
   styleUrls: ['./user-configuration-edit.component.css']
 })
 export class UserConfigurationEditComponent implements OnInit {
-  
+
   /** user permission data to edit*/
   userConfiguration: UserConfiguration = new UserConfiguration();
-  
+
   /** user*/
   user: User = new User();
-  
+
   /** territories to select*/
   territories: Territory[] = new Array<Territory>();
 
   /** roles to select*/
   roles: Role[] = new Array<Role>();
-  
+
   /** subscription*/
   sub: Subscription;
-  
+
   /** constructor*/
   constructor(private route: ActivatedRoute,
-    private router: Router,    
+    private router: Router,
     private userService: UserService,
     private userConfigurationService: UserConfigurationService,
     private territoryService: TerritoryService,
     private roleService: RoleService,
     private location: Location) {
   }
-  
+
   /** navigate backwards*/
   goBack() {
     this.location.back();
@@ -60,7 +60,7 @@ export class UserConfigurationEditComponent implements OnInit {
     this.sub = this.route.params.subscribe(params => {
       const id = params['id'];
       const userId = params['userId'];
-      
+
       if (id) {
         this.userConfigurationService.get(id).subscribe((userConfiguration: any) => {
           if (userConfiguration) {
@@ -99,17 +99,17 @@ export class UserConfigurationEditComponent implements OnInit {
       }
     });
   }
-  
+
   /** On component destroy remove subscription */
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-  
+
   /** load all territories*/
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
-        this.territories = territories;        
+        this.territories = territories;
     });
   }
 
@@ -117,7 +117,7 @@ export class UserConfigurationEditComponent implements OnInit {
   getAllRoles() {
     this.roleService.getAll()
     .subscribe((roles: Role[]) => {
-        this.roles = roles;        
+        this.roles = roles;
     });
   }
 
@@ -129,14 +129,14 @@ export class UserConfigurationEditComponent implements OnInit {
       this.router.navigate(['/user-edit',this.user._links.self.href.split('/')[5]]);
     }
   }
-  
+
   /** save user permission*/
   save() {
-      this.userConfigurationService.save(this.userConfiguration).subscribe(result => {      
+      this.userConfigurationService.save(this.userConfiguration).subscribe(result => {
         this.gotoUser();
       }, error => console.error(error));
   }
-  
+
   /** remove user permission*/
   remove(userConfiguration: UserConfiguration) {
     this.userConfigurationService.delete(userConfiguration).subscribe(result => {
@@ -144,7 +144,7 @@ export class UserConfigurationEditComponent implements OnInit {
     }, error => console.error(error));
 
   }
-  
+
   /** compare two resources*/
   compareResource(c1: Resource, c2: Resource): boolean {
     return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;

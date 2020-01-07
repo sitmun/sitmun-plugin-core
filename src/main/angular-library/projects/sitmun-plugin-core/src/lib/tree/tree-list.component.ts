@@ -1,7 +1,7 @@
-import {Tree } from './tree.model';
-import {TreeService } from './tree.service';
+import {Tree } from 'sitmun-frontend-core';
+import {TreeService } from 'sitmun-frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator } from '@angular/material'; 
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 
 /** Component for managing trees*/
 @Component({
@@ -10,28 +10,28 @@ import { MatTableDataSource, MatPaginator } from '@angular/material';
   styleUrls: ['./tree-list.component.css']
 })
 export class TreeListComponent implements OnInit {
-  
+
   /** Trees to manage */
   items:Tree[];
-  
+
   /** Table displayed columns */
   displayedColumns = ['name','actions'];
-  
+
   /** MatTableDataSource for table display */
   dataSource = new MatTableDataSource<Tree>(this.items);
 
-  /** Paginator for table display */  
+  /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
-    
+
   /** Component constructor */
   constructor( private treeService:TreeService ) { }
-  
+
   /** On component init, get all data dependencies */
   ngOnInit() {
     this.getAllTrees();
-    
+
   }
-  
+
   /** load all trees*/
   getAllTrees() {
     this.treeService.getAll()
@@ -42,13 +42,13 @@ export class TreeListComponent implements OnInit {
 
     });
   }
-  
+
   /** remove tree*/
   remove(item:Tree) {
     this.treeService.delete(item).subscribe(result => {
       this.getAllTrees();
     }, error => console.error(error));
-     
+
   }
 
 }

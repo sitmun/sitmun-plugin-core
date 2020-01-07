@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {AccountService } from './account.service';
-import {User } from '../user/user.model';
+import {AccountService } from 'sitmun-frontend-core';
+import {User } from 'sitmun-frontend-core';
 
 /**
  * Account data edit component
@@ -17,19 +17,19 @@ export class AccountEditComponent implements OnInit {
 
   /** success status variable*/
   success: string;
-  
+
   /** constructor*/
   constructor(
   	private accountService: AccountService) {
   }
-  
+
   /** On component init load all required data dependencies*/
   ngOnInit() {
-    
+
         this.accountService.get().subscribe((item: any) => {
           if (item) {
             this.item = item;
-            
+
           } else {
             console.log(`no logged user`);
             //Todo go to login
@@ -37,15 +37,15 @@ export class AccountEditComponent implements OnInit {
         });
   }
 
- 
+
   /** save account data*/
   save() {
-      this.accountService.save(this.item).subscribe(result => {      
+      this.accountService.save(this.item).subscribe(result => {
         //Todo display message?
         this.success = "OK";
       }, error => console.error(error));
   }
 
-  
+
 
 }

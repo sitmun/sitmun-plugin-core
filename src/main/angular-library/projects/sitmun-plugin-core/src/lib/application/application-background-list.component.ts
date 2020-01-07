@@ -1,10 +1,10 @@
 import { Resource } from 'angular-hal';
-import { ApplicationBackground } from './application-background.model';
-import { ApplicationBackgroundService } from './application-background.service';
-import { ApplicationService } from './application.service';
-import { Application } from './application.model';
-import { Background } from '../cartography/background.model';
-import { BackgroundService } from '../cartography/background.service';
+import { ApplicationBackground } from 'sitmun-frontend-core';
+import { ApplicationBackgroundService } from 'sitmun-frontend-core';
+import { ApplicationService } from 'sitmun-frontend-core';
+import { Application } from 'sitmun-frontend-core';
+import { Background } from 'sitmun-frontend-core';
+import { BackgroundService } from 'sitmun-frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -18,19 +18,19 @@ import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_D
     styleUrls: ['./application-background-list.component.css']
 })
 export class ApplicationBackgroundListComponent implements OnInit {
-    
+
     /** application backgrounds to manage */
     items: ApplicationBackground[];
-    
+
     /** Task to manage */
     _application: Application;
-    
-    /** Table displayed columns */ 
+
+    /** Table displayed columns */
     displayedColumns = ['name', 'value', 'actions'];
-    
+
     /** MatTableDataSource for table display */
     dataSource = null;
-    
+
     /** Paginator for table display */
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -40,13 +40,13 @@ export class ApplicationBackgroundListComponent implements OnInit {
             /** dialog*/public dialog: MatDialog) {
 
     }
-    
+
     /** On component init, get all data dependencies */
     ngOnInit() {
         this.items = new Array<ApplicationBackground>();
 
     }
-    
+
     /** Set task to manage */
     @Input()
     set application(application: Application) {
@@ -75,7 +75,7 @@ export class ApplicationBackgroundListComponent implements OnInit {
 
         }
     }
-    
+
     /** open dialog to edit application background*/
     edit(applicationBackground: ApplicationBackground): void {
         let dialogRef = this.dialog.open(ApplicationBackgroundEditDialog, {
@@ -89,7 +89,7 @@ export class ApplicationBackgroundListComponent implements OnInit {
 
         });
     }
-    
+
     /** add application background*/
     add(): void {
         let applicationBackground = new ApplicationBackground();
@@ -104,7 +104,7 @@ export class ApplicationBackgroundListComponent implements OnInit {
             this.loadApplicationBackgrounds();
         });
     }
-    
+
     /** remove application background*/
     remove(item: ApplicationBackground) {
         this.applicationBackgroundService.delete(item).subscribe(result => {
@@ -127,7 +127,7 @@ export class ApplicationBackgroundEditDialog implements OnInit {
 
     /** backgrounds to select*/
     backgrounds: Background[];
-    
+
     /** constructor*/
     constructor(
             /**task service*/private applicationService: ApplicationService,
@@ -154,7 +154,7 @@ export class ApplicationBackgroundEditDialog implements OnInit {
         }
 
     }
-    
+
     /** save application background*/
     save() {
         this.applicationBackgroundService.save(this.applicationBackground).subscribe(result => {
@@ -169,7 +169,7 @@ export class ApplicationBackgroundEditDialog implements OnInit {
         else
             return false;
     }
-    
+
     /** load all backgrounds*/
     getAllBackgrounds() {
         this.backgroundService.getAll()

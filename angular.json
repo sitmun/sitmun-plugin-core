@@ -45,8 +45,8 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
-            }   
-          }                    
+            }
+          }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -120,7 +120,6 @@
         }
       }
     },
-    
     "angular-hal": {
       "root": "src/main/angular-library/projects/angular-hal",
       "sourceRoot": "src/main/angular-library/projects/angular-hal/src",
@@ -193,6 +192,46 @@
             "tsConfig": [
               "src/main/angular-library/projects/sitmun-plugin-core/tsconfig.lib.json",
               "src/main/angular-library/projects/sitmun-plugin-core/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "sitmun-frontend-core": {
+      "root": "projects/sitmun-frontend-core",
+      "sourceRoot": "projects/sitmun-frontend-core/src",
+      "projectType": "library",
+      "prefix": "sitmun-fronted",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/sitmun-frontend-core/tsconfig.lib.json",
+            "project": "projects/sitmun-frontend-core/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/sitmun-frontend-core/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/sitmun-frontend-core/src/test.ts",
+            "tsConfig": "projects/sitmun-frontend-core/tsconfig.spec.json",
+            "karmaConfig": "projects/sitmun-frontend-core/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/sitmun-frontend-core/tsconfig.lib.json",
+              "projects/sitmun-frontend-core/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

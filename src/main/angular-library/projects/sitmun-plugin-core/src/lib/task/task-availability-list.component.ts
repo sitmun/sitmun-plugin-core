@@ -1,12 +1,12 @@
-import { Resource } from 'angular-hal';  
-import { TaskAvailability } from './task-availability.model';
-import { Territory } from '../territory/territory.model';
-import { TerritoryService } from '../territory/territory.service';
-import { TaskAvailabilityService } from './task-availability.service';
-import { TaskService } from './task.service';
-import { Task } from './task.model';
-import {Principal} from '../auth/principal.service';
-import {LoginService} from '../auth/login.service';
+import { Resource } from 'angular-hal';
+import { TaskAvailability } from 'sitmun-frontend-core';
+import { Territory } from 'sitmun-frontend-core';
+import { TerritoryService } from 'sitmun-frontend-core';
+import { TaskAvailabilityService } from 'sitmun-frontend-core';
+import { TaskService } from 'sitmun-frontend-core';
+import { Task } from 'sitmun-frontend-core';
+import {Principal} from 'sitmun-frontend-core';
+import {LoginService} from 'sitmun-frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -23,32 +23,32 @@ export class TaskAvailabilityListComponent implements OnInit {
 
   /** task to manage */
   _task: Task;
-  
+
   /** Table displayed columns */
   displayedColumns = ['territory','actions'];
-  
+
   /** MatTableDataSource for table display */
   dataSource = null;
-  
-  /** Paginator for table display */ 
+
+  /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   /** Component constructor */
   constructor(
-          /**task availability service*/private taskAvailabilityService: TaskAvailabilityService,      
-          /**dialog*/public dialog: MatDialog) { 
-  
+          /**task availability service*/private taskAvailabilityService: TaskAvailabilityService,
+          /**dialog*/public dialog: MatDialog) {
+
   }
-  
+
   /** On component init, get all data dependencies */
   ngOnInit() {
     this.items = new Array<TaskAvailability>();
-    
+
   }
-  
+
   /** Set task to manage its availabilities*/
   @Input()
-  set task(task: Task) {    
+  set task(task: Task) {
     this._task = task;
     this.loadTaskAvailabilities();
   }
@@ -58,25 +58,25 @@ export class TaskAvailabilityListComponent implements OnInit {
     if (this._task!=null){
      this._task.getRelationArray(TaskAvailability, 'availabilities').subscribe(
                     (items: TaskAvailability[]) => {
-                      
+
                     this.items = items;
-                    
+
                     this.items.forEach( (item) => {
                         item.getRelation(Territory, 'territory').subscribe(
                         (territory: Territory) => item.territory = territory,
                         error => item.territory = new Territory());
 
-                      
+
                     });
                     this.dataSource  = new MatTableDataSource<TaskAvailability>(this.items);
                     this.dataSource.paginator = this.paginator;
 
                  },
                     error => this.items = new Array<TaskAvailability>());
-      
+
     }
   }
-  
+
   /** open dialog to edit task availability data*/
   edit(taskAvailability: TaskAvailability): void {
     let dialogRef = this.dialog.open(TaskAvailabilityEditDialog, {
@@ -87,10 +87,10 @@ export class TaskAvailabilityListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.loadTaskAvailabilities();
-       
+
     });
   }
-  
+
   /** add task availability*/
   add(): void {
     let taskavailability = new TaskAvailability();
@@ -105,13 +105,13 @@ export class TaskAvailabilityListComponent implements OnInit {
       this.loadTaskAvailabilities();
     });
   }
-  
+
   /** remove task availability*/
   remove(item: TaskAvailability) {
     this.taskAvailabilityService.delete(item).subscribe(result => {
       this.loadTaskAvailabilities();
     }, error => console.error(error));
-     
+
   }
 
 }
@@ -123,13 +123,13 @@ export class TaskAvailabilityListComponent implements OnInit {
   styleUrls: ['./task-availability-edit.dialog.css']
 })
 export class TaskAvailabilityEditDialog implements OnInit {
-  
+
   /** territories to select*/
   territories: Territory[] = new Array<Territory>();
 
   /** current account*/
   currentAccount: any;
-  
+
   /** constructor*/
   constructor(
     /** task service*/private taskService: TaskService,
@@ -146,7 +146,7 @@ export class TaskAvailabilityEditDialog implements OnInit {
                  this.currentAccount = account;
       });
     this.getAllTerritories();
-    
+
       if (this.taskAvailability._links) {
         this.taskAvailability.getRelation(Task, 'task').subscribe(
                     (task: Task) => this.taskAvailability.task = task,
@@ -155,9 +155,9 @@ export class TaskAvailabilityEditDialog implements OnInit {
         this.taskAvailability.getRelation(Territory, 'territory').subscribe(
                     (territory: Territory) => this.taskAvailability.territory = territory,
                     error => this.taskAvailability.territory = new Territory());
-       
+
      }
-    
+
   }
 
 
@@ -171,19 +171,19 @@ export class TaskAvailabilityEditDialog implements OnInit {
             this.territories = territories;
         } else {
 
-          this.territories = territories.filter(t => 
+          this.territories = territories.filter(t =>
              this.principal.hasAnyAuthorityDirectOnTerritory(['ADMIN ORGANIZACION'],t.name));
         }
-   
+
 
     });
   }
-  
-  
+
+
 
   /** save task availability*/
   save() {
-      this.taskAvailabilityService.save(this.taskAvailability).subscribe(result => {      
+      this.taskAvailabilityService.save(this.taskAvailability).subscribe(result => {
       this.dialogRef.close();
       }, error => console.error(error));
   }
@@ -192,7 +192,7 @@ export class TaskAvailabilityEditDialog implements OnInit {
   compareResource(c1: Resource, c2: Resource): boolean {
     if (c2 && c1)
       return c2._links && c1._links ? c1._links.self.href === c2._links.self.href : c1 === c2;
-    else 
+    else
       return false;
   }
 

@@ -1,10 +1,10 @@
-import { Resource } from 'angular-hal'; 
-import { Territory } from '../territory/territory.model';
-import { TerritoryService } from '../territory/territory.service';
-import { UserPosition } from './user-position.model';
-import { UserPositionService } from './user-position.service';
-import { UserService } from './user.service';
-import { User } from './user.model';
+import { Resource } from 'angular-hal';
+import { Territory } from 'sitmun-frontend-core';
+import { TerritoryService } from 'sitmun-frontend-core';
+import { UserPosition } from 'sitmun-frontend-core';
+import { UserPositionService } from 'sitmun-frontend-core';
+import { UserService } from 'sitmun-frontend-core';
+import { User } from 'sitmun-frontend-core';
 import { Component, OnInit, Input } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs-compat';
   styleUrls: ['./user-position-edit.component.css']
 })
 export class UserPositionEditComponent implements OnInit {
-  
+
   /** user position to edit*/
   userPosition: UserPosition = new UserPosition();
 
@@ -34,25 +34,25 @@ export class UserPositionEditComponent implements OnInit {
 
   /** constructor*/
   constructor(private route: ActivatedRoute,
-    private router: Router,    
+    private router: Router,
     private userService: UserService,
     private userPositionService: UserPositionService,
     private territoryService: TerritoryService,
      private location: Location) {
   }
-  
+
   /** navigate backwards*/
   goBack() {
     this.location.back();
   }
-  
+
   /** On component init load all required data dependencies*/
   ngOnInit() {
     this.getAllTerritories();
     this.sub = this.route.params.subscribe(params => {
       const id = params['id'];
       const userId = params['userId'];
-      
+
       if (id) {
         this.userPositionService.get(id).subscribe((userPosition: any) => {
           if (userPosition) {
@@ -89,15 +89,15 @@ export class UserPositionEditComponent implements OnInit {
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-  
+
   /** load all territories*/
   getAllTerritories() {
     this.territoryService.getAll()
     .subscribe((territories: Territory[]) => {
-        this.territories = territories;        
+        this.territories = territories;
     });
   }
-  
+
   /** navigate to user edit page*/
   gotoUser() {
     if (this.userPosition._links != null){
@@ -106,15 +106,15 @@ export class UserPositionEditComponent implements OnInit {
       this.router.navigate(['/user-edit',this.user._links.self.href.split('/')[5]]);
     }
   }
-  
+
   /** save user position*/
   save() {
-      this.userPositionService.save(this.userPosition).subscribe(result => {      
+      this.userPositionService.save(this.userPosition).subscribe(result => {
 
         this.gotoUser();
       }, error => console.error(error));
   }
-  
+
   /** remove user position*/
   remove(userPosition: UserPosition) {
     this.userPositionService.delete(userPosition).subscribe(result => {
@@ -122,7 +122,7 @@ export class UserPositionEditComponent implements OnInit {
     }, error => console.error(error));
 
   }
-  
+
   /** compare two resources*/
   compareResource(c1: Resource, c2: Resource): boolean {
     return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;

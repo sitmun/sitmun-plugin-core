@@ -1,19 +1,19 @@
 import { Resource } from 'angular-hal';
 import { ResourceHelper } from 'angular-hal';
-import { Connection } from '../connection/connection.model';
-import { ConnectionService } from '../connection/connection.service';
-import { Role } from '../role/role.model';
-import { RoleService } from '../role/role.service';
-import { Tree } from '../tree/tree.model';
-import { TreeService } from '../tree/tree.service';
-import { CartographyGroup } from '../cartography/cartography-group.model';
-import { CartographyGroupService } from '../cartography/cartography-group.service';
-import { ApplicationParameter } from './application-parameter.model';
-import { ApplicationParameterService } from './application-parameter.service';
-import { ApplicationBackground} from './application-background.model';
-import { ApplicationBackgroundService } from './application-background.service';
-import { Application } from './application.model';
-import {ApplicationService} from './application.service';
+import { Connection } from 'sitmun-frontend-core';
+import { ConnectionService } from 'sitmun-frontend-core';
+import { Role } from 'sitmun-frontend-core';
+import { RoleService } from 'sitmun-frontend-core';
+import { Tree } from 'sitmun-frontend-core';
+import { TreeService } from 'sitmun-frontend-core';
+import { CartographyGroup } from 'sitmun-frontend-core';
+import { CartographyGroupService } from 'sitmun-frontend-core';
+import { ApplicationParameter } from 'sitmun-frontend-core';
+import { ApplicationParameterService } from 'sitmun-frontend-core';
+import { ApplicationBackground} from 'sitmun-frontend-core';
+import { ApplicationBackgroundService } from 'sitmun-frontend-core';
+import { Application } from 'sitmun-frontend-core';
+import {ApplicationService} from 'sitmun-frontend-core';
 import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -36,10 +36,10 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
 
     /** all cartography groups*/
     cartographyGroups: CartographyGroup[] = new Array<CartographyGroup>();
-    
+
     /** all connections*/
     connections: Connection[] = new Array<Connection>();
-    
+
     /** all roles*/
     roles: Role[] = new Array<Role>();
 
@@ -49,12 +49,12 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
     /** subscription*/
     sub: Subscription;
 
-    /** displayed columns in table*/    
+    /** displayed columns in table*/
     displayedColumns = ['select', 'name'];
 
     /** selection model for role table*/
     roleSelection = new SelectionModel<Role>(true, []);
-    
+
     /** MatTableDataSource for role table*/
     roleDataSource = new MatTableDataSource<Role>([]);
 
@@ -78,7 +78,7 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
         this.getAllCartographyGroups();
 
     }
-    
+
     /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
@@ -145,7 +145,7 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-    
+
     /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
@@ -171,7 +171,7 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
 
             });
     }
-    
+
     /** load all trees*/
     getAllTrees() {
         this.treeService.getAll()
@@ -182,12 +182,12 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
 
             });
     }
-    
+
     /** navigate to application list page*/
     gotoList() {
         this.router.navigate(['/application-list']);
     }
-    
+
     /** save application*/
     save() {
         if (this.application.createdDate != null && (typeof this.application.createdDate != 'string')) {
@@ -293,7 +293,7 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
         }
 
     }
-    
+
     /** remove application*/
     remove(application: Application) {
         this.applicationService.delete(application).subscribe(result => {
@@ -301,33 +301,33 @@ export class ApplicationEditComponent implements OnInit, OnDestroy {
         }, error => console.error(error));
 
     }
-    
+
     /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
     }
-    
+
     /** Whether the number of selected roles matches the total number of roles. */
     isAllRoleSelected() {
         const numSelected = this.roleSelection.selected.length;
         const numRows = this.roleDataSource.data.length;
         return numSelected === numRows;
     }
-    
+
     /** Selects all roles if they are not all selected; otherwise clear selection. */
     masterToggleRole() {
         this.isAllRoleSelected() ?
             this.roleSelection.clear() :
             this.roleDataSource.data.forEach(row => this.roleSelection.select(row));
     }
-    
+
     /** Whether the number of selected trees matches the total number of trees. */
     isAllTreeSelected() {
         const numSelected = this.treeSelection.selected.length;
         const numRows = this.treeDataSource.data.length;
         return numSelected === numRows;
     }
-    
+
     /** Selects all trees if they are not all selected; otherwise clear selection. */
     masterToggleTree() {
         this.isAllTreeSelected() ?

@@ -15,7 +15,7 @@ export class Principal {
         private account: AccountService
     ) {}
 
-    /** authenticate with given identity*/ 
+    /** authenticate with given identity*/
     authenticate(identity) {
         this.userIdentity = identity;
         this.authenticated = identity !== null;
@@ -26,12 +26,12 @@ export class Principal {
     hasAnyAuthority(authorities: string[]): Promise<boolean> {
         return Promise.resolve(this.hasAnyAuthorityDirect(authorities));
     }
-    
+
     /** check whether current user has any of the given authorities on the given territory */
     hasAnyAuthorityOnTerritory(authorities: string[],territory: string ): Promise<boolean> {
         return Promise.resolve(this.hasAnyAuthorityDirectOnTerritory(authorities,territory));
     }
-    
+
     /** check whether current user has any of the given authorities without resolving promises*/
     hasAnyAuthorityDirect(authorities: string[]): boolean {
         if (!this.authenticated || !this.userIdentity || !this.userIdentity.authorities) {
@@ -46,7 +46,7 @@ export class Principal {
 
         return false;
     }
-    
+
     /** check whether current user has any of the given authorities on the given territory without resolving promises */
     hasAnyAuthorityDirectOnTerritory(authorities: string[],territory: string): boolean {
         if (!this.authenticated || !this.userIdentity || !this.userIdentity.authorities) {
@@ -75,7 +75,7 @@ export class Principal {
             return Promise.resolve(false);
         });
     }
-    
+
     /** check whether current user has the given authority on the given territory*/
     hasAuthorityOnTerritory(authority: string,territory: string): Promise<boolean> {
         if (!this.authenticated) {
@@ -88,7 +88,7 @@ export class Principal {
             return Promise.resolve(false);
         });
     }
-    
+
     /** check user identity*/
     identity(force?: boolean): Promise<any> {
         if (force === true) {
@@ -120,7 +120,7 @@ export class Principal {
             return null;
         });
     }
-    
+
     /** check whether current user is authenticated */
     isAuthenticated(): boolean {
         return this.authenticated;
@@ -136,5 +136,5 @@ export class Principal {
         return this.authenticationState.asObservable();
     }
 
-    
+
 }

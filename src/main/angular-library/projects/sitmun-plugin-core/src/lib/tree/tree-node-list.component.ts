@@ -1,10 +1,10 @@
 import { Resource } from 'angular-hal';
-import { TreeNode } from './tree-node.model';
-import { TreeNodeService } from './tree-node.service';
-import { TreeService } from './tree.service';
-import { Tree } from './tree.model';
-import { CartographyService } from '../cartography/cartography.service';
-import { Cartography } from '../cartography/cartography.model';
+import { TreeNode } from 'sitmun-frontend-core';
+import { TreeNodeService } from 'sitmun-frontend-core';
+import { TreeService } from 'sitmun-frontend-core';
+import { Tree } from 'sitmun-frontend-core';
+import { CartographyService } from 'sitmun-frontend-core';
+import { Cartography } from 'sitmun-frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -17,22 +17,22 @@ import { isNullOrUndefined } from 'util';
     styleUrls: ['./tree-node-list.component.css']
 })
 export class TreeNodeListComponent implements OnInit {
-    
+
     /** Tree nodes to manage */
     items: TreeNode[];
 
     /** Tree to manage its tree nodes*/
     _tree: Tree;
-    
+
     /** Table displayed columns */
     displayedColumns = ['name', 'orden', 'parent', 'actions'];
-    
+
     /** MatTableDataSource for table display */
     dataSource = null;
-    
-    /** Paginator for table display */  
+
+    /** Paginator for table display */
     @ViewChild(MatPaginator) paginator: MatPaginator;
-    
+
     /** Component constructor */
     constructor(
         /*tree node service*/private treeNodeService: TreeNodeService,
@@ -45,14 +45,14 @@ export class TreeNodeListComponent implements OnInit {
         this.items = new Array<TreeNode>();
 
     }
-    
+
     /** Set Tree to manage its tree nodes*/
     @Input()
     set tree(tree: Tree) {
         this._tree = tree;
         this.loadTreeNodes();
     }
-    
+
     /** load all tree nodes*/
     loadTreeNodes() {
         if (this._tree != null) {
@@ -84,7 +84,7 @@ export class TreeNodeListComponent implements OnInit {
 
         }
     }
-    
+
     /** open dialog to edit tree node data*/
     edit(treeNode: TreeNode): void {
         let dialogRef = this.dialog.open(TreeNodeEditDialog, {
@@ -111,7 +111,7 @@ export class TreeNodeListComponent implements OnInit {
             this.loadTreeNodes();
         });
     }
-    
+
     /** remove tree node*/
     remove(item: TreeNode) {
         this.treeNodeService.delete(item).subscribe(result => {
@@ -119,7 +119,7 @@ export class TreeNodeListComponent implements OnInit {
         }, error => console.error(error));
 
     }
-    
+
     /** get tree node parent name*/
     getNodeParentName(item: TreeNode) {
         return (item.parent != null)?item.parent.name:"";
@@ -133,7 +133,7 @@ export class TreeNodeListComponent implements OnInit {
     styleUrls: ['./tree-node-edit.dialog.css']
 })
 export class TreeNodeEditDialog implements OnInit {
-    
+
     /** whether tree node is a group*/
     isGroup:boolean = false;
 
@@ -142,7 +142,7 @@ export class TreeNodeEditDialog implements OnInit {
 
     /** parent tree nodes*/
     parentNodes: TreeNode[];
-    
+
     /** constructor*/
     constructor(
         /**tree service*/ private treeService: TreeService,
@@ -151,7 +151,7 @@ export class TreeNodeEditDialog implements OnInit {
         /**dialog reference*/ public dialogRef: MatDialogRef<TreeNodeEditDialog>,
         /**tree node to edit*/ @Inject(MAT_DIALOG_DATA) public treeNode: TreeNode) {
     }
-    
+
     /** On component init load all required data dependencies*/
     ngOnInit() {
         this.getAllCartographies();
@@ -172,7 +172,7 @@ export class TreeNodeEditDialog implements OnInit {
         }
 
     }
-    
+
     /** save tree node*/
     save() {
         this.treeNodeService.save(this.treeNode).subscribe(result => {
@@ -192,7 +192,7 @@ export class TreeNodeEditDialog implements OnInit {
         }
         return null;
     }
-    
+
     /** load all cartographies*/
     getAllCartographies() {
         this.cartographyService.getAll()
@@ -201,7 +201,7 @@ export class TreeNodeEditDialog implements OnInit {
 
             });
     }
-    
+
     /** load parent tree nodes*/
     getAllParentNodes() {
         this.parentNodes = new Array<TreeNode>();
@@ -225,15 +225,15 @@ export class TreeNodeEditDialog implements OnInit {
                 }
             });
     }
-    
+
     /** check whether group field has changed*/
-    isGroupChanged($event){ 
+    isGroupChanged($event){
         if ($event.checked) {
             //Is group reset information
             this.treeNode.active = false;
             this.treeNode.cartography = null;
         }
-        
+
     }
 
 }

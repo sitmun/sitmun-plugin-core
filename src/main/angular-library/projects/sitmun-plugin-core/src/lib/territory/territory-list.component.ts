@@ -1,5 +1,5 @@
-import { Territory } from './territory.model'; 
-import { TerritoryService } from './territory.service';
+import { Territory } from 'sitmun-frontend-core';
+import { TerritoryService } from 'sitmun-frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {MatPaginator,MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
@@ -15,7 +15,7 @@ export class TerritoryListComponent implements OnInit {
 
   /** Territories to manage */
   territories: Territory[];
-  
+
   /** Table displayed columns */
   displayedColumns = ['name', 'scope','blocked','actions'];
 
@@ -25,16 +25,16 @@ export class TerritoryListComponent implements OnInit {
   /** SelectionModel for table display */
   selection = new SelectionModel<Territory>(true, []);
 
-  /** Paginator for table display */  
+  /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
-    
+
   /** Component constructor */
   constructor( private territoryService: TerritoryService ) { }
-  
+
   /** On component init, get all the territories from the system */
   ngOnInit() {
     this.getAllTerritories();
-    
+
   }
 
   /** Get all the territories from the system */
@@ -47,16 +47,16 @@ export class TerritoryListComponent implements OnInit {
 
     });
   }
-  
+
   /** Remove the territory from the system */
   remove(territory: Territory) {
     this.territoryService.delete(territory).subscribe(result => {
       this.getAllTerritories();
     }, error => console.error(error));
-     
+
   }
-  
-  
+
+
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;

@@ -1,8 +1,8 @@
-import { Resource } from 'angular-hal';  
-import { ApplicationParameter } from './application-parameter.model';
-import { ApplicationParameterService } from './application-parameter.service';
-import { ApplicationService } from './application.service';
-import { Application } from './application.model';
+import { Resource } from 'angular-hal';
+import { ApplicationParameter } from 'sitmun-frontend-core';
+import { ApplicationParameterService } from 'sitmun-frontend-core';
+import { ApplicationService } from 'sitmun-frontend-core';
+import { Application } from 'sitmun-frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -15,38 +15,38 @@ import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_D
   styleUrls: ['./application-parameter-list.component.css']
 })
 export class ApplicationParameterListComponent implements OnInit {
-  
+
   /** application parameters to manage */
   items: ApplicationParameter[];
 
   /** application to manage */
   _application: Application;
-  
-  /** Table displayed columns */ 
+
+  /** Table displayed columns */
   displayedColumns = ['name','value','actions'];
-  
+
   /** MatTableDataSource for table display */
   dataSource = null;
-  
+
   /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   /** constructor*/
   constructor(
-          /** application parameter service*/ private applicationParameterService: ApplicationParameterService,    
-          /** dialog*/public dialog: MatDialog) { 
-  
+          /** application parameter service*/ private applicationParameterService: ApplicationParameterService,
+          /** dialog*/public dialog: MatDialog) {
+
   }
-  
+
   /** On component init, get all data dependencies */
   ngOnInit() {
     this.items = new Array<ApplicationParameter>();
-    
+
   }
-  
+
   /** Set application to manage */
   @Input()
-  set application(application: Application) {    
+  set application(application: Application) {
     this._application = application;
     this.loadApplicationParameters();
   }
@@ -56,18 +56,18 @@ export class ApplicationParameterListComponent implements OnInit {
     if (this._application!=null){
      this._application.getRelationArray(ApplicationParameter, 'parameters').subscribe(
                     (items: ApplicationParameter[]) => {
-                      
+
                     this.items = items;
-                    
+
                     this.dataSource  = new MatTableDataSource<ApplicationParameter>(this.items);
                     this.dataSource.paginator = this.paginator;
 
                  },
                     error => this.items = new Array<ApplicationParameter>());
-      
+
     }
   }
-  
+
   /** open dialog to edit application parameter*/
   edit(applicationParameter: ApplicationParameter): void {
     let dialogRef = this.dialog.open(ApplicationParameterEditDialog, {
@@ -78,10 +78,10 @@ export class ApplicationParameterListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.loadApplicationParameters();
-       
+
     });
   }
-  
+
   /** add application parameter*/
   add(): void {
     let applicationParameter = new ApplicationParameter();
@@ -96,15 +96,15 @@ export class ApplicationParameterListComponent implements OnInit {
       this.loadApplicationParameters();
     });
   }
-  
+
   /** remove application parameter*/
   remove(item: ApplicationParameter) {
     this.applicationParameterService.delete(item).subscribe(result => {
       this.loadApplicationParameters();
     }, error => console.error(error));
-     
+
   }
-  
+
 
 }
 
@@ -132,10 +132,10 @@ export class ApplicationParameterEditDialog implements OnInit {
                     error => this.applicationParameter.application = new Application());
      }
   }
-  
+
   /** save application parameter*/
   save() {
-      this.applicationParameterService.save(this.applicationParameter).subscribe(result => {      
+      this.applicationParameterService.save(this.applicationParameter).subscribe(result => {
       this.dialogRef.close();
       }, error => console.error(error));
   }
@@ -144,7 +144,7 @@ export class ApplicationParameterEditDialog implements OnInit {
   compareResource(c1: Resource, c2: Resource): boolean {
     if (c2 && c1)
       return c2._links && c1._links ? c1._links.self.href === c2._links.self.href : c1 === c2;
-    else 
+    else
       return false;
   }
 

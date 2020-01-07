@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from './auth.service';
-import { LoginService } from './login.service';
+import { AuthService } from 'sitmun-frontend-core';
+import { LoginService } from 'sitmun-frontend-core';
 import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -11,8 +11,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
     styleUrls: ['./login.component.css']
 } )
 export class LoginComponent {
-    
-    /** bad credentials message*/   
+
+    /** bad credentials message*/
     badCredentials: string;
 
     /** form */

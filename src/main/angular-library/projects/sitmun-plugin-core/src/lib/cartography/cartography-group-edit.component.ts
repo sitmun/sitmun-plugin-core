@@ -1,12 +1,12 @@
 import { Resource } from 'angular-hal';
 import { ResourceHelper } from 'angular-hal';
-import { Cartography } from './cartography.model';
-import { CartographyService } from './cartography.service';
-import { Role } from '../role/role.model';
-import { RoleService } from '../role/role.service';
+import { Cartography } from 'sitmun-frontend-core';
+import { CartographyService } from 'sitmun-frontend-core';
+import { Role } from 'sitmun-frontend-core';
+import { RoleService } from 'sitmun-frontend-core';
 
-import { CartographyGroup } from './cartography-group.model';
-import {CartographyGroupService} from './cartography-group.service';
+import { CartographyGroup } from 'sitmun-frontend-core';
+import {CartographyGroupService} from 'sitmun-frontend-core';
 import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -23,16 +23,16 @@ import {SelectionModel} from '@angular/cdk/collections';
     styleUrls: ['./cartography-group-edit.component.css']
 })
 export class CartographyGroupEditComponent implements OnInit, OnDestroy {
-    
+
     /** cartography group to edit*/
     cartographyGroup: CartographyGroup = new CartographyGroup();
-    
+
     /** cartographies to select*/
     cartographies: Cartography[] = new Array<Cartography>();
 
     /** roles to select*/
     roles: Role[] = new Array<Role>();
-    
+
     /** subscription*/
     sub: Subscription;
 
@@ -41,7 +41,7 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
 
     /** selection model for cartographies table*/
     cartographySelection = new SelectionModel<Cartography>(true, []);
-    
+
     /** MatTableDataSource for cartographies*/
     cartographyDataSource = new MatTableDataSource<Cartography>([]);
 
@@ -53,7 +53,7 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
 
     /** MatTableDataSource for roles*/
     roleDataSource = new MatTableDataSource<Role>([]);
-    
+
     /** constructor*/
     constructor(private route: ActivatedRoute,
         private router: Router,
@@ -124,7 +124,7 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-    
+
     /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
@@ -235,7 +235,7 @@ export class CartographyGroupEditComponent implements OnInit, OnDestroy {
 
 
     }
-    
+
     /** remove cartography group*/
     remove(cartographyGroup: CartographyGroup) {
         this.cartographyGroupService.delete(cartographyGroup).subscribe(result => {

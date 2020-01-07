@@ -1,5 +1,5 @@
-import { User } from './user.model';
-import { UserService } from './user.service';
+import { User } from 'sitmun-frontend-core';
+import { UserService } from 'sitmun-frontend-core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs-compat';
@@ -15,38 +15,38 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
   styleUrls: ['./user-change-password.component.css']
 })
 export class UserChangePasswordComponent implements OnInit {
-  
+
   /** password do not match message variable*/
   doNotMatch: string;
-  
-  /** success message variable*/   
-  success: string;
-  
-  /** form object */ 
-  form:FormGroup;
-    
-  /** user identifier */  
-  userId: any;
-  
-  /** subscription*/  
-  sub: Subscription;  
 
-  /** constructor*/  
+  /** success message variable*/
+  success: string;
+
+  /** form object */
+  form:FormGroup;
+
+  /** user identifier */
+  userId: any;
+
+  /** subscription*/
+  sub: Subscription;
+
+  /** constructor*/
   constructor(private fb:FormBuilder, private route: ActivatedRoute,
-    private router: Router,    
+    private router: Router,
     private userService: UserService) {
-      
+
        this.form = this.fb.group({
             password: ['',Validators.required],
             confirmPassword: ['',Validators.required]
         });
   }
-  
+
   /** On component init load all required data dependencies*/
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
       const id = params['id'];
-      
+
       if (id) {
         this.userService.get(id).subscribe((user: any) => {
           if (user) {
@@ -59,17 +59,17 @@ export class UserChangePasswordComponent implements OnInit {
       }
     });
   }
-  
+
   /** On component destroy remove subscription */
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
-  
+
   /** On component init load all required data dependencies*/
   gotoList() {
     this.router.navigate(['/user-list']);
   }
-  
+
   /** change password action*/
   changePassword() {
         const val = this.form.value;
@@ -80,7 +80,7 @@ export class UserChangePasswordComponent implements OnInit {
                     () => {
                        this.success = "OK";
                         console.log("User password changed");
-                        
+
                     }
                 );
         } else {
@@ -88,6 +88,6 @@ export class UserChangePasswordComponent implements OnInit {
             console.log("password dont match");
         }
     }
- 
+
 
 }

@@ -1,12 +1,12 @@
-import { Resource } from 'angular-hal';  
-import { CartographyAvailability } from './cartography-availability.model';
-import { Territory } from '../territory/territory.model';
-import { TerritoryService } from '../territory/territory.service';
-import { CartographyAvailabilityService } from './cartography-availability.service';
-import { CartographyService } from './cartography.service';
-import { Cartography } from './cartography.model';
-import {Principal} from '../auth/principal.service';
-import {LoginService} from '../auth/login.service';
+import { Resource } from 'angular-hal';
+import { CartographyAvailability } from 'sitmun-frontend-core';
+import { Territory } from 'sitmun-frontend-core';
+import { TerritoryService } from 'sitmun-frontend-core';
+import { CartographyAvailabilityService } from 'sitmun-frontend-core';
+import { CartographyService } from 'sitmun-frontend-core';
+import { Cartography } from 'sitmun-frontend-core';
+import {Principal} from 'sitmun-frontend-core';
+import {LoginService} from 'sitmun-frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -18,38 +18,38 @@ import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_D
   styleUrls: ['./cartography-availability-list.component.css']
 })
 export class CartographyAvailabilityListComponent implements OnInit {
-  
+
   /** cartography availabilitys to manage */
   items: CartographyAvailability[];
 
   /** cartography to manage */
   _cartography: Cartography;
 
-  /** Table displayed columns */   
+  /** Table displayed columns */
   displayedColumns = ['territory','actions'];
-  
+
   /** MatTableDataSource for table display */
   dataSource = null;
 
   /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   /** constructor*/
   constructor(
-          /** cartography availability service*/private cartographyAvailabilityService: CartographyAvailabilityService,        
-          /** dialog*/public dialog: MatDialog) { 
-  
+          /** cartography availability service*/private cartographyAvailabilityService: CartographyAvailabilityService,
+          /** dialog*/public dialog: MatDialog) {
+
   }
-  
+
   /** On component init, get all data dependencies */
   ngOnInit() {
     this.items = new Array<CartographyAvailability>();
-    
+
   }
-  
+
   /** Set cartography to manage */
   @Input()
-  set cartography(cartography: Cartography) {    
+  set cartography(cartography: Cartography) {
     this._cartography = cartography;
     this.loadCartographyAvailabilities();
   }
@@ -59,25 +59,25 @@ export class CartographyAvailabilityListComponent implements OnInit {
     if (this._cartography!=null){
      this._cartography.getRelationArray(CartographyAvailability, 'availabilities').subscribe(
                     (items: CartographyAvailability[]) => {
-                      
+
                     this.items = items;
-                    
+
                     this.items.forEach( (item) => {
                         item.getRelation(Territory, 'territory').subscribe(
                         (territory: Territory) => item.territory = territory,
                         error => item.territory = new Territory());
 
-                      
+
                     });
                     this.dataSource  = new MatTableDataSource<CartographyAvailability>(this.items);
                     this.dataSource.paginator = this.paginator;
 
                  },
                     error => this.items = new Array<CartographyAvailability>());
-      
+
     }
   }
-  
+
   /** open dialog to edit cartography availability*/
   edit(cartographyAvailability: CartographyAvailability): void {
     let dialogRef = this.dialog.open(CartographyAvailabilityEditDialog, {
@@ -88,10 +88,10 @@ export class CartographyAvailabilityListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.loadCartographyAvailabilities();
-       
+
     });
   }
-  
+
   /** add cartography availability*/
   add(): void {
     let cartographyPermission = new CartographyAvailability();
@@ -106,16 +106,16 @@ export class CartographyAvailabilityListComponent implements OnInit {
       this.loadCartographyAvailabilities();
     });
   }
-  
+
   /** remove cartography availability*/
   remove(item: CartographyAvailability) {
     this.cartographyAvailabilityService.delete(item).subscribe(result => {
       this.loadCartographyAvailabilities();
     }, error => console.error(error));
-     
+
   }
-  
-  
+
+
 
 }
 
@@ -130,9 +130,9 @@ export class CartographyAvailabilityEditDialog implements OnInit {
   /** all territories*/
   territories: Territory[] = new Array<Territory>();
 
-  /** current account */  
+  /** current account */
   currentAccount: any;
-  
+
   /** constructor*/
   constructor(
           /**cartography service*/private cartographyService: CartographyService,
@@ -149,7 +149,7 @@ export class CartographyAvailabilityEditDialog implements OnInit {
                  this.currentAccount = account;
       });
     this.getAllTerritories();
-    
+
       if (this.cartographyAvailability._links) {
         this.cartographyAvailability.getRelation(Cartography, 'cartography').subscribe(
                     (cartography: Cartography) => this.cartographyAvailability.cartography = cartography,
@@ -158,9 +158,9 @@ export class CartographyAvailabilityEditDialog implements OnInit {
         this.cartographyAvailability.getRelation(Territory, 'territory').subscribe(
                     (territory: Territory) => this.cartographyAvailability.territory = territory,
                     error => this.cartographyAvailability.territory = new Territory());
-       
+
      }
-    
+
   }
 
 
@@ -174,18 +174,18 @@ export class CartographyAvailabilityEditDialog implements OnInit {
             this.territories = territories;
         } else {
 
-          this.territories = territories.filter(t => 
+          this.territories = territories.filter(t =>
              this.principal.hasAnyAuthorityDirectOnTerritory(['ADMIN ORGANIZACION'],t.name));
         }
-   
+
 
     });
   }
-  
-  
+
+
   /** save cartography availability*/
   save() {
-      this.cartographyAvailabilityService.save(this.cartographyAvailability).subscribe(result => {      
+      this.cartographyAvailabilityService.save(this.cartographyAvailability).subscribe(result => {
       this.dialogRef.close();
       }, error => console.error(error));
   }
@@ -194,7 +194,7 @@ export class CartographyAvailabilityEditDialog implements OnInit {
   compareResource(c1: Resource, c2: Resource): boolean {
     if (c2 && c1)
       return c2._links && c1._links ? c1._links.self.href === c2._links.self.href : c1 === c2;
-    else 
+    else
       return false;
   }
 

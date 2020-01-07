@@ -15,31 +15,6 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 import { AngularHalModule } from 'angular-hal';
 
-import {TerritoryService} from './territory/territory.service';
-import {TerritoryTypeService} from './territory/territory-type.service';
-import {UserPositionService} from './user/user-position.service';    
-import {UserConfigurationService} from './user/user-configuration.service';
-import {RoleService} from './role/role.service';
-import {UserService} from './user/user.service';
-import {ConnectionService} from './connection/connection.service';
-import {TaskService} from './task/task.service';
-import {TaskTypeService} from './task/task-type.service';
-import {TaskGroupService} from './task/task-group.service';
-import {TaskParameterService} from './task/task-parameter.service';
-import {TaskAvailabilityService} from './task/task-availability.service';
-import {TaskUIService} from './task/task-ui.service';
-import {ServiceService} from './service/service.service';
-import {ServiceParameterService} from './service/service-parameter.service';
-import {CartographyService} from './cartography/cartography.service';
-import {CartographyAvailabilityService} from './cartography/cartography-availability.service';
-import {CartographyGroupService} from './cartography/cartography-group.service';
-import {BackgroundService} from './cartography/background.service';
-import {TreeService} from './tree/tree.service';
-import {TreeNodeService} from './tree/tree-node.service';
-import {ApplicationService} from './application/application.service';
-import {ApplicationParameterService} from './application/application-parameter.service';
-import {ApplicationBackgroundService} from './application/application-background.service';
-
 import {TerritoryListComponent} from './territory/territory-list.component';
 import {TerritoryEditComponent} from './territory/territory-edit.component';
 import {TerritoryTypeListComponent} from './territory/territory-type-list.component';
@@ -48,11 +23,10 @@ import {RoleListComponent} from './role/role-list.component';
 import {RoleEditComponent} from './role/role-edit.component';
 import {UserListComponent} from './user/user-list.component';
 import {UserEditComponent} from './user/user-edit.component';
-import {UserPositionListComponent,UserPositionEditDialog} from './user/user-position-list.component';
+import {UserPositionListComponent, UserPositionEditDialog} from './user/user-position-list.component';
 import {UserConfigurationListComponent,UserConfigurationEditDialog} from './user/user-configuration-list.component';
 
 import { MapComponent } from './map/map.component';
-import { MapConfigurationManagerService } from './map/map-configuration-manager.service';
 import { LayerSelectionDialogComponent } from './map/layer-selection-dialog.component';
 import { FeatureInfoDialogComponent, MessageDialogComponent } from './map/feature-info-dialog.component';
 
@@ -60,15 +34,7 @@ import { MatPaginationIntlService } from './mat-pagination-intl.service';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material';
-import { AuthService } from './auth/auth.service';
-import { Principal } from './auth/principal.service';
-import { AuthInterceptor } from './auth/auth.interceptor';
-import { AuthExpiredInterceptor } from './auth/auth-expired.interceptor';
 import { LoginComponent } from './auth/login.component';
-import {HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
-import {HasAnyAuthorityOnTerritoryDirective } from './auth/has-any-authority-on-territory.directive';
-import { LoginService } from './auth/login.service';
-import { AccountService } from './account/account.service';
 import { AccountEditComponent } from './account/account-edit.component';
 import { AccountChangePasswordComponent } from './account/account-change-password.component';
 import { UserChangePasswordComponent } from './user/user-change-password.component';
@@ -101,6 +67,7 @@ import { ApplicationParameterListComponent,ApplicationParameterEditDialog } from
 import { ApplicationBackgroundListComponent,ApplicationBackgroundEditDialog } from './application/application-background-list.component';
 import { TaskUIEditComponent } from './task/task-ui-edit.component';
 import { TaskUIListComponent } from './task/task-ui-list.component';
+import {SitmunFrontendCoreModule} from 'sitmun-frontend-core';
 
 /** load i18n assets*/
 export function createTranslateLoader(http: HttpClient) {
@@ -113,13 +80,14 @@ export function createMatPaginationService(translate: TranslateService){
                 service.injectTranslateService(translate);
             return service;
 }
+
 /** SITMUN plugin core module */
 @NgModule({
   imports: [
-  RouterModule,
+        RouterModule,
         HttpClientModule,
         CommonModule,
-        FormsModule,        
+        FormsModule,
         MatButtonModule,
         MatCardModule,
         MatInputModule,
@@ -135,7 +103,7 @@ export function createMatPaginationService(translate: TranslateService){
         MatSortModule,
         MatIconModule,
         NoopAnimationsModule,
-        MatDialogModule,        
+        MatDialogModule,
         AngularHalModule,
         ReactiveFormsModule,
         MatFormFieldModule,
@@ -145,18 +113,18 @@ export function createMatPaginationService(translate: TranslateService){
                 useFactory: (createTranslateLoader),
                 deps: [HttpClient]
             }
-        })
-  
+        }),
+        SitmunFrontendCoreModule
   ],
   declarations: [
-  		TerritoryListComponent,
+    TerritoryListComponent,
         TerritoryEditComponent,
         TerritoryTypeListComponent,
         TerritoryTypeEditComponent,
         RoleListComponent,
         RoleEditComponent,
         UserListComponent,
-        UserEditComponent,        
+        UserEditComponent,
         UserPositionListComponent,
         UserConfigurationListComponent,
         UserPositionEditDialog,
@@ -166,8 +134,6 @@ export function createMatPaginationService(translate: TranslateService){
         MessageDialogComponent,
         MapComponent,
         LoginComponent,
-        HasAnyAuthorityDirective,
-        HasAnyAuthorityOnTerritoryDirective,
         AccountEditComponent,
         AccountChangePasswordComponent,
         UserChangePasswordComponent,
@@ -180,7 +146,7 @@ export function createMatPaginationService(translate: TranslateService){
         TaskGroupEditComponent,
         TaskEditComponent,
         TaskAvailabilityListComponent,
-        TaskAvailabilityEditDialog, 
+        TaskAvailabilityEditDialog,
         TaskParameterEditDialog,
         ServiceParameterEditDialog,
         TaskParameterListComponent,
@@ -207,54 +173,6 @@ export function createMatPaginationService(translate: TranslateService){
         ApplicationBackgroundListComponent,
         TaskUIEditComponent,
         TaskUIListComponent],
-  providers:[
-        TerritoryService,
-        TerritoryTypeService,
-        RoleService,
-        AccountService,
-        AuthService,        
-        UserService,  
-        ConnectionService,
-        TaskService,
-        TaskTypeService,
-        TaskUIService,
-        TaskGroupService,
-        TaskParameterService,
-        TaskAvailabilityService,
-        ServiceService,
-        ServiceParameterService,
-        CartographyService,
-        CartographyGroupService,
-        CartographyAvailabilityService, 
-        BackgroundService,
-        TreeService,
-        TreeNodeService,
-        ApplicationService,
-        ApplicationParameterService,
-        ApplicationBackgroundService,
-        AuthInterceptor,      
-        AuthExpiredInterceptor,
-        Principal,
-        UserPositionService,
-        UserConfigurationService,
-        LoginService,
-        MapConfigurationManagerService,
-        {
-          provide: MatPaginatorIntl,
-          useFactory: (createMatPaginationService),
-          deps: [TranslateService]
-        }, {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthInterceptor,
-            multi: true
-        }
-        , {
-            provide: HTTP_INTERCEPTORS,
-            useClass: AuthExpiredInterceptor,
-            multi: true
-        }
-  
-  ],
   entryComponents: [
         UserPositionEditDialog,
         UserConfigurationEditDialog,
@@ -270,10 +188,9 @@ export function createMatPaginationService(translate: TranslateService){
         ApplicationBackgroundEditDialog
     ],
   exports: [
-  
         HttpClientModule,
         CommonModule,
-        FormsModule,        
+        FormsModule,
         MatButtonModule,
         MatCardModule,
         MatInputModule,
@@ -289,81 +206,26 @@ export function createMatPaginationService(translate: TranslateService){
         MatSortModule,
         MatIconModule,
         NoopAnimationsModule,
-        MatDialogModule,        
+        MatDialogModule,
         AngularHalModule,
         TranslateModule,
-      
-  		TerritoryListComponent,
+    		TerritoryListComponent,
         TerritoryEditComponent,
         TerritoryTypeListComponent,
         TerritoryTypeEditComponent,
         RoleListComponent,
         RoleEditComponent,
         LoginComponent,
-        HasAnyAuthorityDirective,
-        HasAnyAuthorityOnTerritoryDirective,
         UserListComponent,
         UserEditComponent,
-        UserChangePasswordComponent,           
+        UserChangePasswordComponent,
         UserPositionListComponent,
         UserConfigurationListComponent,
         AccountEditComponent,
         AccountChangePasswordComponent,
-        MapComponent,        
+        MapComponent,
         ReactiveFormsModule,
         MatFormFieldModule]
 })
 export class SitmunPluginCoreModule {
-    static forRoot(): ModuleWithProviders {
-        return {
-            ngModule: SitmunPluginCoreModule,
-            providers: [
-                TerritoryService,
-                TerritoryTypeService,
-                RoleService,
-                AccountService,
-                AuthService,        
-                UserService,  
-                ConnectionService,
-                TaskService,
-                TaskUIService,
-                TaskTypeService,
-                TaskGroupService,
-                TaskParameterService,
-                TaskAvailabilityService,
-                ServiceService,
-                ServiceParameterService,
-                CartographyService,
-                CartographyGroupService,
-                CartographyAvailabilityService, 
-                BackgroundService,
-                TreeService,
-                TreeNodeService,
-                ApplicationService,
-                ApplicationParameterService,
-                ApplicationBackgroundService,
-                AuthInterceptor,      
-                AuthExpiredInterceptor,
-                Principal,
-                UserPositionService,
-                UserConfigurationService,
-                LoginService,
-                MapConfigurationManagerService,
-                {
-                  provide: MatPaginatorIntl,
-                  useFactory: (createMatPaginationService),
-                  deps: [TranslateService]
-                }, {
-                    provide: HTTP_INTERCEPTORS,
-                    useClass: AuthInterceptor,
-                    multi: true
-                }
-                , {
-                    provide: HTTP_INTERCEPTORS,
-                    useClass: AuthExpiredInterceptor,
-                    multi: true
-                }
-            ]
-        };
-    }
-};
+}

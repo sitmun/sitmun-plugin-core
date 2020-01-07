@@ -1,5 +1,5 @@
-import { TerritoryType } from './territory-type.model';
-import { TerritoryTypeService } from './territory-type.service';
+import { TerritoryType } from 'sitmun-frontend-core';
+import { TerritoryTypeService } from 'sitmun-frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,28 +11,28 @@ import { MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./territory-type-list.component.css']
 })
 export class TerritoryTypeListComponent implements OnInit {
-  
+
   /** Territory types to manage */
   items: TerritoryType[];
-  
+
   /** Table displayed columns */
   displayedColumns = ['name','actions'];
-  
+
   /** MatTableDataSource for table display */
   dataSource = new MatTableDataSource<TerritoryType>(this.items);
-  
-  /** Paginator for table display */  
+
+  /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
-  /** Component constructor */  
+
+  /** Component constructor */
   constructor( private territoryTypeService: TerritoryTypeService ) { }
-  
+
   /** On component init, get all data dependencies */
   ngOnInit() {
     this.getAllTerritories();
-    
+
   }
-  
+
   /** load all territory types*/
   getAllTerritories() {
     this.territoryTypeService.getAll()
@@ -43,13 +43,13 @@ export class TerritoryTypeListComponent implements OnInit {
 
     });
   }
-  
+
   /** remove territory type*/
   remove(item: TerritoryType) {
     this.territoryTypeService.delete(item).subscribe(result => {
       this.getAllTerritories();
     }, error => console.error(error));
-     
+
   }
 
 }

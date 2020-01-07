@@ -1,9 +1,9 @@
 import { Resource } from 'angular-hal';
 import { ResourceHelper } from 'angular-hal';
-import { TerritoryType } from './territory-type.model';
-import { TerritoryTypeService } from './territory-type.service';
-import { Territory } from './territory.model';
-import {TerritoryService} from './territory.service';
+import { TerritoryType } from 'sitmun-frontend-core';
+import { TerritoryTypeService } from 'sitmun-frontend-core';
+import { Territory } from 'sitmun-frontend-core';
+import {TerritoryService} from 'sitmun-frontend-core';
 import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -23,22 +23,22 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
 
     /** territory to edit*/
     territory: Territory = new Territory();
-    
+
     /** territories to select*/
     territories: Territory[];
 
     /** territory types*/
     territoryTypes: TerritoryType[] = new Array<TerritoryType>();
-    
+
     /** subscription*/
     sub: Subscription;
 
     /** child territories table displayed columns*/
     displayedColumns = ['select', 'name', 'scope', 'blocked'];
-    
+
     /** territory scope values*/
     territoryScopes = ['Municipal', 'Supramunicipal'];
-    
+
     /** selection model for child territories table*/
     selection = new SelectionModel<Territory>(true, []);
 
@@ -52,7 +52,7 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
         private changeDetectorRefs: ChangeDetectorRef,
         private territoryTypeService: TerritoryTypeService) {
     }
-    
+
     /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
@@ -104,12 +104,12 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-    
+
     /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
-    
+
     /** load all territories*/
     getAllTerritories() {
         this.territoryService.getAll()
@@ -118,7 +118,7 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
                 this.dataSource = new MatTableDataSource<Territory>(this.territories);
             });
     }
-    
+
     /** load all territory types*/
     getAllTerritoryTypes() {
         this.territoryTypeService.getAll()
@@ -131,7 +131,7 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
     gotoList() {
         this.router.navigate(['/territory-list']);
     }
-    
+
     /** save territory*/
     save() {
         if (this.territory.createdDate != null && (typeof this.territory.createdDate != 'string')) {
@@ -194,7 +194,7 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
         }
 
     }
-    
+
     /** remove territory*/
     remove(territory: Territory) {
         this.territoryService.delete(territory).subscribe(result => {
@@ -202,7 +202,7 @@ export class TerritoryEditComponent implements OnInit, OnDestroy {
         }, error => console.error(error));
 
     }
-    
+
     /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;

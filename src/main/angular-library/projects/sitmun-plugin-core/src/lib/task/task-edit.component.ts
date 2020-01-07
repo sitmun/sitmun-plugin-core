@@ -1,23 +1,23 @@
 import { Resource } from 'angular-hal';
 import { ResourceHelper } from 'angular-hal';
-import { Connection } from '../connection/connection.model';
-import { ConnectionService } from '../connection/connection.service';
-import { Role } from '../role/role.model';
-import { RoleService } from '../role/role.service';
+import { Connection } from 'sitmun-frontend-core';
+import { ConnectionService } from 'sitmun-frontend-core';
+import { Role } from 'sitmun-frontend-core';
+import { RoleService } from 'sitmun-frontend-core';
 //import { TerritoryService } from '../territory/territory.service';
 //import { Territory } from '../territory/territory.model';
-import { TaskType } from './task-type.model';
-import { TaskTypeService } from './task-type.service';
-import { TaskUI } from './task-ui.model';
-import { TaskUIService } from './task-ui.service';
-import { TaskGroup } from './task-group.model';
-import { TaskGroupService } from './task-group.service';
-import { TaskParameter } from './task-parameter.model';
-import { TaskParameterService } from './task-parameter.service';
-import { TaskAvailability} from './task-availability.model';
-import { TaskAvailabilityService } from './task-availability.service';
-import { Task } from './task.model';
-import {TaskService} from './task.service';
+import { TaskType } from 'sitmun-frontend-core';
+import { TaskTypeService } from 'sitmun-frontend-core';
+import { TaskUI } from 'sitmun-frontend-core';
+import { TaskUIService } from 'sitmun-frontend-core';
+import { TaskGroup } from 'sitmun-frontend-core';
+import { TaskGroupService } from 'sitmun-frontend-core';
+import { TaskParameter } from 'sitmun-frontend-core';
+import { TaskParameterService } from 'sitmun-frontend-core';
+import { TaskAvailability} from 'sitmun-frontend-core';
+import { TaskAvailabilityService } from 'sitmun-frontend-core';
+import { Task } from 'sitmun-frontend-core';
+import {TaskService} from 'sitmun-frontend-core';
 import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -35,7 +35,7 @@ import {SelectionModel} from '@angular/cdk/collections';
     styleUrls: ['./task-edit.component.css']
 })
 export class TaskEditComponent implements OnInit, OnDestroy {
-    
+
     /** task to edit*/
     task: Task = new Task();
 
@@ -48,21 +48,21 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     /** task groups to select*/
     taskGroups: TaskGroup[] = new Array<TaskGroup>();
 
-    /** task connections to select*/    
+    /** task connections to select*/
     connections: Connection[] = new Array<Connection>();
-    
-    /** task roles to select*/    
+
+    /** task roles to select*/
     roles: Role[] = new Array<Role>();
 
     /** subscription*/
     sub: Subscription;
-    
+
     /** roles table displayed columns*/
     displayedColumns = ['select', 'name'];
-    
+
     /** selection model for roles table*/
     selection = new SelectionModel<Role>(true, []);
-    
+
     /** MatTableDataSource for roles */
     dataSource = new MatTableDataSource<Role>([]);
 
@@ -201,7 +201,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
 
             });
     }
-    
+
     /** load all roles*/
     getAllRoles() {
         this.roleService.getAll()
@@ -217,7 +217,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
     gotoList() {
         this.router.navigate(['/task-list']);
     }
-    
+
     /** save task*/
     save() {
         if (this.task.createdDate != null && (typeof this.task.createdDate != 'string')) {
@@ -242,9 +242,9 @@ export class TaskEditComponent implements OnInit, OnDestroy {
                 , error => console.error(error));
 
         } else {
-            
-            
-            
+
+
+
             let rolesUpdate = null;
             let taskRoles = this.task.roles;
             if (taskRoles)
@@ -261,33 +261,33 @@ export class TaskEditComponent implements OnInit, OnDestroy {
 
             }
                 , error => console.error(error));
-                
+
             delete this.task.roles;
             let update = concat(
                 this.taskService.update(this.task)
-                
+
 
             );
-            
+
             update = concat(update,
                 this.task.deleteAllRelation('type'),
                 this.task.deleteAllRelation('ui'),
                 this.task.deleteAllRelation('connection'),
                 this.task.deleteAllRelation('group')
-                
+
 
             );
-            
-            if (this.task.type._links!=null && this.task.type._links.self.href!=''){            
+
+            if (this.task.type._links!=null && this.task.type._links.self.href!=''){
                 update = concat(update,this.task.addRelation('type', this.task.type));
-            } 
-            if (this.task.ui._links!=null && this.task.ui._links.self.href!=''){            
+            }
+            if (this.task.ui._links!=null && this.task.ui._links.self.href!=''){
                 update = concat(update,this.task.addRelation('ui', this.task.ui));
-            } 
-            if (this.task.connection._links!=null && this.task.connection._links.self.href!=''){            
+            }
+            if (this.task.connection._links!=null && this.task.connection._links.self.href!=''){
                 update = concat(update, this.task.addRelation('connection', this.task.connection));
-            }     
-            if (this.task.group._links!=null && this.task.group._links.self.href!=''){            
+            }
+            if (this.task.group._links!=null && this.task.group._links.self.href!=''){
                 update = concat(update,this.task.addRelation('group', this.task.group));
             }
 
@@ -300,7 +300,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
         }
 
     }
-    
+
     /** remove task*/
     remove(task: Task) {
         this.taskService.delete(task).subscribe(result => {
@@ -308,7 +308,7 @@ export class TaskEditComponent implements OnInit, OnDestroy {
         }, error => console.error(error));
 
     }
-    
+
     /** compare two resources*/
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;

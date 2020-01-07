@@ -1,9 +1,9 @@
 import { Resource } from 'angular-hal';
 import { ResourceHelper } from 'angular-hal';
-import { Tree } from './tree.model';
-import {TreeService} from './tree.service';
-import { Role } from '../role/role.model';
-import { RoleService } from '../role/role.service';
+import { Tree } from 'sitmun-frontend-core';
+import {TreeService} from 'sitmun-frontend-core';
+import { Role } from 'sitmun-frontend-core';
+import { RoleService } from 'sitmun-frontend-core';
 import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import {NgForm} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -22,19 +22,19 @@ import {SelectionModel} from '@angular/cdk/collections';
 export class TreeEditComponent implements OnInit, OnDestroy {
     /** tree to edit*/
     tree: Tree = new Tree();
-    
+
     /** roles to select*/
     roles: Role[] = new Array<Role>();
-    
+
     /** subscription*/
     sub: Subscription;
-    
+
     /** roles table displayed columns*/
     displayedColumns = ['select', 'name'];
-    
+
     /** selection model for roles table*/
     roleSelection = new SelectionModel<Role>(true, []);
-    
+
     /** MatTableDataSource for roles */
     roleDataSource = new MatTableDataSource<Role>([]);
 
@@ -47,7 +47,7 @@ export class TreeEditComponent implements OnInit, OnDestroy {
 
 
     }
-    
+
     /** On component init load all required data dependencies*/
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
@@ -93,7 +93,7 @@ export class TreeEditComponent implements OnInit, OnDestroy {
             }
         });
     }
-    
+
     /** On component destroy remove subscription */
     ngOnDestroy() {
         this.sub.unsubscribe();
@@ -114,7 +114,7 @@ export class TreeEditComponent implements OnInit, OnDestroy {
     gotoList() {
         this.router.navigate(['/tree-list']);
     }
-    
+
     /** save tree*/
     save() {
         const isNew = this.tree._links == null;
@@ -175,7 +175,7 @@ export class TreeEditComponent implements OnInit, OnDestroy {
 
 
     }
-    
+
     /** remove tree*/
     remove(tree: Tree) {
         this.treeService.delete(tree).subscribe(result => {
@@ -187,14 +187,14 @@ export class TreeEditComponent implements OnInit, OnDestroy {
     compareResource(c1: Resource, c2: Resource): boolean {
         return c1 && c2 ? c1._links.self.href === c2._links.self.href : c1 === c2;
     }
-    
+
     /** Whether the number of selected elements matches the total number of rows. */
     isAllRoleSelected() {
         const numSelected = this.roleSelection.selected.length;
         const numRows = this.roleDataSource.data.length;
         return numSelected === numRows;
     }
-    
+
     /** Selects all rows if they are not all selected; otherwise clear selection. */
     masterToggleRole() {
         this.isAllRoleSelected() ?

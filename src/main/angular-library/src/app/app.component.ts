@@ -1,6 +1,6 @@
 import { Component,OnInit  } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {Principal,LoginService} from 'sitmun-plugin-core';
+import {Principal, LoginService} from 'sitmun-frontend-core';
 
 /** Demo app component*/
 @Component({
@@ -9,14 +9,14 @@ import {Principal,LoginService} from 'sitmun-plugin-core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  /** app title*/  
+  /** app title*/
   title = 'app';
   /** app param*/
   param = {value:'world'};
-  
+
   /** translate service*/
   translate;
-  
+
   /** current logged in user account*/
   currentAccount : any;
 
@@ -35,24 +35,24 @@ export class AppComponent implements OnInit {
   changeLanguage(locale: string ){
 	this.translate.use(locale);
   }
-    
-  /** User log out*/  
+
+  /** User log out*/
   logout(){
     this.loginService.logout();
   }
-    
+
   /** Whether user is logged in */
   isLoggedIn(){
     return this.principal.isAuthenticated();
   }
-  
+
   /** On component init, get logged user account*/
   ngOnInit() {
-      
+
       this.principal.identity().then((account) => {
                  this.currentAccount = account;
    });
-  }   
-  
+  }
+
 
 }

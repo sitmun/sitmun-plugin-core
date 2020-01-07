@@ -1,14 +1,14 @@
-import { Resource } from 'angular-hal';  
-import { UserConfiguration } from './user-configuration.model';
-import { Territory } from '../territory/territory.model';
-import { TerritoryService } from '../territory/territory.service';
-import { Role } from '../role/role.model';
-import { RoleService } from '../role/role.service';
-import { UserConfigurationService } from './user-configuration.service';
-import { UserService } from './user.service';
-import { User } from './user.model';
-import {Principal} from '../auth/principal.service';
-import {LoginService} from '../auth/login.service';
+import { Resource } from 'angular-hal';
+import { UserConfiguration } from 'sitmun-frontend-core';
+import { Territory } from 'sitmun-frontend-core';
+import { TerritoryService } from 'sitmun-frontend-core';
+import { Role } from 'sitmun-frontend-core';
+import { RoleService } from 'sitmun-frontend-core';
+import { UserConfigurationService } from 'sitmun-frontend-core';
+import { UserService } from 'sitmun-frontend-core';
+import { User } from 'sitmun-frontend-core';
+import {Principal} from 'sitmun-frontend-core';
+import {LoginService} from 'sitmun-frontend-core';
 
 import { Component, OnInit, ViewChild, Input, Inject} from '@angular/core';
 import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
@@ -22,35 +22,35 @@ import { MatTableDataSource, MatPaginator, MatDialog, MatDialogRef, MAT_DIALOG_D
 export class UserConfigurationListComponent implements OnInit {
   /** User permissions to manage */
   items: UserConfiguration[];
-  
+
   /** User to manage its permissions*/
   _user: User;
-  
+
   /** Table displayed columns */
   displayedColumns = ['territory','role','actions'];
-  
+
   /** MatTableDataSource for table display */
   dataSource = null;
-  
-  /** Paginator for table display */  
+
+  /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  
+
   /** Component constructor */
   constructor(
-          /**user permissions service*/private userConfigurationService: UserConfigurationService,    
-          /**dialog*/public dialog: MatDialog) { 
-  
+          /**user permissions service*/private userConfigurationService: UserConfigurationService,
+          /**dialog*/public dialog: MatDialog) {
+
   }
-  
+
   /** On component init, get all data dependencies */
   ngOnInit() {
     this.items = new Array<UserConfiguration>();
-    
+
   }
-  
+
   /** Set User to manage its permissions*/
   @Input()
-  set user(user: User) {    
+  set user(user: User) {
     this._user = user;
     this.loadUserPermissions();
   }
@@ -60,9 +60,9 @@ export class UserConfigurationListComponent implements OnInit {
     if (this._user!=null){
      this._user.getRelationArray(UserConfiguration, 'permissions').subscribe(
                     (items: UserConfiguration[]) => {
-                      
+
                     this.items = items;
-                    
+
                     this.items.forEach( (item) => {
                         item.getRelation(Territory, 'territory').subscribe(
                         (territory: Territory) => item.territory = territory,
@@ -77,10 +77,10 @@ export class UserConfigurationListComponent implements OnInit {
 
                  },
                     error => this.items = new Array<UserConfiguration>());
-      
+
     }
   }
-  
+
   /** open dialog to edit user permission data*/
   edit(userConfiguration: UserConfiguration): void {
     let dialogRef = this.dialog.open(UserConfigurationEditDialog, {
@@ -91,10 +91,10 @@ export class UserConfigurationListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
       this.loadUserPermissions();
-       
+
     });
   }
-  
+
   /** add user permission*/
   add(): void {
     let userPermission = new UserConfiguration();
@@ -109,13 +109,13 @@ export class UserConfigurationListComponent implements OnInit {
       this.loadUserPermissions();
     });
   }
-  
+
   /** remove user permission*/
   remove(item: UserConfiguration) {
     this.userConfigurationService.delete(item).subscribe(result => {
       this.loadUserPermissions();
     }, error => console.error(error));
-     
+
   }
 
 }
@@ -127,16 +127,16 @@ export class UserConfigurationListComponent implements OnInit {
   styleUrls: ['./user-configuration-edit.dialog.css']
 })
 export class UserConfigurationEditDialog implements OnInit {
-  
+
   /** territories to select*/
   territories: Territory[] = new Array<Territory>();
-  
+
   /** roles to select*/
   roles: Role[] = new Array<Role>();
 
   /** current account*/
   currentAccount: any;
-  
+
  /** constructor*/
   constructor(
     /** user service*/private userService: UserService,
@@ -168,7 +168,7 @@ export class UserConfigurationEditDialog implements OnInit {
                     error => this.userConfiguration.role= new Role());
             //
      }
-    
+
   }
 
   /** load all territories*/
@@ -180,25 +180,25 @@ export class UserConfigurationEditDialog implements OnInit {
             this.territories = territories;
         } else {
 
-          this.territories = territories.filter(t => 
+          this.territories = territories.filter(t =>
              this.principal.hasAnyAuthorityDirectOnTerritory(['ADMIN ORGANIZACION'],t.name));
         }
-   
+
 
     });
   }
-  
+
   /** load all roles*/
   getAllRoles() {
     this.roleService.getAll()
     .subscribe((roles: Role[]) => {
-        this.roles = roles;        
+        this.roles = roles;
     });
   }
-  
+
   /** save user permission*/
   save() {
-      this.userconfigurationService.save(this.userConfiguration).subscribe(result => {      
+      this.userconfigurationService.save(this.userConfiguration).subscribe(result => {
       this.dialogRef.close();
       }, error => console.error(error));
   }
@@ -207,7 +207,7 @@ export class UserConfigurationEditDialog implements OnInit {
   compareResource(c1: Resource, c2: Resource): boolean {
     if (c2 && c1)
       return c2._links && c1._links ? c1._links.self.href === c2._links.self.href : c1 === c2;
-    else 
+    else
       return false;
   }
 

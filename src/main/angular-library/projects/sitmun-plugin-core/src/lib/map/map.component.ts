@@ -15,10 +15,10 @@ import { MatDialog, MatDialogRef, MatDialogConfig } from '@angular/material';
 
 import { ElementRef } from '@angular/core';
 
-import {MapConfigurationManagerService, Layer, LayerConfiguration, LayerGroup, MapOptionsConfiguration, MapComponentStatus} from './map-configuration-manager.service';
+import {MapConfigurationManagerService, Layer, LayerConfiguration, LayerGroup, MapOptionsConfiguration, MapComponentStatus} from 'sitmun-frontend-core';
 
 import { Observable, of} from 'rxjs';
-import { UserConfigurationService } from '../public_api';
+import { UserConfigurationService } from 'sitmun-frontend-core';
 
 try {
 	ol.proj.setProj4(proj4);
@@ -106,36 +106,36 @@ export class MapComponent implements OnInit {
 
   /** x-coordinate of initial center of the map*/
   @Input() initialLon;
-  
+
   /** y-coordinate of initial center of the map*/
   @Input() initialLat;
-  
+
   /** code of the srs projection of the coordinates defined in extent, initialLon and initialLat*/
   @Input() initialProjection;
-  
+
   /** inital zoom of the map*/
   @Input() initialZoom;
 
   /** reference to view mapContainer element*/
   @ViewChild('mapContainer') mapContainer:ElementRef;
-  
+
   /** map extent*/
   _extent: ol.Extent;
-  
+
   /** set map extent*/
   @Input()
-  set extent(extent: ol.Extent) {  
+  set extent(extent: ol.Extent) {
     this._extent = extent;
     if ((this.getMap() != null) && (this.getMap() != undefined)) {
       this.setExtent(extent);
     }
   };
-  
+
   /** load defaults value, default false*/
   _loadDefaults:boolean = false;
-  
+
   /** set load defaults value*/
-  @Input() 
+  @Input()
   set loadDefaults(value:boolean) {
     if (this._loadDefaults != value) {
       if (value) {
@@ -145,15 +145,15 @@ export class MapComponent implements OnInit {
     }
     this._loadDefaults = value;
   }
-  
-  /** get load defaults value*/  
+
+  /** get load defaults value*/
   get loadDefaults():boolean {
     return this._loadDefaults;
   }
 
-  /** map options*/  
+  /** map options*/
   mapOptions: MapOptions;
-  
+
   /** map controls labels*/
   messages = {
     zoomInTooltip: "Zoom in",
@@ -248,11 +248,11 @@ export class MapComponent implements OnInit {
     }
   }
 
-  /** translate service*/ 
+  /** translate service*/
   translate: TranslateService;
-  
+
   /** constructor*/
-  constructor(private dialog: MatDialog, 
+  constructor(private dialog: MatDialog,
     private featureInfoDialog: MatDialog,
     private mapConfigurationManagerService: MapConfigurationManagerService,
     translate: TranslateService) {
@@ -262,7 +262,7 @@ export class MapComponent implements OnInit {
     });
     this.translateLabels();
   }
-  
+
   /** OpenLayers map */
   map: ol.Map = null;
 
@@ -274,7 +274,7 @@ export class MapComponent implements OnInit {
           this.getMap().getView().getResolutionForExtent(extent)));
     }
   }
-  
+
   /** get OpenLayers map */
   getMap(){
     return this.map;
@@ -283,26 +283,26 @@ export class MapComponent implements OnInit {
   // MapConfigurationManagerService event subscriptors
   /** layers events subscription*/
   layerSubscription;
-  
+
   /** base layers events subscription*/
   baseLayersSubscription;
-  
+
   /** layer configuration events subscription*/
   layerConfigurationSubscription;
-  
+
   /** add layer events subscription*/
   addLayersSubscription;
-  
+
   /** remove layer events subscription*/
   removeLayersSubscription;
-  
+
   /** situation map events subscription*/
   situationMapConfigurationSubscription;
-  
+
   /** map options events subscription*/
   mapOptionsConfigurationSubscription;
 
-  /** show message on console*/ 
+  /** show message on console*/
   showMessage(msg:string) {
     if (console && (typeof console.log == "function")) {
       console.log(msg);
@@ -367,14 +367,14 @@ export class MapComponent implements OnInit {
       () => this.showMessage("on complete configuration")
     );
   }
-  
+
   /** set default map projection units*/
   setDefaultMapUnits(units) {
     if (units) {
       this.defaultMapUnits = units;
     }
   }
-  
+
   /** get default map projection units*/
   getDefaultMapUnits():string {
     return this.defaultMapUnits;
@@ -386,7 +386,7 @@ export class MapComponent implements OnInit {
       this.defaultProjection = projection;
     }
   }
-  
+
   /** get default map projection*/
   getDefaultProjection():string {
     return this.defaultProjection.slice();//Return the value cloned
@@ -409,7 +409,7 @@ export class MapComponent implements OnInit {
   /** set map projection*/
   setProjection(projectionList:any) {
     var projection:ol.proj.Projection = null;
-    
+
     for (var i = 0, iLen = projectionList.length; i < iLen; i++) {
       projection = ol.proj.get(projectionList[i]);
       if (projection) {
@@ -437,7 +437,7 @@ export class MapComponent implements OnInit {
   transformExtent(extent, projectionFrom:string, projectionTo:string) {
     if (extent) {
       return ol.extent.applyTransform(
-        [extent[0], extent[1], extent[2], extent[3]], 
+        [extent[0], extent[1], extent[2], extent[3]],
           ol.proj.getTransform(new ol.proj.Projection({
             code: projectionFrom
           }), new ol.proj.Projection({
@@ -485,7 +485,7 @@ export class MapComponent implements OnInit {
       this.scales = [];
       this.scales = this.scales.concat(this.getDefaultMapScales());
     }
-    
+
     if ((options.tileHeight != undefined) && (options.tileHeight != null)) {
       this.tileHeight = options.tileHeight;
     }
@@ -511,7 +511,7 @@ export class MapComponent implements OnInit {
             if (prevScale > 1.0) {
               prevScale = 1.0/prevScale;
             }
-            if (Math.abs(normalizedMaxScale-scale) > 
+            if (Math.abs(normalizedMaxScale-scale) >
                 Math.abs(normalizedMaxScale-prevScale)) {
               //Closest to the prevous one
               factor = 1;
@@ -531,9 +531,9 @@ export class MapComponent implements OnInit {
     } else {
       this.minScale = this.scales[0];
     }
-    
+
     var maxExtent;
-    if (options.maxExtent && options.projections) { 
+    if (options.maxExtent && options.projections) {
       //The extent's projection is assumed to be the first on the list
       maxExtent = options.maxExtent;
     }
@@ -548,7 +548,7 @@ export class MapComponent implements OnInit {
     this.projection = this.projections[0];
     var currentExtent = this.getMap().getView().calculateExtent();
     if (oldProjection != this.projection) {
-      currentExtent = this.transformExtent(currentExtent, 
+      currentExtent = this.transformExtent(currentExtent,
                             oldProjection, this.projection);
     }
 
@@ -568,7 +568,7 @@ export class MapComponent implements OnInit {
       projection: new ol.proj.Projection({
         code: this.projection,
         units: this.units
-      }),        
+      }),
       resolutions: this.resolutions,
       zoom: 0
     };
@@ -597,7 +597,7 @@ export class MapComponent implements OnInit {
 
     if (this.getMap()) {
       this.getMap().setView(view);
-      //FIXME force layer repojection 
+      //FIXME force layer repojection
       //update controls with event listeners
       if (this.overViewMapControl) {
         //Define center otherwise an error is raised
@@ -618,7 +618,7 @@ export class MapComponent implements OnInit {
     }
   }
 
-  /** get resolutions from given scales*/ 
+  /** get resolutions from given scales*/
   getResolutionsFromScales(scales:number[], units?):number[] {
     var resolutions = [];
     for (var i = 0, iLen = scales.length; i < iLen; i++) {
@@ -627,7 +627,7 @@ export class MapComponent implements OnInit {
     return resolutions;
   }
 
-  /** get scales from given resolutions*/ 
+  /** get scales from given resolutions*/
   getScalesFromResolutions(resolutions:number[], units?):number[] {
     var scales = [];
     for (var i = 0, iLen = resolutions.length; i < iLen; i++) {
@@ -635,8 +635,8 @@ export class MapComponent implements OnInit {
     }
     return scales;
   }
-  
-  /** parse layers from array of layers*/ 
+
+  /** parse layers from array of layers*/
   parseLayers(layers, layerDataConfig:Array<Layer>) {
     if (!layerDataConfig || !layerDataConfig.length) {
       return;
@@ -666,7 +666,7 @@ export class MapComponent implements OnInit {
             //ignore those params that generate an exception
           }
         }
-      }         
+      }
       properties = null;
       if ((layerDataConfig[i].id != undefined) && (layerDataConfig[i].id != null)) {
         properties = {
@@ -739,7 +739,7 @@ export class MapComponent implements OnInit {
                   resolutions: this.resolutions,
                   tileSize: [layerDataConfig[i].tileWidth?
                               layerDataConfig[i].tileWidth:
-                              this.tileWidth, 
+                              this.tileWidth,
                               layerDataConfig[i].tileHeight?
                               layerDataConfig[i].tileHeight:
                               this.tileHeight]
@@ -748,12 +748,12 @@ export class MapComponent implements OnInit {
               visible:layerDataConfig[i].visibility/*,
               //WMTS do not take into account any opacity defined
               opacity:
-                      layerDataConfig[i].opacity? 
+                      layerDataConfig[i].opacity?
                         layerDataConfig[i].opacity:undefined*/
           });
         layer.setProperties(properties);
         layers.push(layer);
-      } else {  
+      } else {
         layer = new ol.layer.Image({
             minResolution:layerDataConfig[i].minimumScale?
                           MapComponent.getResolutionFromScale(layerDataConfig[i].minimumScale):undefined,
@@ -771,7 +771,7 @@ export class MapComponent implements OnInit {
             }),
             visible:layerDataConfig[i].visibility,
             opacity:
-                    layerDataConfig[i].opacity? 
+                    layerDataConfig[i].opacity?
                       layerDataConfig[i].opacity:undefined
           });
         layer.setProperties(properties);
@@ -815,7 +815,7 @@ export class MapComponent implements OnInit {
 
   /** layers*/
   layers;
-  
+
   /** configure given array of layers*/
   configureLayers(layerDataConfig:Array<Layer>) {
     if (layerDataConfig) {
@@ -850,13 +850,13 @@ export class MapComponent implements OnInit {
 
   /** loadingControl*/
   loadingControl;
-  
+
   /** add given array of layers to map*/
   addLayers(layerDataConfig:Array<Layer>) {
     if (layerDataConfig) {
       var newLayers = [];
       this.parseLayers(newLayers, layerDataConfig);
-  
+
       if (newLayers && this.map) {
         var layer;
         var source;
@@ -871,13 +871,13 @@ export class MapComponent implements OnInit {
             //Avoid duplicates
             this.map.addLayer(layer);
             if (loadingControl_ && !(layer.getSource() instanceof ol.source.TileWMS)) {
-              source = layer.getSource();  
+              source = layer.getSource();
               source.on('imageloadstart', function() {
                 if (layer.getProperties() && !layer.getProperties()["loading"]) {
                   layer.setProperties({loading: true});
                   loadingControl_.addLoading();
                 }
-              });  
+              });
               source.on('imageloadend', function() {
                 if (layer.getProperties() && layer.getProperties()["loading"]) {
                   layer.setProperties({loading: false});
@@ -898,7 +898,7 @@ export class MapComponent implements OnInit {
                     loadingControl_.addLoaded();
                   }
                   if (getFeatureInfoControl_ != null) {
-                    getFeatureInfoControl_.updateVisibleLayers(layer.getVisible());    
+                    getFeatureInfoControl_.updateVisibleLayers(layer.getVisible());
                   }
                 } else {
                 }
@@ -921,12 +921,12 @@ export class MapComponent implements OnInit {
           }
         }
       }
-  
+
       if (this.layers == null) {
         this.layers = [];
       }
       this.layers = this.layers.concat(newLayers);
-  
+
       this.updateVectorDataLayers();
 
       if (this.getFeatureInfoControl != null) {
@@ -936,7 +936,7 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  
+
   /** remove given array of layers to map*/
   removeLayers(layerDataConfig:Array<Layer>) {
 
@@ -979,7 +979,7 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  
+
   /** apply given layer configuration*/
   applyLayerConfiguration(configuration: LayerConfiguration) {
     if (configuration && this.map) {
@@ -1007,29 +1007,29 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  
+
   /** update vector added layers*/
   updateVectorDataLayers() {
     if (this.map != null) {
-      this.map.dispatchEvent("layersadded");  
+      this.map.dispatchEvent("layersadded");
     }
   }
 
   /** base layers*/
   baseLayers;
-  
+
   /** base layers gorups*/
   baseLayerGroups;
-  
+
   /** select base layer control*/
   selectBaseLayerControl;
-  
+
   /** situation layers*/
   situationMapLayers;
-  
+
   /** GetFeatureInfo control*/
   getFeatureInfoControl;
-  
+
   /** configure given array of group of layers as base layers*/
   configureBaseLayers(groups:Array<LayerGroup>) {
     var groupNames;
@@ -1050,7 +1050,7 @@ export class MapComponent implements OnInit {
       groupNames = [];
       for (var i = 0, iLen = groups.length; i < iLen; i++) {
         group = groups[i];
-        
+
         baseLayerGroup = new BaseLayerGroup();
         baseLayerGroup.id = group.id;
         if ((group.name != undefined) && (group.name != null)) {
@@ -1141,7 +1141,7 @@ export class MapComponent implements OnInit {
         });
       }
 
-      if (!this.situationMapLayers || 
+      if (!this.situationMapLayers ||
         (this.situationMapLayers.length == 0)) {
         //If there is no situation map configuration loaded then reload the overview with the new base layers
         this.updateOverviewMap();
@@ -1181,14 +1181,14 @@ export class MapComponent implements OnInit {
         layers = this.baseLayers;
       }
       if (this.overViewMapControl) {
-        for (var i = 0, iLen:number = 
+        for (var i = 0, iLen:number =
           this.overViewMapControl.getOverviewMap().getLayers().getLength(); i < iLen; i++) {
           this.overViewMapControl.getOverviewMap().removeLayer(
             this.overViewMapControl.getOverviewMap().getLayers().item(0)
           );
         }
         if (layers) {
-          for (var i = 0, iLen:number = 
+          for (var i = 0, iLen:number =
             layers.length; i < iLen; i++) {
             //Remove all layers but the base ones
             this.overViewMapControl.getOverviewMap().addLayer(layers[i]);
@@ -1197,7 +1197,7 @@ export class MapComponent implements OnInit {
       }
     }
   }
-  
+
   /** unsubscribe to component events*/
   unsubscribeMapConfigurationManager() {
     this.layerSubscription.unsubscribe();
@@ -1213,7 +1213,7 @@ export class MapComponent implements OnInit {
   ngOnDestroy(): void {
     this.unsubscribeMapConfigurationManager();
   }
-  
+
   /** init proj4 for coordinate transformation*/
   initProj4js() {
     // mercator
@@ -1324,7 +1324,7 @@ export class MapComponent implements OnInit {
     });
     ol.proj.addProjection(projection);
 	  */
-	
+
     // geographic
     proj4.defs("EPSG:4326", "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ");// wgs84
     /*
@@ -1351,25 +1351,25 @@ export class MapComponent implements OnInit {
     ol.proj.addProjection(projection);
     */
   }
-  
+
   /** overview map control*/
   overViewMapControl:ol.control.OverviewMap;
-    
+
   /** measurement control*/
   measurementToolControl;
-    
+
   /** scale line tool control*/
   scaleLineToolControl;
-    
+
   /** attribution tool control*/
-  attributionToolControl;  
-  
+  attributionToolControl;
+
   /** zoom control*/
   zoomToolControl;
-  
+
   /** location tool control*/
   locationToolControl;
-  
+
   /** component init handler*/
   ngOnInit() {
 
@@ -1430,11 +1430,11 @@ export class MapComponent implements OnInit {
         this.projection = mapConfig.mapProjection;
       }
 
-      if ((mapConfig.initialLat != null) && (mapConfig.initialLat != undefined) && 
+      if ((mapConfig.initialLat != null) && (mapConfig.initialLat != undefined) &&
           (mapConfig.initialLon != null) && (mapConfig.initialLon != undefined)) {
         initialCenter = [mapConfig.initialLon, mapConfig.initialLat];
 
-        if ((mapConfig.initialProjection != null) && (mapConfig.initialProjection != undefined) && 
+        if ((mapConfig.initialProjection != null) && (mapConfig.initialProjection != undefined) &&
             (mapConfig.initialProjection != this.projection)) {
             var projectionTo = new ol.proj.Projection({
               code: this.projection
@@ -1480,11 +1480,11 @@ export class MapComponent implements OnInit {
         initialZoom = this.mapOptions.zoom;
       }
 
-      if ((this.mapOptions.lon != undefined) && (this.mapOptions.lat != undefined) && 
+      if ((this.mapOptions.lon != undefined) && (this.mapOptions.lat != undefined) &&
           (this.mapOptions.lon != null) && (this.mapOptions.lat != null)) {
         initialCenter = [this.mapOptions.lon, this.mapOptions.lat];
 
-        if ((this.mapOptions.projection != undefined) && (this.mapOptions.projection != undefined) && 
+        if ((this.mapOptions.projection != undefined) && (this.mapOptions.projection != undefined) &&
         (this.mapOptions.projection != this.projection)) {
           var projectionTo = new ol.proj.Projection({
               code: this.projection
@@ -1528,15 +1528,15 @@ export class MapComponent implements OnInit {
       loading;
       loaded;
       progress;
-      
+
       /**
        * Renders a progress bar.
        */
-      constructor(opt_options) {  
+      constructor(opt_options) {
             var options = opt_options || {};
-            
+
             var element = document.createElement("DIV");
-            element.className = (options.progress?"ol-progress":"ol-loading") + 
+            element.className = (options.progress?"ol-progress":"ol-loading") +
             " ol-unselectable ol-control";
 
             super({
@@ -1545,7 +1545,7 @@ export class MapComponent implements OnInit {
             });
 
             this.progress = this.progress || options.progress;
-            
+
             this.loading = 0;
             this.loaded = 0;
 
@@ -1639,7 +1639,7 @@ export class MapComponent implements OnInit {
         this.hide(true);
       }
     }
-    
+
     /** Custom base layer selector control*/
     class SelectBaseLayerControl extends ol.control.Control{
 
@@ -1669,7 +1669,7 @@ export class MapComponent implements OnInit {
           this.layers = data.layers;
         }
 
-        if ((this.layerGroups && (this.layerGroups.length > 0)) && 
+        if ((this.layerGroups && (this.layerGroups.length > 0)) &&
             (this.layers && (this.layers.length > 0))) {
           //Show the first on the list
           if (data.groupNames) {
@@ -1680,7 +1680,7 @@ export class MapComponent implements OnInit {
               this.groupNames.push(this.layerGroups[i].name);
             }
           }
-          if ((data.selection != undefined) && 
+          if ((data.selection != undefined) &&
               (data.selection != null)) {
             this.selectedGroup = data.selection;
           } else {
@@ -1728,7 +1728,7 @@ export class MapComponent implements OnInit {
         }
       }
 
-      constructor(opt_options) {  
+      constructor(opt_options) {
         var options = opt_options || {};
 
         var element = document.createElement("DIV");
@@ -1746,7 +1746,7 @@ export class MapComponent implements OnInit {
 
         var this_ = this;
 
-        var controlBtn = document.createElement("BUTTON"); 
+        var controlBtn = document.createElement("BUTTON");
         if ((options.tooltip != null) && (options.tooltip != null)) {
           controlBtn.title = options.tooltip;
         }
@@ -1760,18 +1760,18 @@ export class MapComponent implements OnInit {
         controlBtn.appendChild(icon);
         element.appendChild(controlBtn);
         if (isEventSupported('touchstart')) {
-          controlBtn.addEventListener('touchstart', function() {  
+          controlBtn.addEventListener('touchstart', function() {
                 this_.showSelectionDialog();
               }, false);
         } else {
-          controlBtn.addEventListener('click', function() {  
+          controlBtn.addEventListener('click', function() {
                 this_.showSelectionDialog();
               }, false);
         }
 
         this.button = controlBtn;
 
-        this.toolContainer = element;            
+        this.toolContainer = element;
 
         this.onDataChanged({
           layerGroups: options.layerGroups,
@@ -1791,7 +1791,7 @@ export class MapComponent implements OnInit {
       showControlButton() {
         if (this.toolContainer) {
           this.toolContainer.style.display = "";
-          this.toolContainer.style.visibility = "visible";          
+          this.toolContainer.style.visibility = "visible";
           //TODO Notify control shown
         }
       }
@@ -1806,7 +1806,7 @@ export class MapComponent implements OnInit {
             this.hideControlButton();
           }
           var layerList = this.layerGroups[value].memberPositions;
-          if ((layerList == null) || (layerList == undefined) || (this.layers == null) || 
+          if ((layerList == null) || (layerList == undefined) || (this.layers == null) ||
               (this.layers == undefined)) {
             //No information for the requested type return
             //TODO raise error if needed be
@@ -1838,7 +1838,7 @@ export class MapComponent implements OnInit {
 
       button;
 
-      constructor(opt_options) {  
+      constructor(opt_options) {
         var options = opt_options || {};
 
         var icon = document.createElement('i');
@@ -1868,17 +1868,17 @@ export class MapComponent implements OnInit {
 
         function setGeolocationActive(active) {
           if (active) {
-            this_.geolocation.setTracking(true);   
+            this_.geolocation.setTracking(true);
             button.setAttribute("active", "true");
             button.className += " geolocation-active"
             icon.innerHTML = "my_location";
           } else {
-            this_.geolocation.setTracking(false);          
+            this_.geolocation.setTracking(false);
             button.setAttribute("active", "false");
             button.className = button.className.replace(" geolocation-active", "");
             icon.innerHTML = "my_location";
           }
-    
+
           if (this_.geolocationLayer != null) {
             this_.geolocationLayer.setVisible(active);
             try {
@@ -1903,20 +1903,20 @@ export class MapComponent implements OnInit {
             this_.geolocation = new ol.Geolocation({
               projection: this_.getMap().getView().getProjection()
             });
-    
+
             this_.geolocation.on('change', function(evt) {
               //Update information
             });
             this_.geolocation.on('error', function(evt) {
               setGeolocationActive(false);
             });
-    
+
             // GeoLocation accuracy
             /*var accuracyFeature = new ol.Feature();
             this_.geolocation.on('change:accuracyGeometry', function() {
               accuracyFeature.setGeometry(this_.geolocation.getAccuracyGeometry());
             });*/
-    
+
             // User position
             var positionFeature = new ol.Feature();
             positionFeature.setStyle(getPositionStyle());
@@ -1925,7 +1925,7 @@ export class MapComponent implements OnInit {
               positionFeature.setGeometry(coordinates ?
                 new ol.geom.Point(coordinates) : null);
             });
-    
+
             //Add vector layer
             this_.geolocationLayer = new ol.layer.Vector({
               map: this_.getMap(),
@@ -2053,7 +2053,7 @@ export class MapComponent implements OnInit {
 
         if (this.areaSelected || this.lengthSelected) {
           if (this.helpTooltipElement) {
-            this.helpTooltipElement.innerHTML = 
+            this.helpTooltipElement.innerHTML =
               this.areaSelected?this.continuePolygonMsg:this.continueLineMsg;
           }
         }
@@ -2216,7 +2216,7 @@ export class MapComponent implements OnInit {
               this_.helpTooltipElement.classList.remove('hidden');
             }
           };
-          
+
           this.mouseOutHandler = function (evt) {
             if (this_.helpTooltipElement) {
               this_.helpTooltipElement.classList.add('hidden');
@@ -2246,7 +2246,7 @@ export class MapComponent implements OnInit {
             for (var i = 0, iLen = this.overlayCount; i < iLen; i++) {
               overlay = this.map.getOverlayById("measurement-tooltip-" + i);
               if (overlay != null) {
-                this.map.removeOverlay(overlay);  
+                this.map.removeOverlay(overlay);
               }
             }
           }
@@ -2269,14 +2269,14 @@ export class MapComponent implements OnInit {
         if (typeSelected == "area") {
           this.buttonArea.className += " tool-active";
           this.buttonArea.setAttribute("tool-active", "true");
-          this.buttonLength.className = 
+          this.buttonLength.className =
             this.buttonLength.className.replace(" tool-active", "");
           this.buttonLength.setAttribute("tool-active", "false");
           this.areaSelected = true;
         } else {
           this.buttonLength.className += " tool-active";
           this.buttonLength.setAttribute("tool-active", "true");
-          this.buttonArea.className  = 
+          this.buttonArea.className  =
             this.buttonArea.className.replace(" tool-active", "");
           this.buttonArea.setAttribute("tool-active", "false");
           this.lengthSelected = true;
@@ -2296,12 +2296,12 @@ export class MapComponent implements OnInit {
         }
         this.removeDrawInteraction();
         if (typeSelected == "area") {
-          this.buttonArea.className = 
+          this.buttonArea.className =
             this.buttonArea.className.replace(" tool-active", "");
           this.buttonArea.setAttribute("tool-active", "false");
           this.areaSelected = false;
         } else {
-          this.buttonLength.className = 
+          this.buttonLength.className =
             this.buttonLength.className.replace(" tool-active", "");
           this.buttonLength.setAttribute("tool-active", "false");
           this.lengthSelected = false;
@@ -2482,7 +2482,7 @@ export class MapComponent implements OnInit {
 
     //Custom scalebar control
     class ScaleBarControl extends ol.control.Control{
-      
+
       innerElement_;
       element_;
       viewState_ ;
@@ -2505,11 +2505,11 @@ export class MapComponent implements OnInit {
 
         var options = opt_options || {};
 
-        var className = options.className !== undefined ? options.className : 'ol-scale-line';      
+        var className = options.className !== undefined ? options.className : 'ol-scale-line';
         var minWidth = options.minWidth !== undefined ? options.minWidth : 64;
 
         var innerElement = document.createElement('DIV');
-        innerElement.className = className + '-inner';      
+        innerElement.className = className + '-inner';
         var element = document.createElement('DIV');
         element.className = className + ' ' + 'ol-unselectable';
         element.appendChild(innerElement);
@@ -2521,7 +2521,7 @@ export class MapComponent implements OnInit {
             this.updateElement();
           }
         }
-        
+
         super({
           element: element,
           render: options.render?options.render:render,
@@ -2549,7 +2549,7 @@ export class MapComponent implements OnInit {
         this.topInUnits = "m";
         this.bottomOutUnits = "mi";
         this.bottomInUnits = "ft";
-      
+
         this.setUnits((options.units) ||
                         SCALE_BAR_UNITS.METRIC);
       }
@@ -2639,25 +2639,25 @@ export class MapComponent implements OnInit {
        * {Integer} Maximum width of the scale line in pixels.  Default is 100.
        */
       maxWidth;
-      
+
       /**
       * Property: topOutUnits
       * {String} Units for zoomed out on top bar.  Default is km.
       */
       topOutUnits;
-      
+
       /**
         * Property: topInUnits
         * {String} Units for zoomed in on top bar.  Default is m.
         */
       topInUnits;
-  
+
       /**
         * Property: bottomOutUnits
         * {String} Units for zoomed out on bottom bar.  Default is mi.
         */
       bottomOutUnits;
-  
+
       /**
         * Property: bottomInUnits
         * {String} Units for zoomed in on bottom bar.  Default is ft.
@@ -2668,7 +2668,7 @@ export class MapComponent implements OnInit {
         // nearest power of 10 lower than maxLen
         var digits = parseInt((Math.log(maxLen) / Math.log(10)) + "");
         var pow10 = Math.pow(10, digits);
-        
+
         // ok, find first character
         var firstChar = parseInt((maxLen / pow10) + "");
 
@@ -2714,7 +2714,7 @@ export class MapComponent implements OnInit {
             maxSizeData *= geodesicRatio;
         }
 
-        // decide whether to use large or small scale units     
+        // decide whether to use large or small scale units
         var topUnits;
         var bottomUnits;
         if(maxSizeData > 100000) {
@@ -2740,33 +2740,33 @@ export class MapComponent implements OnInit {
         // and to pixel units
         var topPx = topMax / res / geodesicRatio;
         var bottomPx = bottomMax / res / geodesicRatio;
-        
+
         // now set the pixel widths
         // and the values inside them
 
         if (this.innerElement_) {
           //Update bar width with top value always
-          this.innerElement_.style.width = Math.round(topPx) + "px"; 
+          this.innerElement_.style.width = Math.round(topPx) + "px";
         }
-        
+
         if (this.eBottom && this.eBottom.style && (this.eBottom.style.visibility == "visible")) {
             //Update bottom bar width with its corresponding value
-            this.eBottom.style.width = Math.round(bottomPx) + "px"; 
+            this.eBottom.style.width = Math.round(bottomPx) + "px";
             this.eBottom.innerHTML = bottomRounded + " " + bottomUnits ;
         }
-            
+
         if (this.eTop && this.eTop.style && (this.eTop.style.visibility == "visible")) {
             //this.eTop.style.width = Math.round(topPx) + "px";
             this.eTop.innerHTML = topRounded + " " + topUnits;
         }
 
         if (this.element_) {
-          var scale = MapComponent.getScaleFromResolution(this.getMap().getView().getResolution(), 
+          var scale = MapComponent.getScaleFromResolution(this.getMap().getView().getResolution(),
                                                 this.getMap().getView().getProjection().getUnits());
           // update the element title and width
           this.element_.title = this.tooltipMessage + this.formatNumber(scale);
         }
-        
+
       }
 
       getGeodesicPixelSize(px?) {
@@ -2788,7 +2788,7 @@ export class MapComponent implements OnInit {
             bottom = ol.proj.transform(bottom, source, dest);
             top = ol.proj.transform(top, source, dest);
         }
-        
+
         return [
             distVincenty(left, right),//w
             distVincenty(bottom, top)//h
@@ -2842,7 +2842,7 @@ export class MapComponent implements OnInit {
     var distVincenty = function(p1, p2) {
       var ct = VincentyConstants;
       var a = ct.a, b = ct.b, f = ct.f;
-  
+
       var L = rad(p2.lon - p1.lon);
       var U1 = Math.atan((1-f) * Math.tan(rad(p1.lat)));
       var U2 = Math.atan((1-f) * Math.tan(rad(p2.lat)));
@@ -2880,7 +2880,7 @@ export class MapComponent implements OnInit {
       return d;
     };
 
-    const PROJECTION_INCHES_PER_UNIT = { 
+    const PROJECTION_INCHES_PER_UNIT = {
       'inches': 1.0,
       'ft': 12.0,
       'mi': 63360.0,
@@ -2974,7 +2974,7 @@ export class MapComponent implements OnInit {
           );
         }
       }
-      
+
       createGetFeatureInfoUrl(layer:ol.layer.Layer, location) {
         //Example
         //http://sitmun.diba.cat/arcgis/services/PUBLIC/DTE50/MapServer/WMSServer?SERVICE=WMS&REQUEST=GetFeatureInfo&LAYERS=DTE50_MUN&QUERY_LAYERS=DTE50_MUN&EXCEPTIONS=INIMAGE&VERSION=1.3.0&TRANSPARENT=true&FORMAT=image/png8&STYLES=&CRS=EPSG:25831&INFO_FORMAT=text/xml&WIDTH=1355&HEIGHT=753&BBOX=297073.421925,4554115.600155,548030.578075,4693577.399845&I=438&J=286
@@ -2985,7 +2985,7 @@ export class MapComponent implements OnInit {
         if (source instanceof ol.source.TileWMS) {
           var tileWmsSource:ol.source.TileWMS = source;
           return tileWmsSource.getGetFeatureInfoUrl(
-            location, 
+            location,
             this.getMap().getView().getResolution(),
             this.getMap().getView().getProjection(),
             params
@@ -2993,14 +2993,14 @@ export class MapComponent implements OnInit {
         } else if (source instanceof ol.source.ImageWMS) {
           var imageWmsSource:ol.source.ImageWMS = source;
           return imageWmsSource.getGetFeatureInfoUrl(
-            location, 
+            location,
             this.getMap().getView().getResolution(),
             this.getMap().getView().getProjection(),
             params);
         }
 		    return null;
       }
-      
+
       getQueryRequests(location):Array<FeatureInfoRequestData> {
         var requests = new Array<FeatureInfoRequestData>();
         //Crear peticiones get feature info para cada capa visible
@@ -3030,7 +3030,7 @@ export class MapComponent implements OnInit {
           };
         }
       }
-      
+
       activate() {
         if (this.disabled) {
           return;
@@ -3050,7 +3050,7 @@ export class MapComponent implements OnInit {
           this.getMap().on("click", this.listener);
         }
       }
-      
+
       deactivate() {
         if (this.active) {
           if (this.button) {
@@ -3067,7 +3067,7 @@ export class MapComponent implements OnInit {
         }
       }
 
-      constructor(opt_options) {  
+      constructor(opt_options) {
         var options = opt_options || {};
 
         var element = document.createElement("DIV");
@@ -3089,7 +3089,7 @@ export class MapComponent implements OnInit {
 
         var this_ = this;
 
-        var controlBtn = document.createElement("BUTTON"); 
+        var controlBtn = document.createElement("BUTTON");
         if ((options.tooltip != null) && (options.tooltip != null)) {
           controlBtn.title = options.tooltip;
         }
@@ -3115,13 +3115,13 @@ export class MapComponent implements OnInit {
 
         this.button = controlBtn;
 
-        this.toolContainer = element;            
+        this.toolContainer = element;
 
         this.onDataChanged({
           layers: options.layers
         });
       }
-      
+
       enableTool() {
         this.disabled = false;
         if (this.button) {
@@ -3130,7 +3130,7 @@ export class MapComponent implements OnInit {
           }
         }
       }
-      
+
       disableTool() {
         this.disabled = true;
 		    this.deactivate();
@@ -3153,7 +3153,7 @@ export class MapComponent implements OnInit {
       showTool() {
         if (this.toolContainer) {
           this.toolContainer.style.display = "";
-          this.toolContainer.style.visibility = "visible";          
+          this.toolContainer.style.visibility = "visible";
           //TODO Notify control shown
         }
       }
@@ -3253,7 +3253,7 @@ export class MapComponent implements OnInit {
     //////////////////////////////////
 
     // Scale line control
-    this.scaleLineToolControl = 
+    this.scaleLineToolControl =
                             new ScaleBarControl({
                               showTopBar: true,//metric
                               showBottomBar: false,//non-metric
@@ -3355,7 +3355,7 @@ export class MapComponent implements OnInit {
 
     var mapStatus = new MapComponentStatus();
     mapStatus.loaded = true;
-    //Notify the map has been initialized and is ready 
+    //Notify the map has been initialized and is ready
     this.mapConfigurationManagerService.setMapComponentStatus(mapStatus);
   }
 
@@ -3364,7 +3364,7 @@ export class MapComponent implements OnInit {
     var normScale=(scale>1.0)?(1.0/scale):scale;
     return normScale;
   }
-  
+
   /** get scale from given resolution*/
   public static getScaleFromResolution(resolution, units?) {
     units = units?units:"m";
@@ -3373,7 +3373,7 @@ export class MapComponent implements OnInit {
     var inchesPerMeter = 39.37;
     return (resolution * (mpu * inchesPerMeter * dpi));
   }
-  
+
   /** get resolution from given scale*/
   public static getResolutionFromScale(scale, units?) {
     units = units?units:"m";
@@ -3386,7 +3386,7 @@ export class MapComponent implements OnInit {
 
   /** defaults loaded?*/
   defaultsLoaded:boolean = false;
-  
+
   /** load default map configuration*/
   loadDefaultMapConfiguration() {
     //Load default configuration
@@ -3402,12 +3402,12 @@ export class MapComponent implements OnInit {
 
   /** default initial zoom*/
   defaultInitialZoom = 0;
-  
+
   /** setdefault initial zoom*/
   setDefaultInitialZoom(zoom) {
     this.defaultInitialZoom = zoom;
   }
-  
+
   /** get default initial zoom*/
   getDefaultInitialZoom():number {
     return this.defaultInitialZoom;
@@ -3415,82 +3415,82 @@ export class MapComponent implements OnInit {
 
   /** default initial lon*/
   defaultInitialLon = 405808.5;
-  
+
   /** set default initial lon*/
   setDefaultInitialLon(lon) {
     this.defaultInitialLon = lon;
   }
-  
+
   /** get default initial lon*/
   getDefaultInitialLon():number {
     return this.defaultInitialLon;
   }
-  
+
   /** default initial lat*/
   defaultInitialLat = 4623846.5;
-  
+
   /** set default initial lat*/
   setDefaultInitialLat(lat) {
     this.defaultInitialLat = lat;
   }
-  
+
   /** get default initial lat*/
   getDefaultInitialLat():number {
     return this.defaultInitialLat;
   }
-  
+
   /** default tile height*/
   defaultTileHeight = 500;
-  
+
   /** set default tile height*/
   setDefaultTileHeight(height) {
     this.defaultTileHeight = height;
   }
-  
+
   /** get default tile height*/
   getDefaultTileHeight():number {
     return this.defaultTileHeight;
   }
-  
+
   /** set default tile width*/
   defaultTileWidth = 500;
-  
+
   /** set default tile width*/
   setDefaultTileWidth(width) {
     this.defaultTileWidth = width;
   }
-  
+
   /** get default tile width*/
   getDefaultTileWidth():number {
     return this.defaultTileWidth;
   }
-  
+
   /** default map max scale*/
   defaultMapMaxScale = 3000000;
-  
+
   /** set default map max scale*/
   setDefaultMapMaxScale(scale) {
     this.defaultMapMaxScale = scale;
   }
-  
+
   /** get default map max scale*/
   getDefaultMapMaxScale():number {
     return this.defaultMapMaxScale;
   }
-  
+
   /** default map min scale*/
   defaultMapMinScale = 3000;
-  
+
   /** set default map min scale*/
   setDefaultMapMinScale(scale) {
     this.defaultMapMinScale = scale;
   }
-  
+
   /** get default map min scale*/
   getDefaultMapMinScale():number {
     return this.defaultMapMinScale;
   }
-  
+
   /** default map maximum extent*/
   defaultMapMaxExtent:[number, number, number, number] = [
     320000, //xMin
@@ -3498,12 +3498,12 @@ export class MapComponent implements OnInit {
     491617, //xMax
     4686464 //yMax
   ];
-  
+
   /** set default map maximum extent*/
   setDefaultMapMaxExtent(extent) {
     this.defaultMapMaxExtent = extent;
   }
-  
+
   /** get default map maximum extent*/
   getDefaultMapMaxExtent():[number, number, number, number] {
     return this.defaultMapMaxExtent;
@@ -3527,12 +3527,12 @@ export class MapComponent implements OnInit {
     ​0.2645831904584105,
     ​0.1322915952292052
   ];
-  
+
   /** set default map resolutions*/
   setDefaultMapResolutions(resolutions) {
     this.defaultMapResolutions = resolutions;
   }
-  
+
   /** get default map resolutions*/
   getDefaultMapResolutions() {
     return this.defaultMapResolutions;
@@ -3556,29 +3556,29 @@ export class MapComponent implements OnInit {
     1000,
     500
   ];
-  
+
   /** set default map scales*/
   setDefaultMapScales(scales) {
     this.defaultMapScales = scales;
   }
-  
+
   /** get default map scales*/
   getDefaultMapScales() {
     return this.defaultMapScales;
   }
-  
+
   /** default map info format*/
   defaultMapInfoFormat:string = "text/xml";
   setDefaultMapInfoFormat(format:string) {
     this.defaultMapInfoFormat = format;
   }
-  
+
   /** get default map info format*/
   getDefaultMapInfoFormat():string {
     return this.defaultMapInfoFormat;
   }
 
-  
+
   /** get default map configuration*/
   getDefaultMapConfiguration() {
     var configuration = new MapConfiguration();
@@ -3596,9 +3596,9 @@ export class MapComponent implements OnInit {
     configuration.mapMaxExtent = this.getDefaultMapMaxExtent();
     configuration.mapResolutions = this.getDefaultMapResolutions();
     */
-    return configuration;   
+    return configuration;
   }
-  
+
   /** get default map options configuration*/
   getDefaultMapOptionsConfiguration() {
     var configuration = new MapOptionsConfiguration();
@@ -3610,9 +3610,9 @@ export class MapComponent implements OnInit {
     configuration.minScale = this.getDefaultMapMinScale();
     configuration.maxExtent = this.getDefaultMapMaxExtent();
     configuration.scales = this.getDefaultMapScales().join(",");
-    return configuration;   
+    return configuration;
   }
-  
+
   /** get default base layers configuration*/
   getDefaultBaseLayersConfiguration() {
     var baseLayers = new Array<LayerGroup>();
@@ -3632,11 +3632,11 @@ export class MapComponent implements OnInit {
     layer["url_bgcolor"] = "0x000000";
     layer["extent"] = null;
     layer["title"] = "Base Mapa - imgmapa";
-    layer["serverName"] = "226-212-210-245"; 
-    layer["id"] = "226-212-210-245"; 
-    layer["format"] = "png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["serverName"] = "226-212-210-245";
+    layer["id"] = "226-212-210-245";
+    layer["format"] = "png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
     layer["isBaseLayer"] = false;
     layer["name"] = "M_PROV_FONS,M_EURB_250M,M_EDIF_1M_141A,M_BTE50_412A,M_EDIF_1M_611A,M_XHE50_111L,M_BTE50_313L_FFCC,M_EIX,M_EIX_sobre_EDIF,M_XCE50_AUTO,M_XCE50_BASICA,M_XCE50_LOCAL,M_XCE50_ALTRES,M_XCE50_AUTO_f,M_XCE50_BASICA_f,M_XCE50_LOCAL_f,M_XCE50_ALTRES_f,M_MUNIS_f,M_MUNIS";
     layer["tiled"] = false;
@@ -3646,39 +3646,39 @@ export class MapComponent implements OnInit {
     layer["visibility"] = false;
     layer["queryable"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
-    layer["desc"] = ""; 
-    layer["url_transparent"] = "TRUE"; 
-    layer["url_bgcolor"] = "0x000000"; 
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
+    layer["desc"] = "";
+    layer["url_transparent"] = "TRUE";
+    layer["url_bgcolor"] = "0x000000";
     layer["extent"] = null;
-    layer["title"] = "Base Mapa - imgmapa_et"; 
-    layer["serverName"] = "226-212-210-238"; 
-    layer["id"] = "226-212-210-238"; 
-    layer["format"] = "png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["title"] = "Base Mapa - imgmapa_et";
+    layer["serverName"] = "226-212-210-238";
+    layer["id"] = "226-212-210-238";
+    layer["format"] = "png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_MUNIS"; 
+    layer["name"] = "M_MUNIS";
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
-    
+
     layer = new Layer();
     layer["visibility"] = false;
     layer["queryable"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
-    layer["desc"] = ""; 
-    layer["url_transparent"] = "TRUE"; 
-    layer["url_bgcolor"] = "0x000000"; 
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
+    layer["desc"] = "";
+    layer["url_transparent"] = "TRUE";
+    layer["url_bgcolor"] = "0x000000";
     layer["extent"] = null;
-    layer["title"] = "Base Mapa - imgeix"; 
-    layer["serverName"] = "226-212-210-247"; 
-    layer["id"] = "226-212-210-247"; 
-    layer["format"] = "png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["title"] = "Base Mapa - imgeix";
+    layer["serverName"] = "226-212-210-247";
+    layer["id"] = "226-212-210-247";
+    layer["format"] = "png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_EIX_ET,M_EDI_ET,M_MUNIS_ET"; 
+    layer["name"] = "M_EIX_ET,M_EDI_ET,M_MUNIS_ET";
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
 
@@ -3693,21 +3693,21 @@ export class MapComponent implements OnInit {
     layer["visibility"] = false;
     layer["queryable"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
-    layer["desc"] = ""; 
-    layer["url_transparent"] = "TRUE"; 
-    layer["url_bgcolor"] = "0x000000"; 
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
+    layer["desc"] = "";
+    layer["url_transparent"] = "TRUE";
+    layer["url_bgcolor"] = "0x000000";
     layer["extent"] = [254904.96, 4484796.89, 530907.3, 4749795.1];
-    layer["title"] = "Base Aerial - ICC1"; 
-    layer["serverName"] = "272-266-258-252"; 
-    layer["id"] = "272-266-258-252"; 
-    layer["format"] = "image/png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://mapcache.icc.cat/map/bases/service"; 
+    layer["title"] = "Base Aerial - ICC1";
+    layer["serverName"] = "272-266-258-252";
+    layer["id"] = "272-266-258-252";
+    layer["format"] = "image/png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://mapcache.icc.cat/map/bases/service";
     layer["isBaseLayer"] = false;
-    layer["name"] = "orto"; 
+    layer["name"] = "orto";
     layer["tiled"] = true;
-    layer["tileHeight"] = 256; 
+    layer["tileHeight"] = 256;
     layer["tileWidth"] = 256;
     layerGroup.layers.push(layer);
 
@@ -3715,19 +3715,19 @@ export class MapComponent implements OnInit {
     layer["visibility"] = false;
     layer["queryable"] = false;
     layer["opacity"] = 0.7;
-    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
-    layer["desc"] = ""; 
-    layer["url_transparent"] = "TRUE"; 
-    layer["url_bgcolor"] = "0xFEFEFE"; 
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
+    layer["desc"] = "";
+    layer["url_transparent"] = "TRUE";
+    layer["url_bgcolor"] = "0xFEFEFE";
     layer["extent"] = null;
-    layer["title"] = "Base Aerial - imgaeria_fons"; 
-    layer["serverName"] = "272-266-258-256"; 
-    layer["id"] = "272-266-258-256"; 
-    layer["format"] = "image/png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["title"] = "Base Aerial - imgaeria_fons";
+    layer["serverName"] = "272-266-258-256";
+    layer["id"] = "272-266-258-256";
+    layer["format"] = "image/png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_PROV_FONS,M_MUNIS"; 
+    layer["name"] = "M_PROV_FONS,M_MUNIS";
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
 
@@ -3735,24 +3735,24 @@ export class MapComponent implements OnInit {
     layer["visibility"] = false;
     layer["queryable"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
-    layer["desc"] = ""; 
-    layer["url_transparent"] = "TRUE"; 
-    layer["url_bgcolor"] = "0x000000"; 
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
+    layer["desc"] = "";
+    layer["url_transparent"] = "TRUE";
+    layer["url_bgcolor"] = "0x000000";
     layer["extent"] = null;
-    layer["title"] = "Base Aerial - imgeix"; 
-    layer["serverName"] = "272-266-258-281"; 
-    layer["id"] = "272-266-258-281"; 
-    layer["format"] = "png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["title"] = "Base Aerial - imgeix";
+    layer["serverName"] = "272-266-258-281";
+    layer["id"] = "272-266-258-281";
+    layer["format"] = "png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_EIX_ET,M_EDI_ET,M_MUNIS_ET"; 
+    layer["name"] = "M_EIX_ET,M_EDI_ET,M_MUNIS_ET";
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
 
     baseLayers.push(layerGroup);
-    
+
     layerGroup = new LayerGroup();
     layerGroup.id = "hybrid";
     layerGroup.name = "Hìbrida";
@@ -3762,21 +3762,21 @@ export class MapComponent implements OnInit {
     layer["visibility"] = false;
     layer["queryable"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
-    layer["desc"] = ""; 
-    layer["url_transparent"] = "TRUE"; 
-    layer["url_bgcolor"] = "0x000000"; 
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
+    layer["desc"] = "";
+    layer["url_transparent"] = "TRUE";
+    layer["url_bgcolor"] = "0x000000";
     layer["extent"] = [254904.96, 4484796.89, 530907.3, 4749795.1];
-    layer["title"] = "Base Aerial - ICC2"; 
-    layer["serverName"] = "273-267-265-254"; 
-    layer["id"] = "273-267-265-254"; 
-    layer["format"] = "image/png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://mapcache.icc.cat/map/bases/service"; 
+    layer["title"] = "Base Aerial - ICC2";
+    layer["serverName"] = "273-267-265-254";
+    layer["id"] = "273-267-265-254";
+    layer["format"] = "image/png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://mapcache.icc.cat/map/bases/service";
     layer["isBaseLayer"] = false;
-    layer["name"] = "orto"; 
+    layer["name"] = "orto";
     layer["tiled"] = true;
-    layer["tileHeight"] = 256; 
+    layer["tileHeight"] = 256;
     layer["tileWidth"] = 256;
     layerGroup.layers.push(layer);
 
@@ -3784,17 +3784,17 @@ export class MapComponent implements OnInit {
     layer["visibility"] = false;
     layer["queryable"] = false;
     layer["opacity"] = 0.7;
-    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
-    layer["desc"] = ""; 
-    layer["url_transparent"] = "TRUE"; 
-    layer["url_bgcolor"] = "0xFEFEFE"; 
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
+    layer["desc"] = "";
+    layer["url_transparent"] = "TRUE";
+    layer["url_bgcolor"] = "0xFEFEFE";
     layer["extent"] = null;
-    layer["title"] = "Base Hybrid - imghibrid_fons"; 
-    layer["serverName"] = "273-267-265-259"; 
-    layer["id"] = "273-267-265-259"; 
-    layer["format"] = "image/png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["title"] = "Base Hybrid - imghibrid_fons";
+    layer["serverName"] = "273-267-265-259";
+    layer["id"] = "273-267-265-259";
+    layer["format"] = "image/png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
     layer["isBaseLayer"] = false;
     layer["name"] = "M_PROV_FONS,M_EURB_250M,M_EDIF_1M_141A,M_EDIF_1M_611A,M_EIX,M_EIX_sobre_EDIF";
     layer["tiled"] = false;
@@ -3804,17 +3804,17 @@ export class MapComponent implements OnInit {
     layer["visibility"] = false;
     layer["queryable"] = false;
     layer["opacity"] = 0.85;
-    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
-    layer["desc"] = ""; 
-    layer["url_transparent"] = "TRUE"; 
-    layer["url_bgcolor"] = "0x000000"; 
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
+    layer["desc"] = "";
+    layer["url_transparent"] = "TRUE";
+    layer["url_bgcolor"] = "0x000000";
     layer["extent"] = null;
-    layer["title"] = "Base Hybrid - imghibrid_ctra"; 
-    layer["serverName"] = "273-267-265-261"; 
-    layer["id"] = "273-267-265-261"; 
-    layer["format"] = "png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["title"] = "Base Hybrid - imghibrid_ctra";
+    layer["serverName"] = "273-267-265-261";
+    layer["id"] = "273-267-265-261";
+    layer["format"] = "png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
     layer["isBaseLayer"] = false
     layer["name"] = "IH_XCE50_AUTO,IH_XCE50_BASICA,IH_XCE50_LOCAL,IH_XCE50_ALTRES,M_XCE50_AUTO_f,M_XCE50_BASICA_f,M_XCE50_LOCAL_f,M_XCE50_ALTRES_f";
     layer["tiled"] = false;
@@ -3824,31 +3824,31 @@ export class MapComponent implements OnInit {
     layer["visibility"] = false;
     layer["queryable"] = false;
     layer["opacity"] = 1;
-    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya"; 
-    layer["desc"] = ""; 
-    layer["url_transparent"] = "TRUE"; 
-    layer["url_bgcolor"] = "0x000000"; 
+    layer["attributions"] = "© Institut Cartogràfíc i Geològic de Catalunya";
+    layer["desc"] = "";
+    layer["url_transparent"] = "TRUE";
+    layer["url_bgcolor"] = "0x000000";
     layer["extent"] = null;
-    layer["title"] = "Base Hybrid - imghibrid_et"; 
-    layer["serverName"] = "273-267-265-263"; 
-    layer["id"] = "273-267-265-263"; 
-    layer["format"] = "png"; 
-    layer["version"] = "1.1.1"; 
-    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer"; 
+    layer["title"] = "Base Hybrid - imghibrid_et";
+    layer["serverName"] = "273-267-265-263";
+    layer["id"] = "273-267-265-263";
+    layer["format"] = "png";
+    layer["version"] = "1.1.1";
+    layer["url"] = "http://sitmun.diba.cat/arcgis/services/PUBLIC/GCA_WEB/MapServer/WMSServer";
     layer["isBaseLayer"] = false;
-    layer["name"] = "M_MUNIS"; 
+    layer["name"] = "M_MUNIS";
     layer["tiled"] = false;
     layerGroup.layers.push(layer);
-    
+
     baseLayers.push(layerGroup);
-    
+
     return baseLayers;
   }
-  
+
   /** parse given format*/
   parseFormat(format:String) {
     return ((format.indexOf("image") == -1)?
-                "image/":"") + 
+                "image/":"") +
                 format;
   }
 }

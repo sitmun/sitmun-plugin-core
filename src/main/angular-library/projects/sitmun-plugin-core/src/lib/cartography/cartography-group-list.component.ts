@@ -1,7 +1,7 @@
-import {CartographyGroup } from './cartography-group.model';
-import {CartographyGroupService } from './cartography-group.service';
+import {CartographyGroup } from 'sitmun-frontend-core';
+import {CartographyGroupService } from 'sitmun-frontend-core';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatTableDataSource, MatPaginator } from '@angular/material'; 
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 
 /** Component for managing cartography groups*/
 @Component({
@@ -10,28 +10,28 @@ import { MatTableDataSource, MatPaginator } from '@angular/material';
   styleUrls: ['./cartography-group-list.component.css']
 })
 export class CartographyGroupListComponent implements OnInit {
-  
+
   /** cartography groups to manage */
   items:CartographyGroup[];
-  
+
   /** Table displayed columns */
   displayedColumns = ['name','actions'];
-  
+
   /** MatTableDataSource for table display */
   dataSource = new MatTableDataSource<CartographyGroup>(this.items);
 
   /** Paginator for table display */
   @ViewChild(MatPaginator) paginator: MatPaginator;
-    
+
   /** Component constructor */
   constructor( private cartographyGroupService:CartographyGroupService ) { }
-  
+
   /** On component init, get all data dependencies */
   ngOnInit() {
     this.getAllCartographyGroups();
-    
+
   }
-  
+
   /** load all cartography groups*/
   getAllCartographyGroups() {
     this.cartographyGroupService.getAll()
@@ -42,13 +42,13 @@ export class CartographyGroupListComponent implements OnInit {
 
     });
   }
-  
+
   /** remove cartography group*/
   remove(item:CartographyGroup) {
     this.cartographyGroupService.delete(item).subscribe(result => {
       this.getAllCartographyGroups();
     }, error => console.error(error));
-     
+
   }
 
 }
