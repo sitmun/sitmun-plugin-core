@@ -68,6 +68,7 @@ import { ApplicationBackgroundListComponent,ApplicationBackgroundEditDialog } fr
 import { TaskUIEditComponent } from './task/task-ui-edit.component';
 import { TaskUIListComponent } from './task/task-ui-list.component';
 import {SitmunFrontendCoreModule} from 'sitmun-frontend-core';
+import {Principal} from 'sitmun-frontend-core';
 
 /** load i18n assets*/
 export function createTranslateLoader(http: HttpClient) {
