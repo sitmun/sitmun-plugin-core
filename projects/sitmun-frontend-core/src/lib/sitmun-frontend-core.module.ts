@@ -38,7 +38,8 @@ import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
 import { HasAnyAuthorityOnTerritoryDirective } from './auth/has-any-authority-on-territory.directive';
 import { LoginService } from './auth/login.service';
 import { AccountService } from './account/account.service';
-import {UserPosition} from './user/user-position.model';
+import { UserPosition} from './user/user-position.model';
+
 
 /** SITMUN frontend core module */
 @NgModule({
@@ -61,7 +62,53 @@ export class SitmunFrontendCoreModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: SitmunFrontendCoreModule,
-      providers: [ Principal ]
+      providers: [
+        TerritoryService,
+        TerritoryTypeService,
+        RoleService,
+        AccountService,
+        AuthService,
+        UserService,
+        ConnectionService,
+        TaskService,
+        TaskTypeService,
+        TaskUIService,
+        TaskGroupService,
+        TaskParameterService,
+        TaskAvailabilityService,
+        ServiceService,
+        ServiceParameterService,
+        CartographyService,
+        CartographyGroupService,
+        CartographyAvailabilityService,
+        BackgroundService,
+        TreeService,
+        TreeNodeService,
+        ApplicationService,
+        ApplicationParameterService,
+        ApplicationBackgroundService,
+        AuthInterceptor,
+        AuthExpiredInterceptor,
+        Principal,
+        UserPositionService,
+        UserConfigurationService,
+        LoginService,
+        /*MapConfigurationManagerService,
+        {
+          provide: MatPaginatorIntl,
+          useFactory: (createMatPaginationService),
+          deps: [TranslateService]
+        }, {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthInterceptor,
+          multi: true
+        }
+        , {
+          provide: HTTP_INTERCEPTORS,
+          useClass: AuthExpiredInterceptor,
+          multi: true
+        }*/
+      ]
     };
   }
 }
