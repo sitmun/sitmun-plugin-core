@@ -229,4 +229,9 @@ export function createMatPaginationService(translate: TranslateService){
         SitmunFrontendCoreModule]
 })
 export class SitmunPluginCoreModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: SitmunFrontendCoreModule
+    };
+  }
 }
