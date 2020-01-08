@@ -1,7 +1,7 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HTTP_INTERCEPTORS}  from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AngularHalModule } from 'angular-hal';
 
@@ -39,6 +39,13 @@ import { HasAnyAuthorityOnTerritoryDirective } from './auth/has-any-authority-on
 import { LoginService } from './auth/login.service';
 import { AccountService } from './account/account.service';
 import { UserPosition} from './user/user-position.model';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+
+/** load i18n assets*/
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 
 /** SITMUN frontend core module */
@@ -48,6 +55,13 @@ import { UserPosition} from './user/user-position.model';
     HttpClientModule,
     CommonModule,
     AngularHalModule,*/
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
   ],
   declarations: [
     HasAnyAuthorityDirective,
@@ -55,7 +69,8 @@ import { UserPosition} from './user/user-position.model';
   ],
   exports: [
     HasAnyAuthorityDirective,
-    HasAnyAuthorityOnTerritoryDirective
+    HasAnyAuthorityOnTerritoryDirective,
+    TranslateModule
   ]
 })
 export class SitmunFrontendCoreModule {
@@ -93,12 +108,8 @@ export class SitmunFrontendCoreModule {
         UserPositionService,
         UserConfigurationService,
         LoginService,
-        /*MapConfigurationManagerService,
+        MapConfigurationManagerService,
         {
-          provide: MatPaginatorIntl,
-          useFactory: (createMatPaginationService),
-          deps: [TranslateService]
-        }, {
           provide: HTTP_INTERCEPTORS,
           useClass: AuthInterceptor,
           multi: true
@@ -107,7 +118,7 @@ export class SitmunFrontendCoreModule {
           provide: HTTP_INTERCEPTORS,
           useClass: AuthExpiredInterceptor,
           multi: true
-        }*/
+        }
       ]
     };
   }

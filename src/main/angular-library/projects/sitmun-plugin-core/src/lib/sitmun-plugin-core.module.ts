@@ -11,7 +11,7 @@ import {  MatPaginatorIntl} from '@angular/material';
 
 //import * as ol from 'openlayers';
 import {TranslateModule, TranslateLoader,TranslateService} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
 
 import { AngularHalModule } from 'angular-hal';
 
@@ -68,12 +68,7 @@ import { ApplicationBackgroundListComponent,ApplicationBackgroundEditDialog } fr
 import { TaskUIEditComponent } from './task/task-ui-edit.component';
 import { TaskUIListComponent } from './task/task-ui-list.component';
 import {SitmunFrontendCoreModule} from 'sitmun-frontend-core';
-import {Principal} from 'sitmun-frontend-core';
 
-/** load i18n assets*/
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
 
 /** create Material Design pagination service*/
 export function createMatPaginationService(translate: TranslateService){
@@ -108,13 +103,6 @@ export function createMatPaginationService(translate: TranslateService){
     AngularHalModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    TranslateModule.forRoot({
-      loader: {
-        provide: TranslateLoader,
-        useFactory: (createTranslateLoader),
-        deps: [HttpClient]
-      }
-    }),
     SitmunFrontendCoreModule
   ],
   declarations: [
@@ -188,6 +176,13 @@ export function createMatPaginationService(translate: TranslateService){
     TreeNodeEditDialog,
     ApplicationParameterEditDialog,
     ApplicationBackgroundEditDialog
+  ],
+  providers: [
+    {
+      provide: MatPaginatorIntl,
+      useFactory: (createMatPaginationService),
+      deps: [TranslateService]
+    }
   ],
   exports: [
     HttpClientModule,
