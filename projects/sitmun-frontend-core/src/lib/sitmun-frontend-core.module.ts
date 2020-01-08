@@ -108,8 +108,6 @@ export class SitmunFrontendCoreModule {
         UserPositionService,
         UserConfigurationService,
         LoginService,
-        HasAnyAuthorityDirective,
-        HasAnyAuthorityOnTerritoryDirective,
         MapConfigurationManagerService,
         {
           provide: HTTP_INTERCEPTORS,
